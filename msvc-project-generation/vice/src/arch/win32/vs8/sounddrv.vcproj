@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\sounddrv\DXDebug"
-			IntermediateDirectory=".\libs\sounddrv\DXDebug"
+			OutputDirectory=".\libs\sounddrv\Win32DXDebug"
+			IntermediateDirectory=".\libs\sounddrv\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sounddrv\DXDebug\sounddrv.pch"
-				AssemblerListingLocation=".\libs\sounddrv\DXDebug\"
-				ObjectFile=".\libs\sounddrv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\sounddrv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\sounddrv\Win32DXDebug\sounddrv.pch"
+				AssemblerListingLocation=".\libs\sounddrvWin32DXDebug\"
+				ObjectFile=".\libs\sounddrv\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\sounddrv\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sounddrv\DXDebug\sounddrv.lib"
+				OutputFile=".\libs\sounddrv\Win32DXDebug\sounddrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\sounddrv\DXRelease"
-			IntermediateDirectory=".\libs\sounddrv\DXRelease"
+			OutputDirectory=".\libs\sounddrv\Win32DXRelease"
+			IntermediateDirectory=".\libs\sounddrv\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sounddrv\DXRelease\sounddrv.pch"
-				AssemblerListingLocation=".\libs\sounddrv\DXRelease\"
-				ObjectFile=".\libs\sounddrv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\sounddrv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\sounddrv\Win32DXRelease\sounddrv.pch"
+				AssemblerListingLocation=".\libs\sounddrvWin32DXRelease\"
+				ObjectFile=".\libs\sounddrv\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\sounddrv\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sounddrv\DXRelease\sounddrv.lib"
+				OutputFile=".\libs\sounddrv\Win32DXRelease\sounddrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\sounddrv\Debug"
-			IntermediateDirectory=".\libs\sounddrv\Debug"
+			OutputDirectory=".\libs\sounddrv\Win32Debug"
+			IntermediateDirectory=".\libs\sounddrv\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sounddrv\Debug\sounddrv.pch"
-				AssemblerListingLocation=".\libs\sounddrv\Debug\"
-				ObjectFile=".\libs\sounddrv\Debug\"
-				ProgramDataBaseFileName=".\libs\sounddrv\Debug\"
+				PrecompiledHeaderFile=".\libs\sounddrv\Win32Debug\sounddrv.pch"
+				AssemblerListingLocation=".\libs\sounddrvWin32Debug\"
+				ObjectFile=".\libs\sounddrv\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\sounddrv\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sounddrv\Debug\sounddrv.lib"
+				OutputFile=".\libs\sounddrv\Win32Debug\sounddrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\sounddrv\Release"
-			IntermediateDirectory=".\libs\sounddrv\Release"
+			OutputDirectory=".\libs\sounddrv\Win32Release"
+			IntermediateDirectory=".\libs\sounddrv\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sounddrv\Release\sounddrv.pch"
-				AssemblerListingLocation=".\libs\sounddrv\Release\"
-				ObjectFile=".\libs\sounddrv\Release\"
-				ProgramDataBaseFileName=".\libs\sounddrv\Release\"
+				PrecompiledHeaderFile=".\libs\sounddrv\Win32Release\sounddrv.pch"
+				AssemblerListingLocation=".\libs\sounddrvWin32Release\"
+				ObjectFile=".\libs\sounddrv\Win32Release\"
+				ProgramDataBaseFileName=".\libs\sounddrv\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sounddrv\Release\sounddrv.lib"
+				OutputFile=".\libs\sounddrv\Win32Release\sounddrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sounddrv\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\sounddrv\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sounddrv\DXDebug\sounddrv.pch"
-				AssemblerListingLocation=".\libs\sounddrv\DXDebug\"
-				ObjectFile=".\libs\sounddrv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\sounddrv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\sounddrv\ItaniumDXDebug\sounddrv.pch"
+				AssemblerListingLocation=".\libs\sounddrvItaniumDXDebug\"
+				ObjectFile=".\libs\sounddrv\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\sounddrv\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sounddrv\DXDebug\sounddrv.lib"
+				OutputFile=".\libs\sounddrv\ItaniumDXDebug\sounddrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sounddrv\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\sounddrv\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sounddrv\DXRelease\sounddrv.pch"
-				AssemblerListingLocation=".\libs\sounddrv\DXRelease\"
-				ObjectFile=".\libs\sounddrv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\sounddrv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\sounddrv\ItaniumDXRelease\sounddrv.pch"
+				AssemblerListingLocation=".\libs\sounddrvItaniumDXRelease\"
+				ObjectFile=".\libs\sounddrv\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\sounddrv\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sounddrv\DXRelease\sounddrv.lib"
+				OutputFile=".\libs\sounddrv\ItaniumDXRelease\sounddrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sounddrv\ItaniumDebug"
+			IntermediateDirectory=".\libs\sounddrv\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sounddrv\Debug\sounddrv.pch"
-				AssemblerListingLocation=".\libs\sounddrv\Debug\"
-				ObjectFile=".\libs\sounddrv\Debug\"
-				ProgramDataBaseFileName=".\libs\sounddrv\Debug\"
+				PrecompiledHeaderFile=".\libs\sounddrv\ItaniumDebug\sounddrv.pch"
+				AssemblerListingLocation=".\libs\sounddrvItaniumDebug\"
+				ObjectFile=".\libs\sounddrv\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\sounddrv\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sounddrv\Debug\sounddrv.lib"
+				OutputFile=".\libs\sounddrv\ItaniumDebug\sounddrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sounddrv\ItaniumRelease"
+			IntermediateDirectory=".\libs\sounddrv\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sounddrv\Release\sounddrv.pch"
-				AssemblerListingLocation=".\libs\sounddrv\Release\"
-				ObjectFile=".\libs\sounddrv\Release\"
-				ProgramDataBaseFileName=".\libs\sounddrv\Release\"
+				PrecompiledHeaderFile=".\libs\sounddrv\ItaniumRelease\sounddrv.pch"
+				AssemblerListingLocation=".\libs\sounddrvItaniumRelease\"
+				ObjectFile=".\libs\sounddrv\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\sounddrv\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sounddrv\Release\sounddrv.lib"
+				OutputFile=".\libs\sounddrv\ItaniumRelease\sounddrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sounddrv\x64DXDebug"
+			IntermediateDirectory=".\libs\sounddrv\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sounddrv\DXDebug\sounddrv.pch"
-				AssemblerListingLocation=".\libs\sounddrv\DXDebug\"
-				ObjectFile=".\libs\sounddrv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\sounddrv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\sounddrv\x64DXDebug\sounddrv.pch"
+				AssemblerListingLocation=".\libs\sounddrvx64DXDebug\"
+				ObjectFile=".\libs\sounddrv\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\sounddrv\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sounddrv\DXDebug\sounddrv.lib"
+				OutputFile=".\libs\sounddrv\x64DXDebug\sounddrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sounddrv\x64DXRelease"
+			IntermediateDirectory=".\libs\sounddrv\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sounddrv\DXRelease\sounddrv.pch"
-				AssemblerListingLocation=".\libs\sounddrv\DXRelease\"
-				ObjectFile=".\libs\sounddrv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\sounddrv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\sounddrv\x64DXRelease\sounddrv.pch"
+				AssemblerListingLocation=".\libs\sounddrvx64DXRelease\"
+				ObjectFile=".\libs\sounddrv\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\sounddrv\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sounddrv\DXRelease\sounddrv.lib"
+				OutputFile=".\libs\sounddrv\x64DXRelease\sounddrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sounddrv\x64Debug"
+			IntermediateDirectory=".\libs\sounddrv\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sounddrv\Debug\sounddrv.pch"
-				AssemblerListingLocation=".\libs\sounddrv\Debug\"
-				ObjectFile=".\libs\sounddrv\Debug\"
-				ProgramDataBaseFileName=".\libs\sounddrv\Debug\"
+				PrecompiledHeaderFile=".\libs\sounddrv\x64Debug\sounddrv.pch"
+				AssemblerListingLocation=".\libs\sounddrvx64Debug\"
+				ObjectFile=".\libs\sounddrv\x64Debug\"
+				ProgramDataBaseFileName=".\libs\sounddrv\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sounddrv\Debug\sounddrv.lib"
+				OutputFile=".\libs\sounddrv\x64Debug\sounddrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sounddrv\x64Release"
+			IntermediateDirectory=".\libs\sounddrv\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sounddrv\Release\sounddrv.pch"
-				AssemblerListingLocation=".\libs\sounddrv\Release\"
-				ObjectFile=".\libs\sounddrv\Release\"
-				ProgramDataBaseFileName=".\libs\sounddrv\Release\"
+				PrecompiledHeaderFile=".\libs\sounddrv\x64Release\sounddrv.pch"
+				AssemblerListingLocation=".\libs\sounddrvx64Release\"
+				ObjectFile=".\libs\sounddrv\x64Release\"
+				ProgramDataBaseFileName=".\libs\sounddrv\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sounddrv\Release\sounddrv.lib"
+				OutputFile=".\libs\sounddrv\x64Release\sounddrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

@@ -22,7 +22,7 @@
 		<Configuration
 			Name="DX Debug|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\geninfocontrib\DXDebug"
+			IntermediateDirectory=".\libs\geninfocontrib\Win32DXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -54,10 +54,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\geninfocontrib\DXDebug\geninfocontrib.pch"
-				AssemblerListingLocation=".\libs\geninfocontrib\DXDebug\"
-				ObjectFile=".\libs\geninfocontrib\DXDebug\"
-				ProgramDataBaseFileName=".\libs\geninfocontrib\DXDebug\"
+				PrecompiledHeaderFile=".\libs\geninfocontrib\Win32DXDebug\geninfocontrib.pch"
+				AssemblerListingLocation=".\libs\geninfocontribWin32DXDebug\"
+				ObjectFile=".\libs\geninfocontrib\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\geninfocontrib\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -76,7 +76,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\geninfocontrib.exe"
 				LinkIncremental="2"
@@ -113,7 +112,7 @@
 		<Configuration
 			Name="DX Release|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\geninfocontrib\DXRelease"
+			IntermediateDirectory=".\libs\geninfocontrib\Win32DXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -147,10 +146,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\geninfocontrib\DXRelease\geninfocontrib.pch"
-				AssemblerListingLocation=".\libs\geninfocontrib\DXRelease\"
-				ObjectFile=".\libs\geninfocontrib\DXRelease\"
-				ProgramDataBaseFileName=".\libs\geninfocontrib\DXRelease\"
+				PrecompiledHeaderFile=".\libs\geninfocontrib\Win32DXRelease\geninfocontrib.pch"
+				AssemblerListingLocation=".\libs\geninfocontribWin32DXRelease\"
+				ObjectFile=".\libs\geninfocontrib\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\geninfocontrib\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -168,7 +167,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\geninfocontrib.exe"
 				LinkIncremental="1"
@@ -204,7 +202,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\geninfocontrib\Debug"
+			IntermediateDirectory=".\libs\geninfocontrib\Win32Debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -236,10 +234,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\geninfocontrib\Debug\geninfocontrib.pch"
-				AssemblerListingLocation=".\libs\geninfocontrib\Debug\"
-				ObjectFile=".\libs\geninfocontrib\Debug\"
-				ProgramDataBaseFileName=".\libs\geninfocontrib\Debug\"
+				PrecompiledHeaderFile=".\libs\geninfocontrib\Win32Debug\geninfocontrib.pch"
+				AssemblerListingLocation=".\libs\geninfocontribWin32Debug\"
+				ObjectFile=".\libs\geninfocontrib\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\geninfocontrib\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -250,7 +248,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -258,7 +256,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\geninfocontrib.exe"
 				LinkIncremental="2"
@@ -295,7 +292,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\geninfocontrib\Release"
+			IntermediateDirectory=".\libs\geninfocontrib\Win32Release"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -329,10 +326,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\geninfocontrib\Release\geninfocontrib.pch"
-				AssemblerListingLocation=".\libs\geninfocontrib\Release\"
-				ObjectFile=".\libs\geninfocontrib\Release\"
-				ProgramDataBaseFileName=".\libs\geninfocontrib\Release\"
+				PrecompiledHeaderFile=".\libs\geninfocontrib\Win32Release\geninfocontrib.pch"
+				AssemblerListingLocation=".\libs\geninfocontribWin32Release\"
+				ObjectFile=".\libs\geninfocontrib\Win32Release\"
+				ProgramDataBaseFileName=".\libs\geninfocontrib\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -342,7 +339,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -350,7 +347,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\geninfocontrib.exe"
 				LinkIncremental="1"
@@ -385,8 +381,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\geninfocontrib\ItaniumDXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -419,10 +415,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\geninfocontrib\DXDebug\geninfocontrib.pch"
-				AssemblerListingLocation=".\libs\geninfocontrib\DXDebug\"
-				ObjectFile=".\libs\geninfocontrib\DXDebug\"
-				ProgramDataBaseFileName=".\libs\geninfocontrib\DXDebug\"
+				PrecompiledHeaderFile=".\libs\geninfocontrib\ItaniumDXDebug\geninfocontrib.pch"
+				AssemblerListingLocation=".\libs\geninfocontribItaniumDXDebug\"
+				ObjectFile=".\libs\geninfocontrib\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\geninfocontrib\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -441,7 +437,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\geninfocontrib.exe"
 				LinkIncremental="2"
@@ -478,8 +473,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\geninfocontrib\ItaniumDXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -514,10 +509,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\geninfocontrib\DXRelease\geninfocontrib.pch"
-				AssemblerListingLocation=".\libs\geninfocontrib\DXRelease\"
-				ObjectFile=".\libs\geninfocontrib\DXRelease\"
-				ProgramDataBaseFileName=".\libs\geninfocontrib\DXRelease\"
+				PrecompiledHeaderFile=".\libs\geninfocontrib\ItaniumDXRelease\geninfocontrib.pch"
+				AssemblerListingLocation=".\libs\geninfocontribItaniumDXRelease\"
+				ObjectFile=".\libs\geninfocontrib\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\geninfocontrib\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -535,7 +530,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\geninfocontrib.exe"
 				LinkIncremental="1"
@@ -571,8 +565,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\geninfocontrib\ItaniumDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -605,10 +599,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\geninfocontrib\Debug\geninfocontrib.pch"
-				AssemblerListingLocation=".\libs\geninfocontrib\Debug\"
-				ObjectFile=".\libs\geninfocontrib\Debug\"
-				ProgramDataBaseFileName=".\libs\geninfocontrib\Debug\"
+				PrecompiledHeaderFile=".\libs\geninfocontrib\ItaniumDebug\geninfocontrib.pch"
+				AssemblerListingLocation=".\libs\geninfocontribItaniumDebug\"
+				ObjectFile=".\libs\geninfocontrib\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\geninfocontrib\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -619,7 +613,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -627,7 +621,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\geninfocontrib.exe"
 				LinkIncremental="2"
@@ -664,8 +657,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\geninfocontrib\ItaniumRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -700,10 +693,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\geninfocontrib\Release\geninfocontrib.pch"
-				AssemblerListingLocation=".\libs\geninfocontrib\Release\"
-				ObjectFile=".\libs\geninfocontrib\Release\"
-				ProgramDataBaseFileName=".\libs\geninfocontrib\Release\"
+				PrecompiledHeaderFile=".\libs\geninfocontrib\ItaniumRelease\geninfocontrib.pch"
+				AssemblerListingLocation=".\libs\geninfocontribItaniumRelease\"
+				ObjectFile=".\libs\geninfocontrib\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\geninfocontrib\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -713,7 +706,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -721,7 +714,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\geninfocontrib.exe"
 				LinkIncremental="1"
@@ -757,8 +749,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\geninfocontrib\x64DXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -791,10 +783,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\geninfocontrib\DXDebug\geninfocontrib.pch"
-				AssemblerListingLocation=".\libs\geninfocontrib\DXDebug\"
-				ObjectFile=".\libs\geninfocontrib\DXDebug\"
-				ProgramDataBaseFileName=".\libs\geninfocontrib\DXDebug\"
+				PrecompiledHeaderFile=".\libs\geninfocontrib\x64DXDebug\geninfocontrib.pch"
+				AssemblerListingLocation=".\libs\geninfocontribx64DXDebug\"
+				ObjectFile=".\libs\geninfocontrib\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\geninfocontrib\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -813,7 +805,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\geninfocontrib.exe"
 				LinkIncremental="2"
@@ -850,8 +841,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\geninfocontrib\x64DXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -886,10 +877,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\geninfocontrib\DXRelease\geninfocontrib.pch"
-				AssemblerListingLocation=".\libs\geninfocontrib\DXRelease\"
-				ObjectFile=".\libs\geninfocontrib\DXRelease\"
-				ProgramDataBaseFileName=".\libs\geninfocontrib\DXRelease\"
+				PrecompiledHeaderFile=".\libs\geninfocontrib\x64DXRelease\geninfocontrib.pch"
+				AssemblerListingLocation=".\libs\geninfocontribx64DXRelease\"
+				ObjectFile=".\libs\geninfocontrib\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\geninfocontrib\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -907,7 +898,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\geninfocontrib.exe"
 				LinkIncremental="1"
@@ -943,8 +933,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\geninfocontrib\x64Debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -977,10 +967,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\geninfocontrib\Debug\geninfocontrib.pch"
-				AssemblerListingLocation=".\libs\geninfocontrib\Debug\"
-				ObjectFile=".\libs\geninfocontrib\Debug\"
-				ProgramDataBaseFileName=".\libs\geninfocontrib\Debug\"
+				PrecompiledHeaderFile=".\libs\geninfocontrib\x64Debug\geninfocontrib.pch"
+				AssemblerListingLocation=".\libs\geninfocontribx64Debug\"
+				ObjectFile=".\libs\geninfocontrib\x64Debug\"
+				ProgramDataBaseFileName=".\libs\geninfocontrib\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -991,7 +981,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -999,7 +989,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\geninfocontrib.exe"
 				LinkIncremental="2"
@@ -1036,8 +1025,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\geninfocontrib\x64Release"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -1072,10 +1061,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\geninfocontrib\Release\geninfocontrib.pch"
-				AssemblerListingLocation=".\libs\geninfocontrib\Release\"
-				ObjectFile=".\libs\geninfocontrib\Release\"
-				ProgramDataBaseFileName=".\libs\geninfocontrib\Release\"
+				PrecompiledHeaderFile=".\libs\geninfocontrib\x64Release\geninfocontrib.pch"
+				AssemblerListingLocation=".\libs\geninfocontribx64Release\"
+				ObjectFile=".\libs\geninfocontrib\x64Release\"
+				ProgramDataBaseFileName=".\libs\geninfocontrib\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -1085,7 +1074,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -1093,7 +1082,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\geninfocontrib.exe"
 				LinkIncremental="1"

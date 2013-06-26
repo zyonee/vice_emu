@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\rs232drv\DXDebug"
-			IntermediateDirectory=".\libs\rs232drv\DXDebug"
+			OutputDirectory=".\libs\rs232drv\Win32DXDebug"
+			IntermediateDirectory=".\libs\rs232drv\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rs232drv\DXDebug\rs232drv.pch"
-				AssemblerListingLocation=".\libs\rs232drv\DXDebug\"
-				ObjectFile=".\libs\rs232drv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\rs232drv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\rs232drv\Win32DXDebug\rs232drv.pch"
+				AssemblerListingLocation=".\libs\rs232drvWin32DXDebug\"
+				ObjectFile=".\libs\rs232drv\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\rs232drv\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rs232drv\DXDebug\rs232drv.lib"
+				OutputFile=".\libs\rs232drv\Win32DXDebug\rs232drv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\rs232drv\DXRelease"
-			IntermediateDirectory=".\libs\rs232drv\DXRelease"
+			OutputDirectory=".\libs\rs232drv\Win32DXRelease"
+			IntermediateDirectory=".\libs\rs232drv\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rs232drv\DXRelease\rs232drv.pch"
-				AssemblerListingLocation=".\libs\rs232drv\DXRelease\"
-				ObjectFile=".\libs\rs232drv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\rs232drv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\rs232drv\Win32DXRelease\rs232drv.pch"
+				AssemblerListingLocation=".\libs\rs232drvWin32DXRelease\"
+				ObjectFile=".\libs\rs232drv\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\rs232drv\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rs232drv\DXRelease\rs232drv.lib"
+				OutputFile=".\libs\rs232drv\Win32DXRelease\rs232drv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\rs232drv\Debug"
-			IntermediateDirectory=".\libs\rs232drv\Debug"
+			OutputDirectory=".\libs\rs232drv\Win32Debug"
+			IntermediateDirectory=".\libs\rs232drv\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rs232drv\Debug\rs232drv.pch"
-				AssemblerListingLocation=".\libs\rs232drv\Debug\"
-				ObjectFile=".\libs\rs232drv\Debug\"
-				ProgramDataBaseFileName=".\libs\rs232drv\Debug\"
+				PrecompiledHeaderFile=".\libs\rs232drv\Win32Debug\rs232drv.pch"
+				AssemblerListingLocation=".\libs\rs232drvWin32Debug\"
+				ObjectFile=".\libs\rs232drv\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\rs232drv\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rs232drv\Debug\rs232drv.lib"
+				OutputFile=".\libs\rs232drv\Win32Debug\rs232drv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\rs232drv\Release"
-			IntermediateDirectory=".\libs\rs232drv\Release"
+			OutputDirectory=".\libs\rs232drv\Win32Release"
+			IntermediateDirectory=".\libs\rs232drv\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rs232drv\Release\rs232drv.pch"
-				AssemblerListingLocation=".\libs\rs232drv\Release\"
-				ObjectFile=".\libs\rs232drv\Release\"
-				ProgramDataBaseFileName=".\libs\rs232drv\Release\"
+				PrecompiledHeaderFile=".\libs\rs232drv\Win32Release\rs232drv.pch"
+				AssemblerListingLocation=".\libs\rs232drvWin32Release\"
+				ObjectFile=".\libs\rs232drv\Win32Release\"
+				ProgramDataBaseFileName=".\libs\rs232drv\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rs232drv\Release\rs232drv.lib"
+				OutputFile=".\libs\rs232drv\Win32Release\rs232drv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rs232drv\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\rs232drv\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rs232drv\DXDebug\rs232drv.pch"
-				AssemblerListingLocation=".\libs\rs232drv\DXDebug\"
-				ObjectFile=".\libs\rs232drv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\rs232drv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\rs232drv\ItaniumDXDebug\rs232drv.pch"
+				AssemblerListingLocation=".\libs\rs232drvItaniumDXDebug\"
+				ObjectFile=".\libs\rs232drv\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\rs232drv\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rs232drv\DXDebug\rs232drv.lib"
+				OutputFile=".\libs\rs232drv\ItaniumDXDebug\rs232drv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rs232drv\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\rs232drv\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rs232drv\DXRelease\rs232drv.pch"
-				AssemblerListingLocation=".\libs\rs232drv\DXRelease\"
-				ObjectFile=".\libs\rs232drv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\rs232drv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\rs232drv\ItaniumDXRelease\rs232drv.pch"
+				AssemblerListingLocation=".\libs\rs232drvItaniumDXRelease\"
+				ObjectFile=".\libs\rs232drv\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\rs232drv\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rs232drv\DXRelease\rs232drv.lib"
+				OutputFile=".\libs\rs232drv\ItaniumDXRelease\rs232drv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rs232drv\ItaniumDebug"
+			IntermediateDirectory=".\libs\rs232drv\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rs232drv\Debug\rs232drv.pch"
-				AssemblerListingLocation=".\libs\rs232drv\Debug\"
-				ObjectFile=".\libs\rs232drv\Debug\"
-				ProgramDataBaseFileName=".\libs\rs232drv\Debug\"
+				PrecompiledHeaderFile=".\libs\rs232drv\ItaniumDebug\rs232drv.pch"
+				AssemblerListingLocation=".\libs\rs232drvItaniumDebug\"
+				ObjectFile=".\libs\rs232drv\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\rs232drv\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rs232drv\Debug\rs232drv.lib"
+				OutputFile=".\libs\rs232drv\ItaniumDebug\rs232drv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rs232drv\ItaniumRelease"
+			IntermediateDirectory=".\libs\rs232drv\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rs232drv\Release\rs232drv.pch"
-				AssemblerListingLocation=".\libs\rs232drv\Release\"
-				ObjectFile=".\libs\rs232drv\Release\"
-				ProgramDataBaseFileName=".\libs\rs232drv\Release\"
+				PrecompiledHeaderFile=".\libs\rs232drv\ItaniumRelease\rs232drv.pch"
+				AssemblerListingLocation=".\libs\rs232drvItaniumRelease\"
+				ObjectFile=".\libs\rs232drv\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\rs232drv\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rs232drv\Release\rs232drv.lib"
+				OutputFile=".\libs\rs232drv\ItaniumRelease\rs232drv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rs232drv\x64DXDebug"
+			IntermediateDirectory=".\libs\rs232drv\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rs232drv\DXDebug\rs232drv.pch"
-				AssemblerListingLocation=".\libs\rs232drv\DXDebug\"
-				ObjectFile=".\libs\rs232drv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\rs232drv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\rs232drv\x64DXDebug\rs232drv.pch"
+				AssemblerListingLocation=".\libs\rs232drvx64DXDebug\"
+				ObjectFile=".\libs\rs232drv\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\rs232drv\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rs232drv\DXDebug\rs232drv.lib"
+				OutputFile=".\libs\rs232drv\x64DXDebug\rs232drv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rs232drv\x64DXRelease"
+			IntermediateDirectory=".\libs\rs232drv\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rs232drv\DXRelease\rs232drv.pch"
-				AssemblerListingLocation=".\libs\rs232drv\DXRelease\"
-				ObjectFile=".\libs\rs232drv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\rs232drv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\rs232drv\x64DXRelease\rs232drv.pch"
+				AssemblerListingLocation=".\libs\rs232drvx64DXRelease\"
+				ObjectFile=".\libs\rs232drv\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\rs232drv\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rs232drv\DXRelease\rs232drv.lib"
+				OutputFile=".\libs\rs232drv\x64DXRelease\rs232drv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rs232drv\x64Debug"
+			IntermediateDirectory=".\libs\rs232drv\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rs232drv\Debug\rs232drv.pch"
-				AssemblerListingLocation=".\libs\rs232drv\Debug\"
-				ObjectFile=".\libs\rs232drv\Debug\"
-				ProgramDataBaseFileName=".\libs\rs232drv\Debug\"
+				PrecompiledHeaderFile=".\libs\rs232drv\x64Debug\rs232drv.pch"
+				AssemblerListingLocation=".\libs\rs232drvx64Debug\"
+				ObjectFile=".\libs\rs232drv\x64Debug\"
+				ProgramDataBaseFileName=".\libs\rs232drv\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rs232drv\Debug\rs232drv.lib"
+				OutputFile=".\libs\rs232drv\x64Debug\rs232drv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rs232drv\x64Release"
+			IntermediateDirectory=".\libs\rs232drv\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rs232drv\Release\rs232drv.pch"
-				AssemblerListingLocation=".\libs\rs232drv\Release\"
-				ObjectFile=".\libs\rs232drv\Release\"
-				ProgramDataBaseFileName=".\libs\rs232drv\Release\"
+				PrecompiledHeaderFile=".\libs\rs232drv\x64Release\rs232drv.pch"
+				AssemblerListingLocation=".\libs\rs232drvx64Release\"
+				ObjectFile=".\libs\rs232drv\x64Release\"
+				ProgramDataBaseFileName=".\libs\rs232drv\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rs232drv\Release\rs232drv.lib"
+				OutputFile=".\libs\rs232drv\x64Release\rs232drv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\vic20\DXDebug"
-			IntermediateDirectory=".\libs\vic20\DXDebug"
+			OutputDirectory=".\libs\vic20\Win32DXDebug"
+			IntermediateDirectory=".\libs\vic20\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20\DXDebug\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\DXDebug\"
-				ObjectFile=".\libs\vic20\DXDebug\"
-				ProgramDataBaseFileName=".\libs\vic20\DXDebug\"
+				PrecompiledHeaderFile=".\libs\vic20\Win32DXDebug\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20Win32DXDebug\"
+				ObjectFile=".\libs\vic20\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\vic20\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20\DXDebug\vic20.lib"
+				OutputFile=".\libs\vic20\Win32DXDebug\vic20.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\vic20\DXRelease"
-			IntermediateDirectory=".\libs\vic20\DXRelease"
+			OutputDirectory=".\libs\vic20\Win32DXRelease"
+			IntermediateDirectory=".\libs\vic20\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20\DXRelease\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\DXRelease\"
-				ObjectFile=".\libs\vic20\DXRelease\"
-				ProgramDataBaseFileName=".\libs\vic20\DXRelease\"
+				PrecompiledHeaderFile=".\libs\vic20\Win32DXRelease\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20Win32DXRelease\"
+				ObjectFile=".\libs\vic20\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\vic20\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20\DXRelease\vic20.lib"
+				OutputFile=".\libs\vic20\Win32DXRelease\vic20.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\vic20\Debug"
-			IntermediateDirectory=".\libs\vic20\Debug"
+			OutputDirectory=".\libs\vic20\Win32Debug"
+			IntermediateDirectory=".\libs\vic20\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20\Debug\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\Debug\"
-				ObjectFile=".\libs\vic20\Debug\"
-				ProgramDataBaseFileName=".\libs\vic20\Debug\"
+				PrecompiledHeaderFile=".\libs\vic20\Win32Debug\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20Win32Debug\"
+				ObjectFile=".\libs\vic20\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\vic20\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20\Debug\vic20.lib"
+				OutputFile=".\libs\vic20\Win32Debug\vic20.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\vic20\Release"
-			IntermediateDirectory=".\libs\vic20\Release"
+			OutputDirectory=".\libs\vic20\Win32Release"
+			IntermediateDirectory=".\libs\vic20\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20\Release\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\Release\"
-				ObjectFile=".\libs\vic20\Release\"
-				ProgramDataBaseFileName=".\libs\vic20\Release\"
+				PrecompiledHeaderFile=".\libs\vic20\Win32Release\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20Win32Release\"
+				ObjectFile=".\libs\vic20\Win32Release\"
+				ProgramDataBaseFileName=".\libs\vic20\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20\Release\vic20.lib"
+				OutputFile=".\libs\vic20\Win32Release\vic20.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\vic20\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20\DXDebug\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\DXDebug\"
-				ObjectFile=".\libs\vic20\DXDebug\"
-				ProgramDataBaseFileName=".\libs\vic20\DXDebug\"
+				PrecompiledHeaderFile=".\libs\vic20\ItaniumDXDebug\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20ItaniumDXDebug\"
+				ObjectFile=".\libs\vic20\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\vic20\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20\DXDebug\vic20.lib"
+				OutputFile=".\libs\vic20\ItaniumDXDebug\vic20.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\vic20\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20\DXRelease\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\DXRelease\"
-				ObjectFile=".\libs\vic20\DXRelease\"
-				ProgramDataBaseFileName=".\libs\vic20\DXRelease\"
+				PrecompiledHeaderFile=".\libs\vic20\ItaniumDXRelease\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20ItaniumDXRelease\"
+				ObjectFile=".\libs\vic20\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\vic20\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20\DXRelease\vic20.lib"
+				OutputFile=".\libs\vic20\ItaniumDXRelease\vic20.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20\ItaniumDebug"
+			IntermediateDirectory=".\libs\vic20\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20\Debug\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\Debug\"
-				ObjectFile=".\libs\vic20\Debug\"
-				ProgramDataBaseFileName=".\libs\vic20\Debug\"
+				PrecompiledHeaderFile=".\libs\vic20\ItaniumDebug\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20ItaniumDebug\"
+				ObjectFile=".\libs\vic20\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\vic20\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20\Debug\vic20.lib"
+				OutputFile=".\libs\vic20\ItaniumDebug\vic20.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20\ItaniumRelease"
+			IntermediateDirectory=".\libs\vic20\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20\Release\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\Release\"
-				ObjectFile=".\libs\vic20\Release\"
-				ProgramDataBaseFileName=".\libs\vic20\Release\"
+				PrecompiledHeaderFile=".\libs\vic20\ItaniumRelease\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20ItaniumRelease\"
+				ObjectFile=".\libs\vic20\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\vic20\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20\Release\vic20.lib"
+				OutputFile=".\libs\vic20\ItaniumRelease\vic20.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20\x64DXDebug"
+			IntermediateDirectory=".\libs\vic20\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20\DXDebug\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\DXDebug\"
-				ObjectFile=".\libs\vic20\DXDebug\"
-				ProgramDataBaseFileName=".\libs\vic20\DXDebug\"
+				PrecompiledHeaderFile=".\libs\vic20\x64DXDebug\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20x64DXDebug\"
+				ObjectFile=".\libs\vic20\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\vic20\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20\DXDebug\vic20.lib"
+				OutputFile=".\libs\vic20\x64DXDebug\vic20.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20\x64DXRelease"
+			IntermediateDirectory=".\libs\vic20\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20\DXRelease\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\DXRelease\"
-				ObjectFile=".\libs\vic20\DXRelease\"
-				ProgramDataBaseFileName=".\libs\vic20\DXRelease\"
+				PrecompiledHeaderFile=".\libs\vic20\x64DXRelease\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20x64DXRelease\"
+				ObjectFile=".\libs\vic20\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\vic20\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20\DXRelease\vic20.lib"
+				OutputFile=".\libs\vic20\x64DXRelease\vic20.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20\x64Debug"
+			IntermediateDirectory=".\libs\vic20\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20\Debug\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\Debug\"
-				ObjectFile=".\libs\vic20\Debug\"
-				ProgramDataBaseFileName=".\libs\vic20\Debug\"
+				PrecompiledHeaderFile=".\libs\vic20\x64Debug\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20x64Debug\"
+				ObjectFile=".\libs\vic20\x64Debug\"
+				ProgramDataBaseFileName=".\libs\vic20\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20\Debug\vic20.lib"
+				OutputFile=".\libs\vic20\x64Debug\vic20.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20\x64Release"
+			IntermediateDirectory=".\libs\vic20\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20\Release\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\Release\"
-				ObjectFile=".\libs\vic20\Release\"
-				ProgramDataBaseFileName=".\libs\vic20\Release\"
+				PrecompiledHeaderFile=".\libs\vic20\x64Release\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20x64Release\"
+				ObjectFile=".\libs\vic20\x64Release\"
+				ProgramDataBaseFileName=".\libs\vic20\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20\Release\vic20.lib"
+				OutputFile=".\libs\vic20\x64Release\vic20.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -889,6 +889,10 @@
 	<References>
 	</References>
 	<Files>
+		<File
+			RelativePath="..\..\..\vic20\vic20cpu.c"
+			>
+		</File>
 		<File
 			RelativePath="..\..\..\vic20\vic-cmdline-options.c"
 			>
@@ -944,76 +948,6 @@
 		<File
 			RelativePath="..\..\..\vic20\vic20bus.c"
 			>
-		</File>
-		<File
-			RelativePath="..\..\..\vic20\vic20cpu.c"
-			>
-			<FileConfiguration
-				Name="DX Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|Itanium"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Itanium"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|x64"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|x64"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
 		</File>
 		<File
 			RelativePath="..\..\..\vic20\vic20datasette.c"

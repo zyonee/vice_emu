@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\sid\DXDebug"
-			IntermediateDirectory=".\libs\sid\DXDebug"
+			OutputDirectory=".\libs\sid\Win32DXDebug"
+			IntermediateDirectory=".\libs\sid\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG,PACKAGE=\&quot;sid\&quot;,VERSION=\&quot;0.7\&quot;,SIZEOF_INT=4"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sid\DXDebug\sid.pch"
-				AssemblerListingLocation=".\libs\sid\DXDebug\"
-				ObjectFile=".\libs\sid\DXDebug\"
-				ProgramDataBaseFileName=".\libs\sid\DXDebug\"
+				PrecompiledHeaderFile=".\libs\sid\Win32DXDebug\sid.pch"
+				AssemblerListingLocation=".\libs\sidWin32DXDebug\"
+				ObjectFile=".\libs\sid\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\sid\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sid\DXDebug\sid.lib"
+				OutputFile=".\libs\sid\Win32DXDebug\sid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\sid\DXRelease"
-			IntermediateDirectory=".\libs\sid\DXRelease"
+			OutputDirectory=".\libs\sid\Win32DXRelease"
+			IntermediateDirectory=".\libs\sid\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sid\DXRelease\sid.pch"
-				AssemblerListingLocation=".\libs\sid\DXRelease\"
-				ObjectFile=".\libs\sid\DXRelease\"
-				ProgramDataBaseFileName=".\libs\sid\DXRelease\"
+				PrecompiledHeaderFile=".\libs\sid\Win32DXRelease\sid.pch"
+				AssemblerListingLocation=".\libs\sidWin32DXRelease\"
+				ObjectFile=".\libs\sid\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\sid\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sid\DXRelease\sid.lib"
+				OutputFile=".\libs\sid\Win32DXRelease\sid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\sid\Debug"
-			IntermediateDirectory=".\libs\sid\Debug"
+			OutputDirectory=".\libs\sid\Win32Debug"
+			IntermediateDirectory=".\libs\sid\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG,PACKAGE=\&quot;sid\&quot;,VERSION=\&quot;0.7\&quot;,SIZEOF_INT=4"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sid\Debug\sid.pch"
-				AssemblerListingLocation=".\libs\sid\Debug\"
-				ObjectFile=".\libs\sid\Debug\"
-				ProgramDataBaseFileName=".\libs\sid\Debug\"
+				PrecompiledHeaderFile=".\libs\sid\Win32Debug\sid.pch"
+				AssemblerListingLocation=".\libs\sidWin32Debug\"
+				ObjectFile=".\libs\sid\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\sid\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sid\Debug\sid.lib"
+				OutputFile=".\libs\sid\Win32Debug\sid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\sid\Release"
-			IntermediateDirectory=".\libs\sid\Release"
+			OutputDirectory=".\libs\sid\Win32Release"
+			IntermediateDirectory=".\libs\sid\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sid\Release\sid.pch"
-				AssemblerListingLocation=".\libs\sid\Release\"
-				ObjectFile=".\libs\sid\Release\"
-				ProgramDataBaseFileName=".\libs\sid\Release\"
+				PrecompiledHeaderFile=".\libs\sid\Win32Release\sid.pch"
+				AssemblerListingLocation=".\libs\sidWin32Release\"
+				ObjectFile=".\libs\sid\Win32Release\"
+				ProgramDataBaseFileName=".\libs\sid\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sid\Release\sid.lib"
+				OutputFile=".\libs\sid\Win32Release\sid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sid\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\sid\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG,PACKAGE=\&quot;sid\&quot;,VERSION=\&quot;0.7\&quot;,SIZEOF_INT=4"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sid\DXDebug\sid.pch"
-				AssemblerListingLocation=".\libs\sid\DXDebug\"
-				ObjectFile=".\libs\sid\DXDebug\"
-				ProgramDataBaseFileName=".\libs\sid\DXDebug\"
+				PrecompiledHeaderFile=".\libs\sid\ItaniumDXDebug\sid.pch"
+				AssemblerListingLocation=".\libs\sidItaniumDXDebug\"
+				ObjectFile=".\libs\sid\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\sid\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sid\DXDebug\sid.lib"
+				OutputFile=".\libs\sid\ItaniumDXDebug\sid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sid\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\sid\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sid\DXRelease\sid.pch"
-				AssemblerListingLocation=".\libs\sid\DXRelease\"
-				ObjectFile=".\libs\sid\DXRelease\"
-				ProgramDataBaseFileName=".\libs\sid\DXRelease\"
+				PrecompiledHeaderFile=".\libs\sid\ItaniumDXRelease\sid.pch"
+				AssemblerListingLocation=".\libs\sidItaniumDXRelease\"
+				ObjectFile=".\libs\sid\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\sid\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sid\DXRelease\sid.lib"
+				OutputFile=".\libs\sid\ItaniumDXRelease\sid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sid\ItaniumDebug"
+			IntermediateDirectory=".\libs\sid\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG,PACKAGE=\&quot;sid\&quot;,VERSION=\&quot;0.7\&quot;,SIZEOF_INT=4"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sid\Debug\sid.pch"
-				AssemblerListingLocation=".\libs\sid\Debug\"
-				ObjectFile=".\libs\sid\Debug\"
-				ProgramDataBaseFileName=".\libs\sid\Debug\"
+				PrecompiledHeaderFile=".\libs\sid\ItaniumDebug\sid.pch"
+				AssemblerListingLocation=".\libs\sidItaniumDebug\"
+				ObjectFile=".\libs\sid\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\sid\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sid\Debug\sid.lib"
+				OutputFile=".\libs\sid\ItaniumDebug\sid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sid\ItaniumRelease"
+			IntermediateDirectory=".\libs\sid\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sid\Release\sid.pch"
-				AssemblerListingLocation=".\libs\sid\Release\"
-				ObjectFile=".\libs\sid\Release\"
-				ProgramDataBaseFileName=".\libs\sid\Release\"
+				PrecompiledHeaderFile=".\libs\sid\ItaniumRelease\sid.pch"
+				AssemblerListingLocation=".\libs\sidItaniumRelease\"
+				ObjectFile=".\libs\sid\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\sid\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sid\Release\sid.lib"
+				OutputFile=".\libs\sid\ItaniumRelease\sid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sid\x64DXDebug"
+			IntermediateDirectory=".\libs\sid\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG,PACKAGE=\&quot;sid\&quot;,VERSION=\&quot;0.7\&quot;,SIZEOF_INT=4"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sid\DXDebug\sid.pch"
-				AssemblerListingLocation=".\libs\sid\DXDebug\"
-				ObjectFile=".\libs\sid\DXDebug\"
-				ProgramDataBaseFileName=".\libs\sid\DXDebug\"
+				PrecompiledHeaderFile=".\libs\sid\x64DXDebug\sid.pch"
+				AssemblerListingLocation=".\libs\sidx64DXDebug\"
+				ObjectFile=".\libs\sid\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\sid\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sid\DXDebug\sid.lib"
+				OutputFile=".\libs\sid\x64DXDebug\sid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sid\x64DXRelease"
+			IntermediateDirectory=".\libs\sid\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sid\DXRelease\sid.pch"
-				AssemblerListingLocation=".\libs\sid\DXRelease\"
-				ObjectFile=".\libs\sid\DXRelease\"
-				ProgramDataBaseFileName=".\libs\sid\DXRelease\"
+				PrecompiledHeaderFile=".\libs\sid\x64DXRelease\sid.pch"
+				AssemblerListingLocation=".\libs\sidx64DXRelease\"
+				ObjectFile=".\libs\sid\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\sid\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sid\DXRelease\sid.lib"
+				OutputFile=".\libs\sid\x64DXRelease\sid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sid\x64Debug"
+			IntermediateDirectory=".\libs\sid\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG,PACKAGE=\&quot;sid\&quot;,VERSION=\&quot;0.7\&quot;,SIZEOF_INT=4"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sid\Debug\sid.pch"
-				AssemblerListingLocation=".\libs\sid\Debug\"
-				ObjectFile=".\libs\sid\Debug\"
-				ProgramDataBaseFileName=".\libs\sid\Debug\"
+				PrecompiledHeaderFile=".\libs\sid\x64Debug\sid.pch"
+				AssemblerListingLocation=".\libs\sidx64Debug\"
+				ObjectFile=".\libs\sid\x64Debug\"
+				ProgramDataBaseFileName=".\libs\sid\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sid\Debug\sid.lib"
+				OutputFile=".\libs\sid\x64Debug\sid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\sid\x64Release"
+			IntermediateDirectory=".\libs\sid\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\sid\Release\sid.pch"
-				AssemblerListingLocation=".\libs\sid\Release\"
-				ObjectFile=".\libs\sid\Release\"
-				ProgramDataBaseFileName=".\libs\sid\Release\"
+				PrecompiledHeaderFile=".\libs\sid\x64Release\sid.pch"
+				AssemblerListingLocation=".\libs\sidx64Release\"
+				ObjectFile=".\libs\sid\x64Release\"
+				ProgramDataBaseFileName=".\libs\sid\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\sid\Release\sid.lib"
+				OutputFile=".\libs\sid\x64Release\sid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -894,230 +894,6 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\sid\resid-fp.cc"
-			>
-			<FileConfiguration
-				Name="DX Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\DXDebug\sid.pch&quot; /Fo&quot;libs\sid\DXDebug/&quot; /Fd&quot;libs\sid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\DXDebug\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\DXRelease\sid.pch&quot; /Fo&quot;libs\sid\DXRelease/&quot; /Fd&quot;libs\sid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\DXRelease\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Debug\sid.pch&quot; /Fo&quot;libs\sid\Debug/&quot; /Fd&quot;libs\sid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\Debug\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Release\sid.pch&quot; /Fo&quot;libs\sid\Release/&quot; /Fd&quot;libs\sid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\Release\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Debug|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\DXDebug\sid.pch&quot; /Fo&quot;libs\sid\DXDebug/&quot; /Fd&quot;libs\sid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\DXDebug\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\DXRelease\sid.pch&quot; /Fo&quot;libs\sid\DXRelease/&quot; /Fd&quot;libs\sid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\DXRelease\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Debug\sid.pch&quot; /Fo&quot;libs\sid\Debug/&quot; /Fd&quot;libs\sid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\Debug\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Release\sid.pch&quot; /Fo&quot;libs\sid\Release/&quot; /Fd&quot;libs\sid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\Release\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Debug|x64"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\DXDebug\sid.pch&quot; /Fo&quot;libs\sid\DXDebug/&quot; /Fd&quot;libs\sid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\DXDebug\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|x64"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\DXRelease\sid.pch&quot; /Fo&quot;libs\sid\DXRelease/&quot; /Fd&quot;libs\sid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\DXRelease\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|x64"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Debug\sid.pch&quot; /Fo&quot;libs\sid\Debug/&quot; /Fd&quot;libs\sid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\Debug\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|x64"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Release\sid.pch&quot; /Fo&quot;libs\sid\Release/&quot; /Fd&quot;libs\sid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\Release\$(InputName).obj"
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\..\..\sid\resid.cc"
-			>
-			<FileConfiguration
-				Name="DX Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\DXDebug\sid.pch&quot; /Fo&quot;libs\sid\DXDebug/&quot; /Fd&quot;libs\sid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\DXDebug\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\DXRelease\sid.pch&quot; /Fo&quot;libs\sid\DXRelease/&quot; /Fd&quot;libs\sid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\DXRelease\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Debug\sid.pch&quot; /Fo&quot;libs\sid\Debug/&quot; /Fd&quot;libs\sid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\Debug\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Release\sid.pch&quot; /Fo&quot;libs\sid\Release/&quot; /Fd&quot;libs\sid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\Release\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Debug|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\DXDebug\sid.pch&quot; /Fo&quot;libs\sid\DXDebug/&quot; /Fd&quot;libs\sid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\DXDebug\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\DXRelease\sid.pch&quot; /Fo&quot;libs\sid\DXRelease/&quot; /Fd&quot;libs\sid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\DXRelease\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Debug\sid.pch&quot; /Fo&quot;libs\sid\Debug/&quot; /Fd&quot;libs\sid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\Debug\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Release\sid.pch&quot; /Fo&quot;libs\sid\Release/&quot; /Fd&quot;libs\sid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\Release\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Debug|x64"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\DXDebug\sid.pch&quot; /Fo&quot;libs\sid\DXDebug/&quot; /Fd&quot;libs\sid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\DXDebug\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|x64"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\DXRelease\sid.pch&quot; /Fo&quot;libs\sid\DXRelease/&quot; /Fd&quot;libs\sid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\DXRelease\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|x64"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Debug\sid.pch&quot; /Fo&quot;libs\sid\Debug/&quot; /Fd&quot;libs\sid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\Debug\$(InputName).obj"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|x64"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Release\sid.pch&quot; /Fo&quot;libs\sid\Release/&quot; /Fd&quot;libs\sid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\sid\Release\$(InputName).obj"
-				/>
-			</FileConfiguration>
-		</File>
-		<File
 			RelativePath="..\..\..\sid\sid-cmdline-options.c"
 			>
 		</File>
@@ -1132,6 +908,230 @@
 		<File
 			RelativePath="..\..\..\sid\sid.c"
 			>
+		</File>
+		<File
+			RelativePath="..\..\..\sid\resid-fp.cc"
+			>
+			<FileConfiguration
+				Name="DX Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Win32DXDebug\sid.pch&quot; /Fo&quot;libs\sid\Win32DXDebug/&quot; /Fd&quot;libs\sid\Win32DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\Win32DXDebug\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Win32DXRelease\sid.pch&quot; /Fo&quot;libs\sid\Win32DXRelease/&quot; /Fd&quot;libs\sid\Win32DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\Win32DXRelease\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Win32Debug\sid.pch&quot; /Fo&quot;libs\sid\Win32Debug/&quot; /Fd&quot;libs\sid\Win32Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\Win32Debug\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Win32Release\sid.pch&quot; /Fo&quot;libs\sid\Win32Release/&quot; /Fd&quot;libs\sid\Win32Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\Win32Release\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Debug|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\ItaniumDXDebug\sid.pch&quot; /Fo&quot;libs\sid\ItaniumDXDebug/&quot; /Fd&quot;libs\sid\ItaniumDXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\ItaniumDXDebug\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Release|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\ItaniumDXRelease\sid.pch&quot; /Fo&quot;libs\sid\ItaniumDXRelease/&quot; /Fd&quot;libs\sid\ItaniumDXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\ItaniumDXRelease\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\ItaniumDebug\sid.pch&quot; /Fo&quot;libs\sid\ItaniumDebug/&quot; /Fd&quot;libs\sid\ItaniumDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\ItaniumDebug\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\ItaniumRelease\sid.pch&quot; /Fo&quot;libs\sid\ItaniumRelease/&quot; /Fd&quot;libs\sid\ItaniumRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\ItaniumRelease\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Debug|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\x64DXDebug\sid.pch&quot; /Fo&quot;libs\sid\x64DXDebug/&quot; /Fd&quot;libs\sid\x64DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\x64DXDebug\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Release|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\x64DXRelease\sid.pch&quot; /Fo&quot;libs\sid\x64DXRelease/&quot; /Fd&quot;libs\sid\x64DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\x64DXRelease\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\x64Debug\sid.pch&quot; /Fo&quot;libs\sid\x64Debug/&quot; /Fd&quot;libs\sid\x64Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\x64Debug\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\x64Release\sid.pch&quot; /Fo&quot;libs\sid\x64Release/&quot; /Fd&quot;libs\sid\x64Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\x64Release\$(InputName).obj"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\..\sid\resid.cc"
+			>
+			<FileConfiguration
+				Name="DX Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Win32DXDebug\sid.pch&quot; /Fo&quot;libs\sid\Win32DXDebug/&quot; /Fd&quot;libs\sid\Win32DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\Win32DXDebug\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Win32DXRelease\sid.pch&quot; /Fo&quot;libs\sid\Win32DXRelease/&quot; /Fd&quot;libs\sid\Win32DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\Win32DXRelease\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Win32Debug\sid.pch&quot; /Fo&quot;libs\sid\Win32Debug/&quot; /Fd&quot;libs\sid\Win32Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\Win32Debug\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\Win32Release\sid.pch&quot; /Fo&quot;libs\sid\Win32Release/&quot; /Fd&quot;libs\sid\Win32Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\Win32Release\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Debug|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\ItaniumDXDebug\sid.pch&quot; /Fo&quot;libs\sid\ItaniumDXDebug/&quot; /Fd&quot;libs\sid\ItaniumDXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\ItaniumDXDebug\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Release|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\ItaniumDXRelease\sid.pch&quot; /Fo&quot;libs\sid\ItaniumDXRelease/&quot; /Fd&quot;libs\sid\ItaniumDXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\ItaniumDXRelease\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\ItaniumDebug\sid.pch&quot; /Fo&quot;libs\sid\ItaniumDebug/&quot; /Fd&quot;libs\sid\ItaniumDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\ItaniumDebug\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\ItaniumRelease\sid.pch&quot; /Fo&quot;libs\sid\ItaniumRelease/&quot; /Fd&quot;libs\sid\ItaniumRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\ItaniumRelease\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Debug|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\x64DXDebug\sid.pch&quot; /Fo&quot;libs\sid\x64DXDebug/&quot; /Fd&quot;libs\sid\x64DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\x64DXDebug\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Release|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\x64DXRelease\sid.pch&quot; /Fo&quot;libs\sid\x64DXRelease/&quot; /Fd&quot;libs\sid\x64DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\x64DXRelease\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\x64Debug\sid.pch&quot; /Fo&quot;libs\sid\x64Debug/&quot; /Fd&quot;libs\sid\x64Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\x64Debug\$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /I &quot;..\..\../&quot; /I &quot;../&quot; /I &quot;..\..\..\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;sid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\sid\x64Release\sid.pch&quot; /Fo&quot;libs\sid\x64Release/&quot; /Fd&quot;libs\sid\x64Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\sid\x64Release\$(InputName).obj"
+				/>
+			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

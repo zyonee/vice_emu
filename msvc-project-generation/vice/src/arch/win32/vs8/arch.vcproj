@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\arch\DXDebug"
-			IntermediateDirectory=".\libs\arch\DXDebug"
+			OutputDirectory=".\libs\arch\Win32DXDebug"
+			IntermediateDirectory=".\libs\arch\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\arch\DXDebug\arch.pch"
-				AssemblerListingLocation=".\libs\arch\DXDebug\"
-				ObjectFile=".\libs\arch\DXDebug\"
-				ProgramDataBaseFileName=".\libs\arch\DXDebug\"
+				PrecompiledHeaderFile=".\libs\arch\Win32DXDebug\arch.pch"
+				AssemblerListingLocation=".\libs\archWin32DXDebug\"
+				ObjectFile=".\libs\arch\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\arch\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\arch\DXDebug\arch.lib"
+				OutputFile=".\libs\arch\Win32DXDebug\arch.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\arch\DXRelease"
-			IntermediateDirectory=".\libs\arch\DXRelease"
+			OutputDirectory=".\libs\arch\Win32DXRelease"
+			IntermediateDirectory=".\libs\arch\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\arch\DXRelease\arch.pch"
-				AssemblerListingLocation=".\libs\arch\DXRelease\"
-				ObjectFile=".\libs\arch\DXRelease\"
-				ProgramDataBaseFileName=".\libs\arch\DXRelease\"
+				PrecompiledHeaderFile=".\libs\arch\Win32DXRelease\arch.pch"
+				AssemblerListingLocation=".\libs\archWin32DXRelease\"
+				ObjectFile=".\libs\arch\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\arch\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\arch\DXRelease\arch.lib"
+				OutputFile=".\libs\arch\Win32DXRelease\arch.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\arch\Debug"
-			IntermediateDirectory=".\libs\arch\Debug"
+			OutputDirectory=".\libs\arch\Win32Debug"
+			IntermediateDirectory=".\libs\arch\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\arch\Debug\arch.pch"
-				AssemblerListingLocation=".\libs\arch\Debug\"
-				ObjectFile=".\libs\arch\Debug\"
-				ProgramDataBaseFileName=".\libs\arch\Debug\"
+				PrecompiledHeaderFile=".\libs\arch\Win32Debug\arch.pch"
+				AssemblerListingLocation=".\libs\archWin32Debug\"
+				ObjectFile=".\libs\arch\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\arch\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\arch\Debug\arch.lib"
+				OutputFile=".\libs\arch\Win32Debug\arch.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\arch\Release"
-			IntermediateDirectory=".\libs\arch\Release"
+			OutputDirectory=".\libs\arch\Win32Release"
+			IntermediateDirectory=".\libs\arch\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\arch\Release\arch.pch"
-				AssemblerListingLocation=".\libs\arch\Release\"
-				ObjectFile=".\libs\arch\Release\"
-				ProgramDataBaseFileName=".\libs\arch\Release\"
+				PrecompiledHeaderFile=".\libs\arch\Win32Release\arch.pch"
+				AssemblerListingLocation=".\libs\archWin32Release\"
+				ObjectFile=".\libs\arch\Win32Release\"
+				ProgramDataBaseFileName=".\libs\arch\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\arch\Release\arch.lib"
+				OutputFile=".\libs\arch\Win32Release\arch.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\arch\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\arch\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\arch\DXDebug\arch.pch"
-				AssemblerListingLocation=".\libs\arch\DXDebug\"
-				ObjectFile=".\libs\arch\DXDebug\"
-				ProgramDataBaseFileName=".\libs\arch\DXDebug\"
+				PrecompiledHeaderFile=".\libs\arch\ItaniumDXDebug\arch.pch"
+				AssemblerListingLocation=".\libs\archItaniumDXDebug\"
+				ObjectFile=".\libs\arch\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\arch\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\arch\DXDebug\arch.lib"
+				OutputFile=".\libs\arch\ItaniumDXDebug\arch.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\arch\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\arch\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\arch\DXRelease\arch.pch"
-				AssemblerListingLocation=".\libs\arch\DXRelease\"
-				ObjectFile=".\libs\arch\DXRelease\"
-				ProgramDataBaseFileName=".\libs\arch\DXRelease\"
+				PrecompiledHeaderFile=".\libs\arch\ItaniumDXRelease\arch.pch"
+				AssemblerListingLocation=".\libs\archItaniumDXRelease\"
+				ObjectFile=".\libs\arch\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\arch\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\arch\DXRelease\arch.lib"
+				OutputFile=".\libs\arch\ItaniumDXRelease\arch.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\arch\ItaniumDebug"
+			IntermediateDirectory=".\libs\arch\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\arch\Debug\arch.pch"
-				AssemblerListingLocation=".\libs\arch\Debug\"
-				ObjectFile=".\libs\arch\Debug\"
-				ProgramDataBaseFileName=".\libs\arch\Debug\"
+				PrecompiledHeaderFile=".\libs\arch\ItaniumDebug\arch.pch"
+				AssemblerListingLocation=".\libs\archItaniumDebug\"
+				ObjectFile=".\libs\arch\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\arch\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\arch\Debug\arch.lib"
+				OutputFile=".\libs\arch\ItaniumDebug\arch.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\arch\ItaniumRelease"
+			IntermediateDirectory=".\libs\arch\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\arch\Release\arch.pch"
-				AssemblerListingLocation=".\libs\arch\Release\"
-				ObjectFile=".\libs\arch\Release\"
-				ProgramDataBaseFileName=".\libs\arch\Release\"
+				PrecompiledHeaderFile=".\libs\arch\ItaniumRelease\arch.pch"
+				AssemblerListingLocation=".\libs\archItaniumRelease\"
+				ObjectFile=".\libs\arch\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\arch\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\arch\Release\arch.lib"
+				OutputFile=".\libs\arch\ItaniumRelease\arch.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\arch\x64DXDebug"
+			IntermediateDirectory=".\libs\arch\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\arch\DXDebug\arch.pch"
-				AssemblerListingLocation=".\libs\arch\DXDebug\"
-				ObjectFile=".\libs\arch\DXDebug\"
-				ProgramDataBaseFileName=".\libs\arch\DXDebug\"
+				PrecompiledHeaderFile=".\libs\arch\x64DXDebug\arch.pch"
+				AssemblerListingLocation=".\libs\archx64DXDebug\"
+				ObjectFile=".\libs\arch\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\arch\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\arch\DXDebug\arch.lib"
+				OutputFile=".\libs\arch\x64DXDebug\arch.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\arch\x64DXRelease"
+			IntermediateDirectory=".\libs\arch\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\arch\DXRelease\arch.pch"
-				AssemblerListingLocation=".\libs\arch\DXRelease\"
-				ObjectFile=".\libs\arch\DXRelease\"
-				ProgramDataBaseFileName=".\libs\arch\DXRelease\"
+				PrecompiledHeaderFile=".\libs\arch\x64DXRelease\arch.pch"
+				AssemblerListingLocation=".\libs\archx64DXRelease\"
+				ObjectFile=".\libs\arch\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\arch\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\arch\DXRelease\arch.lib"
+				OutputFile=".\libs\arch\x64DXRelease\arch.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\arch\x64Debug"
+			IntermediateDirectory=".\libs\arch\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\arch\Debug\arch.pch"
-				AssemblerListingLocation=".\libs\arch\Debug\"
-				ObjectFile=".\libs\arch\Debug\"
-				ProgramDataBaseFileName=".\libs\arch\Debug\"
+				PrecompiledHeaderFile=".\libs\arch\x64Debug\arch.pch"
+				AssemblerListingLocation=".\libs\archx64Debug\"
+				ObjectFile=".\libs\arch\x64Debug\"
+				ProgramDataBaseFileName=".\libs\arch\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\arch\Debug\arch.lib"
+				OutputFile=".\libs\arch\x64Debug\arch.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\arch\x64Release"
+			IntermediateDirectory=".\libs\arch\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\arch\Release\arch.pch"
-				AssemblerListingLocation=".\libs\arch\Release\"
-				ObjectFile=".\libs\arch\Release\"
-				ProgramDataBaseFileName=".\libs\arch\Release\"
+				PrecompiledHeaderFile=".\libs\arch\x64Release\arch.pch"
+				AssemblerListingLocation=".\libs\archx64Release\"
+				ObjectFile=".\libs\arch\x64Release\"
+				ProgramDataBaseFileName=".\libs\arch\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\arch\Release\arch.lib"
+				OutputFile=".\libs\arch\x64Release\arch.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -990,142 +990,6 @@
 			>
 		</File>
 		<File
-			RelativePath="..\res.txt"
-			>
-			<FileConfiguration
-				Name="DX Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Debug|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Debug|x64"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|x64"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|x64"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|x64"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"
-				/>
-			</FileConfiguration>
-		</File>
-		<File
 			RelativePath="..\..\..\arch\win32\rs232.c"
 			>
 		</File>
@@ -1214,11 +1078,11 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\arch\win32\uicbm2set.c"
+			RelativePath="..\..\..\arch\win32\uicbm5x0model.c"
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\arch\win32\uicbm5x0model.c"
+			RelativePath="..\..\..\arch\win32\uicbm2set.c"
 			>
 		</File>
 		<File
@@ -1524,6 +1388,142 @@
 		<File
 			RelativePath="..\..\..\arch\win32\winmain.c"
 			>
+		</File>
+		<File
+			RelativePath="..\res.txt"
+			>
+			<FileConfiguration
+				Name="DX Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Debug|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Release|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Debug|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Release|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt&#x0D;&#x0A;"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"
+				/>
+			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

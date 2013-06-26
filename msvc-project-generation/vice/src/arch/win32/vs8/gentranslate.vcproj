@@ -22,7 +22,7 @@
 		<Configuration
 			Name="DX Debug|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\gentranslate\DXDebug"
+			IntermediateDirectory=".\libs\gentranslate\Win32DXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -52,10 +52,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gentranslate\DXDebug\gentranslate.pch"
-				AssemblerListingLocation=".\libs\gentranslate\DXDebug\"
-				ObjectFile=".\libs\gentranslate\DXDebug\"
-				ProgramDataBaseFileName=".\libs\gentranslate\DXDebug\"
+				PrecompiledHeaderFile=".\libs\gentranslate\Win32DXDebug\gentranslate.pch"
+				AssemblerListingLocation=".\libs\gentranslateWin32DXDebug\"
+				ObjectFile=".\libs\gentranslate\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\gentranslate\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -74,7 +74,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\gentranslate.exe"
 				LinkIncremental="2"
@@ -111,7 +110,7 @@
 		<Configuration
 			Name="DX Release|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\gentranslate\DXRelease"
+			IntermediateDirectory=".\libs\gentranslate\Win32DXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -143,10 +142,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gentranslate\DXRelease\gentranslate.pch"
-				AssemblerListingLocation=".\libs\gentranslate\DXRelease\"
-				ObjectFile=".\libs\gentranslate\DXRelease\"
-				ProgramDataBaseFileName=".\libs\gentranslate\DXRelease\"
+				PrecompiledHeaderFile=".\libs\gentranslate\Win32DXRelease\gentranslate.pch"
+				AssemblerListingLocation=".\libs\gentranslateWin32DXRelease\"
+				ObjectFile=".\libs\gentranslate\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\gentranslate\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -164,7 +163,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\gentranslate.exe"
 				LinkIncremental="1"
@@ -200,7 +198,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\gentranslate\Debug"
+			IntermediateDirectory=".\libs\gentranslate\Win32Debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -230,10 +228,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gentranslate\Debug\gentranslate.pch"
-				AssemblerListingLocation=".\libs\gentranslate\Debug\"
-				ObjectFile=".\libs\gentranslate\Debug\"
-				ProgramDataBaseFileName=".\libs\gentranslate\Debug\"
+				PrecompiledHeaderFile=".\libs\gentranslate\Win32Debug\gentranslate.pch"
+				AssemblerListingLocation=".\libs\gentranslateWin32Debug\"
+				ObjectFile=".\libs\gentranslate\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\gentranslate\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -244,7 +242,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -252,7 +250,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\gentranslate.exe"
 				LinkIncremental="2"
@@ -289,7 +286,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\gentranslate\Release"
+			IntermediateDirectory=".\libs\gentranslate\Win32Release"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -321,10 +318,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gentranslate\Release\gentranslate.pch"
-				AssemblerListingLocation=".\libs\gentranslate\Release\"
-				ObjectFile=".\libs\gentranslate\Release\"
-				ProgramDataBaseFileName=".\libs\gentranslate\Release\"
+				PrecompiledHeaderFile=".\libs\gentranslate\Win32Release\gentranslate.pch"
+				AssemblerListingLocation=".\libs\gentranslateWin32Release\"
+				ObjectFile=".\libs\gentranslate\Win32Release\"
+				ProgramDataBaseFileName=".\libs\gentranslate\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -334,7 +331,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -342,7 +339,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\gentranslate.exe"
 				LinkIncremental="1"
@@ -377,8 +373,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\gentranslate\ItaniumDXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -409,10 +405,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gentranslate\DXDebug\gentranslate.pch"
-				AssemblerListingLocation=".\libs\gentranslate\DXDebug\"
-				ObjectFile=".\libs\gentranslate\DXDebug\"
-				ProgramDataBaseFileName=".\libs\gentranslate\DXDebug\"
+				PrecompiledHeaderFile=".\libs\gentranslate\ItaniumDXDebug\gentranslate.pch"
+				AssemblerListingLocation=".\libs\gentranslateItaniumDXDebug\"
+				ObjectFile=".\libs\gentranslate\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\gentranslate\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -431,7 +427,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\gentranslate.exe"
 				LinkIncremental="2"
@@ -468,8 +463,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\gentranslate\ItaniumDXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -502,10 +497,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gentranslate\DXRelease\gentranslate.pch"
-				AssemblerListingLocation=".\libs\gentranslate\DXRelease\"
-				ObjectFile=".\libs\gentranslate\DXRelease\"
-				ProgramDataBaseFileName=".\libs\gentranslate\DXRelease\"
+				PrecompiledHeaderFile=".\libs\gentranslate\ItaniumDXRelease\gentranslate.pch"
+				AssemblerListingLocation=".\libs\gentranslateItaniumDXRelease\"
+				ObjectFile=".\libs\gentranslate\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\gentranslate\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -523,7 +518,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\gentranslate.exe"
 				LinkIncremental="1"
@@ -559,8 +553,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\gentranslate\ItaniumDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -591,10 +585,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gentranslate\Debug\gentranslate.pch"
-				AssemblerListingLocation=".\libs\gentranslate\Debug\"
-				ObjectFile=".\libs\gentranslate\Debug\"
-				ProgramDataBaseFileName=".\libs\gentranslate\Debug\"
+				PrecompiledHeaderFile=".\libs\gentranslate\ItaniumDebug\gentranslate.pch"
+				AssemblerListingLocation=".\libs\gentranslateItaniumDebug\"
+				ObjectFile=".\libs\gentranslate\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\gentranslate\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -605,7 +599,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -613,7 +607,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\gentranslate.exe"
 				LinkIncremental="2"
@@ -650,8 +643,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\gentranslate\ItaniumRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -684,10 +677,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gentranslate\Release\gentranslate.pch"
-				AssemblerListingLocation=".\libs\gentranslate\Release\"
-				ObjectFile=".\libs\gentranslate\Release\"
-				ProgramDataBaseFileName=".\libs\gentranslate\Release\"
+				PrecompiledHeaderFile=".\libs\gentranslate\ItaniumRelease\gentranslate.pch"
+				AssemblerListingLocation=".\libs\gentranslateItaniumRelease\"
+				ObjectFile=".\libs\gentranslate\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\gentranslate\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -697,7 +690,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -705,7 +698,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\gentranslate.exe"
 				LinkIncremental="1"
@@ -741,8 +733,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\gentranslate\x64DXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -773,10 +765,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gentranslate\DXDebug\gentranslate.pch"
-				AssemblerListingLocation=".\libs\gentranslate\DXDebug\"
-				ObjectFile=".\libs\gentranslate\DXDebug\"
-				ProgramDataBaseFileName=".\libs\gentranslate\DXDebug\"
+				PrecompiledHeaderFile=".\libs\gentranslate\x64DXDebug\gentranslate.pch"
+				AssemblerListingLocation=".\libs\gentranslatex64DXDebug\"
+				ObjectFile=".\libs\gentranslate\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\gentranslate\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -795,7 +787,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\gentranslate.exe"
 				LinkIncremental="2"
@@ -832,8 +823,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\gentranslate\x64DXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -866,10 +857,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gentranslate\DXRelease\gentranslate.pch"
-				AssemblerListingLocation=".\libs\gentranslate\DXRelease\"
-				ObjectFile=".\libs\gentranslate\DXRelease\"
-				ProgramDataBaseFileName=".\libs\gentranslate\DXRelease\"
+				PrecompiledHeaderFile=".\libs\gentranslate\x64DXRelease\gentranslate.pch"
+				AssemblerListingLocation=".\libs\gentranslatex64DXRelease\"
+				ObjectFile=".\libs\gentranslate\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\gentranslate\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -887,7 +878,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\gentranslate.exe"
 				LinkIncremental="1"
@@ -923,8 +913,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\gentranslate\x64Debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -955,10 +945,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gentranslate\Debug\gentranslate.pch"
-				AssemblerListingLocation=".\libs\gentranslate\Debug\"
-				ObjectFile=".\libs\gentranslate\Debug\"
-				ProgramDataBaseFileName=".\libs\gentranslate\Debug\"
+				PrecompiledHeaderFile=".\libs\gentranslate\x64Debug\gentranslate.pch"
+				AssemblerListingLocation=".\libs\gentranslatex64Debug\"
+				ObjectFile=".\libs\gentranslate\x64Debug\"
+				ProgramDataBaseFileName=".\libs\gentranslate\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -969,7 +959,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -977,7 +967,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\gentranslate.exe"
 				LinkIncremental="2"
@@ -1014,8 +1003,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\gentranslate\x64Release"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -1048,10 +1037,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gentranslate\Release\gentranslate.pch"
-				AssemblerListingLocation=".\libs\gentranslate\Release\"
-				ObjectFile=".\libs\gentranslate\Release\"
-				ProgramDataBaseFileName=".\libs\gentranslate\Release\"
+				PrecompiledHeaderFile=".\libs\gentranslate\x64Release\gentranslate.pch"
+				AssemblerListingLocation=".\libs\gentranslatex64Release\"
+				ObjectFile=".\libs\gentranslate\x64Release\"
+				ProgramDataBaseFileName=".\libs\gentranslate\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -1061,7 +1050,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -1069,7 +1058,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\gentranslate.exe"
 				LinkIncremental="1"

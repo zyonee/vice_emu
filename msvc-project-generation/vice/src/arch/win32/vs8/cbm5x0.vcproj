@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\cbm5x0\DXDebug"
-			IntermediateDirectory=".\libs\cbm5x0\DXDebug"
+			OutputDirectory=".\libs\cbm5x0\Win32DXDebug"
+			IntermediateDirectory=".\libs\cbm5x0\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cbm5x0\DXDebug\cbm5x0.pch"
-				AssemblerListingLocation=".\libs\cbm5x0\DXDebug\"
-				ObjectFile=".\libs\cbm5x0\DXDebug\"
-				ProgramDataBaseFileName=".\libs\cbm5x0\DXDebug\"
+				PrecompiledHeaderFile=".\libs\cbm5x0\Win32DXDebug\cbm5x0.pch"
+				AssemblerListingLocation=".\libs\cbm5x0Win32DXDebug\"
+				ObjectFile=".\libs\cbm5x0\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\cbm5x0\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\cbm5x0\DXDebug\cbm5x0.lib"
+				OutputFile=".\libs\cbm5x0\Win32DXDebug\cbm5x0.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\cbm5x0\DXRelease"
-			IntermediateDirectory=".\libs\cbm5x0\DXRelease"
+			OutputDirectory=".\libs\cbm5x0\Win32DXRelease"
+			IntermediateDirectory=".\libs\cbm5x0\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cbm5x0\DXRelease\cbm5x0.pch"
-				AssemblerListingLocation=".\libs\cbm5x0\DXRelease\"
-				ObjectFile=".\libs\cbm5x0\DXRelease\"
-				ProgramDataBaseFileName=".\libs\cbm5x0\DXRelease\"
+				PrecompiledHeaderFile=".\libs\cbm5x0\Win32DXRelease\cbm5x0.pch"
+				AssemblerListingLocation=".\libs\cbm5x0Win32DXRelease\"
+				ObjectFile=".\libs\cbm5x0\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\cbm5x0\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\cbm5x0\DXRelease\cbm5x0.lib"
+				OutputFile=".\libs\cbm5x0\Win32DXRelease\cbm5x0.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\cbm5x0\Debug"
-			IntermediateDirectory=".\libs\cbm5x0\Debug"
+			OutputDirectory=".\libs\cbm5x0\Win32Debug"
+			IntermediateDirectory=".\libs\cbm5x0\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cbm5x0\Debug\cbm5x0.pch"
-				AssemblerListingLocation=".\libs\cbm5x0\Debug\"
-				ObjectFile=".\libs\cbm5x0\Debug\"
-				ProgramDataBaseFileName=".\libs\cbm5x0\Debug\"
+				PrecompiledHeaderFile=".\libs\cbm5x0\Win32Debug\cbm5x0.pch"
+				AssemblerListingLocation=".\libs\cbm5x0Win32Debug\"
+				ObjectFile=".\libs\cbm5x0\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\cbm5x0\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\cbm5x0\Debug\cbm5x0.lib"
+				OutputFile=".\libs\cbm5x0\Win32Debug\cbm5x0.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\cbm5x0\Release"
-			IntermediateDirectory=".\libs\cbm5x0\Release"
+			OutputDirectory=".\libs\cbm5x0\Win32Release"
+			IntermediateDirectory=".\libs\cbm5x0\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cbm5x0\Release\cbm5x0.pch"
-				AssemblerListingLocation=".\libs\cbm5x0\Release\"
-				ObjectFile=".\libs\cbm5x0\Release\"
-				ProgramDataBaseFileName=".\libs\cbm5x0\Release\"
+				PrecompiledHeaderFile=".\libs\cbm5x0\Win32Release\cbm5x0.pch"
+				AssemblerListingLocation=".\libs\cbm5x0Win32Release\"
+				ObjectFile=".\libs\cbm5x0\Win32Release\"
+				ProgramDataBaseFileName=".\libs\cbm5x0\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\cbm5x0\Release\cbm5x0.lib"
+				OutputFile=".\libs\cbm5x0\Win32Release\cbm5x0.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\cbm5x0\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\cbm5x0\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cbm5x0\DXDebug\cbm5x0.pch"
-				AssemblerListingLocation=".\libs\cbm5x0\DXDebug\"
-				ObjectFile=".\libs\cbm5x0\DXDebug\"
-				ProgramDataBaseFileName=".\libs\cbm5x0\DXDebug\"
+				PrecompiledHeaderFile=".\libs\cbm5x0\ItaniumDXDebug\cbm5x0.pch"
+				AssemblerListingLocation=".\libs\cbm5x0ItaniumDXDebug\"
+				ObjectFile=".\libs\cbm5x0\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\cbm5x0\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\cbm5x0\DXDebug\cbm5x0.lib"
+				OutputFile=".\libs\cbm5x0\ItaniumDXDebug\cbm5x0.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\cbm5x0\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\cbm5x0\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cbm5x0\DXRelease\cbm5x0.pch"
-				AssemblerListingLocation=".\libs\cbm5x0\DXRelease\"
-				ObjectFile=".\libs\cbm5x0\DXRelease\"
-				ProgramDataBaseFileName=".\libs\cbm5x0\DXRelease\"
+				PrecompiledHeaderFile=".\libs\cbm5x0\ItaniumDXRelease\cbm5x0.pch"
+				AssemblerListingLocation=".\libs\cbm5x0ItaniumDXRelease\"
+				ObjectFile=".\libs\cbm5x0\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\cbm5x0\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\cbm5x0\DXRelease\cbm5x0.lib"
+				OutputFile=".\libs\cbm5x0\ItaniumDXRelease\cbm5x0.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\cbm5x0\ItaniumDebug"
+			IntermediateDirectory=".\libs\cbm5x0\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cbm5x0\Debug\cbm5x0.pch"
-				AssemblerListingLocation=".\libs\cbm5x0\Debug\"
-				ObjectFile=".\libs\cbm5x0\Debug\"
-				ProgramDataBaseFileName=".\libs\cbm5x0\Debug\"
+				PrecompiledHeaderFile=".\libs\cbm5x0\ItaniumDebug\cbm5x0.pch"
+				AssemblerListingLocation=".\libs\cbm5x0ItaniumDebug\"
+				ObjectFile=".\libs\cbm5x0\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\cbm5x0\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\cbm5x0\Debug\cbm5x0.lib"
+				OutputFile=".\libs\cbm5x0\ItaniumDebug\cbm5x0.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\cbm5x0\ItaniumRelease"
+			IntermediateDirectory=".\libs\cbm5x0\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cbm5x0\Release\cbm5x0.pch"
-				AssemblerListingLocation=".\libs\cbm5x0\Release\"
-				ObjectFile=".\libs\cbm5x0\Release\"
-				ProgramDataBaseFileName=".\libs\cbm5x0\Release\"
+				PrecompiledHeaderFile=".\libs\cbm5x0\ItaniumRelease\cbm5x0.pch"
+				AssemblerListingLocation=".\libs\cbm5x0ItaniumRelease\"
+				ObjectFile=".\libs\cbm5x0\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\cbm5x0\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\cbm5x0\Release\cbm5x0.lib"
+				OutputFile=".\libs\cbm5x0\ItaniumRelease\cbm5x0.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\cbm5x0\x64DXDebug"
+			IntermediateDirectory=".\libs\cbm5x0\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cbm5x0\DXDebug\cbm5x0.pch"
-				AssemblerListingLocation=".\libs\cbm5x0\DXDebug\"
-				ObjectFile=".\libs\cbm5x0\DXDebug\"
-				ProgramDataBaseFileName=".\libs\cbm5x0\DXDebug\"
+				PrecompiledHeaderFile=".\libs\cbm5x0\x64DXDebug\cbm5x0.pch"
+				AssemblerListingLocation=".\libs\cbm5x0x64DXDebug\"
+				ObjectFile=".\libs\cbm5x0\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\cbm5x0\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\cbm5x0\DXDebug\cbm5x0.lib"
+				OutputFile=".\libs\cbm5x0\x64DXDebug\cbm5x0.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\cbm5x0\x64DXRelease"
+			IntermediateDirectory=".\libs\cbm5x0\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cbm5x0\DXRelease\cbm5x0.pch"
-				AssemblerListingLocation=".\libs\cbm5x0\DXRelease\"
-				ObjectFile=".\libs\cbm5x0\DXRelease\"
-				ProgramDataBaseFileName=".\libs\cbm5x0\DXRelease\"
+				PrecompiledHeaderFile=".\libs\cbm5x0\x64DXRelease\cbm5x0.pch"
+				AssemblerListingLocation=".\libs\cbm5x0x64DXRelease\"
+				ObjectFile=".\libs\cbm5x0\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\cbm5x0\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\cbm5x0\DXRelease\cbm5x0.lib"
+				OutputFile=".\libs\cbm5x0\x64DXRelease\cbm5x0.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\cbm5x0\x64Debug"
+			IntermediateDirectory=".\libs\cbm5x0\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cbm5x0\Debug\cbm5x0.pch"
-				AssemblerListingLocation=".\libs\cbm5x0\Debug\"
-				ObjectFile=".\libs\cbm5x0\Debug\"
-				ProgramDataBaseFileName=".\libs\cbm5x0\Debug\"
+				PrecompiledHeaderFile=".\libs\cbm5x0\x64Debug\cbm5x0.pch"
+				AssemblerListingLocation=".\libs\cbm5x0x64Debug\"
+				ObjectFile=".\libs\cbm5x0\x64Debug\"
+				ProgramDataBaseFileName=".\libs\cbm5x0\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\cbm5x0\Debug\cbm5x0.lib"
+				OutputFile=".\libs\cbm5x0\x64Debug\cbm5x0.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\cbm5x0\x64Release"
+			IntermediateDirectory=".\libs\cbm5x0\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cbm5x0\Release\cbm5x0.pch"
-				AssemblerListingLocation=".\libs\cbm5x0\Release\"
-				ObjectFile=".\libs\cbm5x0\Release\"
-				ProgramDataBaseFileName=".\libs\cbm5x0\Release\"
+				PrecompiledHeaderFile=".\libs\cbm5x0\x64Release\cbm5x0.pch"
+				AssemblerListingLocation=".\libs\cbm5x0x64Release\"
+				ObjectFile=".\libs\cbm5x0\x64Release\"
+				ProgramDataBaseFileName=".\libs\cbm5x0\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\cbm5x0\Release\cbm5x0.lib"
+				OutputFile=".\libs\cbm5x0\x64Release\cbm5x0.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\gfxoutputdrv\DXDebug"
-			IntermediateDirectory=".\libs\gfxoutputdrv\DXDebug"
+			OutputDirectory=".\libs\gfxoutputdrv\Win32DXDebug"
+			IntermediateDirectory=".\libs\gfxoutputdrv\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gfxoutputdrv\DXDebug\gfxoutputdrv.pch"
-				AssemblerListingLocation=".\libs\gfxoutputdrv\DXDebug\"
-				ObjectFile=".\libs\gfxoutputdrv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\gfxoutputdrv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\gfxoutputdrv\Win32DXDebug\gfxoutputdrv.pch"
+				AssemblerListingLocation=".\libs\gfxoutputdrvWin32DXDebug\"
+				ObjectFile=".\libs\gfxoutputdrv\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\gfxoutputdrv\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\gfxoutputdrv\DXDebug\gfxoutputdrv.lib"
+				OutputFile=".\libs\gfxoutputdrv\Win32DXDebug\gfxoutputdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\gfxoutputdrv\DXRelease"
-			IntermediateDirectory=".\libs\gfxoutputdrv\DXRelease"
+			OutputDirectory=".\libs\gfxoutputdrv\Win32DXRelease"
+			IntermediateDirectory=".\libs\gfxoutputdrv\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gfxoutputdrv\DXRelease\gfxoutputdrv.pch"
-				AssemblerListingLocation=".\libs\gfxoutputdrv\DXRelease\"
-				ObjectFile=".\libs\gfxoutputdrv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\gfxoutputdrv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\gfxoutputdrv\Win32DXRelease\gfxoutputdrv.pch"
+				AssemblerListingLocation=".\libs\gfxoutputdrvWin32DXRelease\"
+				ObjectFile=".\libs\gfxoutputdrv\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\gfxoutputdrv\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\gfxoutputdrv\DXRelease\gfxoutputdrv.lib"
+				OutputFile=".\libs\gfxoutputdrv\Win32DXRelease\gfxoutputdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\gfxoutputdrv\Debug"
-			IntermediateDirectory=".\libs\gfxoutputdrv\Debug"
+			OutputDirectory=".\libs\gfxoutputdrv\Win32Debug"
+			IntermediateDirectory=".\libs\gfxoutputdrv\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gfxoutputdrv\Debug\gfxoutputdrv.pch"
-				AssemblerListingLocation=".\libs\gfxoutputdrv\Debug\"
-				ObjectFile=".\libs\gfxoutputdrv\Debug\"
-				ProgramDataBaseFileName=".\libs\gfxoutputdrv\Debug\"
+				PrecompiledHeaderFile=".\libs\gfxoutputdrv\Win32Debug\gfxoutputdrv.pch"
+				AssemblerListingLocation=".\libs\gfxoutputdrvWin32Debug\"
+				ObjectFile=".\libs\gfxoutputdrv\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\gfxoutputdrv\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\gfxoutputdrv\Debug\gfxoutputdrv.lib"
+				OutputFile=".\libs\gfxoutputdrv\Win32Debug\gfxoutputdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\gfxoutputdrv\Release"
-			IntermediateDirectory=".\libs\gfxoutputdrv\Release"
+			OutputDirectory=".\libs\gfxoutputdrv\Win32Release"
+			IntermediateDirectory=".\libs\gfxoutputdrv\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gfxoutputdrv\Release\gfxoutputdrv.pch"
-				AssemblerListingLocation=".\libs\gfxoutputdrv\Release\"
-				ObjectFile=".\libs\gfxoutputdrv\Release\"
-				ProgramDataBaseFileName=".\libs\gfxoutputdrv\Release\"
+				PrecompiledHeaderFile=".\libs\gfxoutputdrv\Win32Release\gfxoutputdrv.pch"
+				AssemblerListingLocation=".\libs\gfxoutputdrvWin32Release\"
+				ObjectFile=".\libs\gfxoutputdrv\Win32Release\"
+				ProgramDataBaseFileName=".\libs\gfxoutputdrv\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\gfxoutputdrv\Release\gfxoutputdrv.lib"
+				OutputFile=".\libs\gfxoutputdrv\Win32Release\gfxoutputdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\gfxoutputdrv\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\gfxoutputdrv\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gfxoutputdrv\DXDebug\gfxoutputdrv.pch"
-				AssemblerListingLocation=".\libs\gfxoutputdrv\DXDebug\"
-				ObjectFile=".\libs\gfxoutputdrv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\gfxoutputdrv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\gfxoutputdrv\ItaniumDXDebug\gfxoutputdrv.pch"
+				AssemblerListingLocation=".\libs\gfxoutputdrvItaniumDXDebug\"
+				ObjectFile=".\libs\gfxoutputdrv\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\gfxoutputdrv\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\gfxoutputdrv\DXDebug\gfxoutputdrv.lib"
+				OutputFile=".\libs\gfxoutputdrv\ItaniumDXDebug\gfxoutputdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\gfxoutputdrv\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\gfxoutputdrv\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gfxoutputdrv\DXRelease\gfxoutputdrv.pch"
-				AssemblerListingLocation=".\libs\gfxoutputdrv\DXRelease\"
-				ObjectFile=".\libs\gfxoutputdrv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\gfxoutputdrv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\gfxoutputdrv\ItaniumDXRelease\gfxoutputdrv.pch"
+				AssemblerListingLocation=".\libs\gfxoutputdrvItaniumDXRelease\"
+				ObjectFile=".\libs\gfxoutputdrv\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\gfxoutputdrv\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\gfxoutputdrv\DXRelease\gfxoutputdrv.lib"
+				OutputFile=".\libs\gfxoutputdrv\ItaniumDXRelease\gfxoutputdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\gfxoutputdrv\ItaniumDebug"
+			IntermediateDirectory=".\libs\gfxoutputdrv\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gfxoutputdrv\Debug\gfxoutputdrv.pch"
-				AssemblerListingLocation=".\libs\gfxoutputdrv\Debug\"
-				ObjectFile=".\libs\gfxoutputdrv\Debug\"
-				ProgramDataBaseFileName=".\libs\gfxoutputdrv\Debug\"
+				PrecompiledHeaderFile=".\libs\gfxoutputdrv\ItaniumDebug\gfxoutputdrv.pch"
+				AssemblerListingLocation=".\libs\gfxoutputdrvItaniumDebug\"
+				ObjectFile=".\libs\gfxoutputdrv\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\gfxoutputdrv\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\gfxoutputdrv\Debug\gfxoutputdrv.lib"
+				OutputFile=".\libs\gfxoutputdrv\ItaniumDebug\gfxoutputdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\gfxoutputdrv\ItaniumRelease"
+			IntermediateDirectory=".\libs\gfxoutputdrv\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gfxoutputdrv\Release\gfxoutputdrv.pch"
-				AssemblerListingLocation=".\libs\gfxoutputdrv\Release\"
-				ObjectFile=".\libs\gfxoutputdrv\Release\"
-				ProgramDataBaseFileName=".\libs\gfxoutputdrv\Release\"
+				PrecompiledHeaderFile=".\libs\gfxoutputdrv\ItaniumRelease\gfxoutputdrv.pch"
+				AssemblerListingLocation=".\libs\gfxoutputdrvItaniumRelease\"
+				ObjectFile=".\libs\gfxoutputdrv\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\gfxoutputdrv\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\gfxoutputdrv\Release\gfxoutputdrv.lib"
+				OutputFile=".\libs\gfxoutputdrv\ItaniumRelease\gfxoutputdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\gfxoutputdrv\x64DXDebug"
+			IntermediateDirectory=".\libs\gfxoutputdrv\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gfxoutputdrv\DXDebug\gfxoutputdrv.pch"
-				AssemblerListingLocation=".\libs\gfxoutputdrv\DXDebug\"
-				ObjectFile=".\libs\gfxoutputdrv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\gfxoutputdrv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\gfxoutputdrv\x64DXDebug\gfxoutputdrv.pch"
+				AssemblerListingLocation=".\libs\gfxoutputdrvx64DXDebug\"
+				ObjectFile=".\libs\gfxoutputdrv\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\gfxoutputdrv\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\gfxoutputdrv\DXDebug\gfxoutputdrv.lib"
+				OutputFile=".\libs\gfxoutputdrv\x64DXDebug\gfxoutputdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\gfxoutputdrv\x64DXRelease"
+			IntermediateDirectory=".\libs\gfxoutputdrv\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gfxoutputdrv\DXRelease\gfxoutputdrv.pch"
-				AssemblerListingLocation=".\libs\gfxoutputdrv\DXRelease\"
-				ObjectFile=".\libs\gfxoutputdrv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\gfxoutputdrv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\gfxoutputdrv\x64DXRelease\gfxoutputdrv.pch"
+				AssemblerListingLocation=".\libs\gfxoutputdrvx64DXRelease\"
+				ObjectFile=".\libs\gfxoutputdrv\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\gfxoutputdrv\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\gfxoutputdrv\DXRelease\gfxoutputdrv.lib"
+				OutputFile=".\libs\gfxoutputdrv\x64DXRelease\gfxoutputdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\gfxoutputdrv\x64Debug"
+			IntermediateDirectory=".\libs\gfxoutputdrv\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gfxoutputdrv\Debug\gfxoutputdrv.pch"
-				AssemblerListingLocation=".\libs\gfxoutputdrv\Debug\"
-				ObjectFile=".\libs\gfxoutputdrv\Debug\"
-				ProgramDataBaseFileName=".\libs\gfxoutputdrv\Debug\"
+				PrecompiledHeaderFile=".\libs\gfxoutputdrv\x64Debug\gfxoutputdrv.pch"
+				AssemblerListingLocation=".\libs\gfxoutputdrvx64Debug\"
+				ObjectFile=".\libs\gfxoutputdrv\x64Debug\"
+				ProgramDataBaseFileName=".\libs\gfxoutputdrv\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\gfxoutputdrv\Debug\gfxoutputdrv.lib"
+				OutputFile=".\libs\gfxoutputdrv\x64Debug\gfxoutputdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\gfxoutputdrv\x64Release"
+			IntermediateDirectory=".\libs\gfxoutputdrv\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\gfxoutputdrv\Release\gfxoutputdrv.pch"
-				AssemblerListingLocation=".\libs\gfxoutputdrv\Release\"
-				ObjectFile=".\libs\gfxoutputdrv\Release\"
-				ProgramDataBaseFileName=".\libs\gfxoutputdrv\Release\"
+				PrecompiledHeaderFile=".\libs\gfxoutputdrv\x64Release\gfxoutputdrv.pch"
+				AssemblerListingLocation=".\libs\gfxoutputdrvx64Release\"
+				ObjectFile=".\libs\gfxoutputdrv\x64Release\"
+				ProgramDataBaseFileName=".\libs\gfxoutputdrv\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\gfxoutputdrv\Release\gfxoutputdrv.lib"
+				OutputFile=".\libs\gfxoutputdrv\x64Release\gfxoutputdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

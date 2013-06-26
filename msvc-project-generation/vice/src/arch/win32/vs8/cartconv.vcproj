@@ -22,7 +22,7 @@
 		<Configuration
 			Name="DX Debug|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\cartconv\DXDebug"
+			IntermediateDirectory=".\libs\cartconv\Win32DXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -52,10 +52,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cartconv\DXDebug\cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\DXDebug\"
-				ObjectFile=".\libs\cartconv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\cartconv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\cartconv\Win32DXDebug\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconvWin32DXDebug\"
+				ObjectFile=".\libs\cartconv\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\cartconv\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -74,7 +74,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\cartconv.exe"
 				LinkIncremental="2"
@@ -111,7 +110,7 @@
 		<Configuration
 			Name="DX Release|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\cartconv\DXRelease"
+			IntermediateDirectory=".\libs\cartconv\Win32DXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -143,10 +142,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cartconv\DXRelease\cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\DXRelease\"
-				ObjectFile=".\libs\cartconv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\cartconv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\cartconv\Win32DXRelease\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconvWin32DXRelease\"
+				ObjectFile=".\libs\cartconv\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\cartconv\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -164,7 +163,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\cartconv.exe"
 				LinkIncremental="1"
@@ -200,7 +198,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\cartconv\Debug"
+			IntermediateDirectory=".\libs\cartconv\Win32Debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -230,10 +228,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cartconv\Debug\cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\Debug\"
-				ObjectFile=".\libs\cartconv\Debug\"
-				ProgramDataBaseFileName=".\libs\cartconv\Debug\"
+				PrecompiledHeaderFile=".\libs\cartconv\Win32Debug\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconvWin32Debug\"
+				ObjectFile=".\libs\cartconv\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\cartconv\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -244,7 +242,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -252,7 +250,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\cartconv.exe"
 				LinkIncremental="2"
@@ -289,7 +286,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\cartconv\Release"
+			IntermediateDirectory=".\libs\cartconv\Win32Release"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -321,10 +318,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cartconv\Release\cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\Release\"
-				ObjectFile=".\libs\cartconv\Release\"
-				ProgramDataBaseFileName=".\libs\cartconv\Release\"
+				PrecompiledHeaderFile=".\libs\cartconv\Win32Release\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconvWin32Release\"
+				ObjectFile=".\libs\cartconv\Win32Release\"
+				ProgramDataBaseFileName=".\libs\cartconv\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -334,7 +331,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -342,7 +339,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\cartconv.exe"
 				LinkIncremental="1"
@@ -377,8 +373,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\cartconv\ItaniumDXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -409,10 +405,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cartconv\DXDebug\cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\DXDebug\"
-				ObjectFile=".\libs\cartconv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\cartconv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\cartconv\ItaniumDXDebug\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconvItaniumDXDebug\"
+				ObjectFile=".\libs\cartconv\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\cartconv\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -467,8 +463,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\cartconv\ItaniumDXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -501,10 +497,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cartconv\DXRelease\cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\DXRelease\"
-				ObjectFile=".\libs\cartconv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\cartconv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\cartconv\ItaniumDXRelease\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconvItaniumDXRelease\"
+				ObjectFile=".\libs\cartconv\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\cartconv\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -557,8 +553,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\cartconv\ItaniumDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -589,10 +585,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cartconv\Debug\cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\Debug\"
-				ObjectFile=".\libs\cartconv\Debug\"
-				ProgramDataBaseFileName=".\libs\cartconv\Debug\"
+				PrecompiledHeaderFile=".\libs\cartconv\ItaniumDebug\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconvItaniumDebug\"
+				ObjectFile=".\libs\cartconv\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\cartconv\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -603,7 +599,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -647,8 +643,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\cartconv\ItaniumRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -681,10 +677,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cartconv\Release\cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\Release\"
-				ObjectFile=".\libs\cartconv\Release\"
-				ProgramDataBaseFileName=".\libs\cartconv\Release\"
+				PrecompiledHeaderFile=".\libs\cartconv\ItaniumRelease\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconvItaniumRelease\"
+				ObjectFile=".\libs\cartconv\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\cartconv\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -694,7 +690,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -737,8 +733,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\cartconv\x64DXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -769,10 +765,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cartconv\DXDebug\cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\DXDebug\"
-				ObjectFile=".\libs\cartconv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\cartconv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\cartconv\x64DXDebug\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconvx64DXDebug\"
+				ObjectFile=".\libs\cartconv\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\cartconv\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -827,8 +823,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\cartconv\x64DXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -861,10 +857,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cartconv\DXRelease\cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\DXRelease\"
-				ObjectFile=".\libs\cartconv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\cartconv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\cartconv\x64DXRelease\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconvx64DXRelease\"
+				ObjectFile=".\libs\cartconv\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\cartconv\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -917,8 +913,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\cartconv\x64Debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -949,10 +945,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cartconv\Debug\cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\Debug\"
-				ObjectFile=".\libs\cartconv\Debug\"
-				ProgramDataBaseFileName=".\libs\cartconv\Debug\"
+				PrecompiledHeaderFile=".\libs\cartconv\x64Debug\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconvx64Debug\"
+				ObjectFile=".\libs\cartconv\x64Debug\"
+				ProgramDataBaseFileName=".\libs\cartconv\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -963,7 +959,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -1007,8 +1003,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\cartconv\x64Release"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -1041,10 +1037,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\cartconv\Release\cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\Release\"
-				ObjectFile=".\libs\cartconv\Release\"
-				ProgramDataBaseFileName=".\libs\cartconv\Release\"
+				PrecompiledHeaderFile=".\libs\cartconv\x64Release\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconvx64Release\"
+				ObjectFile=".\libs\cartconv\x64Release\"
+				ProgramDataBaseFileName=".\libs\cartconv\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -1054,7 +1050,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool

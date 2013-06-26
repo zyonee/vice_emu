@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\pet\DXDebug"
-			IntermediateDirectory=".\libs\pet\DXDebug"
+			OutputDirectory=".\libs\pet\Win32DXDebug"
+			IntermediateDirectory=".\libs\pet\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\pet\DXDebug\pet.pch"
-				AssemblerListingLocation=".\libs\pet\DXDebug\"
-				ObjectFile=".\libs\pet\DXDebug\"
-				ProgramDataBaseFileName=".\libs\pet\DXDebug\"
+				PrecompiledHeaderFile=".\libs\pet\Win32DXDebug\pet.pch"
+				AssemblerListingLocation=".\libs\petWin32DXDebug\"
+				ObjectFile=".\libs\pet\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\pet\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\pet\DXDebug\pet.lib"
+				OutputFile=".\libs\pet\Win32DXDebug\pet.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\pet\DXRelease"
-			IntermediateDirectory=".\libs\pet\DXRelease"
+			OutputDirectory=".\libs\pet\Win32DXRelease"
+			IntermediateDirectory=".\libs\pet\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\pet\DXRelease\pet.pch"
-				AssemblerListingLocation=".\libs\pet\DXRelease\"
-				ObjectFile=".\libs\pet\DXRelease\"
-				ProgramDataBaseFileName=".\libs\pet\DXRelease\"
+				PrecompiledHeaderFile=".\libs\pet\Win32DXRelease\pet.pch"
+				AssemblerListingLocation=".\libs\petWin32DXRelease\"
+				ObjectFile=".\libs\pet\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\pet\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\pet\DXRelease\pet.lib"
+				OutputFile=".\libs\pet\Win32DXRelease\pet.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\pet\Debug"
-			IntermediateDirectory=".\libs\pet\Debug"
+			OutputDirectory=".\libs\pet\Win32Debug"
+			IntermediateDirectory=".\libs\pet\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\pet\Debug\pet.pch"
-				AssemblerListingLocation=".\libs\pet\Debug\"
-				ObjectFile=".\libs\pet\Debug\"
-				ProgramDataBaseFileName=".\libs\pet\Debug\"
+				PrecompiledHeaderFile=".\libs\pet\Win32Debug\pet.pch"
+				AssemblerListingLocation=".\libs\petWin32Debug\"
+				ObjectFile=".\libs\pet\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\pet\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\pet\Debug\pet.lib"
+				OutputFile=".\libs\pet\Win32Debug\pet.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\pet\Release"
-			IntermediateDirectory=".\libs\pet\Release"
+			OutputDirectory=".\libs\pet\Win32Release"
+			IntermediateDirectory=".\libs\pet\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\pet\Release\pet.pch"
-				AssemblerListingLocation=".\libs\pet\Release\"
-				ObjectFile=".\libs\pet\Release\"
-				ProgramDataBaseFileName=".\libs\pet\Release\"
+				PrecompiledHeaderFile=".\libs\pet\Win32Release\pet.pch"
+				AssemblerListingLocation=".\libs\petWin32Release\"
+				ObjectFile=".\libs\pet\Win32Release\"
+				ProgramDataBaseFileName=".\libs\pet\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\pet\Release\pet.lib"
+				OutputFile=".\libs\pet\Win32Release\pet.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\pet\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\pet\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\pet\DXDebug\pet.pch"
-				AssemblerListingLocation=".\libs\pet\DXDebug\"
-				ObjectFile=".\libs\pet\DXDebug\"
-				ProgramDataBaseFileName=".\libs\pet\DXDebug\"
+				PrecompiledHeaderFile=".\libs\pet\ItaniumDXDebug\pet.pch"
+				AssemblerListingLocation=".\libs\petItaniumDXDebug\"
+				ObjectFile=".\libs\pet\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\pet\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\pet\DXDebug\pet.lib"
+				OutputFile=".\libs\pet\ItaniumDXDebug\pet.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\pet\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\pet\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\pet\DXRelease\pet.pch"
-				AssemblerListingLocation=".\libs\pet\DXRelease\"
-				ObjectFile=".\libs\pet\DXRelease\"
-				ProgramDataBaseFileName=".\libs\pet\DXRelease\"
+				PrecompiledHeaderFile=".\libs\pet\ItaniumDXRelease\pet.pch"
+				AssemblerListingLocation=".\libs\petItaniumDXRelease\"
+				ObjectFile=".\libs\pet\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\pet\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\pet\DXRelease\pet.lib"
+				OutputFile=".\libs\pet\ItaniumDXRelease\pet.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\pet\ItaniumDebug"
+			IntermediateDirectory=".\libs\pet\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\pet\Debug\pet.pch"
-				AssemblerListingLocation=".\libs\pet\Debug\"
-				ObjectFile=".\libs\pet\Debug\"
-				ProgramDataBaseFileName=".\libs\pet\Debug\"
+				PrecompiledHeaderFile=".\libs\pet\ItaniumDebug\pet.pch"
+				AssemblerListingLocation=".\libs\petItaniumDebug\"
+				ObjectFile=".\libs\pet\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\pet\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\pet\Debug\pet.lib"
+				OutputFile=".\libs\pet\ItaniumDebug\pet.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\pet\ItaniumRelease"
+			IntermediateDirectory=".\libs\pet\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\pet\Release\pet.pch"
-				AssemblerListingLocation=".\libs\pet\Release\"
-				ObjectFile=".\libs\pet\Release\"
-				ProgramDataBaseFileName=".\libs\pet\Release\"
+				PrecompiledHeaderFile=".\libs\pet\ItaniumRelease\pet.pch"
+				AssemblerListingLocation=".\libs\petItaniumRelease\"
+				ObjectFile=".\libs\pet\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\pet\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\pet\Release\pet.lib"
+				OutputFile=".\libs\pet\ItaniumRelease\pet.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\pet\x64DXDebug"
+			IntermediateDirectory=".\libs\pet\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\pet\DXDebug\pet.pch"
-				AssemblerListingLocation=".\libs\pet\DXDebug\"
-				ObjectFile=".\libs\pet\DXDebug\"
-				ProgramDataBaseFileName=".\libs\pet\DXDebug\"
+				PrecompiledHeaderFile=".\libs\pet\x64DXDebug\pet.pch"
+				AssemblerListingLocation=".\libs\petx64DXDebug\"
+				ObjectFile=".\libs\pet\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\pet\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\pet\DXDebug\pet.lib"
+				OutputFile=".\libs\pet\x64DXDebug\pet.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\pet\x64DXRelease"
+			IntermediateDirectory=".\libs\pet\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\pet\DXRelease\pet.pch"
-				AssemblerListingLocation=".\libs\pet\DXRelease\"
-				ObjectFile=".\libs\pet\DXRelease\"
-				ProgramDataBaseFileName=".\libs\pet\DXRelease\"
+				PrecompiledHeaderFile=".\libs\pet\x64DXRelease\pet.pch"
+				AssemblerListingLocation=".\libs\petx64DXRelease\"
+				ObjectFile=".\libs\pet\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\pet\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\pet\DXRelease\pet.lib"
+				OutputFile=".\libs\pet\x64DXRelease\pet.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\pet\x64Debug"
+			IntermediateDirectory=".\libs\pet\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\pet\Debug\pet.pch"
-				AssemblerListingLocation=".\libs\pet\Debug\"
-				ObjectFile=".\libs\pet\Debug\"
-				ProgramDataBaseFileName=".\libs\pet\Debug\"
+				PrecompiledHeaderFile=".\libs\pet\x64Debug\pet.pch"
+				AssemblerListingLocation=".\libs\petx64Debug\"
+				ObjectFile=".\libs\pet\x64Debug\"
+				ProgramDataBaseFileName=".\libs\pet\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\pet\Debug\pet.lib"
+				OutputFile=".\libs\pet\x64Debug\pet.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\pet\x64Release"
+			IntermediateDirectory=".\libs\pet\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\pet\Release\pet.pch"
-				AssemblerListingLocation=".\libs\pet\Release\"
-				ObjectFile=".\libs\pet\Release\"
-				ProgramDataBaseFileName=".\libs\pet\Release\"
+				PrecompiledHeaderFile=".\libs\pet\x64Release\pet.pch"
+				AssemblerListingLocation=".\libs\petx64Release\"
+				ObjectFile=".\libs\pet\x64Release\"
+				ProgramDataBaseFileName=".\libs\pet\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\pet\Release\pet.lib"
+				OutputFile=".\libs\pet\x64Release\pet.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -889,6 +889,10 @@
 	<References>
 	</References>
 	<Files>
+		<File
+			RelativePath="..\..\..\pet\petcpu.c"
+			>
+		</File>
 		<File
 			RelativePath="..\..\..\pet\6809.c"
 			>
@@ -924,76 +928,6 @@
 		<File
 			RelativePath="..\..\..\pet\petcolour.c"
 			>
-		</File>
-		<File
-			RelativePath="..\..\..\pet\petcpu.c"
-			>
-			<FileConfiguration
-				Name="DX Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|Itanium"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Itanium"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|x64"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|x64"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
 		</File>
 		<File
 			RelativePath="..\..\..\pet\petdatasette.c"

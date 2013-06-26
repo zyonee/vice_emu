@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\userport\DXDebug"
-			IntermediateDirectory=".\libs\userport\DXDebug"
+			OutputDirectory=".\libs\userport\Win32DXDebug"
+			IntermediateDirectory=".\libs\userport\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\userport\DXDebug\userport.pch"
-				AssemblerListingLocation=".\libs\userport\DXDebug\"
-				ObjectFile=".\libs\userport\DXDebug\"
-				ProgramDataBaseFileName=".\libs\userport\DXDebug\"
+				PrecompiledHeaderFile=".\libs\userport\Win32DXDebug\userport.pch"
+				AssemblerListingLocation=".\libs\userportWin32DXDebug\"
+				ObjectFile=".\libs\userport\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\userport\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\userport\DXDebug\userport.lib"
+				OutputFile=".\libs\userport\Win32DXDebug\userport.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\userport\DXRelease"
-			IntermediateDirectory=".\libs\userport\DXRelease"
+			OutputDirectory=".\libs\userport\Win32DXRelease"
+			IntermediateDirectory=".\libs\userport\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\userport\DXRelease\userport.pch"
-				AssemblerListingLocation=".\libs\userport\DXRelease\"
-				ObjectFile=".\libs\userport\DXRelease\"
-				ProgramDataBaseFileName=".\libs\userport\DXRelease\"
+				PrecompiledHeaderFile=".\libs\userport\Win32DXRelease\userport.pch"
+				AssemblerListingLocation=".\libs\userportWin32DXRelease\"
+				ObjectFile=".\libs\userport\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\userport\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\userport\DXRelease\userport.lib"
+				OutputFile=".\libs\userport\Win32DXRelease\userport.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\userport\Debug"
-			IntermediateDirectory=".\libs\userport\Debug"
+			OutputDirectory=".\libs\userport\Win32Debug"
+			IntermediateDirectory=".\libs\userport\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\userport\Debug\userport.pch"
-				AssemblerListingLocation=".\libs\userport\Debug\"
-				ObjectFile=".\libs\userport\Debug\"
-				ProgramDataBaseFileName=".\libs\userport\Debug\"
+				PrecompiledHeaderFile=".\libs\userport\Win32Debug\userport.pch"
+				AssemblerListingLocation=".\libs\userportWin32Debug\"
+				ObjectFile=".\libs\userport\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\userport\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\userport\Debug\userport.lib"
+				OutputFile=".\libs\userport\Win32Debug\userport.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\userport\Release"
-			IntermediateDirectory=".\libs\userport\Release"
+			OutputDirectory=".\libs\userport\Win32Release"
+			IntermediateDirectory=".\libs\userport\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\userport\Release\userport.pch"
-				AssemblerListingLocation=".\libs\userport\Release\"
-				ObjectFile=".\libs\userport\Release\"
-				ProgramDataBaseFileName=".\libs\userport\Release\"
+				PrecompiledHeaderFile=".\libs\userport\Win32Release\userport.pch"
+				AssemblerListingLocation=".\libs\userportWin32Release\"
+				ObjectFile=".\libs\userport\Win32Release\"
+				ProgramDataBaseFileName=".\libs\userport\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\userport\Release\userport.lib"
+				OutputFile=".\libs\userport\Win32Release\userport.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\userport\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\userport\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\userport\DXDebug\userport.pch"
-				AssemblerListingLocation=".\libs\userport\DXDebug\"
-				ObjectFile=".\libs\userport\DXDebug\"
-				ProgramDataBaseFileName=".\libs\userport\DXDebug\"
+				PrecompiledHeaderFile=".\libs\userport\ItaniumDXDebug\userport.pch"
+				AssemblerListingLocation=".\libs\userportItaniumDXDebug\"
+				ObjectFile=".\libs\userport\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\userport\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\userport\DXDebug\userport.lib"
+				OutputFile=".\libs\userport\ItaniumDXDebug\userport.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\userport\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\userport\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\userport\DXRelease\userport.pch"
-				AssemblerListingLocation=".\libs\userport\DXRelease\"
-				ObjectFile=".\libs\userport\DXRelease\"
-				ProgramDataBaseFileName=".\libs\userport\DXRelease\"
+				PrecompiledHeaderFile=".\libs\userport\ItaniumDXRelease\userport.pch"
+				AssemblerListingLocation=".\libs\userportItaniumDXRelease\"
+				ObjectFile=".\libs\userport\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\userport\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\userport\DXRelease\userport.lib"
+				OutputFile=".\libs\userport\ItaniumDXRelease\userport.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\userport\ItaniumDebug"
+			IntermediateDirectory=".\libs\userport\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\userport\Debug\userport.pch"
-				AssemblerListingLocation=".\libs\userport\Debug\"
-				ObjectFile=".\libs\userport\Debug\"
-				ProgramDataBaseFileName=".\libs\userport\Debug\"
+				PrecompiledHeaderFile=".\libs\userport\ItaniumDebug\userport.pch"
+				AssemblerListingLocation=".\libs\userportItaniumDebug\"
+				ObjectFile=".\libs\userport\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\userport\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\userport\Debug\userport.lib"
+				OutputFile=".\libs\userport\ItaniumDebug\userport.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\userport\ItaniumRelease"
+			IntermediateDirectory=".\libs\userport\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\userport\Release\userport.pch"
-				AssemblerListingLocation=".\libs\userport\Release\"
-				ObjectFile=".\libs\userport\Release\"
-				ProgramDataBaseFileName=".\libs\userport\Release\"
+				PrecompiledHeaderFile=".\libs\userport\ItaniumRelease\userport.pch"
+				AssemblerListingLocation=".\libs\userportItaniumRelease\"
+				ObjectFile=".\libs\userport\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\userport\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\userport\Release\userport.lib"
+				OutputFile=".\libs\userport\ItaniumRelease\userport.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\userport\x64DXDebug"
+			IntermediateDirectory=".\libs\userport\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\userport\DXDebug\userport.pch"
-				AssemblerListingLocation=".\libs\userport\DXDebug\"
-				ObjectFile=".\libs\userport\DXDebug\"
-				ProgramDataBaseFileName=".\libs\userport\DXDebug\"
+				PrecompiledHeaderFile=".\libs\userport\x64DXDebug\userport.pch"
+				AssemblerListingLocation=".\libs\userportx64DXDebug\"
+				ObjectFile=".\libs\userport\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\userport\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\userport\DXDebug\userport.lib"
+				OutputFile=".\libs\userport\x64DXDebug\userport.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\userport\x64DXRelease"
+			IntermediateDirectory=".\libs\userport\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\userport\DXRelease\userport.pch"
-				AssemblerListingLocation=".\libs\userport\DXRelease\"
-				ObjectFile=".\libs\userport\DXRelease\"
-				ProgramDataBaseFileName=".\libs\userport\DXRelease\"
+				PrecompiledHeaderFile=".\libs\userport\x64DXRelease\userport.pch"
+				AssemblerListingLocation=".\libs\userportx64DXRelease\"
+				ObjectFile=".\libs\userport\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\userport\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\userport\DXRelease\userport.lib"
+				OutputFile=".\libs\userport\x64DXRelease\userport.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\userport\x64Debug"
+			IntermediateDirectory=".\libs\userport\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\userport\Debug\userport.pch"
-				AssemblerListingLocation=".\libs\userport\Debug\"
-				ObjectFile=".\libs\userport\Debug\"
-				ProgramDataBaseFileName=".\libs\userport\Debug\"
+				PrecompiledHeaderFile=".\libs\userport\x64Debug\userport.pch"
+				AssemblerListingLocation=".\libs\userportx64Debug\"
+				ObjectFile=".\libs\userport\x64Debug\"
+				ProgramDataBaseFileName=".\libs\userport\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\userport\Debug\userport.lib"
+				OutputFile=".\libs\userport\x64Debug\userport.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\userport\x64Release"
+			IntermediateDirectory=".\libs\userport\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\userport\Release\userport.pch"
-				AssemblerListingLocation=".\libs\userport\Release\"
-				ObjectFile=".\libs\userport\Release\"
-				ProgramDataBaseFileName=".\libs\userport\Release\"
+				PrecompiledHeaderFile=".\libs\userport\x64Release\userport.pch"
+				AssemblerListingLocation=".\libs\userportx64Release\"
+				ObjectFile=".\libs\userport\x64Release\"
+				ProgramDataBaseFileName=".\libs\userport\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\userport\Release\userport.lib"
+				OutputFile=".\libs\userport\x64Release\userport.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

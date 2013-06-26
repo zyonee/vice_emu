@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\resid\DXDebug"
-			IntermediateDirectory=".\libs\resid\DXDebug"
+			OutputDirectory=".\libs\resid\Win32DXDebug"
+			IntermediateDirectory=".\libs\resid\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG,PACKAGE=\&quot;resid\&quot;,VERSION=\&quot;0.7\&quot;,SIZEOF_INT=4"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\resid\DXDebug\resid.pch"
-				AssemblerListingLocation=".\libs\resid\DXDebug\"
-				ObjectFile=".\libs\resid\DXDebug\"
-				ProgramDataBaseFileName=".\libs\resid\DXDebug\"
+				PrecompiledHeaderFile=".\libs\resid\Win32DXDebug\resid.pch"
+				AssemblerListingLocation=".\libs\residWin32DXDebug\"
+				ObjectFile=".\libs\resid\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\resid\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\resid\DXDebug\resid.lib"
+				OutputFile=".\libs\resid\Win32DXDebug\resid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\resid\DXRelease"
-			IntermediateDirectory=".\libs\resid\DXRelease"
+			OutputDirectory=".\libs\resid\Win32DXRelease"
+			IntermediateDirectory=".\libs\resid\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\resid\DXRelease\resid.pch"
-				AssemblerListingLocation=".\libs\resid\DXRelease\"
-				ObjectFile=".\libs\resid\DXRelease\"
-				ProgramDataBaseFileName=".\libs\resid\DXRelease\"
+				PrecompiledHeaderFile=".\libs\resid\Win32DXRelease\resid.pch"
+				AssemblerListingLocation=".\libs\residWin32DXRelease\"
+				ObjectFile=".\libs\resid\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\resid\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\resid\DXRelease\resid.lib"
+				OutputFile=".\libs\resid\Win32DXRelease\resid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\resid\Debug"
-			IntermediateDirectory=".\libs\resid\Debug"
+			OutputDirectory=".\libs\resid\Win32Debug"
+			IntermediateDirectory=".\libs\resid\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG,PACKAGE=\&quot;resid\&quot;,VERSION=\&quot;0.7\&quot;,SIZEOF_INT=4"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\resid\Debug\resid.pch"
-				AssemblerListingLocation=".\libs\resid\Debug\"
-				ObjectFile=".\libs\resid\Debug\"
-				ProgramDataBaseFileName=".\libs\resid\Debug\"
+				PrecompiledHeaderFile=".\libs\resid\Win32Debug\resid.pch"
+				AssemblerListingLocation=".\libs\residWin32Debug\"
+				ObjectFile=".\libs\resid\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\resid\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\resid\Debug\resid.lib"
+				OutputFile=".\libs\resid\Win32Debug\resid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\resid\Release"
-			IntermediateDirectory=".\libs\resid\Release"
+			OutputDirectory=".\libs\resid\Win32Release"
+			IntermediateDirectory=".\libs\resid\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\resid\Release\resid.pch"
-				AssemblerListingLocation=".\libs\resid\Release\"
-				ObjectFile=".\libs\resid\Release\"
-				ProgramDataBaseFileName=".\libs\resid\Release\"
+				PrecompiledHeaderFile=".\libs\resid\Win32Release\resid.pch"
+				AssemblerListingLocation=".\libs\residWin32Release\"
+				ObjectFile=".\libs\resid\Win32Release\"
+				ProgramDataBaseFileName=".\libs\resid\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\resid\Release\resid.lib"
+				OutputFile=".\libs\resid\Win32Release\resid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\resid\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\resid\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG,PACKAGE=\&quot;resid\&quot;,VERSION=\&quot;0.7\&quot;,SIZEOF_INT=4"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\resid\DXDebug\resid.pch"
-				AssemblerListingLocation=".\libs\resid\DXDebug\"
-				ObjectFile=".\libs\resid\DXDebug\"
-				ProgramDataBaseFileName=".\libs\resid\DXDebug\"
+				PrecompiledHeaderFile=".\libs\resid\ItaniumDXDebug\resid.pch"
+				AssemblerListingLocation=".\libs\residItaniumDXDebug\"
+				ObjectFile=".\libs\resid\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\resid\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\resid\DXDebug\resid.lib"
+				OutputFile=".\libs\resid\ItaniumDXDebug\resid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\resid\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\resid\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\resid\DXRelease\resid.pch"
-				AssemblerListingLocation=".\libs\resid\DXRelease\"
-				ObjectFile=".\libs\resid\DXRelease\"
-				ProgramDataBaseFileName=".\libs\resid\DXRelease\"
+				PrecompiledHeaderFile=".\libs\resid\ItaniumDXRelease\resid.pch"
+				AssemblerListingLocation=".\libs\residItaniumDXRelease\"
+				ObjectFile=".\libs\resid\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\resid\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\resid\DXRelease\resid.lib"
+				OutputFile=".\libs\resid\ItaniumDXRelease\resid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\resid\ItaniumDebug"
+			IntermediateDirectory=".\libs\resid\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG,PACKAGE=\&quot;resid\&quot;,VERSION=\&quot;0.7\&quot;,SIZEOF_INT=4"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\resid\Debug\resid.pch"
-				AssemblerListingLocation=".\libs\resid\Debug\"
-				ObjectFile=".\libs\resid\Debug\"
-				ProgramDataBaseFileName=".\libs\resid\Debug\"
+				PrecompiledHeaderFile=".\libs\resid\ItaniumDebug\resid.pch"
+				AssemblerListingLocation=".\libs\residItaniumDebug\"
+				ObjectFile=".\libs\resid\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\resid\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\resid\Debug\resid.lib"
+				OutputFile=".\libs\resid\ItaniumDebug\resid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\resid\ItaniumRelease"
+			IntermediateDirectory=".\libs\resid\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\resid\Release\resid.pch"
-				AssemblerListingLocation=".\libs\resid\Release\"
-				ObjectFile=".\libs\resid\Release\"
-				ProgramDataBaseFileName=".\libs\resid\Release\"
+				PrecompiledHeaderFile=".\libs\resid\ItaniumRelease\resid.pch"
+				AssemblerListingLocation=".\libs\residItaniumRelease\"
+				ObjectFile=".\libs\resid\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\resid\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\resid\Release\resid.lib"
+				OutputFile=".\libs\resid\ItaniumRelease\resid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\resid\x64DXDebug"
+			IntermediateDirectory=".\libs\resid\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG,PACKAGE=\&quot;resid\&quot;,VERSION=\&quot;0.7\&quot;,SIZEOF_INT=4"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\resid\DXDebug\resid.pch"
-				AssemblerListingLocation=".\libs\resid\DXDebug\"
-				ObjectFile=".\libs\resid\DXDebug\"
-				ProgramDataBaseFileName=".\libs\resid\DXDebug\"
+				PrecompiledHeaderFile=".\libs\resid\x64DXDebug\resid.pch"
+				AssemblerListingLocation=".\libs\residx64DXDebug\"
+				ObjectFile=".\libs\resid\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\resid\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\resid\DXDebug\resid.lib"
+				OutputFile=".\libs\resid\x64DXDebug\resid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\resid\x64DXRelease"
+			IntermediateDirectory=".\libs\resid\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\resid\DXRelease\resid.pch"
-				AssemblerListingLocation=".\libs\resid\DXRelease\"
-				ObjectFile=".\libs\resid\DXRelease\"
-				ProgramDataBaseFileName=".\libs\resid\DXRelease\"
+				PrecompiledHeaderFile=".\libs\resid\x64DXRelease\resid.pch"
+				AssemblerListingLocation=".\libs\residx64DXRelease\"
+				ObjectFile=".\libs\resid\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\resid\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\resid\DXRelease\resid.lib"
+				OutputFile=".\libs\resid\x64DXRelease\resid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\resid\x64Debug"
+			IntermediateDirectory=".\libs\resid\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG,PACKAGE=\&quot;resid\&quot;,VERSION=\&quot;0.7\&quot;,SIZEOF_INT=4"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\resid\Debug\resid.pch"
-				AssemblerListingLocation=".\libs\resid\Debug\"
-				ObjectFile=".\libs\resid\Debug\"
-				ProgramDataBaseFileName=".\libs\resid\Debug\"
+				PrecompiledHeaderFile=".\libs\resid\x64Debug\resid.pch"
+				AssemblerListingLocation=".\libs\residx64Debug\"
+				ObjectFile=".\libs\resid\x64Debug\"
+				ProgramDataBaseFileName=".\libs\resid\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\resid\Debug\resid.lib"
+				OutputFile=".\libs\resid\x64Debug\resid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\resid\x64Release"
+			IntermediateDirectory=".\libs\resid\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\resid\Release\resid.pch"
-				AssemblerListingLocation=".\libs\resid\Release\"
-				ObjectFile=".\libs\resid\Release\"
-				ProgramDataBaseFileName=".\libs\resid\Release\"
+				PrecompiledHeaderFile=".\libs\resid\x64Release\resid.pch"
+				AssemblerListingLocation=".\libs\residx64Release\"
+				ObjectFile=".\libs\resid\x64Release\"
+				ProgramDataBaseFileName=".\libs\resid\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\resid\Release\resid.lib"
+				OutputFile=".\libs\resid\x64Release\resid.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -897,8 +897,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXDebug\resid.pch&quot; /Fo&quot;libs\resid\Win32DXDebug/&quot; /Fd&quot;libs\resid\Win32DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -906,8 +906,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXRelease\resid.pch&quot; /Fo&quot;libs\resid\Win32DXRelease/&quot; /Fd&quot;libs\resid\Win32DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -915,8 +915,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Debug\resid.pch&quot; /Fo&quot;libs\resid\Win32Debug/&quot; /Fd&quot;libs\resid\Win32Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -924,8 +924,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Release\resid.pch&quot; /Fo&quot;libs\resid\Win32Release/&quot; /Fd&quot;libs\resid\Win32Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -933,8 +933,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXDebug/&quot; /Fd&quot;libs\resid\ItaniumDXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -942,8 +942,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXRelease/&quot; /Fd&quot;libs\resid\ItaniumDXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -951,8 +951,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDebug/&quot; /Fd&quot;libs\resid\ItaniumDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -960,8 +960,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumRelease/&quot; /Fd&quot;libs\resid\ItaniumRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -969,8 +969,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXDebug\resid.pch&quot; /Fo&quot;libs\resid\x64DXDebug/&quot; /Fd&quot;libs\resid\x64DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -978,8 +978,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXRelease\resid.pch&quot; /Fo&quot;libs\resid\x64DXRelease/&quot; /Fd&quot;libs\resid\x64DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -987,8 +987,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Debug\resid.pch&quot; /Fo&quot;libs\resid\x64Debug/&quot; /Fd&quot;libs\resid\x64Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -996,8 +996,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Release\resid.pch&quot; /Fo&quot;libs\resid\x64Release/&quot; /Fd&quot;libs\resid\x64Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 		</File>
@@ -1009,8 +1009,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXDebug\resid.pch&quot; /Fo&quot;libs\resid\Win32DXDebug/&quot; /Fd&quot;libs\resid\Win32DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1018,8 +1018,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXRelease\resid.pch&quot; /Fo&quot;libs\resid\Win32DXRelease/&quot; /Fd&quot;libs\resid\Win32DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1027,8 +1027,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Debug\resid.pch&quot; /Fo&quot;libs\resid\Win32Debug/&quot; /Fd&quot;libs\resid\Win32Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1036,8 +1036,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Release\resid.pch&quot; /Fo&quot;libs\resid\Win32Release/&quot; /Fd&quot;libs\resid\Win32Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1045,8 +1045,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXDebug/&quot; /Fd&quot;libs\resid\ItaniumDXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1054,8 +1054,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXRelease/&quot; /Fd&quot;libs\resid\ItaniumDXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1063,8 +1063,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDebug/&quot; /Fd&quot;libs\resid\ItaniumDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1072,8 +1072,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumRelease/&quot; /Fd&quot;libs\resid\ItaniumRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1081,8 +1081,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXDebug\resid.pch&quot; /Fo&quot;libs\resid\x64DXDebug/&quot; /Fd&quot;libs\resid\x64DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1090,8 +1090,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXRelease\resid.pch&quot; /Fo&quot;libs\resid\x64DXRelease/&quot; /Fd&quot;libs\resid\x64DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1099,8 +1099,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Debug\resid.pch&quot; /Fo&quot;libs\resid\x64Debug/&quot; /Fd&quot;libs\resid\x64Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1108,8 +1108,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Release\resid.pch&quot; /Fo&quot;libs\resid\x64Release/&quot; /Fd&quot;libs\resid\x64Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 		</File>
@@ -1121,8 +1121,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXDebug\resid.pch&quot; /Fo&quot;libs\resid\Win32DXDebug/&quot; /Fd&quot;libs\resid\Win32DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1130,8 +1130,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXRelease\resid.pch&quot; /Fo&quot;libs\resid\Win32DXRelease/&quot; /Fd&quot;libs\resid\Win32DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1139,8 +1139,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Debug\resid.pch&quot; /Fo&quot;libs\resid\Win32Debug/&quot; /Fd&quot;libs\resid\Win32Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1148,8 +1148,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Release\resid.pch&quot; /Fo&quot;libs\resid\Win32Release/&quot; /Fd&quot;libs\resid\Win32Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1157,8 +1157,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXDebug/&quot; /Fd&quot;libs\resid\ItaniumDXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1166,8 +1166,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXRelease/&quot; /Fd&quot;libs\resid\ItaniumDXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1175,8 +1175,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDebug/&quot; /Fd&quot;libs\resid\ItaniumDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1184,8 +1184,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumRelease/&quot; /Fd&quot;libs\resid\ItaniumRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1193,8 +1193,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXDebug\resid.pch&quot; /Fo&quot;libs\resid\x64DXDebug/&quot; /Fd&quot;libs\resid\x64DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1202,8 +1202,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXRelease\resid.pch&quot; /Fo&quot;libs\resid\x64DXRelease/&quot; /Fd&quot;libs\resid\x64DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1211,8 +1211,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Debug\resid.pch&quot; /Fo&quot;libs\resid\x64Debug/&quot; /Fd&quot;libs\resid\x64Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1220,8 +1220,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Release\resid.pch&quot; /Fo&quot;libs\resid\x64Release/&quot; /Fd&quot;libs\resid\x64Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 		</File>
@@ -1233,8 +1233,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXDebug\resid.pch&quot; /Fo&quot;libs\resid\Win32DXDebug/&quot; /Fd&quot;libs\resid\Win32DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1242,8 +1242,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXRelease\resid.pch&quot; /Fo&quot;libs\resid\Win32DXRelease/&quot; /Fd&quot;libs\resid\Win32DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1251,8 +1251,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Debug\resid.pch&quot; /Fo&quot;libs\resid\Win32Debug/&quot; /Fd&quot;libs\resid\Win32Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1260,8 +1260,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Release\resid.pch&quot; /Fo&quot;libs\resid\Win32Release/&quot; /Fd&quot;libs\resid\Win32Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1269,8 +1269,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXDebug/&quot; /Fd&quot;libs\resid\ItaniumDXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1278,8 +1278,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXRelease/&quot; /Fd&quot;libs\resid\ItaniumDXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1287,8 +1287,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDebug/&quot; /Fd&quot;libs\resid\ItaniumDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1296,8 +1296,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumRelease/&quot; /Fd&quot;libs\resid\ItaniumRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1305,8 +1305,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXDebug\resid.pch&quot; /Fo&quot;libs\resid\x64DXDebug/&quot; /Fd&quot;libs\resid\x64DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1314,8 +1314,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXRelease\resid.pch&quot; /Fo&quot;libs\resid\x64DXRelease/&quot; /Fd&quot;libs\resid\x64DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1323,8 +1323,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Debug\resid.pch&quot; /Fo&quot;libs\resid\x64Debug/&quot; /Fd&quot;libs\resid\x64Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1332,8 +1332,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Release\resid.pch&quot; /Fo&quot;libs\resid\x64Release/&quot; /Fd&quot;libs\resid\x64Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 		</File>
@@ -1345,8 +1345,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXDebug\resid.pch&quot; /Fo&quot;libs\resid\Win32DXDebug/&quot; /Fd&quot;libs\resid\Win32DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1354,8 +1354,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXRelease\resid.pch&quot; /Fo&quot;libs\resid\Win32DXRelease/&quot; /Fd&quot;libs\resid\Win32DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1363,8 +1363,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Debug\resid.pch&quot; /Fo&quot;libs\resid\Win32Debug/&quot; /Fd&quot;libs\resid\Win32Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1372,8 +1372,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Release\resid.pch&quot; /Fo&quot;libs\resid\Win32Release/&quot; /Fd&quot;libs\resid\Win32Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1381,8 +1381,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXDebug/&quot; /Fd&quot;libs\resid\ItaniumDXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1390,8 +1390,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXRelease/&quot; /Fd&quot;libs\resid\ItaniumDXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1399,8 +1399,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDebug/&quot; /Fd&quot;libs\resid\ItaniumDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1408,8 +1408,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumRelease/&quot; /Fd&quot;libs\resid\ItaniumRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1417,8 +1417,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXDebug\resid.pch&quot; /Fo&quot;libs\resid\x64DXDebug/&quot; /Fd&quot;libs\resid\x64DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1426,8 +1426,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXRelease\resid.pch&quot; /Fo&quot;libs\resid\x64DXRelease/&quot; /Fd&quot;libs\resid\x64DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1435,8 +1435,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Debug\resid.pch&quot; /Fo&quot;libs\resid\x64Debug/&quot; /Fd&quot;libs\resid\x64Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1444,8 +1444,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Release\resid.pch&quot; /Fo&quot;libs\resid\x64Release/&quot; /Fd&quot;libs\resid\x64Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 		</File>
@@ -1457,8 +1457,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXDebug\resid.pch&quot; /Fo&quot;libs\resid\Win32DXDebug/&quot; /Fd&quot;libs\resid\Win32DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1466,8 +1466,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXRelease\resid.pch&quot; /Fo&quot;libs\resid\Win32DXRelease/&quot; /Fd&quot;libs\resid\Win32DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1475,8 +1475,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Debug\resid.pch&quot; /Fo&quot;libs\resid\Win32Debug/&quot; /Fd&quot;libs\resid\Win32Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1484,8 +1484,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Release\resid.pch&quot; /Fo&quot;libs\resid\Win32Release/&quot; /Fd&quot;libs\resid\Win32Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1493,8 +1493,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXDebug/&quot; /Fd&quot;libs\resid\ItaniumDXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1502,8 +1502,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXRelease/&quot; /Fd&quot;libs\resid\ItaniumDXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1511,8 +1511,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDebug/&quot; /Fd&quot;libs\resid\ItaniumDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1520,8 +1520,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumRelease/&quot; /Fd&quot;libs\resid\ItaniumRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1529,8 +1529,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXDebug\resid.pch&quot; /Fo&quot;libs\resid\x64DXDebug/&quot; /Fd&quot;libs\resid\x64DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1538,8 +1538,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXRelease\resid.pch&quot; /Fo&quot;libs\resid\x64DXRelease/&quot; /Fd&quot;libs\resid\x64DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1547,8 +1547,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Debug\resid.pch&quot; /Fo&quot;libs\resid\x64Debug/&quot; /Fd&quot;libs\resid\x64Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1556,8 +1556,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Release\resid.pch&quot; /Fo&quot;libs\resid\x64Release/&quot; /Fd&quot;libs\resid\x64Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 		</File>
@@ -1569,8 +1569,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXDebug\resid.pch&quot; /Fo&quot;libs\resid\Win32DXDebug/&quot; /Fd&quot;libs\resid\Win32DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1578,8 +1578,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXRelease\resid.pch&quot; /Fo&quot;libs\resid\Win32DXRelease/&quot; /Fd&quot;libs\resid\Win32DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1587,8 +1587,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Debug\resid.pch&quot; /Fo&quot;libs\resid\Win32Debug/&quot; /Fd&quot;libs\resid\Win32Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1596,8 +1596,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Release\resid.pch&quot; /Fo&quot;libs\resid\Win32Release/&quot; /Fd&quot;libs\resid\Win32Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1605,8 +1605,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXDebug/&quot; /Fd&quot;libs\resid\ItaniumDXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1614,8 +1614,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXRelease/&quot; /Fd&quot;libs\resid\ItaniumDXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1623,8 +1623,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDebug/&quot; /Fd&quot;libs\resid\ItaniumDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1632,8 +1632,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumRelease/&quot; /Fd&quot;libs\resid\ItaniumRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1641,8 +1641,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXDebug\resid.pch&quot; /Fo&quot;libs\resid\x64DXDebug/&quot; /Fd&quot;libs\resid\x64DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1650,8 +1650,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXRelease\resid.pch&quot; /Fo&quot;libs\resid\x64DXRelease/&quot; /Fd&quot;libs\resid\x64DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1659,8 +1659,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Debug\resid.pch&quot; /Fo&quot;libs\resid\x64Debug/&quot; /Fd&quot;libs\resid\x64Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1668,8 +1668,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Release\resid.pch&quot; /Fo&quot;libs\resid\x64Release/&quot; /Fd&quot;libs\resid\x64Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 		</File>
@@ -1681,8 +1681,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXDebug\resid.pch&quot; /Fo&quot;libs\resid\Win32DXDebug/&quot; /Fd&quot;libs\resid\Win32DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1690,8 +1690,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXRelease\resid.pch&quot; /Fo&quot;libs\resid\Win32DXRelease/&quot; /Fd&quot;libs\resid\Win32DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1699,8 +1699,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Debug\resid.pch&quot; /Fo&quot;libs\resid\Win32Debug/&quot; /Fd&quot;libs\resid\Win32Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1708,8 +1708,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Release\resid.pch&quot; /Fo&quot;libs\resid\Win32Release/&quot; /Fd&quot;libs\resid\Win32Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1717,8 +1717,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXDebug/&quot; /Fd&quot;libs\resid\ItaniumDXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1726,8 +1726,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXRelease/&quot; /Fd&quot;libs\resid\ItaniumDXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1735,8 +1735,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDebug/&quot; /Fd&quot;libs\resid\ItaniumDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1744,8 +1744,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumRelease/&quot; /Fd&quot;libs\resid\ItaniumRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1753,8 +1753,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXDebug\resid.pch&quot; /Fo&quot;libs\resid\x64DXDebug/&quot; /Fd&quot;libs\resid\x64DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1762,8 +1762,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXRelease\resid.pch&quot; /Fo&quot;libs\resid\x64DXRelease/&quot; /Fd&quot;libs\resid\x64DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1771,8 +1771,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Debug\resid.pch&quot; /Fo&quot;libs\resid\x64Debug/&quot; /Fd&quot;libs\resid\x64Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1780,8 +1780,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Release\resid.pch&quot; /Fo&quot;libs\resid\x64Release/&quot; /Fd&quot;libs\resid\x64Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 		</File>
@@ -1793,8 +1793,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXDebug\resid.pch&quot; /Fo&quot;libs\resid\Win32DXDebug/&quot; /Fd&quot;libs\resid\Win32DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1802,8 +1802,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32DXRelease\resid.pch&quot; /Fo&quot;libs\resid\Win32DXRelease/&quot; /Fd&quot;libs\resid\Win32DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1811,8 +1811,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Debug\resid.pch&quot; /Fo&quot;libs\resid\Win32Debug/&quot; /Fd&quot;libs\resid\Win32Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1820,8 +1820,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Win32Release\resid.pch&quot; /Fo&quot;libs\resid\Win32Release/&quot; /Fd&quot;libs\resid\Win32Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\Win32Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1829,8 +1829,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXDebug/&quot; /Fd&quot;libs\resid\ItaniumDXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1838,8 +1838,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDXRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDXRelease/&quot; /Fd&quot;libs\resid\ItaniumDXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1847,8 +1847,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumDebug\resid.pch&quot; /Fo&quot;libs\resid\ItaniumDebug/&quot; /Fd&quot;libs\resid\ItaniumDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1856,8 +1856,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\ItaniumRelease\resid.pch&quot; /Fo&quot;libs\resid\ItaniumRelease/&quot; /Fd&quot;libs\resid\ItaniumRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\ItaniumRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1865,8 +1865,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXDebug\resid.pch&quot; /Fo&quot;libs\resid\DXDebug/&quot; /Fd&quot;libs\resid\DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXDebug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXDebug\resid.pch&quot; /Fo&quot;libs\resid\x64DXDebug/&quot; /Fd&quot;libs\resid\x64DXDebug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXDebug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1874,8 +1874,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\DXRelease\resid.pch&quot; /Fo&quot;libs\resid\DXRelease/&quot; /Fd&quot;libs\resid\DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\DXRelease\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64DXRelease\resid.pch&quot; /Fo&quot;libs\resid\x64DXRelease/&quot; /Fd&quot;libs\resid\x64DXRelease/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64DXRelease\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1883,8 +1883,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Debug\resid.pch&quot; /Fo&quot;libs\resid\Debug/&quot; /Fd&quot;libs\resid\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Debug\$(InputName).obj"
+					CommandLine="cl /nologo /MTd /W3 /EHsc /Z7 /Od /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Debug\resid.pch&quot; /Fo&quot;libs\resid\x64Debug/&quot; /Fd&quot;libs\resid\x64Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Debug\$(InputName).obj"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1892,8 +1892,8 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\Release\resid.pch&quot; /Fo&quot;libs\resid\Release/&quot; /Fd&quot;libs\resid\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-					Outputs="libs\resid\Release\$(InputName).obj"
+					CommandLine="cl /nologo /MT /W3 /EHsc /I &quot;..\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; /D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid\x64Release\resid.pch&quot; /Fo&quot;libs\resid\x64Release/&quot; /Fd&quot;libs\resid\x64Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid\x64Release\$(InputName).obj"
 				/>
 			</FileConfiguration>
 		</File>

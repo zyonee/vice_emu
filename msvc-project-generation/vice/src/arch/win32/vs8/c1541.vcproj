@@ -22,7 +22,7 @@
 		<Configuration
 			Name="DX Debug|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\c1541\DXDebug"
+			IntermediateDirectory=".\libs\c1541\Win32DXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -52,10 +52,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c1541\DXDebug\c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\DXDebug\"
-				ObjectFile=".\libs\c1541\DXDebug\"
-				ProgramDataBaseFileName=".\libs\c1541\DXDebug\"
+				PrecompiledHeaderFile=".\libs\c1541\Win32DXDebug\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541Win32DXDebug\"
+				ObjectFile=".\libs\c1541\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\c1541\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -74,7 +74,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\c1541.exe"
 				LinkIncremental="2"
@@ -111,7 +110,7 @@
 		<Configuration
 			Name="DX Release|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\c1541\DXRelease"
+			IntermediateDirectory=".\libs\c1541\Win32DXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -143,10 +142,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c1541\DXRelease\c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\DXRelease\"
-				ObjectFile=".\libs\c1541\DXRelease\"
-				ProgramDataBaseFileName=".\libs\c1541\DXRelease\"
+				PrecompiledHeaderFile=".\libs\c1541\Win32DXRelease\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541Win32DXRelease\"
+				ObjectFile=".\libs\c1541\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\c1541\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -164,7 +163,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\c1541.exe"
 				LinkIncremental="1"
@@ -200,7 +198,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\c1541\Debug"
+			IntermediateDirectory=".\libs\c1541\Win32Debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -230,10 +228,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c1541\Debug\c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\Debug\"
-				ObjectFile=".\libs\c1541\Debug\"
-				ProgramDataBaseFileName=".\libs\c1541\Debug\"
+				PrecompiledHeaderFile=".\libs\c1541\Win32Debug\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541Win32Debug\"
+				ObjectFile=".\libs\c1541\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\c1541\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -244,7 +242,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -252,7 +250,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\c1541.exe"
 				LinkIncremental="2"
@@ -289,7 +286,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\c1541\Release"
+			IntermediateDirectory=".\libs\c1541\Win32Release"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -321,10 +318,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c1541\Release\c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\Release\"
-				ObjectFile=".\libs\c1541\Release\"
-				ProgramDataBaseFileName=".\libs\c1541\Release\"
+				PrecompiledHeaderFile=".\libs\c1541\Win32Release\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541Win32Release\"
+				ObjectFile=".\libs\c1541\Win32Release\"
+				ProgramDataBaseFileName=".\libs\c1541\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -334,7 +331,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -342,7 +339,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\c1541.exe"
 				LinkIncremental="1"
@@ -377,8 +373,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\c1541\ItaniumDXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -409,10 +405,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c1541\DXDebug\c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\DXDebug\"
-				ObjectFile=".\libs\c1541\DXDebug\"
-				ProgramDataBaseFileName=".\libs\c1541\DXDebug\"
+				PrecompiledHeaderFile=".\libs\c1541\ItaniumDXDebug\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541ItaniumDXDebug\"
+				ObjectFile=".\libs\c1541\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\c1541\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -467,8 +463,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\c1541\ItaniumDXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -501,10 +497,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c1541\DXRelease\c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\DXRelease\"
-				ObjectFile=".\libs\c1541\DXRelease\"
-				ProgramDataBaseFileName=".\libs\c1541\DXRelease\"
+				PrecompiledHeaderFile=".\libs\c1541\ItaniumDXRelease\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541ItaniumDXRelease\"
+				ObjectFile=".\libs\c1541\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\c1541\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -557,8 +553,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\c1541\ItaniumDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -589,10 +585,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c1541\Debug\c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\Debug\"
-				ObjectFile=".\libs\c1541\Debug\"
-				ProgramDataBaseFileName=".\libs\c1541\Debug\"
+				PrecompiledHeaderFile=".\libs\c1541\ItaniumDebug\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541ItaniumDebug\"
+				ObjectFile=".\libs\c1541\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\c1541\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -603,7 +599,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -647,8 +643,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\c1541\ItaniumRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -681,10 +677,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c1541\Release\c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\Release\"
-				ObjectFile=".\libs\c1541\Release\"
-				ProgramDataBaseFileName=".\libs\c1541\Release\"
+				PrecompiledHeaderFile=".\libs\c1541\ItaniumRelease\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541ItaniumRelease\"
+				ObjectFile=".\libs\c1541\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\c1541\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -694,7 +690,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -737,8 +733,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\c1541\x64DXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -769,10 +765,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c1541\DXDebug\c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\DXDebug\"
-				ObjectFile=".\libs\c1541\DXDebug\"
-				ProgramDataBaseFileName=".\libs\c1541\DXDebug\"
+				PrecompiledHeaderFile=".\libs\c1541\x64DXDebug\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541x64DXDebug\"
+				ObjectFile=".\libs\c1541\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\c1541\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -827,8 +823,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\c1541\x64DXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -861,10 +857,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c1541\DXRelease\c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\DXRelease\"
-				ObjectFile=".\libs\c1541\DXRelease\"
-				ProgramDataBaseFileName=".\libs\c1541\DXRelease\"
+				PrecompiledHeaderFile=".\libs\c1541\x64DXRelease\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541x64DXRelease\"
+				ObjectFile=".\libs\c1541\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\c1541\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -917,8 +913,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\c1541\x64Debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -949,10 +945,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c1541\Debug\c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\Debug\"
-				ObjectFile=".\libs\c1541\Debug\"
-				ProgramDataBaseFileName=".\libs\c1541\Debug\"
+				PrecompiledHeaderFile=".\libs\c1541\x64Debug\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541x64Debug\"
+				ObjectFile=".\libs\c1541\x64Debug\"
+				ProgramDataBaseFileName=".\libs\c1541\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -963,7 +959,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -1007,8 +1003,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\c1541\x64Release"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -1041,10 +1037,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c1541\Release\c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\Release\"
-				ObjectFile=".\libs\c1541\Release\"
-				ProgramDataBaseFileName=".\libs\c1541\Release\"
+				PrecompiledHeaderFile=".\libs\c1541\x64Release\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541x64Release\"
+				ObjectFile=".\libs\c1541\x64Release\"
+				ProgramDataBaseFileName=".\libs\c1541\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -1054,7 +1050,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool

@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\tape\DXDebug"
-			IntermediateDirectory=".\libs\tape\DXDebug"
+			OutputDirectory=".\libs\tape\Win32DXDebug"
+			IntermediateDirectory=".\libs\tape\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tape\DXDebug\tape.pch"
-				AssemblerListingLocation=".\libs\tape\DXDebug\"
-				ObjectFile=".\libs\tape\DXDebug\"
-				ProgramDataBaseFileName=".\libs\tape\DXDebug\"
+				PrecompiledHeaderFile=".\libs\tape\Win32DXDebug\tape.pch"
+				AssemblerListingLocation=".\libs\tapeWin32DXDebug\"
+				ObjectFile=".\libs\tape\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\tape\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tape\DXDebug\tape.lib"
+				OutputFile=".\libs\tape\Win32DXDebug\tape.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\tape\DXRelease"
-			IntermediateDirectory=".\libs\tape\DXRelease"
+			OutputDirectory=".\libs\tape\Win32DXRelease"
+			IntermediateDirectory=".\libs\tape\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tape\DXRelease\tape.pch"
-				AssemblerListingLocation=".\libs\tape\DXRelease\"
-				ObjectFile=".\libs\tape\DXRelease\"
-				ProgramDataBaseFileName=".\libs\tape\DXRelease\"
+				PrecompiledHeaderFile=".\libs\tape\Win32DXRelease\tape.pch"
+				AssemblerListingLocation=".\libs\tapeWin32DXRelease\"
+				ObjectFile=".\libs\tape\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\tape\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tape\DXRelease\tape.lib"
+				OutputFile=".\libs\tape\Win32DXRelease\tape.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\tape\Debug"
-			IntermediateDirectory=".\libs\tape\Debug"
+			OutputDirectory=".\libs\tape\Win32Debug"
+			IntermediateDirectory=".\libs\tape\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tape\Debug\tape.pch"
-				AssemblerListingLocation=".\libs\tape\Debug\"
-				ObjectFile=".\libs\tape\Debug\"
-				ProgramDataBaseFileName=".\libs\tape\Debug\"
+				PrecompiledHeaderFile=".\libs\tape\Win32Debug\tape.pch"
+				AssemblerListingLocation=".\libs\tapeWin32Debug\"
+				ObjectFile=".\libs\tape\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\tape\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tape\Debug\tape.lib"
+				OutputFile=".\libs\tape\Win32Debug\tape.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\tape\Release"
-			IntermediateDirectory=".\libs\tape\Release"
+			OutputDirectory=".\libs\tape\Win32Release"
+			IntermediateDirectory=".\libs\tape\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tape\Release\tape.pch"
-				AssemblerListingLocation=".\libs\tape\Release\"
-				ObjectFile=".\libs\tape\Release\"
-				ProgramDataBaseFileName=".\libs\tape\Release\"
+				PrecompiledHeaderFile=".\libs\tape\Win32Release\tape.pch"
+				AssemblerListingLocation=".\libs\tapeWin32Release\"
+				ObjectFile=".\libs\tape\Win32Release\"
+				ProgramDataBaseFileName=".\libs\tape\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tape\Release\tape.lib"
+				OutputFile=".\libs\tape\Win32Release\tape.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tape\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\tape\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tape\DXDebug\tape.pch"
-				AssemblerListingLocation=".\libs\tape\DXDebug\"
-				ObjectFile=".\libs\tape\DXDebug\"
-				ProgramDataBaseFileName=".\libs\tape\DXDebug\"
+				PrecompiledHeaderFile=".\libs\tape\ItaniumDXDebug\tape.pch"
+				AssemblerListingLocation=".\libs\tapeItaniumDXDebug\"
+				ObjectFile=".\libs\tape\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\tape\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tape\DXDebug\tape.lib"
+				OutputFile=".\libs\tape\ItaniumDXDebug\tape.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tape\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\tape\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tape\DXRelease\tape.pch"
-				AssemblerListingLocation=".\libs\tape\DXRelease\"
-				ObjectFile=".\libs\tape\DXRelease\"
-				ProgramDataBaseFileName=".\libs\tape\DXRelease\"
+				PrecompiledHeaderFile=".\libs\tape\ItaniumDXRelease\tape.pch"
+				AssemblerListingLocation=".\libs\tapeItaniumDXRelease\"
+				ObjectFile=".\libs\tape\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\tape\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tape\DXRelease\tape.lib"
+				OutputFile=".\libs\tape\ItaniumDXRelease\tape.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tape\ItaniumDebug"
+			IntermediateDirectory=".\libs\tape\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tape\Debug\tape.pch"
-				AssemblerListingLocation=".\libs\tape\Debug\"
-				ObjectFile=".\libs\tape\Debug\"
-				ProgramDataBaseFileName=".\libs\tape\Debug\"
+				PrecompiledHeaderFile=".\libs\tape\ItaniumDebug\tape.pch"
+				AssemblerListingLocation=".\libs\tapeItaniumDebug\"
+				ObjectFile=".\libs\tape\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\tape\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tape\Debug\tape.lib"
+				OutputFile=".\libs\tape\ItaniumDebug\tape.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tape\ItaniumRelease"
+			IntermediateDirectory=".\libs\tape\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tape\Release\tape.pch"
-				AssemblerListingLocation=".\libs\tape\Release\"
-				ObjectFile=".\libs\tape\Release\"
-				ProgramDataBaseFileName=".\libs\tape\Release\"
+				PrecompiledHeaderFile=".\libs\tape\ItaniumRelease\tape.pch"
+				AssemblerListingLocation=".\libs\tapeItaniumRelease\"
+				ObjectFile=".\libs\tape\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\tape\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tape\Release\tape.lib"
+				OutputFile=".\libs\tape\ItaniumRelease\tape.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tape\x64DXDebug"
+			IntermediateDirectory=".\libs\tape\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tape\DXDebug\tape.pch"
-				AssemblerListingLocation=".\libs\tape\DXDebug\"
-				ObjectFile=".\libs\tape\DXDebug\"
-				ProgramDataBaseFileName=".\libs\tape\DXDebug\"
+				PrecompiledHeaderFile=".\libs\tape\x64DXDebug\tape.pch"
+				AssemblerListingLocation=".\libs\tapex64DXDebug\"
+				ObjectFile=".\libs\tape\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\tape\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tape\DXDebug\tape.lib"
+				OutputFile=".\libs\tape\x64DXDebug\tape.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tape\x64DXRelease"
+			IntermediateDirectory=".\libs\tape\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tape\DXRelease\tape.pch"
-				AssemblerListingLocation=".\libs\tape\DXRelease\"
-				ObjectFile=".\libs\tape\DXRelease\"
-				ProgramDataBaseFileName=".\libs\tape\DXRelease\"
+				PrecompiledHeaderFile=".\libs\tape\x64DXRelease\tape.pch"
+				AssemblerListingLocation=".\libs\tapex64DXRelease\"
+				ObjectFile=".\libs\tape\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\tape\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tape\DXRelease\tape.lib"
+				OutputFile=".\libs\tape\x64DXRelease\tape.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tape\x64Debug"
+			IntermediateDirectory=".\libs\tape\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tape\Debug\tape.pch"
-				AssemblerListingLocation=".\libs\tape\Debug\"
-				ObjectFile=".\libs\tape\Debug\"
-				ProgramDataBaseFileName=".\libs\tape\Debug\"
+				PrecompiledHeaderFile=".\libs\tape\x64Debug\tape.pch"
+				AssemblerListingLocation=".\libs\tapex64Debug\"
+				ObjectFile=".\libs\tape\x64Debug\"
+				ProgramDataBaseFileName=".\libs\tape\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tape\Debug\tape.lib"
+				OutputFile=".\libs\tape\x64Debug\tape.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tape\x64Release"
+			IntermediateDirectory=".\libs\tape\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tape\Release\tape.pch"
-				AssemblerListingLocation=".\libs\tape\Release\"
-				ObjectFile=".\libs\tape\Release\"
-				ProgramDataBaseFileName=".\libs\tape\Release\"
+				PrecompiledHeaderFile=".\libs\tape\x64Release\tape.pch"
+				AssemblerListingLocation=".\libs\tapex64Release\"
+				ObjectFile=".\libs\tape\x64Release\"
+				ProgramDataBaseFileName=".\libs\tape\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tape\Release\tape.lib"
+				OutputFile=".\libs\tape\x64Release\tape.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

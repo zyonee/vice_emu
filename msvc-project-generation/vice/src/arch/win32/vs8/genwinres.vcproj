@@ -22,7 +22,7 @@
 		<Configuration
 			Name="DX Debug|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\genwinres\DXDebug"
+			IntermediateDirectory=".\libs\genwinres\Win32DXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -52,10 +52,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genwinres\DXDebug\genwinres.pch"
-				AssemblerListingLocation=".\libs\genwinres\DXDebug\"
-				ObjectFile=".\libs\genwinres\DXDebug\"
-				ProgramDataBaseFileName=".\libs\genwinres\DXDebug\"
+				PrecompiledHeaderFile=".\libs\genwinres\Win32DXDebug\genwinres.pch"
+				AssemblerListingLocation=".\libs\genwinresWin32DXDebug\"
+				ObjectFile=".\libs\genwinres\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\genwinres\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -74,7 +74,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genwinres.exe"
 				LinkIncremental="2"
@@ -111,7 +110,7 @@
 		<Configuration
 			Name="DX Release|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\genwinres\DXRelease"
+			IntermediateDirectory=".\libs\genwinres\Win32DXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -143,10 +142,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genwinres\DXRelease\genwinres.pch"
-				AssemblerListingLocation=".\libs\genwinres\DXRelease\"
-				ObjectFile=".\libs\genwinres\DXRelease\"
-				ProgramDataBaseFileName=".\libs\genwinres\DXRelease\"
+				PrecompiledHeaderFile=".\libs\genwinres\Win32DXRelease\genwinres.pch"
+				AssemblerListingLocation=".\libs\genwinresWin32DXRelease\"
+				ObjectFile=".\libs\genwinres\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\genwinres\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -164,7 +163,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genwinres.exe"
 				LinkIncremental="1"
@@ -200,7 +198,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\genwinres\Debug"
+			IntermediateDirectory=".\libs\genwinres\Win32Debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -230,10 +228,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genwinres\Debug\genwinres.pch"
-				AssemblerListingLocation=".\libs\genwinres\Debug\"
-				ObjectFile=".\libs\genwinres\Debug\"
-				ProgramDataBaseFileName=".\libs\genwinres\Debug\"
+				PrecompiledHeaderFile=".\libs\genwinres\Win32Debug\genwinres.pch"
+				AssemblerListingLocation=".\libs\genwinresWin32Debug\"
+				ObjectFile=".\libs\genwinres\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\genwinres\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -244,7 +242,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -252,7 +250,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genwinres.exe"
 				LinkIncremental="2"
@@ -289,7 +286,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\genwinres\Release"
+			IntermediateDirectory=".\libs\genwinres\Win32Release"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -321,10 +318,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genwinres\Release\genwinres.pch"
-				AssemblerListingLocation=".\libs\genwinres\Release\"
-				ObjectFile=".\libs\genwinres\Release\"
-				ProgramDataBaseFileName=".\libs\genwinres\Release\"
+				PrecompiledHeaderFile=".\libs\genwinres\Win32Release\genwinres.pch"
+				AssemblerListingLocation=".\libs\genwinresWin32Release\"
+				ObjectFile=".\libs\genwinres\Win32Release\"
+				ProgramDataBaseFileName=".\libs\genwinres\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -334,7 +331,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -342,7 +339,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genwinres.exe"
 				LinkIncremental="1"
@@ -377,8 +373,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genwinres\ItaniumDXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -409,10 +405,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genwinres\DXDebug\genwinres.pch"
-				AssemblerListingLocation=".\libs\genwinres\DXDebug\"
-				ObjectFile=".\libs\genwinres\DXDebug\"
-				ProgramDataBaseFileName=".\libs\genwinres\DXDebug\"
+				PrecompiledHeaderFile=".\libs\genwinres\ItaniumDXDebug\genwinres.pch"
+				AssemblerListingLocation=".\libs\genwinresItaniumDXDebug\"
+				ObjectFile=".\libs\genwinres\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\genwinres\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -431,7 +427,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genwinres.exe"
 				LinkIncremental="2"
@@ -468,8 +463,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genwinres\ItaniumDXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -502,10 +497,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genwinres\DXRelease\genwinres.pch"
-				AssemblerListingLocation=".\libs\genwinres\DXRelease\"
-				ObjectFile=".\libs\genwinres\DXRelease\"
-				ProgramDataBaseFileName=".\libs\genwinres\DXRelease\"
+				PrecompiledHeaderFile=".\libs\genwinres\ItaniumDXRelease\genwinres.pch"
+				AssemblerListingLocation=".\libs\genwinresItaniumDXRelease\"
+				ObjectFile=".\libs\genwinres\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\genwinres\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -523,7 +518,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genwinres.exe"
 				LinkIncremental="1"
@@ -559,8 +553,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genwinres\ItaniumDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -591,10 +585,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genwinres\Debug\genwinres.pch"
-				AssemblerListingLocation=".\libs\genwinres\Debug\"
-				ObjectFile=".\libs\genwinres\Debug\"
-				ProgramDataBaseFileName=".\libs\genwinres\Debug\"
+				PrecompiledHeaderFile=".\libs\genwinres\ItaniumDebug\genwinres.pch"
+				AssemblerListingLocation=".\libs\genwinresItaniumDebug\"
+				ObjectFile=".\libs\genwinres\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\genwinres\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -605,7 +599,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -613,7 +607,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genwinres.exe"
 				LinkIncremental="2"
@@ -650,8 +643,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genwinres\ItaniumRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -684,10 +677,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genwinres\Release\genwinres.pch"
-				AssemblerListingLocation=".\libs\genwinres\Release\"
-				ObjectFile=".\libs\genwinres\Release\"
-				ProgramDataBaseFileName=".\libs\genwinres\Release\"
+				PrecompiledHeaderFile=".\libs\genwinres\ItaniumRelease\genwinres.pch"
+				AssemblerListingLocation=".\libs\genwinresItaniumRelease\"
+				ObjectFile=".\libs\genwinres\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\genwinres\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -697,7 +690,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -705,7 +698,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genwinres.exe"
 				LinkIncremental="1"
@@ -741,8 +733,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genwinres\x64DXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -773,10 +765,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genwinres\DXDebug\genwinres.pch"
-				AssemblerListingLocation=".\libs\genwinres\DXDebug\"
-				ObjectFile=".\libs\genwinres\DXDebug\"
-				ProgramDataBaseFileName=".\libs\genwinres\DXDebug\"
+				PrecompiledHeaderFile=".\libs\genwinres\x64DXDebug\genwinres.pch"
+				AssemblerListingLocation=".\libs\genwinresx64DXDebug\"
+				ObjectFile=".\libs\genwinres\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\genwinres\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -795,7 +787,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genwinres.exe"
 				LinkIncremental="2"
@@ -832,8 +823,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genwinres\x64DXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -866,10 +857,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genwinres\DXRelease\genwinres.pch"
-				AssemblerListingLocation=".\libs\genwinres\DXRelease\"
-				ObjectFile=".\libs\genwinres\DXRelease\"
-				ProgramDataBaseFileName=".\libs\genwinres\DXRelease\"
+				PrecompiledHeaderFile=".\libs\genwinres\x64DXRelease\genwinres.pch"
+				AssemblerListingLocation=".\libs\genwinresx64DXRelease\"
+				ObjectFile=".\libs\genwinres\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\genwinres\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -887,7 +878,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genwinres.exe"
 				LinkIncremental="1"
@@ -923,8 +913,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genwinres\x64Debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -955,10 +945,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genwinres\Debug\genwinres.pch"
-				AssemblerListingLocation=".\libs\genwinres\Debug\"
-				ObjectFile=".\libs\genwinres\Debug\"
-				ProgramDataBaseFileName=".\libs\genwinres\Debug\"
+				PrecompiledHeaderFile=".\libs\genwinres\x64Debug\genwinres.pch"
+				AssemblerListingLocation=".\libs\genwinresx64Debug\"
+				ObjectFile=".\libs\genwinres\x64Debug\"
+				ProgramDataBaseFileName=".\libs\genwinres\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -969,7 +959,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -977,7 +967,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genwinres.exe"
 				LinkIncremental="2"
@@ -1014,8 +1003,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genwinres\x64Release"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -1048,10 +1037,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genwinres\Release\genwinres.pch"
-				AssemblerListingLocation=".\libs\genwinres\Release\"
-				ObjectFile=".\libs\genwinres\Release\"
-				ProgramDataBaseFileName=".\libs\genwinres\Release\"
+				PrecompiledHeaderFile=".\libs\genwinres\x64Release\genwinres.pch"
+				AssemblerListingLocation=".\libs\genwinresx64Release\"
+				ObjectFile=".\libs\genwinres\x64Release\"
+				ProgramDataBaseFileName=".\libs\genwinres\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -1061,7 +1050,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -1069,7 +1058,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genwinres.exe"
 				LinkIncremental="1"

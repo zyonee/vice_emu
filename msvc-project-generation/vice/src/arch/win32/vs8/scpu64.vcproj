@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\scpu64\DXDebug"
-			IntermediateDirectory=".\libs\scpu64\DXDebug"
+			OutputDirectory=".\libs\scpu64\Win32DXDebug"
+			IntermediateDirectory=".\libs\scpu64\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\scpu64\DXDebug\scpu64.pch"
-				AssemblerListingLocation=".\libs\scpu64\DXDebug\"
-				ObjectFile=".\libs\scpu64\DXDebug\"
-				ProgramDataBaseFileName=".\libs\scpu64\DXDebug\"
+				PrecompiledHeaderFile=".\libs\scpu64\Win32DXDebug\scpu64.pch"
+				AssemblerListingLocation=".\libs\scpu64Win32DXDebug\"
+				ObjectFile=".\libs\scpu64\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\scpu64\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\scpu64\DXDebug\scpu64.lib"
+				OutputFile=".\libs\scpu64\Win32DXDebug\scpu64.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\scpu64\DXRelease"
-			IntermediateDirectory=".\libs\scpu64\DXRelease"
+			OutputDirectory=".\libs\scpu64\Win32DXRelease"
+			IntermediateDirectory=".\libs\scpu64\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\scpu64\DXRelease\scpu64.pch"
-				AssemblerListingLocation=".\libs\scpu64\DXRelease\"
-				ObjectFile=".\libs\scpu64\DXRelease\"
-				ProgramDataBaseFileName=".\libs\scpu64\DXRelease\"
+				PrecompiledHeaderFile=".\libs\scpu64\Win32DXRelease\scpu64.pch"
+				AssemblerListingLocation=".\libs\scpu64Win32DXRelease\"
+				ObjectFile=".\libs\scpu64\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\scpu64\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\scpu64\DXRelease\scpu64.lib"
+				OutputFile=".\libs\scpu64\Win32DXRelease\scpu64.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\scpu64\Debug"
-			IntermediateDirectory=".\libs\scpu64\Debug"
+			OutputDirectory=".\libs\scpu64\Win32Debug"
+			IntermediateDirectory=".\libs\scpu64\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\scpu64\Debug\scpu64.pch"
-				AssemblerListingLocation=".\libs\scpu64\Debug\"
-				ObjectFile=".\libs\scpu64\Debug\"
-				ProgramDataBaseFileName=".\libs\scpu64\Debug\"
+				PrecompiledHeaderFile=".\libs\scpu64\Win32Debug\scpu64.pch"
+				AssemblerListingLocation=".\libs\scpu64Win32Debug\"
+				ObjectFile=".\libs\scpu64\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\scpu64\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\scpu64\Debug\scpu64.lib"
+				OutputFile=".\libs\scpu64\Win32Debug\scpu64.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\scpu64\Release"
-			IntermediateDirectory=".\libs\scpu64\Release"
+			OutputDirectory=".\libs\scpu64\Win32Release"
+			IntermediateDirectory=".\libs\scpu64\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\scpu64\Release\scpu64.pch"
-				AssemblerListingLocation=".\libs\scpu64\Release\"
-				ObjectFile=".\libs\scpu64\Release\"
-				ProgramDataBaseFileName=".\libs\scpu64\Release\"
+				PrecompiledHeaderFile=".\libs\scpu64\Win32Release\scpu64.pch"
+				AssemblerListingLocation=".\libs\scpu64Win32Release\"
+				ObjectFile=".\libs\scpu64\Win32Release\"
+				ProgramDataBaseFileName=".\libs\scpu64\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\scpu64\Release\scpu64.lib"
+				OutputFile=".\libs\scpu64\Win32Release\scpu64.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\scpu64\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\scpu64\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\scpu64\DXDebug\scpu64.pch"
-				AssemblerListingLocation=".\libs\scpu64\DXDebug\"
-				ObjectFile=".\libs\scpu64\DXDebug\"
-				ProgramDataBaseFileName=".\libs\scpu64\DXDebug\"
+				PrecompiledHeaderFile=".\libs\scpu64\ItaniumDXDebug\scpu64.pch"
+				AssemblerListingLocation=".\libs\scpu64ItaniumDXDebug\"
+				ObjectFile=".\libs\scpu64\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\scpu64\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\scpu64\DXDebug\scpu64.lib"
+				OutputFile=".\libs\scpu64\ItaniumDXDebug\scpu64.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\scpu64\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\scpu64\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\scpu64\DXRelease\scpu64.pch"
-				AssemblerListingLocation=".\libs\scpu64\DXRelease\"
-				ObjectFile=".\libs\scpu64\DXRelease\"
-				ProgramDataBaseFileName=".\libs\scpu64\DXRelease\"
+				PrecompiledHeaderFile=".\libs\scpu64\ItaniumDXRelease\scpu64.pch"
+				AssemblerListingLocation=".\libs\scpu64ItaniumDXRelease\"
+				ObjectFile=".\libs\scpu64\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\scpu64\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\scpu64\DXRelease\scpu64.lib"
+				OutputFile=".\libs\scpu64\ItaniumDXRelease\scpu64.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\scpu64\ItaniumDebug"
+			IntermediateDirectory=".\libs\scpu64\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\scpu64\Debug\scpu64.pch"
-				AssemblerListingLocation=".\libs\scpu64\Debug\"
-				ObjectFile=".\libs\scpu64\Debug\"
-				ProgramDataBaseFileName=".\libs\scpu64\Debug\"
+				PrecompiledHeaderFile=".\libs\scpu64\ItaniumDebug\scpu64.pch"
+				AssemblerListingLocation=".\libs\scpu64ItaniumDebug\"
+				ObjectFile=".\libs\scpu64\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\scpu64\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\scpu64\Debug\scpu64.lib"
+				OutputFile=".\libs\scpu64\ItaniumDebug\scpu64.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\scpu64\ItaniumRelease"
+			IntermediateDirectory=".\libs\scpu64\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\scpu64\Release\scpu64.pch"
-				AssemblerListingLocation=".\libs\scpu64\Release\"
-				ObjectFile=".\libs\scpu64\Release\"
-				ProgramDataBaseFileName=".\libs\scpu64\Release\"
+				PrecompiledHeaderFile=".\libs\scpu64\ItaniumRelease\scpu64.pch"
+				AssemblerListingLocation=".\libs\scpu64ItaniumRelease\"
+				ObjectFile=".\libs\scpu64\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\scpu64\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\scpu64\Release\scpu64.lib"
+				OutputFile=".\libs\scpu64\ItaniumRelease\scpu64.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\scpu64\x64DXDebug"
+			IntermediateDirectory=".\libs\scpu64\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\scpu64\DXDebug\scpu64.pch"
-				AssemblerListingLocation=".\libs\scpu64\DXDebug\"
-				ObjectFile=".\libs\scpu64\DXDebug\"
-				ProgramDataBaseFileName=".\libs\scpu64\DXDebug\"
+				PrecompiledHeaderFile=".\libs\scpu64\x64DXDebug\scpu64.pch"
+				AssemblerListingLocation=".\libs\scpu64x64DXDebug\"
+				ObjectFile=".\libs\scpu64\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\scpu64\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\scpu64\DXDebug\scpu64.lib"
+				OutputFile=".\libs\scpu64\x64DXDebug\scpu64.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\scpu64\x64DXRelease"
+			IntermediateDirectory=".\libs\scpu64\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\scpu64\DXRelease\scpu64.pch"
-				AssemblerListingLocation=".\libs\scpu64\DXRelease\"
-				ObjectFile=".\libs\scpu64\DXRelease\"
-				ProgramDataBaseFileName=".\libs\scpu64\DXRelease\"
+				PrecompiledHeaderFile=".\libs\scpu64\x64DXRelease\scpu64.pch"
+				AssemblerListingLocation=".\libs\scpu64x64DXRelease\"
+				ObjectFile=".\libs\scpu64\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\scpu64\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\scpu64\DXRelease\scpu64.lib"
+				OutputFile=".\libs\scpu64\x64DXRelease\scpu64.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\scpu64\x64Debug"
+			IntermediateDirectory=".\libs\scpu64\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\scpu64\Debug\scpu64.pch"
-				AssemblerListingLocation=".\libs\scpu64\Debug\"
-				ObjectFile=".\libs\scpu64\Debug\"
-				ProgramDataBaseFileName=".\libs\scpu64\Debug\"
+				PrecompiledHeaderFile=".\libs\scpu64\x64Debug\scpu64.pch"
+				AssemblerListingLocation=".\libs\scpu64x64Debug\"
+				ObjectFile=".\libs\scpu64\x64Debug\"
+				ProgramDataBaseFileName=".\libs\scpu64\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\scpu64\Debug\scpu64.lib"
+				OutputFile=".\libs\scpu64\x64Debug\scpu64.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\scpu64\x64Release"
+			IntermediateDirectory=".\libs\scpu64\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\scpu64\Release\scpu64.pch"
-				AssemblerListingLocation=".\libs\scpu64\Release\"
-				ObjectFile=".\libs\scpu64\Release\"
-				ProgramDataBaseFileName=".\libs\scpu64\Release\"
+				PrecompiledHeaderFile=".\libs\scpu64\x64Release\scpu64.pch"
+				AssemblerListingLocation=".\libs\scpu64x64Release\"
+				ObjectFile=".\libs\scpu64\x64Release\"
+				ProgramDataBaseFileName=".\libs\scpu64\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\scpu64\Release\scpu64.lib"
+				OutputFile=".\libs\scpu64\x64Release\scpu64.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -890,15 +890,7 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\..\scpu64\scpu64-cmdline-options.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\scpu64\scpu64-resources.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\scpu64\scpu64-snapshot.c"
+			RelativePath="..\..\..\scpu64\scpu64cpu.c"
 			>
 		</File>
 		<File
@@ -906,74 +898,8 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\scpu64\scpu64cpu.c"
+			RelativePath="..\..\..\scpu64\scpu64-cmdline-options.c"
 			>
-			<FileConfiguration
-				Name="DX Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|Itanium"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Itanium"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|x64"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|x64"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="true"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="true"
-				/>
-			</FileConfiguration>
 		</File>
 		<File
 			RelativePath="..\..\..\scpu64\scpu64gluelogic.c"
@@ -992,7 +918,15 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\..\scpu64\scpu64-resources.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\scpu64\scpu64rom.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\scpu64\scpu64-snapshot.c"
 			>
 		</File>
 		<File

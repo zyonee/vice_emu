@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\diskimage\DXDebug"
-			IntermediateDirectory=".\libs\diskimage\DXDebug"
+			OutputDirectory=".\libs\diskimage\Win32DXDebug"
+			IntermediateDirectory=".\libs\diskimage\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\diskimage\DXDebug\diskimage.pch"
-				AssemblerListingLocation=".\libs\diskimage\DXDebug\"
-				ObjectFile=".\libs\diskimage\DXDebug\"
-				ProgramDataBaseFileName=".\libs\diskimage\DXDebug\"
+				PrecompiledHeaderFile=".\libs\diskimage\Win32DXDebug\diskimage.pch"
+				AssemblerListingLocation=".\libs\diskimageWin32DXDebug\"
+				ObjectFile=".\libs\diskimage\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\diskimage\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\diskimage\DXDebug\diskimage.lib"
+				OutputFile=".\libs\diskimage\Win32DXDebug\diskimage.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\diskimage\DXRelease"
-			IntermediateDirectory=".\libs\diskimage\DXRelease"
+			OutputDirectory=".\libs\diskimage\Win32DXRelease"
+			IntermediateDirectory=".\libs\diskimage\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\diskimage\DXRelease\diskimage.pch"
-				AssemblerListingLocation=".\libs\diskimage\DXRelease\"
-				ObjectFile=".\libs\diskimage\DXRelease\"
-				ProgramDataBaseFileName=".\libs\diskimage\DXRelease\"
+				PrecompiledHeaderFile=".\libs\diskimage\Win32DXRelease\diskimage.pch"
+				AssemblerListingLocation=".\libs\diskimageWin32DXRelease\"
+				ObjectFile=".\libs\diskimage\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\diskimage\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\diskimage\DXRelease\diskimage.lib"
+				OutputFile=".\libs\diskimage\Win32DXRelease\diskimage.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\diskimage\Debug"
-			IntermediateDirectory=".\libs\diskimage\Debug"
+			OutputDirectory=".\libs\diskimage\Win32Debug"
+			IntermediateDirectory=".\libs\diskimage\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\diskimage\Debug\diskimage.pch"
-				AssemblerListingLocation=".\libs\diskimage\Debug\"
-				ObjectFile=".\libs\diskimage\Debug\"
-				ProgramDataBaseFileName=".\libs\diskimage\Debug\"
+				PrecompiledHeaderFile=".\libs\diskimage\Win32Debug\diskimage.pch"
+				AssemblerListingLocation=".\libs\diskimageWin32Debug\"
+				ObjectFile=".\libs\diskimage\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\diskimage\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\diskimage\Debug\diskimage.lib"
+				OutputFile=".\libs\diskimage\Win32Debug\diskimage.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\diskimage\Release"
-			IntermediateDirectory=".\libs\diskimage\Release"
+			OutputDirectory=".\libs\diskimage\Win32Release"
+			IntermediateDirectory=".\libs\diskimage\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\diskimage\Release\diskimage.pch"
-				AssemblerListingLocation=".\libs\diskimage\Release\"
-				ObjectFile=".\libs\diskimage\Release\"
-				ProgramDataBaseFileName=".\libs\diskimage\Release\"
+				PrecompiledHeaderFile=".\libs\diskimage\Win32Release\diskimage.pch"
+				AssemblerListingLocation=".\libs\diskimageWin32Release\"
+				ObjectFile=".\libs\diskimage\Win32Release\"
+				ProgramDataBaseFileName=".\libs\diskimage\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\diskimage\Release\diskimage.lib"
+				OutputFile=".\libs\diskimage\Win32Release\diskimage.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\diskimage\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\diskimage\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\diskimage\DXDebug\diskimage.pch"
-				AssemblerListingLocation=".\libs\diskimage\DXDebug\"
-				ObjectFile=".\libs\diskimage\DXDebug\"
-				ProgramDataBaseFileName=".\libs\diskimage\DXDebug\"
+				PrecompiledHeaderFile=".\libs\diskimage\ItaniumDXDebug\diskimage.pch"
+				AssemblerListingLocation=".\libs\diskimageItaniumDXDebug\"
+				ObjectFile=".\libs\diskimage\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\diskimage\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\diskimage\DXDebug\diskimage.lib"
+				OutputFile=".\libs\diskimage\ItaniumDXDebug\diskimage.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\diskimage\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\diskimage\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\diskimage\DXRelease\diskimage.pch"
-				AssemblerListingLocation=".\libs\diskimage\DXRelease\"
-				ObjectFile=".\libs\diskimage\DXRelease\"
-				ProgramDataBaseFileName=".\libs\diskimage\DXRelease\"
+				PrecompiledHeaderFile=".\libs\diskimage\ItaniumDXRelease\diskimage.pch"
+				AssemblerListingLocation=".\libs\diskimageItaniumDXRelease\"
+				ObjectFile=".\libs\diskimage\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\diskimage\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\diskimage\DXRelease\diskimage.lib"
+				OutputFile=".\libs\diskimage\ItaniumDXRelease\diskimage.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\diskimage\ItaniumDebug"
+			IntermediateDirectory=".\libs\diskimage\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\diskimage\Debug\diskimage.pch"
-				AssemblerListingLocation=".\libs\diskimage\Debug\"
-				ObjectFile=".\libs\diskimage\Debug\"
-				ProgramDataBaseFileName=".\libs\diskimage\Debug\"
+				PrecompiledHeaderFile=".\libs\diskimage\ItaniumDebug\diskimage.pch"
+				AssemblerListingLocation=".\libs\diskimageItaniumDebug\"
+				ObjectFile=".\libs\diskimage\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\diskimage\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\diskimage\Debug\diskimage.lib"
+				OutputFile=".\libs\diskimage\ItaniumDebug\diskimage.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\diskimage\ItaniumRelease"
+			IntermediateDirectory=".\libs\diskimage\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\diskimage\Release\diskimage.pch"
-				AssemblerListingLocation=".\libs\diskimage\Release\"
-				ObjectFile=".\libs\diskimage\Release\"
-				ProgramDataBaseFileName=".\libs\diskimage\Release\"
+				PrecompiledHeaderFile=".\libs\diskimage\ItaniumRelease\diskimage.pch"
+				AssemblerListingLocation=".\libs\diskimageItaniumRelease\"
+				ObjectFile=".\libs\diskimage\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\diskimage\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\diskimage\Release\diskimage.lib"
+				OutputFile=".\libs\diskimage\ItaniumRelease\diskimage.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\diskimage\x64DXDebug"
+			IntermediateDirectory=".\libs\diskimage\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\diskimage\DXDebug\diskimage.pch"
-				AssemblerListingLocation=".\libs\diskimage\DXDebug\"
-				ObjectFile=".\libs\diskimage\DXDebug\"
-				ProgramDataBaseFileName=".\libs\diskimage\DXDebug\"
+				PrecompiledHeaderFile=".\libs\diskimage\x64DXDebug\diskimage.pch"
+				AssemblerListingLocation=".\libs\diskimagex64DXDebug\"
+				ObjectFile=".\libs\diskimage\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\diskimage\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\diskimage\DXDebug\diskimage.lib"
+				OutputFile=".\libs\diskimage\x64DXDebug\diskimage.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\diskimage\x64DXRelease"
+			IntermediateDirectory=".\libs\diskimage\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\diskimage\DXRelease\diskimage.pch"
-				AssemblerListingLocation=".\libs\diskimage\DXRelease\"
-				ObjectFile=".\libs\diskimage\DXRelease\"
-				ProgramDataBaseFileName=".\libs\diskimage\DXRelease\"
+				PrecompiledHeaderFile=".\libs\diskimage\x64DXRelease\diskimage.pch"
+				AssemblerListingLocation=".\libs\diskimagex64DXRelease\"
+				ObjectFile=".\libs\diskimage\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\diskimage\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\diskimage\DXRelease\diskimage.lib"
+				OutputFile=".\libs\diskimage\x64DXRelease\diskimage.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\diskimage\x64Debug"
+			IntermediateDirectory=".\libs\diskimage\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\diskimage\Debug\diskimage.pch"
-				AssemblerListingLocation=".\libs\diskimage\Debug\"
-				ObjectFile=".\libs\diskimage\Debug\"
-				ProgramDataBaseFileName=".\libs\diskimage\Debug\"
+				PrecompiledHeaderFile=".\libs\diskimage\x64Debug\diskimage.pch"
+				AssemblerListingLocation=".\libs\diskimagex64Debug\"
+				ObjectFile=".\libs\diskimage\x64Debug\"
+				ProgramDataBaseFileName=".\libs\diskimage\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\diskimage\Debug\diskimage.lib"
+				OutputFile=".\libs\diskimage\x64Debug\diskimage.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\diskimage\x64Release"
+			IntermediateDirectory=".\libs\diskimage\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\diskimage\Release\diskimage.pch"
-				AssemblerListingLocation=".\libs\diskimage\Release\"
-				ObjectFile=".\libs\diskimage\Release\"
-				ProgramDataBaseFileName=".\libs\diskimage\Release\"
+				PrecompiledHeaderFile=".\libs\diskimage\x64Release\diskimage.pch"
+				AssemblerListingLocation=".\libs\diskimagex64Release\"
+				ObjectFile=".\libs\diskimage\x64Release\"
+				ProgramDataBaseFileName=".\libs\diskimage\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\diskimage\Release\diskimage.lib"
+				OutputFile=".\libs\diskimage\x64Release\diskimage.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

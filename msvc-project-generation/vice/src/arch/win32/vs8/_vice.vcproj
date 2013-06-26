@@ -22,7 +22,7 @@
 		<Configuration
 			Name="DX Debug|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\_vice\DXDebug"
+			IntermediateDirectory=".\libs\_vice\Win32DXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -55,10 +55,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\_vice\DXDebug\_vice.pch"
-				AssemblerListingLocation=".\libs\_vice\DXDebug\"
-				ObjectFile=".\libs\_vice\DXDebug\"
-				ProgramDataBaseFileName=".\libs\_vice\DXDebug\"
+				PrecompiledHeaderFile=".\libs\_vice\Win32DXDebug\_vice.pch"
+				AssemblerListingLocation=".\libs\_viceWin32DXDebug\"
+				ObjectFile=".\libs\_vice\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\_vice\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -78,7 +78,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="comctl32.lib dsound.lib dxguid.lib winmm.lib version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\_vice.exe"
 				LinkIncremental="2"
@@ -115,7 +114,7 @@
 		<Configuration
 			Name="DX Release|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\_vice\DXRelease"
+			IntermediateDirectory=".\libs\_vice\Win32DXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -150,10 +149,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\_vice\DXRelease\_vice.pch"
-				AssemblerListingLocation=".\libs\_vice\DXRelease\"
-				ObjectFile=".\libs\_vice\DXRelease\"
-				ProgramDataBaseFileName=".\libs\_vice\DXRelease\"
+				PrecompiledHeaderFile=".\libs\_vice\Win32DXRelease\_vice.pch"
+				AssemblerListingLocation=".\libs\_viceWin32DXRelease\"
+				ObjectFile=".\libs\_vice\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\_vice\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -172,7 +171,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="comctl32.lib dsound.lib dxguid.lib winmm.lib version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\_vice.exe"
 				LinkIncremental="1"
@@ -208,7 +206,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\_vice\Debug"
+			IntermediateDirectory=".\libs\_vice\Win32Debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -241,10 +239,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\_vice\Debug\_vice.pch"
-				AssemblerListingLocation=".\libs\_vice\Debug\"
-				ObjectFile=".\libs\_vice\Debug\"
-				ProgramDataBaseFileName=".\libs\_vice\Debug\"
+				PrecompiledHeaderFile=".\libs\_vice\Win32Debug\_vice.pch"
+				AssemblerListingLocation=".\libs\_viceWin32Debug\"
+				ObjectFile=".\libs\_vice\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\_vice\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -264,7 +262,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="comctl32.lib version.lib winmm.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\_vice.exe"
 				LinkIncremental="2"
@@ -301,7 +298,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\_vice\Release"
+			IntermediateDirectory=".\libs\_vice\Win32Release"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -336,10 +333,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\_vice\Release\_vice.pch"
-				AssemblerListingLocation=".\libs\_vice\Release\"
-				ObjectFile=".\libs\_vice\Release\"
-				ProgramDataBaseFileName=".\libs\_vice\Release\"
+				PrecompiledHeaderFile=".\libs\_vice\Win32Release\_vice.pch"
+				AssemblerListingLocation=".\libs\_viceWin32Release\"
+				ObjectFile=".\libs\_vice\Win32Release\"
+				ProgramDataBaseFileName=".\libs\_vice\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -358,7 +355,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="comctl32.lib version.lib winmm.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\_vice.exe"
 				LinkIncremental="1"
@@ -393,8 +389,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\_vice\ItaniumDXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -427,10 +423,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\_vice\DXDebug\_vice.pch"
-				AssemblerListingLocation=".\libs\_vice\DXDebug\"
-				ObjectFile=".\libs\_vice\DXDebug\"
-				ProgramDataBaseFileName=".\libs\_vice\DXDebug\"
+				PrecompiledHeaderFile=".\libs\_vice\ItaniumDXDebug\_vice.pch"
+				AssemblerListingLocation=".\libs\_viceItaniumDXDebug\"
+				ObjectFile=".\libs\_vice\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\_vice\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -450,7 +446,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="comctl32.lib dsound.lib dxguid.lib winmm.lib version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\_vice.exe"
 				LinkIncremental="2"
@@ -487,8 +482,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\_vice\ItaniumDXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -523,10 +518,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\_vice\DXRelease\_vice.pch"
-				AssemblerListingLocation=".\libs\_vice\DXRelease\"
-				ObjectFile=".\libs\_vice\DXRelease\"
-				ProgramDataBaseFileName=".\libs\_vice\DXRelease\"
+				PrecompiledHeaderFile=".\libs\_vice\ItaniumDXRelease\_vice.pch"
+				AssemblerListingLocation=".\libs\_viceItaniumDXRelease\"
+				ObjectFile=".\libs\_vice\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\_vice\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -545,7 +540,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="comctl32.lib dsound.lib dxguid.lib winmm.lib version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\_vice.exe"
 				LinkIncremental="1"
@@ -581,8 +575,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\_vice\ItaniumDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -615,10 +609,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\_vice\Debug\_vice.pch"
-				AssemblerListingLocation=".\libs\_vice\Debug\"
-				ObjectFile=".\libs\_vice\Debug\"
-				ProgramDataBaseFileName=".\libs\_vice\Debug\"
+				PrecompiledHeaderFile=".\libs\_vice\ItaniumDebug\_vice.pch"
+				AssemblerListingLocation=".\libs\_viceItaniumDebug\"
+				ObjectFile=".\libs\_vice\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\_vice\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -638,7 +632,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="comctl32.lib version.lib winmm.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\_vice.exe"
 				LinkIncremental="2"
@@ -675,8 +668,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\_vice\ItaniumRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -711,10 +704,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\_vice\Release\_vice.pch"
-				AssemblerListingLocation=".\libs\_vice\Release\"
-				ObjectFile=".\libs\_vice\Release\"
-				ProgramDataBaseFileName=".\libs\_vice\Release\"
+				PrecompiledHeaderFile=".\libs\_vice\ItaniumRelease\_vice.pch"
+				AssemblerListingLocation=".\libs\_viceItaniumRelease\"
+				ObjectFile=".\libs\_vice\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\_vice\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -733,7 +726,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="comctl32.lib version.lib winmm.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\_vice.exe"
 				LinkIncremental="1"
@@ -769,8 +761,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\_vice\x64DXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -803,10 +795,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\_vice\DXDebug\_vice.pch"
-				AssemblerListingLocation=".\libs\_vice\DXDebug\"
-				ObjectFile=".\libs\_vice\DXDebug\"
-				ProgramDataBaseFileName=".\libs\_vice\DXDebug\"
+				PrecompiledHeaderFile=".\libs\_vice\x64DXDebug\_vice.pch"
+				AssemblerListingLocation=".\libs\_vicex64DXDebug\"
+				ObjectFile=".\libs\_vice\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\_vice\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -826,7 +818,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="comctl32.lib dsound.lib dxguid.lib winmm.lib version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\_vice.exe"
 				LinkIncremental="2"
@@ -863,8 +854,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\_vice\x64DXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -899,10 +890,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\_vice\DXRelease\_vice.pch"
-				AssemblerListingLocation=".\libs\_vice\DXRelease\"
-				ObjectFile=".\libs\_vice\DXRelease\"
-				ProgramDataBaseFileName=".\libs\_vice\DXRelease\"
+				PrecompiledHeaderFile=".\libs\_vice\x64DXRelease\_vice.pch"
+				AssemblerListingLocation=".\libs\_vicex64DXRelease\"
+				ObjectFile=".\libs\_vice\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\_vice\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -921,7 +912,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="comctl32.lib dsound.lib dxguid.lib winmm.lib version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\_vice.exe"
 				LinkIncremental="1"
@@ -957,8 +947,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\_vice\x64Debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -991,10 +981,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\_vice\Debug\_vice.pch"
-				AssemblerListingLocation=".\libs\_vice\Debug\"
-				ObjectFile=".\libs\_vice\Debug\"
-				ProgramDataBaseFileName=".\libs\_vice\Debug\"
+				PrecompiledHeaderFile=".\libs\_vice\x64Debug\_vice.pch"
+				AssemblerListingLocation=".\libs\_vicex64Debug\"
+				ObjectFile=".\libs\_vice\x64Debug\"
+				ProgramDataBaseFileName=".\libs\_vice\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -1014,7 +1004,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="comctl32.lib version.lib winmm.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\_vice.exe"
 				LinkIncremental="2"
@@ -1051,8 +1040,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\_vice\x64Release"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -1087,10 +1076,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\_vice\Release\_vice.pch"
-				AssemblerListingLocation=".\libs\_vice\Release\"
-				ObjectFile=".\libs\_vice\Release\"
-				ProgramDataBaseFileName=".\libs\_vice\Release\"
+				PrecompiledHeaderFile=".\libs\_vice\x64Release\_vice.pch"
+				AssemblerListingLocation=".\libs\_vicex64Release\"
+				ObjectFile=".\libs\_vice\x64Release\"
+				ProgramDataBaseFileName=".\libs\_vice\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -1109,7 +1098,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="comctl32.lib version.lib winmm.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\_vice.exe"
 				LinkIncremental="1"

@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\imagecontents\DXDebug"
-			IntermediateDirectory=".\libs\imagecontents\DXDebug"
+			OutputDirectory=".\libs\imagecontents\Win32DXDebug"
+			IntermediateDirectory=".\libs\imagecontents\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\imagecontents\DXDebug\imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\DXDebug\"
-				ObjectFile=".\libs\imagecontents\DXDebug\"
-				ProgramDataBaseFileName=".\libs\imagecontents\DXDebug\"
+				PrecompiledHeaderFile=".\libs\imagecontents\Win32DXDebug\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontentsWin32DXDebug\"
+				ObjectFile=".\libs\imagecontents\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\imagecontents\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\imagecontents\DXDebug\imagecontents.lib"
+				OutputFile=".\libs\imagecontents\Win32DXDebug\imagecontents.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\imagecontents\DXRelease"
-			IntermediateDirectory=".\libs\imagecontents\DXRelease"
+			OutputDirectory=".\libs\imagecontents\Win32DXRelease"
+			IntermediateDirectory=".\libs\imagecontents\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\imagecontents\DXRelease\imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\DXRelease\"
-				ObjectFile=".\libs\imagecontents\DXRelease\"
-				ProgramDataBaseFileName=".\libs\imagecontents\DXRelease\"
+				PrecompiledHeaderFile=".\libs\imagecontents\Win32DXRelease\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontentsWin32DXRelease\"
+				ObjectFile=".\libs\imagecontents\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\imagecontents\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\imagecontents\DXRelease\imagecontents.lib"
+				OutputFile=".\libs\imagecontents\Win32DXRelease\imagecontents.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\imagecontents\Debug"
-			IntermediateDirectory=".\libs\imagecontents\Debug"
+			OutputDirectory=".\libs\imagecontents\Win32Debug"
+			IntermediateDirectory=".\libs\imagecontents\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\imagecontents\Debug\imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\Debug\"
-				ObjectFile=".\libs\imagecontents\Debug\"
-				ProgramDataBaseFileName=".\libs\imagecontents\Debug\"
+				PrecompiledHeaderFile=".\libs\imagecontents\Win32Debug\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontentsWin32Debug\"
+				ObjectFile=".\libs\imagecontents\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\imagecontents\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\imagecontents\Debug\imagecontents.lib"
+				OutputFile=".\libs\imagecontents\Win32Debug\imagecontents.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\imagecontents\Release"
-			IntermediateDirectory=".\libs\imagecontents\Release"
+			OutputDirectory=".\libs\imagecontents\Win32Release"
+			IntermediateDirectory=".\libs\imagecontents\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\imagecontents\Release\imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\Release\"
-				ObjectFile=".\libs\imagecontents\Release\"
-				ProgramDataBaseFileName=".\libs\imagecontents\Release\"
+				PrecompiledHeaderFile=".\libs\imagecontents\Win32Release\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontentsWin32Release\"
+				ObjectFile=".\libs\imagecontents\Win32Release\"
+				ProgramDataBaseFileName=".\libs\imagecontents\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\imagecontents\Release\imagecontents.lib"
+				OutputFile=".\libs\imagecontents\Win32Release\imagecontents.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\imagecontents\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\imagecontents\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\imagecontents\DXDebug\imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\DXDebug\"
-				ObjectFile=".\libs\imagecontents\DXDebug\"
-				ProgramDataBaseFileName=".\libs\imagecontents\DXDebug\"
+				PrecompiledHeaderFile=".\libs\imagecontents\ItaniumDXDebug\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontentsItaniumDXDebug\"
+				ObjectFile=".\libs\imagecontents\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\imagecontents\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\imagecontents\DXDebug\imagecontents.lib"
+				OutputFile=".\libs\imagecontents\ItaniumDXDebug\imagecontents.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\imagecontents\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\imagecontents\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\imagecontents\DXRelease\imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\DXRelease\"
-				ObjectFile=".\libs\imagecontents\DXRelease\"
-				ProgramDataBaseFileName=".\libs\imagecontents\DXRelease\"
+				PrecompiledHeaderFile=".\libs\imagecontents\ItaniumDXRelease\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontentsItaniumDXRelease\"
+				ObjectFile=".\libs\imagecontents\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\imagecontents\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\imagecontents\DXRelease\imagecontents.lib"
+				OutputFile=".\libs\imagecontents\ItaniumDXRelease\imagecontents.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\imagecontents\ItaniumDebug"
+			IntermediateDirectory=".\libs\imagecontents\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\imagecontents\Debug\imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\Debug\"
-				ObjectFile=".\libs\imagecontents\Debug\"
-				ProgramDataBaseFileName=".\libs\imagecontents\Debug\"
+				PrecompiledHeaderFile=".\libs\imagecontents\ItaniumDebug\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontentsItaniumDebug\"
+				ObjectFile=".\libs\imagecontents\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\imagecontents\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\imagecontents\Debug\imagecontents.lib"
+				OutputFile=".\libs\imagecontents\ItaniumDebug\imagecontents.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\imagecontents\ItaniumRelease"
+			IntermediateDirectory=".\libs\imagecontents\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\imagecontents\Release\imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\Release\"
-				ObjectFile=".\libs\imagecontents\Release\"
-				ProgramDataBaseFileName=".\libs\imagecontents\Release\"
+				PrecompiledHeaderFile=".\libs\imagecontents\ItaniumRelease\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontentsItaniumRelease\"
+				ObjectFile=".\libs\imagecontents\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\imagecontents\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\imagecontents\Release\imagecontents.lib"
+				OutputFile=".\libs\imagecontents\ItaniumRelease\imagecontents.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\imagecontents\x64DXDebug"
+			IntermediateDirectory=".\libs\imagecontents\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\imagecontents\DXDebug\imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\DXDebug\"
-				ObjectFile=".\libs\imagecontents\DXDebug\"
-				ProgramDataBaseFileName=".\libs\imagecontents\DXDebug\"
+				PrecompiledHeaderFile=".\libs\imagecontents\x64DXDebug\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontentsx64DXDebug\"
+				ObjectFile=".\libs\imagecontents\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\imagecontents\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\imagecontents\DXDebug\imagecontents.lib"
+				OutputFile=".\libs\imagecontents\x64DXDebug\imagecontents.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\imagecontents\x64DXRelease"
+			IntermediateDirectory=".\libs\imagecontents\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\imagecontents\DXRelease\imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\DXRelease\"
-				ObjectFile=".\libs\imagecontents\DXRelease\"
-				ProgramDataBaseFileName=".\libs\imagecontents\DXRelease\"
+				PrecompiledHeaderFile=".\libs\imagecontents\x64DXRelease\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontentsx64DXRelease\"
+				ObjectFile=".\libs\imagecontents\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\imagecontents\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\imagecontents\DXRelease\imagecontents.lib"
+				OutputFile=".\libs\imagecontents\x64DXRelease\imagecontents.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\imagecontents\x64Debug"
+			IntermediateDirectory=".\libs\imagecontents\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\imagecontents\Debug\imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\Debug\"
-				ObjectFile=".\libs\imagecontents\Debug\"
-				ProgramDataBaseFileName=".\libs\imagecontents\Debug\"
+				PrecompiledHeaderFile=".\libs\imagecontents\x64Debug\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontentsx64Debug\"
+				ObjectFile=".\libs\imagecontents\x64Debug\"
+				ProgramDataBaseFileName=".\libs\imagecontents\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\imagecontents\Debug\imagecontents.lib"
+				OutputFile=".\libs\imagecontents\x64Debug\imagecontents.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\imagecontents\x64Release"
+			IntermediateDirectory=".\libs\imagecontents\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\imagecontents\Release\imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\Release\"
-				ObjectFile=".\libs\imagecontents\Release\"
-				ProgramDataBaseFileName=".\libs\imagecontents\Release\"
+				PrecompiledHeaderFile=".\libs\imagecontents\x64Release\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontentsx64Release\"
+				ObjectFile=".\libs\imagecontents\x64Release\"
+				ProgramDataBaseFileName=".\libs\imagecontents\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\imagecontents\Release\imagecontents.lib"
+				OutputFile=".\libs\imagecontents\x64Release\imagecontents.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\vdrive\DXDebug"
-			IntermediateDirectory=".\libs\vdrive\DXDebug"
+			OutputDirectory=".\libs\vdrive\Win32DXDebug"
+			IntermediateDirectory=".\libs\vdrive\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vdrive\DXDebug\vdrive.pch"
-				AssemblerListingLocation=".\libs\vdrive\DXDebug\"
-				ObjectFile=".\libs\vdrive\DXDebug\"
-				ProgramDataBaseFileName=".\libs\vdrive\DXDebug\"
+				PrecompiledHeaderFile=".\libs\vdrive\Win32DXDebug\vdrive.pch"
+				AssemblerListingLocation=".\libs\vdriveWin32DXDebug\"
+				ObjectFile=".\libs\vdrive\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\vdrive\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vdrive\DXDebug\vdrive.lib"
+				OutputFile=".\libs\vdrive\Win32DXDebug\vdrive.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\vdrive\DXRelease"
-			IntermediateDirectory=".\libs\vdrive\DXRelease"
+			OutputDirectory=".\libs\vdrive\Win32DXRelease"
+			IntermediateDirectory=".\libs\vdrive\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vdrive\DXRelease\vdrive.pch"
-				AssemblerListingLocation=".\libs\vdrive\DXRelease\"
-				ObjectFile=".\libs\vdrive\DXRelease\"
-				ProgramDataBaseFileName=".\libs\vdrive\DXRelease\"
+				PrecompiledHeaderFile=".\libs\vdrive\Win32DXRelease\vdrive.pch"
+				AssemblerListingLocation=".\libs\vdriveWin32DXRelease\"
+				ObjectFile=".\libs\vdrive\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\vdrive\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vdrive\DXRelease\vdrive.lib"
+				OutputFile=".\libs\vdrive\Win32DXRelease\vdrive.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\vdrive\Debug"
-			IntermediateDirectory=".\libs\vdrive\Debug"
+			OutputDirectory=".\libs\vdrive\Win32Debug"
+			IntermediateDirectory=".\libs\vdrive\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vdrive\Debug\vdrive.pch"
-				AssemblerListingLocation=".\libs\vdrive\Debug\"
-				ObjectFile=".\libs\vdrive\Debug\"
-				ProgramDataBaseFileName=".\libs\vdrive\Debug\"
+				PrecompiledHeaderFile=".\libs\vdrive\Win32Debug\vdrive.pch"
+				AssemblerListingLocation=".\libs\vdriveWin32Debug\"
+				ObjectFile=".\libs\vdrive\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\vdrive\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vdrive\Debug\vdrive.lib"
+				OutputFile=".\libs\vdrive\Win32Debug\vdrive.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\vdrive\Release"
-			IntermediateDirectory=".\libs\vdrive\Release"
+			OutputDirectory=".\libs\vdrive\Win32Release"
+			IntermediateDirectory=".\libs\vdrive\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vdrive\Release\vdrive.pch"
-				AssemblerListingLocation=".\libs\vdrive\Release\"
-				ObjectFile=".\libs\vdrive\Release\"
-				ProgramDataBaseFileName=".\libs\vdrive\Release\"
+				PrecompiledHeaderFile=".\libs\vdrive\Win32Release\vdrive.pch"
+				AssemblerListingLocation=".\libs\vdriveWin32Release\"
+				ObjectFile=".\libs\vdrive\Win32Release\"
+				ProgramDataBaseFileName=".\libs\vdrive\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vdrive\Release\vdrive.lib"
+				OutputFile=".\libs\vdrive\Win32Release\vdrive.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vdrive\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\vdrive\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vdrive\DXDebug\vdrive.pch"
-				AssemblerListingLocation=".\libs\vdrive\DXDebug\"
-				ObjectFile=".\libs\vdrive\DXDebug\"
-				ProgramDataBaseFileName=".\libs\vdrive\DXDebug\"
+				PrecompiledHeaderFile=".\libs\vdrive\ItaniumDXDebug\vdrive.pch"
+				AssemblerListingLocation=".\libs\vdriveItaniumDXDebug\"
+				ObjectFile=".\libs\vdrive\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\vdrive\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vdrive\DXDebug\vdrive.lib"
+				OutputFile=".\libs\vdrive\ItaniumDXDebug\vdrive.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vdrive\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\vdrive\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vdrive\DXRelease\vdrive.pch"
-				AssemblerListingLocation=".\libs\vdrive\DXRelease\"
-				ObjectFile=".\libs\vdrive\DXRelease\"
-				ProgramDataBaseFileName=".\libs\vdrive\DXRelease\"
+				PrecompiledHeaderFile=".\libs\vdrive\ItaniumDXRelease\vdrive.pch"
+				AssemblerListingLocation=".\libs\vdriveItaniumDXRelease\"
+				ObjectFile=".\libs\vdrive\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\vdrive\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vdrive\DXRelease\vdrive.lib"
+				OutputFile=".\libs\vdrive\ItaniumDXRelease\vdrive.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vdrive\ItaniumDebug"
+			IntermediateDirectory=".\libs\vdrive\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vdrive\Debug\vdrive.pch"
-				AssemblerListingLocation=".\libs\vdrive\Debug\"
-				ObjectFile=".\libs\vdrive\Debug\"
-				ProgramDataBaseFileName=".\libs\vdrive\Debug\"
+				PrecompiledHeaderFile=".\libs\vdrive\ItaniumDebug\vdrive.pch"
+				AssemblerListingLocation=".\libs\vdriveItaniumDebug\"
+				ObjectFile=".\libs\vdrive\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\vdrive\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vdrive\Debug\vdrive.lib"
+				OutputFile=".\libs\vdrive\ItaniumDebug\vdrive.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vdrive\ItaniumRelease"
+			IntermediateDirectory=".\libs\vdrive\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vdrive\Release\vdrive.pch"
-				AssemblerListingLocation=".\libs\vdrive\Release\"
-				ObjectFile=".\libs\vdrive\Release\"
-				ProgramDataBaseFileName=".\libs\vdrive\Release\"
+				PrecompiledHeaderFile=".\libs\vdrive\ItaniumRelease\vdrive.pch"
+				AssemblerListingLocation=".\libs\vdriveItaniumRelease\"
+				ObjectFile=".\libs\vdrive\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\vdrive\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vdrive\Release\vdrive.lib"
+				OutputFile=".\libs\vdrive\ItaniumRelease\vdrive.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vdrive\x64DXDebug"
+			IntermediateDirectory=".\libs\vdrive\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vdrive\DXDebug\vdrive.pch"
-				AssemblerListingLocation=".\libs\vdrive\DXDebug\"
-				ObjectFile=".\libs\vdrive\DXDebug\"
-				ProgramDataBaseFileName=".\libs\vdrive\DXDebug\"
+				PrecompiledHeaderFile=".\libs\vdrive\x64DXDebug\vdrive.pch"
+				AssemblerListingLocation=".\libs\vdrivex64DXDebug\"
+				ObjectFile=".\libs\vdrive\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\vdrive\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vdrive\DXDebug\vdrive.lib"
+				OutputFile=".\libs\vdrive\x64DXDebug\vdrive.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vdrive\x64DXRelease"
+			IntermediateDirectory=".\libs\vdrive\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vdrive\DXRelease\vdrive.pch"
-				AssemblerListingLocation=".\libs\vdrive\DXRelease\"
-				ObjectFile=".\libs\vdrive\DXRelease\"
-				ProgramDataBaseFileName=".\libs\vdrive\DXRelease\"
+				PrecompiledHeaderFile=".\libs\vdrive\x64DXRelease\vdrive.pch"
+				AssemblerListingLocation=".\libs\vdrivex64DXRelease\"
+				ObjectFile=".\libs\vdrive\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\vdrive\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vdrive\DXRelease\vdrive.lib"
+				OutputFile=".\libs\vdrive\x64DXRelease\vdrive.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vdrive\x64Debug"
+			IntermediateDirectory=".\libs\vdrive\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vdrive\Debug\vdrive.pch"
-				AssemblerListingLocation=".\libs\vdrive\Debug\"
-				ObjectFile=".\libs\vdrive\Debug\"
-				ProgramDataBaseFileName=".\libs\vdrive\Debug\"
+				PrecompiledHeaderFile=".\libs\vdrive\x64Debug\vdrive.pch"
+				AssemblerListingLocation=".\libs\vdrivex64Debug\"
+				ObjectFile=".\libs\vdrive\x64Debug\"
+				ProgramDataBaseFileName=".\libs\vdrive\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vdrive\Debug\vdrive.lib"
+				OutputFile=".\libs\vdrive\x64Debug\vdrive.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vdrive\x64Release"
+			IntermediateDirectory=".\libs\vdrive\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vdrive\Release\vdrive.pch"
-				AssemblerListingLocation=".\libs\vdrive\Release\"
-				ObjectFile=".\libs\vdrive\Release\"
-				ProgramDataBaseFileName=".\libs\vdrive\Release\"
+				PrecompiledHeaderFile=".\libs\vdrive\x64Release\vdrive.pch"
+				AssemblerListingLocation=".\libs\vdrivex64Release\"
+				ObjectFile=".\libs\vdrive\x64Release\"
+				ProgramDataBaseFileName=".\libs\vdrive\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vdrive\Release\vdrive.lib"
+				OutputFile=".\libs\vdrive\x64Release\vdrive.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

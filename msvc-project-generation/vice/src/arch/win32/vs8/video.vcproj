@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\video\DXDebug"
-			IntermediateDirectory=".\libs\video\DXDebug"
+			OutputDirectory=".\libs\video\Win32DXDebug"
+			IntermediateDirectory=".\libs\video\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\video\DXDebug\video.pch"
-				AssemblerListingLocation=".\libs\video\DXDebug\"
-				ObjectFile=".\libs\video\DXDebug\"
-				ProgramDataBaseFileName=".\libs\video\DXDebug\"
+				PrecompiledHeaderFile=".\libs\video\Win32DXDebug\video.pch"
+				AssemblerListingLocation=".\libs\videoWin32DXDebug\"
+				ObjectFile=".\libs\video\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\video\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\video\DXDebug\video.lib"
+				OutputFile=".\libs\video\Win32DXDebug\video.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\video\DXRelease"
-			IntermediateDirectory=".\libs\video\DXRelease"
+			OutputDirectory=".\libs\video\Win32DXRelease"
+			IntermediateDirectory=".\libs\video\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\video\DXRelease\video.pch"
-				AssemblerListingLocation=".\libs\video\DXRelease\"
-				ObjectFile=".\libs\video\DXRelease\"
-				ProgramDataBaseFileName=".\libs\video\DXRelease\"
+				PrecompiledHeaderFile=".\libs\video\Win32DXRelease\video.pch"
+				AssemblerListingLocation=".\libs\videoWin32DXRelease\"
+				ObjectFile=".\libs\video\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\video\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\video\DXRelease\video.lib"
+				OutputFile=".\libs\video\Win32DXRelease\video.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\video\Debug"
-			IntermediateDirectory=".\libs\video\Debug"
+			OutputDirectory=".\libs\video\Win32Debug"
+			IntermediateDirectory=".\libs\video\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\video\Debug\video.pch"
-				AssemblerListingLocation=".\libs\video\Debug\"
-				ObjectFile=".\libs\video\Debug\"
-				ProgramDataBaseFileName=".\libs\video\Debug\"
+				PrecompiledHeaderFile=".\libs\video\Win32Debug\video.pch"
+				AssemblerListingLocation=".\libs\videoWin32Debug\"
+				ObjectFile=".\libs\video\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\video\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\video\Debug\video.lib"
+				OutputFile=".\libs\video\Win32Debug\video.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\video\Release"
-			IntermediateDirectory=".\libs\video\Release"
+			OutputDirectory=".\libs\video\Win32Release"
+			IntermediateDirectory=".\libs\video\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\video\Release\video.pch"
-				AssemblerListingLocation=".\libs\video\Release\"
-				ObjectFile=".\libs\video\Release\"
-				ProgramDataBaseFileName=".\libs\video\Release\"
+				PrecompiledHeaderFile=".\libs\video\Win32Release\video.pch"
+				AssemblerListingLocation=".\libs\videoWin32Release\"
+				ObjectFile=".\libs\video\Win32Release\"
+				ProgramDataBaseFileName=".\libs\video\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\video\Release\video.lib"
+				OutputFile=".\libs\video\Win32Release\video.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\video\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\video\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\video\DXDebug\video.pch"
-				AssemblerListingLocation=".\libs\video\DXDebug\"
-				ObjectFile=".\libs\video\DXDebug\"
-				ProgramDataBaseFileName=".\libs\video\DXDebug\"
+				PrecompiledHeaderFile=".\libs\video\ItaniumDXDebug\video.pch"
+				AssemblerListingLocation=".\libs\videoItaniumDXDebug\"
+				ObjectFile=".\libs\video\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\video\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\video\DXDebug\video.lib"
+				OutputFile=".\libs\video\ItaniumDXDebug\video.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\video\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\video\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\video\DXRelease\video.pch"
-				AssemblerListingLocation=".\libs\video\DXRelease\"
-				ObjectFile=".\libs\video\DXRelease\"
-				ProgramDataBaseFileName=".\libs\video\DXRelease\"
+				PrecompiledHeaderFile=".\libs\video\ItaniumDXRelease\video.pch"
+				AssemblerListingLocation=".\libs\videoItaniumDXRelease\"
+				ObjectFile=".\libs\video\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\video\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\video\DXRelease\video.lib"
+				OutputFile=".\libs\video\ItaniumDXRelease\video.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\video\ItaniumDebug"
+			IntermediateDirectory=".\libs\video\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\video\Debug\video.pch"
-				AssemblerListingLocation=".\libs\video\Debug\"
-				ObjectFile=".\libs\video\Debug\"
-				ProgramDataBaseFileName=".\libs\video\Debug\"
+				PrecompiledHeaderFile=".\libs\video\ItaniumDebug\video.pch"
+				AssemblerListingLocation=".\libs\videoItaniumDebug\"
+				ObjectFile=".\libs\video\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\video\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\video\Debug\video.lib"
+				OutputFile=".\libs\video\ItaniumDebug\video.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\video\ItaniumRelease"
+			IntermediateDirectory=".\libs\video\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\video\Release\video.pch"
-				AssemblerListingLocation=".\libs\video\Release\"
-				ObjectFile=".\libs\video\Release\"
-				ProgramDataBaseFileName=".\libs\video\Release\"
+				PrecompiledHeaderFile=".\libs\video\ItaniumRelease\video.pch"
+				AssemblerListingLocation=".\libs\videoItaniumRelease\"
+				ObjectFile=".\libs\video\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\video\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\video\Release\video.lib"
+				OutputFile=".\libs\video\ItaniumRelease\video.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\video\x64DXDebug"
+			IntermediateDirectory=".\libs\video\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\video\DXDebug\video.pch"
-				AssemblerListingLocation=".\libs\video\DXDebug\"
-				ObjectFile=".\libs\video\DXDebug\"
-				ProgramDataBaseFileName=".\libs\video\DXDebug\"
+				PrecompiledHeaderFile=".\libs\video\x64DXDebug\video.pch"
+				AssemblerListingLocation=".\libs\videox64DXDebug\"
+				ObjectFile=".\libs\video\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\video\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\video\DXDebug\video.lib"
+				OutputFile=".\libs\video\x64DXDebug\video.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\video\x64DXRelease"
+			IntermediateDirectory=".\libs\video\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\video\DXRelease\video.pch"
-				AssemblerListingLocation=".\libs\video\DXRelease\"
-				ObjectFile=".\libs\video\DXRelease\"
-				ProgramDataBaseFileName=".\libs\video\DXRelease\"
+				PrecompiledHeaderFile=".\libs\video\x64DXRelease\video.pch"
+				AssemblerListingLocation=".\libs\videox64DXRelease\"
+				ObjectFile=".\libs\video\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\video\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\video\DXRelease\video.lib"
+				OutputFile=".\libs\video\x64DXRelease\video.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\video\x64Debug"
+			IntermediateDirectory=".\libs\video\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\video\Debug\video.pch"
-				AssemblerListingLocation=".\libs\video\Debug\"
-				ObjectFile=".\libs\video\Debug\"
-				ProgramDataBaseFileName=".\libs\video\Debug\"
+				PrecompiledHeaderFile=".\libs\video\x64Debug\video.pch"
+				AssemblerListingLocation=".\libs\videox64Debug\"
+				ObjectFile=".\libs\video\x64Debug\"
+				ProgramDataBaseFileName=".\libs\video\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\video\Debug\video.lib"
+				OutputFile=".\libs\video\x64Debug\video.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\video\x64Release"
+			IntermediateDirectory=".\libs\video\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\video\Release\video.pch"
-				AssemblerListingLocation=".\libs\video\Release\"
-				ObjectFile=".\libs\video\Release\"
-				ProgramDataBaseFileName=".\libs\video\Release\"
+				PrecompiledHeaderFile=".\libs\video\x64Release\video.pch"
+				AssemblerListingLocation=".\libs\videox64Release\"
+				ObjectFile=".\libs\video\x64Release\"
+				ProgramDataBaseFileName=".\libs\video\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\video\Release\video.lib"
+				OutputFile=".\libs\video\x64Release\video.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

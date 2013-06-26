@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\printerdrv\DXDebug"
-			IntermediateDirectory=".\libs\printerdrv\DXDebug"
+			OutputDirectory=".\libs\printerdrv\Win32DXDebug"
+			IntermediateDirectory=".\libs\printerdrv\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\printerdrv\DXDebug\printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\DXDebug\"
-				ObjectFile=".\libs\printerdrv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\printerdrv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\printerdrv\Win32DXDebug\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrvWin32DXDebug\"
+				ObjectFile=".\libs\printerdrv\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\printerdrv\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\printerdrv\DXDebug\printerdrv.lib"
+				OutputFile=".\libs\printerdrv\Win32DXDebug\printerdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\printerdrv\DXRelease"
-			IntermediateDirectory=".\libs\printerdrv\DXRelease"
+			OutputDirectory=".\libs\printerdrv\Win32DXRelease"
+			IntermediateDirectory=".\libs\printerdrv\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\printerdrv\DXRelease\printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\DXRelease\"
-				ObjectFile=".\libs\printerdrv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\printerdrv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\printerdrv\Win32DXRelease\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrvWin32DXRelease\"
+				ObjectFile=".\libs\printerdrv\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\printerdrv\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\printerdrv\DXRelease\printerdrv.lib"
+				OutputFile=".\libs\printerdrv\Win32DXRelease\printerdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\printerdrv\Debug"
-			IntermediateDirectory=".\libs\printerdrv\Debug"
+			OutputDirectory=".\libs\printerdrv\Win32Debug"
+			IntermediateDirectory=".\libs\printerdrv\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\printerdrv\Debug\printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\Debug\"
-				ObjectFile=".\libs\printerdrv\Debug\"
-				ProgramDataBaseFileName=".\libs\printerdrv\Debug\"
+				PrecompiledHeaderFile=".\libs\printerdrv\Win32Debug\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrvWin32Debug\"
+				ObjectFile=".\libs\printerdrv\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\printerdrv\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\printerdrv\Debug\printerdrv.lib"
+				OutputFile=".\libs\printerdrv\Win32Debug\printerdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\printerdrv\Release"
-			IntermediateDirectory=".\libs\printerdrv\Release"
+			OutputDirectory=".\libs\printerdrv\Win32Release"
+			IntermediateDirectory=".\libs\printerdrv\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\printerdrv\Release\printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\Release\"
-				ObjectFile=".\libs\printerdrv\Release\"
-				ProgramDataBaseFileName=".\libs\printerdrv\Release\"
+				PrecompiledHeaderFile=".\libs\printerdrv\Win32Release\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrvWin32Release\"
+				ObjectFile=".\libs\printerdrv\Win32Release\"
+				ProgramDataBaseFileName=".\libs\printerdrv\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\printerdrv\Release\printerdrv.lib"
+				OutputFile=".\libs\printerdrv\Win32Release\printerdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\printerdrv\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\printerdrv\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\printerdrv\DXDebug\printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\DXDebug\"
-				ObjectFile=".\libs\printerdrv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\printerdrv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\printerdrv\ItaniumDXDebug\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrvItaniumDXDebug\"
+				ObjectFile=".\libs\printerdrv\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\printerdrv\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\printerdrv\DXDebug\printerdrv.lib"
+				OutputFile=".\libs\printerdrv\ItaniumDXDebug\printerdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\printerdrv\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\printerdrv\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\printerdrv\DXRelease\printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\DXRelease\"
-				ObjectFile=".\libs\printerdrv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\printerdrv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\printerdrv\ItaniumDXRelease\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrvItaniumDXRelease\"
+				ObjectFile=".\libs\printerdrv\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\printerdrv\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\printerdrv\DXRelease\printerdrv.lib"
+				OutputFile=".\libs\printerdrv\ItaniumDXRelease\printerdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\printerdrv\ItaniumDebug"
+			IntermediateDirectory=".\libs\printerdrv\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\printerdrv\Debug\printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\Debug\"
-				ObjectFile=".\libs\printerdrv\Debug\"
-				ProgramDataBaseFileName=".\libs\printerdrv\Debug\"
+				PrecompiledHeaderFile=".\libs\printerdrv\ItaniumDebug\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrvItaniumDebug\"
+				ObjectFile=".\libs\printerdrv\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\printerdrv\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\printerdrv\Debug\printerdrv.lib"
+				OutputFile=".\libs\printerdrv\ItaniumDebug\printerdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\printerdrv\ItaniumRelease"
+			IntermediateDirectory=".\libs\printerdrv\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\printerdrv\Release\printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\Release\"
-				ObjectFile=".\libs\printerdrv\Release\"
-				ProgramDataBaseFileName=".\libs\printerdrv\Release\"
+				PrecompiledHeaderFile=".\libs\printerdrv\ItaniumRelease\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrvItaniumRelease\"
+				ObjectFile=".\libs\printerdrv\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\printerdrv\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\printerdrv\Release\printerdrv.lib"
+				OutputFile=".\libs\printerdrv\ItaniumRelease\printerdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\printerdrv\x64DXDebug"
+			IntermediateDirectory=".\libs\printerdrv\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\printerdrv\DXDebug\printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\DXDebug\"
-				ObjectFile=".\libs\printerdrv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\printerdrv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\printerdrv\x64DXDebug\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrvx64DXDebug\"
+				ObjectFile=".\libs\printerdrv\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\printerdrv\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\printerdrv\DXDebug\printerdrv.lib"
+				OutputFile=".\libs\printerdrv\x64DXDebug\printerdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\printerdrv\x64DXRelease"
+			IntermediateDirectory=".\libs\printerdrv\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\printerdrv\DXRelease\printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\DXRelease\"
-				ObjectFile=".\libs\printerdrv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\printerdrv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\printerdrv\x64DXRelease\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrvx64DXRelease\"
+				ObjectFile=".\libs\printerdrv\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\printerdrv\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\printerdrv\DXRelease\printerdrv.lib"
+				OutputFile=".\libs\printerdrv\x64DXRelease\printerdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\printerdrv\x64Debug"
+			IntermediateDirectory=".\libs\printerdrv\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\printerdrv\Debug\printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\Debug\"
-				ObjectFile=".\libs\printerdrv\Debug\"
-				ProgramDataBaseFileName=".\libs\printerdrv\Debug\"
+				PrecompiledHeaderFile=".\libs\printerdrv\x64Debug\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrvx64Debug\"
+				ObjectFile=".\libs\printerdrv\x64Debug\"
+				ProgramDataBaseFileName=".\libs\printerdrv\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\printerdrv\Debug\printerdrv.lib"
+				OutputFile=".\libs\printerdrv\x64Debug\printerdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\printerdrv\x64Release"
+			IntermediateDirectory=".\libs\printerdrv\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\printerdrv\Release\printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\Release\"
-				ObjectFile=".\libs\printerdrv\Release\"
-				ProgramDataBaseFileName=".\libs\printerdrv\Release\"
+				PrecompiledHeaderFile=".\libs\printerdrv\x64Release\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrvx64Release\"
+				ObjectFile=".\libs\printerdrv\x64Release\"
+				ProgramDataBaseFileName=".\libs\printerdrv\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\printerdrv\Release\printerdrv.lib"
+				OutputFile=".\libs\printerdrv\x64Release\printerdrv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

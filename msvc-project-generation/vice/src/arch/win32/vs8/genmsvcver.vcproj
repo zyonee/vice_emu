@@ -22,7 +22,7 @@
 		<Configuration
 			Name="DX Debug|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\genmsvcver\DXDebug"
+			IntermediateDirectory=".\libs\genmsvcver\Win32DXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -54,10 +54,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genmsvcver\DXDebug\genmsvcver.pch"
-				AssemblerListingLocation=".\libs\genmsvcver\DXDebug\"
-				ObjectFile=".\libs\genmsvcver\DXDebug\"
-				ProgramDataBaseFileName=".\libs\genmsvcver\DXDebug\"
+				PrecompiledHeaderFile=".\libs\genmsvcver\Win32DXDebug\genmsvcver.pch"
+				AssemblerListingLocation=".\libs\genmsvcverWin32DXDebug\"
+				ObjectFile=".\libs\genmsvcver\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\genmsvcver\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -76,7 +76,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genmsvcver.exe"
 				LinkIncremental="2"
@@ -113,7 +112,7 @@
 		<Configuration
 			Name="DX Release|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\genmsvcver\DXRelease"
+			IntermediateDirectory=".\libs\genmsvcver\Win32DXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -147,10 +146,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genmsvcver\DXRelease\genmsvcver.pch"
-				AssemblerListingLocation=".\libs\genmsvcver\DXRelease\"
-				ObjectFile=".\libs\genmsvcver\DXRelease\"
-				ProgramDataBaseFileName=".\libs\genmsvcver\DXRelease\"
+				PrecompiledHeaderFile=".\libs\genmsvcver\Win32DXRelease\genmsvcver.pch"
+				AssemblerListingLocation=".\libs\genmsvcverWin32DXRelease\"
+				ObjectFile=".\libs\genmsvcver\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\genmsvcver\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -168,7 +167,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genmsvcver.exe"
 				LinkIncremental="1"
@@ -204,7 +202,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\genmsvcver\Debug"
+			IntermediateDirectory=".\libs\genmsvcver\Win32Debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -236,10 +234,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genmsvcver\Debug\genmsvcver.pch"
-				AssemblerListingLocation=".\libs\genmsvcver\Debug\"
-				ObjectFile=".\libs\genmsvcver\Debug\"
-				ProgramDataBaseFileName=".\libs\genmsvcver\Debug\"
+				PrecompiledHeaderFile=".\libs\genmsvcver\Win32Debug\genmsvcver.pch"
+				AssemblerListingLocation=".\libs\genmsvcverWin32Debug\"
+				ObjectFile=".\libs\genmsvcver\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\genmsvcver\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -250,7 +248,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -258,7 +256,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genmsvcver.exe"
 				LinkIncremental="2"
@@ -295,7 +292,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\genmsvcver\Release"
+			IntermediateDirectory=".\libs\genmsvcver\Win32Release"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -329,10 +326,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genmsvcver\Release\genmsvcver.pch"
-				AssemblerListingLocation=".\libs\genmsvcver\Release\"
-				ObjectFile=".\libs\genmsvcver\Release\"
-				ProgramDataBaseFileName=".\libs\genmsvcver\Release\"
+				PrecompiledHeaderFile=".\libs\genmsvcver\Win32Release\genmsvcver.pch"
+				AssemblerListingLocation=".\libs\genmsvcverWin32Release\"
+				ObjectFile=".\libs\genmsvcver\Win32Release\"
+				ProgramDataBaseFileName=".\libs\genmsvcver\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -342,7 +339,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -350,7 +347,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genmsvcver.exe"
 				LinkIncremental="1"
@@ -385,8 +381,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genmsvcver\ItaniumDXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -419,10 +415,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genmsvcver\DXDebug\genmsvcver.pch"
-				AssemblerListingLocation=".\libs\genmsvcver\DXDebug\"
-				ObjectFile=".\libs\genmsvcver\DXDebug\"
-				ProgramDataBaseFileName=".\libs\genmsvcver\DXDebug\"
+				PrecompiledHeaderFile=".\libs\genmsvcver\ItaniumDXDebug\genmsvcver.pch"
+				AssemblerListingLocation=".\libs\genmsvcverItaniumDXDebug\"
+				ObjectFile=".\libs\genmsvcver\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\genmsvcver\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -441,7 +437,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genmsvcver.exe"
 				LinkIncremental="2"
@@ -478,8 +473,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genmsvcver\ItaniumDXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -514,10 +509,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genmsvcver\DXRelease\genmsvcver.pch"
-				AssemblerListingLocation=".\libs\genmsvcver\DXRelease\"
-				ObjectFile=".\libs\genmsvcver\DXRelease\"
-				ProgramDataBaseFileName=".\libs\genmsvcver\DXRelease\"
+				PrecompiledHeaderFile=".\libs\genmsvcver\ItaniumDXRelease\genmsvcver.pch"
+				AssemblerListingLocation=".\libs\genmsvcverItaniumDXRelease\"
+				ObjectFile=".\libs\genmsvcver\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\genmsvcver\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -535,7 +530,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genmsvcver.exe"
 				LinkIncremental="1"
@@ -571,8 +565,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genmsvcver\ItaniumDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -605,10 +599,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genmsvcver\Debug\genmsvcver.pch"
-				AssemblerListingLocation=".\libs\genmsvcver\Debug\"
-				ObjectFile=".\libs\genmsvcver\Debug\"
-				ProgramDataBaseFileName=".\libs\genmsvcver\Debug\"
+				PrecompiledHeaderFile=".\libs\genmsvcver\ItaniumDebug\genmsvcver.pch"
+				AssemblerListingLocation=".\libs\genmsvcverItaniumDebug\"
+				ObjectFile=".\libs\genmsvcver\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\genmsvcver\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -619,7 +613,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -627,7 +621,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genmsvcver.exe"
 				LinkIncremental="2"
@@ -664,8 +657,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genmsvcver\ItaniumRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -700,10 +693,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genmsvcver\Release\genmsvcver.pch"
-				AssemblerListingLocation=".\libs\genmsvcver\Release\"
-				ObjectFile=".\libs\genmsvcver\Release\"
-				ProgramDataBaseFileName=".\libs\genmsvcver\Release\"
+				PrecompiledHeaderFile=".\libs\genmsvcver\ItaniumRelease\genmsvcver.pch"
+				AssemblerListingLocation=".\libs\genmsvcverItaniumRelease\"
+				ObjectFile=".\libs\genmsvcver\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\genmsvcver\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -713,7 +706,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -721,7 +714,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genmsvcver.exe"
 				LinkIncremental="1"
@@ -757,8 +749,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genmsvcver\x64DXDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -791,10 +783,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genmsvcver\DXDebug\genmsvcver.pch"
-				AssemblerListingLocation=".\libs\genmsvcver\DXDebug\"
-				ObjectFile=".\libs\genmsvcver\DXDebug\"
-				ProgramDataBaseFileName=".\libs\genmsvcver\DXDebug\"
+				PrecompiledHeaderFile=".\libs\genmsvcver\x64DXDebug\genmsvcver.pch"
+				AssemblerListingLocation=".\libs\genmsvcverx64DXDebug\"
+				ObjectFile=".\libs\genmsvcver\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\genmsvcver\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -813,7 +805,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genmsvcver.exe"
 				LinkIncremental="2"
@@ -850,8 +841,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genmsvcver\x64DXRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -886,10 +877,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genmsvcver\DXRelease\genmsvcver.pch"
-				AssemblerListingLocation=".\libs\genmsvcver\DXRelease\"
-				ObjectFile=".\libs\genmsvcver\DXRelease\"
-				ProgramDataBaseFileName=".\libs\genmsvcver\DXRelease\"
+				PrecompiledHeaderFile=".\libs\genmsvcver\x64DXRelease\genmsvcver.pch"
+				AssemblerListingLocation=".\libs\genmsvcverx64DXRelease\"
+				ObjectFile=".\libs\genmsvcver\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\genmsvcver\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -907,7 +898,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genmsvcver.exe"
 				LinkIncremental="1"
@@ -943,8 +933,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genmsvcver\x64Debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -977,10 +967,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genmsvcver\Debug\genmsvcver.pch"
-				AssemblerListingLocation=".\libs\genmsvcver\Debug\"
-				ObjectFile=".\libs\genmsvcver\Debug\"
-				ProgramDataBaseFileName=".\libs\genmsvcver\Debug\"
+				PrecompiledHeaderFile=".\libs\genmsvcver\x64Debug\genmsvcver.pch"
+				AssemblerListingLocation=".\libs\genmsvcverx64Debug\"
+				ObjectFile=".\libs\genmsvcver\x64Debug\"
+				ProgramDataBaseFileName=".\libs\genmsvcver\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -991,7 +981,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NODIRECTX,_DEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -999,7 +989,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genmsvcver.exe"
 				LinkIncremental="2"
@@ -1036,8 +1025,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\genmsvcver\x64Release"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -1072,10 +1061,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\genmsvcver\Release\genmsvcver.pch"
-				AssemblerListingLocation=".\libs\genmsvcver\Release\"
-				ObjectFile=".\libs\genmsvcver\Release\"
-				ProgramDataBaseFileName=".\libs\genmsvcver\Release\"
+				PrecompiledHeaderFile=".\libs\genmsvcver\x64Release\genmsvcver.pch"
+				AssemblerListingLocation=".\libs\genmsvcverx64Release\"
+				ObjectFile=".\libs\genmsvcver\x64Release\"
+				ProgramDataBaseFileName=".\libs\genmsvcver\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -1085,7 +1074,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="NODIRECTX,NDEBUG"
 				Culture="1033"
 			/>
 			<Tool
@@ -1093,7 +1082,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="version.lib wsock32.lib"
 				OutputFile=".\..\..\..\..\data\genmsvcver.exe"
 				LinkIncremental="1"

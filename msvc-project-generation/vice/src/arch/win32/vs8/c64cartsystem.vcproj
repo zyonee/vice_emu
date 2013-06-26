@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\c64cartsystem\DXDebug"
-			IntermediateDirectory=".\libs\c64cartsystem\DXDebug"
+			OutputDirectory=".\libs\c64cartsystem\Win32DXDebug"
+			IntermediateDirectory=".\libs\c64cartsystem\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c64cartsystem\DXDebug\c64cartsystem.pch"
-				AssemblerListingLocation=".\libs\c64cartsystem\DXDebug\"
-				ObjectFile=".\libs\c64cartsystem\DXDebug\"
-				ProgramDataBaseFileName=".\libs\c64cartsystem\DXDebug\"
+				PrecompiledHeaderFile=".\libs\c64cartsystem\Win32DXDebug\c64cartsystem.pch"
+				AssemblerListingLocation=".\libs\c64cartsystemWin32DXDebug\"
+				ObjectFile=".\libs\c64cartsystem\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\c64cartsystem\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\c64cartsystem\DXDebug\c64cartsystem.lib"
+				OutputFile=".\libs\c64cartsystem\Win32DXDebug\c64cartsystem.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\c64cartsystem\DXRelease"
-			IntermediateDirectory=".\libs\c64cartsystem\DXRelease"
+			OutputDirectory=".\libs\c64cartsystem\Win32DXRelease"
+			IntermediateDirectory=".\libs\c64cartsystem\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c64cartsystem\DXRelease\c64cartsystem.pch"
-				AssemblerListingLocation=".\libs\c64cartsystem\DXRelease\"
-				ObjectFile=".\libs\c64cartsystem\DXRelease\"
-				ProgramDataBaseFileName=".\libs\c64cartsystem\DXRelease\"
+				PrecompiledHeaderFile=".\libs\c64cartsystem\Win32DXRelease\c64cartsystem.pch"
+				AssemblerListingLocation=".\libs\c64cartsystemWin32DXRelease\"
+				ObjectFile=".\libs\c64cartsystem\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\c64cartsystem\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\c64cartsystem\DXRelease\c64cartsystem.lib"
+				OutputFile=".\libs\c64cartsystem\Win32DXRelease\c64cartsystem.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\c64cartsystem\Debug"
-			IntermediateDirectory=".\libs\c64cartsystem\Debug"
+			OutputDirectory=".\libs\c64cartsystem\Win32Debug"
+			IntermediateDirectory=".\libs\c64cartsystem\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c64cartsystem\Debug\c64cartsystem.pch"
-				AssemblerListingLocation=".\libs\c64cartsystem\Debug\"
-				ObjectFile=".\libs\c64cartsystem\Debug\"
-				ProgramDataBaseFileName=".\libs\c64cartsystem\Debug\"
+				PrecompiledHeaderFile=".\libs\c64cartsystem\Win32Debug\c64cartsystem.pch"
+				AssemblerListingLocation=".\libs\c64cartsystemWin32Debug\"
+				ObjectFile=".\libs\c64cartsystem\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\c64cartsystem\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\c64cartsystem\Debug\c64cartsystem.lib"
+				OutputFile=".\libs\c64cartsystem\Win32Debug\c64cartsystem.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\c64cartsystem\Release"
-			IntermediateDirectory=".\libs\c64cartsystem\Release"
+			OutputDirectory=".\libs\c64cartsystem\Win32Release"
+			IntermediateDirectory=".\libs\c64cartsystem\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c64cartsystem\Release\c64cartsystem.pch"
-				AssemblerListingLocation=".\libs\c64cartsystem\Release\"
-				ObjectFile=".\libs\c64cartsystem\Release\"
-				ProgramDataBaseFileName=".\libs\c64cartsystem\Release\"
+				PrecompiledHeaderFile=".\libs\c64cartsystem\Win32Release\c64cartsystem.pch"
+				AssemblerListingLocation=".\libs\c64cartsystemWin32Release\"
+				ObjectFile=".\libs\c64cartsystem\Win32Release\"
+				ProgramDataBaseFileName=".\libs\c64cartsystem\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\c64cartsystem\Release\c64cartsystem.lib"
+				OutputFile=".\libs\c64cartsystem\Win32Release\c64cartsystem.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\c64cartsystem\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\c64cartsystem\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c64cartsystem\DXDebug\c64cartsystem.pch"
-				AssemblerListingLocation=".\libs\c64cartsystem\DXDebug\"
-				ObjectFile=".\libs\c64cartsystem\DXDebug\"
-				ProgramDataBaseFileName=".\libs\c64cartsystem\DXDebug\"
+				PrecompiledHeaderFile=".\libs\c64cartsystem\ItaniumDXDebug\c64cartsystem.pch"
+				AssemblerListingLocation=".\libs\c64cartsystemItaniumDXDebug\"
+				ObjectFile=".\libs\c64cartsystem\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\c64cartsystem\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\c64cartsystem\DXDebug\c64cartsystem.lib"
+				OutputFile=".\libs\c64cartsystem\ItaniumDXDebug\c64cartsystem.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\c64cartsystem\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\c64cartsystem\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c64cartsystem\DXRelease\c64cartsystem.pch"
-				AssemblerListingLocation=".\libs\c64cartsystem\DXRelease\"
-				ObjectFile=".\libs\c64cartsystem\DXRelease\"
-				ProgramDataBaseFileName=".\libs\c64cartsystem\DXRelease\"
+				PrecompiledHeaderFile=".\libs\c64cartsystem\ItaniumDXRelease\c64cartsystem.pch"
+				AssemblerListingLocation=".\libs\c64cartsystemItaniumDXRelease\"
+				ObjectFile=".\libs\c64cartsystem\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\c64cartsystem\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\c64cartsystem\DXRelease\c64cartsystem.lib"
+				OutputFile=".\libs\c64cartsystem\ItaniumDXRelease\c64cartsystem.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\c64cartsystem\ItaniumDebug"
+			IntermediateDirectory=".\libs\c64cartsystem\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c64cartsystem\Debug\c64cartsystem.pch"
-				AssemblerListingLocation=".\libs\c64cartsystem\Debug\"
-				ObjectFile=".\libs\c64cartsystem\Debug\"
-				ProgramDataBaseFileName=".\libs\c64cartsystem\Debug\"
+				PrecompiledHeaderFile=".\libs\c64cartsystem\ItaniumDebug\c64cartsystem.pch"
+				AssemblerListingLocation=".\libs\c64cartsystemItaniumDebug\"
+				ObjectFile=".\libs\c64cartsystem\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\c64cartsystem\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\c64cartsystem\Debug\c64cartsystem.lib"
+				OutputFile=".\libs\c64cartsystem\ItaniumDebug\c64cartsystem.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\c64cartsystem\ItaniumRelease"
+			IntermediateDirectory=".\libs\c64cartsystem\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c64cartsystem\Release\c64cartsystem.pch"
-				AssemblerListingLocation=".\libs\c64cartsystem\Release\"
-				ObjectFile=".\libs\c64cartsystem\Release\"
-				ProgramDataBaseFileName=".\libs\c64cartsystem\Release\"
+				PrecompiledHeaderFile=".\libs\c64cartsystem\ItaniumRelease\c64cartsystem.pch"
+				AssemblerListingLocation=".\libs\c64cartsystemItaniumRelease\"
+				ObjectFile=".\libs\c64cartsystem\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\c64cartsystem\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\c64cartsystem\Release\c64cartsystem.lib"
+				OutputFile=".\libs\c64cartsystem\ItaniumRelease\c64cartsystem.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\c64cartsystem\x64DXDebug"
+			IntermediateDirectory=".\libs\c64cartsystem\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c64cartsystem\DXDebug\c64cartsystem.pch"
-				AssemblerListingLocation=".\libs\c64cartsystem\DXDebug\"
-				ObjectFile=".\libs\c64cartsystem\DXDebug\"
-				ProgramDataBaseFileName=".\libs\c64cartsystem\DXDebug\"
+				PrecompiledHeaderFile=".\libs\c64cartsystem\x64DXDebug\c64cartsystem.pch"
+				AssemblerListingLocation=".\libs\c64cartsystemx64DXDebug\"
+				ObjectFile=".\libs\c64cartsystem\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\c64cartsystem\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\c64cartsystem\DXDebug\c64cartsystem.lib"
+				OutputFile=".\libs\c64cartsystem\x64DXDebug\c64cartsystem.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\c64cartsystem\x64DXRelease"
+			IntermediateDirectory=".\libs\c64cartsystem\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c64cartsystem\DXRelease\c64cartsystem.pch"
-				AssemblerListingLocation=".\libs\c64cartsystem\DXRelease\"
-				ObjectFile=".\libs\c64cartsystem\DXRelease\"
-				ProgramDataBaseFileName=".\libs\c64cartsystem\DXRelease\"
+				PrecompiledHeaderFile=".\libs\c64cartsystem\x64DXRelease\c64cartsystem.pch"
+				AssemblerListingLocation=".\libs\c64cartsystemx64DXRelease\"
+				ObjectFile=".\libs\c64cartsystem\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\c64cartsystem\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\c64cartsystem\DXRelease\c64cartsystem.lib"
+				OutputFile=".\libs\c64cartsystem\x64DXRelease\c64cartsystem.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\c64cartsystem\x64Debug"
+			IntermediateDirectory=".\libs\c64cartsystem\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c64cartsystem\Debug\c64cartsystem.pch"
-				AssemblerListingLocation=".\libs\c64cartsystem\Debug\"
-				ObjectFile=".\libs\c64cartsystem\Debug\"
-				ProgramDataBaseFileName=".\libs\c64cartsystem\Debug\"
+				PrecompiledHeaderFile=".\libs\c64cartsystem\x64Debug\c64cartsystem.pch"
+				AssemblerListingLocation=".\libs\c64cartsystemx64Debug\"
+				ObjectFile=".\libs\c64cartsystem\x64Debug\"
+				ProgramDataBaseFileName=".\libs\c64cartsystem\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\c64cartsystem\Debug\c64cartsystem.lib"
+				OutputFile=".\libs\c64cartsystem\x64Debug\c64cartsystem.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\c64cartsystem\x64Release"
+			IntermediateDirectory=".\libs\c64cartsystem\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\c64cartsystem\Release\c64cartsystem.pch"
-				AssemblerListingLocation=".\libs\c64cartsystem\Release\"
-				ObjectFile=".\libs\c64cartsystem\Release\"
-				ProgramDataBaseFileName=".\libs\c64cartsystem\Release\"
+				PrecompiledHeaderFile=".\libs\c64cartsystem\x64Release\c64cartsystem.pch"
+				AssemblerListingLocation=".\libs\c64cartsystemx64Release\"
+				ObjectFile=".\libs\c64cartsystem\x64Release\"
+				ProgramDataBaseFileName=".\libs\c64cartsystem\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\c64cartsystem\Release\c64cartsystem.lib"
+				OutputFile=".\libs\c64cartsystem\x64Release\c64cartsystem.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

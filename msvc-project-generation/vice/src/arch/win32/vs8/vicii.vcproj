@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\vicii\DXDebug"
-			IntermediateDirectory=".\libs\vicii\DXDebug"
+			OutputDirectory=".\libs\vicii\Win32DXDebug"
+			IntermediateDirectory=".\libs\vicii\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vicii\DXDebug\vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\DXDebug\"
-				ObjectFile=".\libs\vicii\DXDebug\"
-				ProgramDataBaseFileName=".\libs\vicii\DXDebug\"
+				PrecompiledHeaderFile=".\libs\vicii\Win32DXDebug\vicii.pch"
+				AssemblerListingLocation=".\libs\viciiWin32DXDebug\"
+				ObjectFile=".\libs\vicii\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\vicii\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vicii\DXDebug\vicii.lib"
+				OutputFile=".\libs\vicii\Win32DXDebug\vicii.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\vicii\DXRelease"
-			IntermediateDirectory=".\libs\vicii\DXRelease"
+			OutputDirectory=".\libs\vicii\Win32DXRelease"
+			IntermediateDirectory=".\libs\vicii\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vicii\DXRelease\vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\DXRelease\"
-				ObjectFile=".\libs\vicii\DXRelease\"
-				ProgramDataBaseFileName=".\libs\vicii\DXRelease\"
+				PrecompiledHeaderFile=".\libs\vicii\Win32DXRelease\vicii.pch"
+				AssemblerListingLocation=".\libs\viciiWin32DXRelease\"
+				ObjectFile=".\libs\vicii\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\vicii\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vicii\DXRelease\vicii.lib"
+				OutputFile=".\libs\vicii\Win32DXRelease\vicii.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\vicii\Debug"
-			IntermediateDirectory=".\libs\vicii\Debug"
+			OutputDirectory=".\libs\vicii\Win32Debug"
+			IntermediateDirectory=".\libs\vicii\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vicii\Debug\vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\Debug\"
-				ObjectFile=".\libs\vicii\Debug\"
-				ProgramDataBaseFileName=".\libs\vicii\Debug\"
+				PrecompiledHeaderFile=".\libs\vicii\Win32Debug\vicii.pch"
+				AssemblerListingLocation=".\libs\viciiWin32Debug\"
+				ObjectFile=".\libs\vicii\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\vicii\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vicii\Debug\vicii.lib"
+				OutputFile=".\libs\vicii\Win32Debug\vicii.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\vicii\Release"
-			IntermediateDirectory=".\libs\vicii\Release"
+			OutputDirectory=".\libs\vicii\Win32Release"
+			IntermediateDirectory=".\libs\vicii\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vicii\Release\vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\Release\"
-				ObjectFile=".\libs\vicii\Release\"
-				ProgramDataBaseFileName=".\libs\vicii\Release\"
+				PrecompiledHeaderFile=".\libs\vicii\Win32Release\vicii.pch"
+				AssemblerListingLocation=".\libs\viciiWin32Release\"
+				ObjectFile=".\libs\vicii\Win32Release\"
+				ProgramDataBaseFileName=".\libs\vicii\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vicii\Release\vicii.lib"
+				OutputFile=".\libs\vicii\Win32Release\vicii.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vicii\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\vicii\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vicii\DXDebug\vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\DXDebug\"
-				ObjectFile=".\libs\vicii\DXDebug\"
-				ProgramDataBaseFileName=".\libs\vicii\DXDebug\"
+				PrecompiledHeaderFile=".\libs\vicii\ItaniumDXDebug\vicii.pch"
+				AssemblerListingLocation=".\libs\viciiItaniumDXDebug\"
+				ObjectFile=".\libs\vicii\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\vicii\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vicii\DXDebug\vicii.lib"
+				OutputFile=".\libs\vicii\ItaniumDXDebug\vicii.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vicii\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\vicii\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vicii\DXRelease\vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\DXRelease\"
-				ObjectFile=".\libs\vicii\DXRelease\"
-				ProgramDataBaseFileName=".\libs\vicii\DXRelease\"
+				PrecompiledHeaderFile=".\libs\vicii\ItaniumDXRelease\vicii.pch"
+				AssemblerListingLocation=".\libs\viciiItaniumDXRelease\"
+				ObjectFile=".\libs\vicii\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\vicii\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vicii\DXRelease\vicii.lib"
+				OutputFile=".\libs\vicii\ItaniumDXRelease\vicii.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vicii\ItaniumDebug"
+			IntermediateDirectory=".\libs\vicii\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vicii\Debug\vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\Debug\"
-				ObjectFile=".\libs\vicii\Debug\"
-				ProgramDataBaseFileName=".\libs\vicii\Debug\"
+				PrecompiledHeaderFile=".\libs\vicii\ItaniumDebug\vicii.pch"
+				AssemblerListingLocation=".\libs\viciiItaniumDebug\"
+				ObjectFile=".\libs\vicii\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\vicii\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vicii\Debug\vicii.lib"
+				OutputFile=".\libs\vicii\ItaniumDebug\vicii.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vicii\ItaniumRelease"
+			IntermediateDirectory=".\libs\vicii\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vicii\Release\vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\Release\"
-				ObjectFile=".\libs\vicii\Release\"
-				ProgramDataBaseFileName=".\libs\vicii\Release\"
+				PrecompiledHeaderFile=".\libs\vicii\ItaniumRelease\vicii.pch"
+				AssemblerListingLocation=".\libs\viciiItaniumRelease\"
+				ObjectFile=".\libs\vicii\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\vicii\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vicii\Release\vicii.lib"
+				OutputFile=".\libs\vicii\ItaniumRelease\vicii.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vicii\x64DXDebug"
+			IntermediateDirectory=".\libs\vicii\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vicii\DXDebug\vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\DXDebug\"
-				ObjectFile=".\libs\vicii\DXDebug\"
-				ProgramDataBaseFileName=".\libs\vicii\DXDebug\"
+				PrecompiledHeaderFile=".\libs\vicii\x64DXDebug\vicii.pch"
+				AssemblerListingLocation=".\libs\viciix64DXDebug\"
+				ObjectFile=".\libs\vicii\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\vicii\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vicii\DXDebug\vicii.lib"
+				OutputFile=".\libs\vicii\x64DXDebug\vicii.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vicii\x64DXRelease"
+			IntermediateDirectory=".\libs\vicii\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vicii\DXRelease\vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\DXRelease\"
-				ObjectFile=".\libs\vicii\DXRelease\"
-				ProgramDataBaseFileName=".\libs\vicii\DXRelease\"
+				PrecompiledHeaderFile=".\libs\vicii\x64DXRelease\vicii.pch"
+				AssemblerListingLocation=".\libs\viciix64DXRelease\"
+				ObjectFile=".\libs\vicii\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\vicii\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vicii\DXRelease\vicii.lib"
+				OutputFile=".\libs\vicii\x64DXRelease\vicii.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vicii\x64Debug"
+			IntermediateDirectory=".\libs\vicii\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vicii\Debug\vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\Debug\"
-				ObjectFile=".\libs\vicii\Debug\"
-				ProgramDataBaseFileName=".\libs\vicii\Debug\"
+				PrecompiledHeaderFile=".\libs\vicii\x64Debug\vicii.pch"
+				AssemblerListingLocation=".\libs\viciix64Debug\"
+				ObjectFile=".\libs\vicii\x64Debug\"
+				ProgramDataBaseFileName=".\libs\vicii\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vicii\Debug\vicii.lib"
+				OutputFile=".\libs\vicii\x64Debug\vicii.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vicii\x64Release"
+			IntermediateDirectory=".\libs\vicii\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vicii\Release\vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\Release\"
-				ObjectFile=".\libs\vicii\Release\"
-				ProgramDataBaseFileName=".\libs\vicii\Release\"
+				PrecompiledHeaderFile=".\libs\vicii\x64Release\vicii.pch"
+				AssemblerListingLocation=".\libs\viciix64Release\"
+				ObjectFile=".\libs\vicii\x64Release\"
+				ProgramDataBaseFileName=".\libs\vicii\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vicii\Release\vicii.lib"
+				OutputFile=".\libs\vicii\x64Release\vicii.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

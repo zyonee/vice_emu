@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\plus4exp\DXDebug"
-			IntermediateDirectory=".\libs\plus4exp\DXDebug"
+			OutputDirectory=".\libs\plus4exp\Win32DXDebug"
+			IntermediateDirectory=".\libs\plus4exp\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\plus4exp\DXDebug\plus4exp.pch"
-				AssemblerListingLocation=".\libs\plus4exp\DXDebug\"
-				ObjectFile=".\libs\plus4exp\DXDebug\"
-				ProgramDataBaseFileName=".\libs\plus4exp\DXDebug\"
+				PrecompiledHeaderFile=".\libs\plus4exp\Win32DXDebug\plus4exp.pch"
+				AssemblerListingLocation=".\libs\plus4expWin32DXDebug\"
+				ObjectFile=".\libs\plus4exp\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\plus4exp\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\plus4exp\DXDebug\plus4exp.lib"
+				OutputFile=".\libs\plus4exp\Win32DXDebug\plus4exp.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\plus4exp\DXRelease"
-			IntermediateDirectory=".\libs\plus4exp\DXRelease"
+			OutputDirectory=".\libs\plus4exp\Win32DXRelease"
+			IntermediateDirectory=".\libs\plus4exp\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\plus4exp\DXRelease\plus4exp.pch"
-				AssemblerListingLocation=".\libs\plus4exp\DXRelease\"
-				ObjectFile=".\libs\plus4exp\DXRelease\"
-				ProgramDataBaseFileName=".\libs\plus4exp\DXRelease\"
+				PrecompiledHeaderFile=".\libs\plus4exp\Win32DXRelease\plus4exp.pch"
+				AssemblerListingLocation=".\libs\plus4expWin32DXRelease\"
+				ObjectFile=".\libs\plus4exp\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\plus4exp\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\plus4exp\DXRelease\plus4exp.lib"
+				OutputFile=".\libs\plus4exp\Win32DXRelease\plus4exp.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\plus4exp\Debug"
-			IntermediateDirectory=".\libs\plus4exp\Debug"
+			OutputDirectory=".\libs\plus4exp\Win32Debug"
+			IntermediateDirectory=".\libs\plus4exp\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\plus4exp\Debug\plus4exp.pch"
-				AssemblerListingLocation=".\libs\plus4exp\Debug\"
-				ObjectFile=".\libs\plus4exp\Debug\"
-				ProgramDataBaseFileName=".\libs\plus4exp\Debug\"
+				PrecompiledHeaderFile=".\libs\plus4exp\Win32Debug\plus4exp.pch"
+				AssemblerListingLocation=".\libs\plus4expWin32Debug\"
+				ObjectFile=".\libs\plus4exp\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\plus4exp\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\plus4exp\Debug\plus4exp.lib"
+				OutputFile=".\libs\plus4exp\Win32Debug\plus4exp.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\plus4exp\Release"
-			IntermediateDirectory=".\libs\plus4exp\Release"
+			OutputDirectory=".\libs\plus4exp\Win32Release"
+			IntermediateDirectory=".\libs\plus4exp\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\plus4exp\Release\plus4exp.pch"
-				AssemblerListingLocation=".\libs\plus4exp\Release\"
-				ObjectFile=".\libs\plus4exp\Release\"
-				ProgramDataBaseFileName=".\libs\plus4exp\Release\"
+				PrecompiledHeaderFile=".\libs\plus4exp\Win32Release\plus4exp.pch"
+				AssemblerListingLocation=".\libs\plus4expWin32Release\"
+				ObjectFile=".\libs\plus4exp\Win32Release\"
+				ProgramDataBaseFileName=".\libs\plus4exp\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\plus4exp\Release\plus4exp.lib"
+				OutputFile=".\libs\plus4exp\Win32Release\plus4exp.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\plus4exp\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\plus4exp\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\plus4exp\DXDebug\plus4exp.pch"
-				AssemblerListingLocation=".\libs\plus4exp\DXDebug\"
-				ObjectFile=".\libs\plus4exp\DXDebug\"
-				ProgramDataBaseFileName=".\libs\plus4exp\DXDebug\"
+				PrecompiledHeaderFile=".\libs\plus4exp\ItaniumDXDebug\plus4exp.pch"
+				AssemblerListingLocation=".\libs\plus4expItaniumDXDebug\"
+				ObjectFile=".\libs\plus4exp\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\plus4exp\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\plus4exp\DXDebug\plus4exp.lib"
+				OutputFile=".\libs\plus4exp\ItaniumDXDebug\plus4exp.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\plus4exp\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\plus4exp\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\plus4exp\DXRelease\plus4exp.pch"
-				AssemblerListingLocation=".\libs\plus4exp\DXRelease\"
-				ObjectFile=".\libs\plus4exp\DXRelease\"
-				ProgramDataBaseFileName=".\libs\plus4exp\DXRelease\"
+				PrecompiledHeaderFile=".\libs\plus4exp\ItaniumDXRelease\plus4exp.pch"
+				AssemblerListingLocation=".\libs\plus4expItaniumDXRelease\"
+				ObjectFile=".\libs\plus4exp\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\plus4exp\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\plus4exp\DXRelease\plus4exp.lib"
+				OutputFile=".\libs\plus4exp\ItaniumDXRelease\plus4exp.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\plus4exp\ItaniumDebug"
+			IntermediateDirectory=".\libs\plus4exp\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\plus4exp\Debug\plus4exp.pch"
-				AssemblerListingLocation=".\libs\plus4exp\Debug\"
-				ObjectFile=".\libs\plus4exp\Debug\"
-				ProgramDataBaseFileName=".\libs\plus4exp\Debug\"
+				PrecompiledHeaderFile=".\libs\plus4exp\ItaniumDebug\plus4exp.pch"
+				AssemblerListingLocation=".\libs\plus4expItaniumDebug\"
+				ObjectFile=".\libs\plus4exp\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\plus4exp\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\plus4exp\Debug\plus4exp.lib"
+				OutputFile=".\libs\plus4exp\ItaniumDebug\plus4exp.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\plus4exp\ItaniumRelease"
+			IntermediateDirectory=".\libs\plus4exp\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\plus4exp\Release\plus4exp.pch"
-				AssemblerListingLocation=".\libs\plus4exp\Release\"
-				ObjectFile=".\libs\plus4exp\Release\"
-				ProgramDataBaseFileName=".\libs\plus4exp\Release\"
+				PrecompiledHeaderFile=".\libs\plus4exp\ItaniumRelease\plus4exp.pch"
+				AssemblerListingLocation=".\libs\plus4expItaniumRelease\"
+				ObjectFile=".\libs\plus4exp\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\plus4exp\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\plus4exp\Release\plus4exp.lib"
+				OutputFile=".\libs\plus4exp\ItaniumRelease\plus4exp.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\plus4exp\x64DXDebug"
+			IntermediateDirectory=".\libs\plus4exp\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\plus4exp\DXDebug\plus4exp.pch"
-				AssemblerListingLocation=".\libs\plus4exp\DXDebug\"
-				ObjectFile=".\libs\plus4exp\DXDebug\"
-				ProgramDataBaseFileName=".\libs\plus4exp\DXDebug\"
+				PrecompiledHeaderFile=".\libs\plus4exp\x64DXDebug\plus4exp.pch"
+				AssemblerListingLocation=".\libs\plus4expx64DXDebug\"
+				ObjectFile=".\libs\plus4exp\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\plus4exp\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\plus4exp\DXDebug\plus4exp.lib"
+				OutputFile=".\libs\plus4exp\x64DXDebug\plus4exp.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\plus4exp\x64DXRelease"
+			IntermediateDirectory=".\libs\plus4exp\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\plus4exp\DXRelease\plus4exp.pch"
-				AssemblerListingLocation=".\libs\plus4exp\DXRelease\"
-				ObjectFile=".\libs\plus4exp\DXRelease\"
-				ProgramDataBaseFileName=".\libs\plus4exp\DXRelease\"
+				PrecompiledHeaderFile=".\libs\plus4exp\x64DXRelease\plus4exp.pch"
+				AssemblerListingLocation=".\libs\plus4expx64DXRelease\"
+				ObjectFile=".\libs\plus4exp\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\plus4exp\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\plus4exp\DXRelease\plus4exp.lib"
+				OutputFile=".\libs\plus4exp\x64DXRelease\plus4exp.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\plus4exp\x64Debug"
+			IntermediateDirectory=".\libs\plus4exp\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\plus4exp\Debug\plus4exp.pch"
-				AssemblerListingLocation=".\libs\plus4exp\Debug\"
-				ObjectFile=".\libs\plus4exp\Debug\"
-				ProgramDataBaseFileName=".\libs\plus4exp\Debug\"
+				PrecompiledHeaderFile=".\libs\plus4exp\x64Debug\plus4exp.pch"
+				AssemblerListingLocation=".\libs\plus4expx64Debug\"
+				ObjectFile=".\libs\plus4exp\x64Debug\"
+				ProgramDataBaseFileName=".\libs\plus4exp\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\plus4exp\Debug\plus4exp.lib"
+				OutputFile=".\libs\plus4exp\x64Debug\plus4exp.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\plus4exp\x64Release"
+			IntermediateDirectory=".\libs\plus4exp\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\plus4exp\Release\plus4exp.pch"
-				AssemblerListingLocation=".\libs\plus4exp\Release\"
-				ObjectFile=".\libs\plus4exp\Release\"
-				ProgramDataBaseFileName=".\libs\plus4exp\Release\"
+				PrecompiledHeaderFile=".\libs\plus4exp\x64Release\plus4exp.pch"
+				AssemblerListingLocation=".\libs\plus4expx64Release\"
+				ObjectFile=".\libs\plus4exp\x64Release\"
+				ProgramDataBaseFileName=".\libs\plus4exp\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\plus4exp\Release\plus4exp.lib"
+				OutputFile=".\libs\plus4exp\x64Release\plus4exp.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\iec\DXDebug"
-			IntermediateDirectory=".\libs\iec\DXDebug"
+			OutputDirectory=".\libs\iec\Win32DXDebug"
+			IntermediateDirectory=".\libs\iec\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\iec\DXDebug\iec.pch"
-				AssemblerListingLocation=".\libs\iec\DXDebug\"
-				ObjectFile=".\libs\iec\DXDebug\"
-				ProgramDataBaseFileName=".\libs\iec\DXDebug\"
+				PrecompiledHeaderFile=".\libs\iec\Win32DXDebug\iec.pch"
+				AssemblerListingLocation=".\libs\iecWin32DXDebug\"
+				ObjectFile=".\libs\iec\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\iec\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\iec\DXDebug\iec.lib"
+				OutputFile=".\libs\iec\Win32DXDebug\iec.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\iec\DXRelease"
-			IntermediateDirectory=".\libs\iec\DXRelease"
+			OutputDirectory=".\libs\iec\Win32DXRelease"
+			IntermediateDirectory=".\libs\iec\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\iec\DXRelease\iec.pch"
-				AssemblerListingLocation=".\libs\iec\DXRelease\"
-				ObjectFile=".\libs\iec\DXRelease\"
-				ProgramDataBaseFileName=".\libs\iec\DXRelease\"
+				PrecompiledHeaderFile=".\libs\iec\Win32DXRelease\iec.pch"
+				AssemblerListingLocation=".\libs\iecWin32DXRelease\"
+				ObjectFile=".\libs\iec\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\iec\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\iec\DXRelease\iec.lib"
+				OutputFile=".\libs\iec\Win32DXRelease\iec.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\iec\Debug"
-			IntermediateDirectory=".\libs\iec\Debug"
+			OutputDirectory=".\libs\iec\Win32Debug"
+			IntermediateDirectory=".\libs\iec\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\iec\Debug\iec.pch"
-				AssemblerListingLocation=".\libs\iec\Debug\"
-				ObjectFile=".\libs\iec\Debug\"
-				ProgramDataBaseFileName=".\libs\iec\Debug\"
+				PrecompiledHeaderFile=".\libs\iec\Win32Debug\iec.pch"
+				AssemblerListingLocation=".\libs\iecWin32Debug\"
+				ObjectFile=".\libs\iec\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\iec\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\iec\Debug\iec.lib"
+				OutputFile=".\libs\iec\Win32Debug\iec.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\iec\Release"
-			IntermediateDirectory=".\libs\iec\Release"
+			OutputDirectory=".\libs\iec\Win32Release"
+			IntermediateDirectory=".\libs\iec\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\iec\Release\iec.pch"
-				AssemblerListingLocation=".\libs\iec\Release\"
-				ObjectFile=".\libs\iec\Release\"
-				ProgramDataBaseFileName=".\libs\iec\Release\"
+				PrecompiledHeaderFile=".\libs\iec\Win32Release\iec.pch"
+				AssemblerListingLocation=".\libs\iecWin32Release\"
+				ObjectFile=".\libs\iec\Win32Release\"
+				ProgramDataBaseFileName=".\libs\iec\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\iec\Release\iec.lib"
+				OutputFile=".\libs\iec\Win32Release\iec.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\iec\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\iec\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\iec\DXDebug\iec.pch"
-				AssemblerListingLocation=".\libs\iec\DXDebug\"
-				ObjectFile=".\libs\iec\DXDebug\"
-				ProgramDataBaseFileName=".\libs\iec\DXDebug\"
+				PrecompiledHeaderFile=".\libs\iec\ItaniumDXDebug\iec.pch"
+				AssemblerListingLocation=".\libs\iecItaniumDXDebug\"
+				ObjectFile=".\libs\iec\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\iec\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\iec\DXDebug\iec.lib"
+				OutputFile=".\libs\iec\ItaniumDXDebug\iec.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\iec\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\iec\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\iec\DXRelease\iec.pch"
-				AssemblerListingLocation=".\libs\iec\DXRelease\"
-				ObjectFile=".\libs\iec\DXRelease\"
-				ProgramDataBaseFileName=".\libs\iec\DXRelease\"
+				PrecompiledHeaderFile=".\libs\iec\ItaniumDXRelease\iec.pch"
+				AssemblerListingLocation=".\libs\iecItaniumDXRelease\"
+				ObjectFile=".\libs\iec\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\iec\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\iec\DXRelease\iec.lib"
+				OutputFile=".\libs\iec\ItaniumDXRelease\iec.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\iec\ItaniumDebug"
+			IntermediateDirectory=".\libs\iec\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\iec\Debug\iec.pch"
-				AssemblerListingLocation=".\libs\iec\Debug\"
-				ObjectFile=".\libs\iec\Debug\"
-				ProgramDataBaseFileName=".\libs\iec\Debug\"
+				PrecompiledHeaderFile=".\libs\iec\ItaniumDebug\iec.pch"
+				AssemblerListingLocation=".\libs\iecItaniumDebug\"
+				ObjectFile=".\libs\iec\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\iec\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\iec\Debug\iec.lib"
+				OutputFile=".\libs\iec\ItaniumDebug\iec.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\iec\ItaniumRelease"
+			IntermediateDirectory=".\libs\iec\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\iec\Release\iec.pch"
-				AssemblerListingLocation=".\libs\iec\Release\"
-				ObjectFile=".\libs\iec\Release\"
-				ProgramDataBaseFileName=".\libs\iec\Release\"
+				PrecompiledHeaderFile=".\libs\iec\ItaniumRelease\iec.pch"
+				AssemblerListingLocation=".\libs\iecItaniumRelease\"
+				ObjectFile=".\libs\iec\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\iec\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\iec\Release\iec.lib"
+				OutputFile=".\libs\iec\ItaniumRelease\iec.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\iec\x64DXDebug"
+			IntermediateDirectory=".\libs\iec\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\iec\DXDebug\iec.pch"
-				AssemblerListingLocation=".\libs\iec\DXDebug\"
-				ObjectFile=".\libs\iec\DXDebug\"
-				ProgramDataBaseFileName=".\libs\iec\DXDebug\"
+				PrecompiledHeaderFile=".\libs\iec\x64DXDebug\iec.pch"
+				AssemblerListingLocation=".\libs\iecx64DXDebug\"
+				ObjectFile=".\libs\iec\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\iec\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\iec\DXDebug\iec.lib"
+				OutputFile=".\libs\iec\x64DXDebug\iec.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\iec\x64DXRelease"
+			IntermediateDirectory=".\libs\iec\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\iec\DXRelease\iec.pch"
-				AssemblerListingLocation=".\libs\iec\DXRelease\"
-				ObjectFile=".\libs\iec\DXRelease\"
-				ProgramDataBaseFileName=".\libs\iec\DXRelease\"
+				PrecompiledHeaderFile=".\libs\iec\x64DXRelease\iec.pch"
+				AssemblerListingLocation=".\libs\iecx64DXRelease\"
+				ObjectFile=".\libs\iec\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\iec\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\iec\DXRelease\iec.lib"
+				OutputFile=".\libs\iec\x64DXRelease\iec.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\iec\x64Debug"
+			IntermediateDirectory=".\libs\iec\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\iec\Debug\iec.pch"
-				AssemblerListingLocation=".\libs\iec\Debug\"
-				ObjectFile=".\libs\iec\Debug\"
-				ProgramDataBaseFileName=".\libs\iec\Debug\"
+				PrecompiledHeaderFile=".\libs\iec\x64Debug\iec.pch"
+				AssemblerListingLocation=".\libs\iecx64Debug\"
+				ObjectFile=".\libs\iec\x64Debug\"
+				ProgramDataBaseFileName=".\libs\iec\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\iec\Debug\iec.lib"
+				OutputFile=".\libs\iec\x64Debug\iec.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\iec\x64Release"
+			IntermediateDirectory=".\libs\iec\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\iec\Release\iec.pch"
-				AssemblerListingLocation=".\libs\iec\Release\"
-				ObjectFile=".\libs\iec\Release\"
-				ProgramDataBaseFileName=".\libs\iec\Release\"
+				PrecompiledHeaderFile=".\libs\iec\x64Release\iec.pch"
+				AssemblerListingLocation=".\libs\iecx64Release\"
+				ObjectFile=".\libs\iec\x64Release\"
+				ProgramDataBaseFileName=".\libs\iec\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\iec\Release\iec.lib"
+				OutputFile=".\libs\iec\x64Release\iec.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

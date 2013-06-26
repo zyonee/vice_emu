@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\tcbm\DXDebug"
-			IntermediateDirectory=".\libs\tcbm\DXDebug"
+			OutputDirectory=".\libs\tcbm\Win32DXDebug"
+			IntermediateDirectory=".\libs\tcbm\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tcbm\DXDebug\tcbm.pch"
-				AssemblerListingLocation=".\libs\tcbm\DXDebug\"
-				ObjectFile=".\libs\tcbm\DXDebug\"
-				ProgramDataBaseFileName=".\libs\tcbm\DXDebug\"
+				PrecompiledHeaderFile=".\libs\tcbm\Win32DXDebug\tcbm.pch"
+				AssemblerListingLocation=".\libs\tcbmWin32DXDebug\"
+				ObjectFile=".\libs\tcbm\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\tcbm\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tcbm\DXDebug\tcbm.lib"
+				OutputFile=".\libs\tcbm\Win32DXDebug\tcbm.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\tcbm\DXRelease"
-			IntermediateDirectory=".\libs\tcbm\DXRelease"
+			OutputDirectory=".\libs\tcbm\Win32DXRelease"
+			IntermediateDirectory=".\libs\tcbm\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tcbm\DXRelease\tcbm.pch"
-				AssemblerListingLocation=".\libs\tcbm\DXRelease\"
-				ObjectFile=".\libs\tcbm\DXRelease\"
-				ProgramDataBaseFileName=".\libs\tcbm\DXRelease\"
+				PrecompiledHeaderFile=".\libs\tcbm\Win32DXRelease\tcbm.pch"
+				AssemblerListingLocation=".\libs\tcbmWin32DXRelease\"
+				ObjectFile=".\libs\tcbm\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\tcbm\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tcbm\DXRelease\tcbm.lib"
+				OutputFile=".\libs\tcbm\Win32DXRelease\tcbm.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\tcbm\Debug"
-			IntermediateDirectory=".\libs\tcbm\Debug"
+			OutputDirectory=".\libs\tcbm\Win32Debug"
+			IntermediateDirectory=".\libs\tcbm\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tcbm\Debug\tcbm.pch"
-				AssemblerListingLocation=".\libs\tcbm\Debug\"
-				ObjectFile=".\libs\tcbm\Debug\"
-				ProgramDataBaseFileName=".\libs\tcbm\Debug\"
+				PrecompiledHeaderFile=".\libs\tcbm\Win32Debug\tcbm.pch"
+				AssemblerListingLocation=".\libs\tcbmWin32Debug\"
+				ObjectFile=".\libs\tcbm\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\tcbm\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tcbm\Debug\tcbm.lib"
+				OutputFile=".\libs\tcbm\Win32Debug\tcbm.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\tcbm\Release"
-			IntermediateDirectory=".\libs\tcbm\Release"
+			OutputDirectory=".\libs\tcbm\Win32Release"
+			IntermediateDirectory=".\libs\tcbm\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tcbm\Release\tcbm.pch"
-				AssemblerListingLocation=".\libs\tcbm\Release\"
-				ObjectFile=".\libs\tcbm\Release\"
-				ProgramDataBaseFileName=".\libs\tcbm\Release\"
+				PrecompiledHeaderFile=".\libs\tcbm\Win32Release\tcbm.pch"
+				AssemblerListingLocation=".\libs\tcbmWin32Release\"
+				ObjectFile=".\libs\tcbm\Win32Release\"
+				ProgramDataBaseFileName=".\libs\tcbm\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tcbm\Release\tcbm.lib"
+				OutputFile=".\libs\tcbm\Win32Release\tcbm.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tcbm\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\tcbm\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tcbm\DXDebug\tcbm.pch"
-				AssemblerListingLocation=".\libs\tcbm\DXDebug\"
-				ObjectFile=".\libs\tcbm\DXDebug\"
-				ProgramDataBaseFileName=".\libs\tcbm\DXDebug\"
+				PrecompiledHeaderFile=".\libs\tcbm\ItaniumDXDebug\tcbm.pch"
+				AssemblerListingLocation=".\libs\tcbmItaniumDXDebug\"
+				ObjectFile=".\libs\tcbm\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\tcbm\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tcbm\DXDebug\tcbm.lib"
+				OutputFile=".\libs\tcbm\ItaniumDXDebug\tcbm.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tcbm\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\tcbm\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tcbm\DXRelease\tcbm.pch"
-				AssemblerListingLocation=".\libs\tcbm\DXRelease\"
-				ObjectFile=".\libs\tcbm\DXRelease\"
-				ProgramDataBaseFileName=".\libs\tcbm\DXRelease\"
+				PrecompiledHeaderFile=".\libs\tcbm\ItaniumDXRelease\tcbm.pch"
+				AssemblerListingLocation=".\libs\tcbmItaniumDXRelease\"
+				ObjectFile=".\libs\tcbm\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\tcbm\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tcbm\DXRelease\tcbm.lib"
+				OutputFile=".\libs\tcbm\ItaniumDXRelease\tcbm.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tcbm\ItaniumDebug"
+			IntermediateDirectory=".\libs\tcbm\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tcbm\Debug\tcbm.pch"
-				AssemblerListingLocation=".\libs\tcbm\Debug\"
-				ObjectFile=".\libs\tcbm\Debug\"
-				ProgramDataBaseFileName=".\libs\tcbm\Debug\"
+				PrecompiledHeaderFile=".\libs\tcbm\ItaniumDebug\tcbm.pch"
+				AssemblerListingLocation=".\libs\tcbmItaniumDebug\"
+				ObjectFile=".\libs\tcbm\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\tcbm\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tcbm\Debug\tcbm.lib"
+				OutputFile=".\libs\tcbm\ItaniumDebug\tcbm.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tcbm\ItaniumRelease"
+			IntermediateDirectory=".\libs\tcbm\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tcbm\Release\tcbm.pch"
-				AssemblerListingLocation=".\libs\tcbm\Release\"
-				ObjectFile=".\libs\tcbm\Release\"
-				ProgramDataBaseFileName=".\libs\tcbm\Release\"
+				PrecompiledHeaderFile=".\libs\tcbm\ItaniumRelease\tcbm.pch"
+				AssemblerListingLocation=".\libs\tcbmItaniumRelease\"
+				ObjectFile=".\libs\tcbm\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\tcbm\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tcbm\Release\tcbm.lib"
+				OutputFile=".\libs\tcbm\ItaniumRelease\tcbm.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tcbm\x64DXDebug"
+			IntermediateDirectory=".\libs\tcbm\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tcbm\DXDebug\tcbm.pch"
-				AssemblerListingLocation=".\libs\tcbm\DXDebug\"
-				ObjectFile=".\libs\tcbm\DXDebug\"
-				ProgramDataBaseFileName=".\libs\tcbm\DXDebug\"
+				PrecompiledHeaderFile=".\libs\tcbm\x64DXDebug\tcbm.pch"
+				AssemblerListingLocation=".\libs\tcbmx64DXDebug\"
+				ObjectFile=".\libs\tcbm\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\tcbm\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tcbm\DXDebug\tcbm.lib"
+				OutputFile=".\libs\tcbm\x64DXDebug\tcbm.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tcbm\x64DXRelease"
+			IntermediateDirectory=".\libs\tcbm\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tcbm\DXRelease\tcbm.pch"
-				AssemblerListingLocation=".\libs\tcbm\DXRelease\"
-				ObjectFile=".\libs\tcbm\DXRelease\"
-				ProgramDataBaseFileName=".\libs\tcbm\DXRelease\"
+				PrecompiledHeaderFile=".\libs\tcbm\x64DXRelease\tcbm.pch"
+				AssemblerListingLocation=".\libs\tcbmx64DXRelease\"
+				ObjectFile=".\libs\tcbm\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\tcbm\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tcbm\DXRelease\tcbm.lib"
+				OutputFile=".\libs\tcbm\x64DXRelease\tcbm.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tcbm\x64Debug"
+			IntermediateDirectory=".\libs\tcbm\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tcbm\Debug\tcbm.pch"
-				AssemblerListingLocation=".\libs\tcbm\Debug\"
-				ObjectFile=".\libs\tcbm\Debug\"
-				ProgramDataBaseFileName=".\libs\tcbm\Debug\"
+				PrecompiledHeaderFile=".\libs\tcbm\x64Debug\tcbm.pch"
+				AssemblerListingLocation=".\libs\tcbmx64Debug\"
+				ObjectFile=".\libs\tcbm\x64Debug\"
+				ProgramDataBaseFileName=".\libs\tcbm\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tcbm\Debug\tcbm.lib"
+				OutputFile=".\libs\tcbm\x64Debug\tcbm.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\tcbm\x64Release"
+			IntermediateDirectory=".\libs\tcbm\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\tcbm\Release\tcbm.pch"
-				AssemblerListingLocation=".\libs\tcbm\Release\"
-				ObjectFile=".\libs\tcbm\Release\"
-				ProgramDataBaseFileName=".\libs\tcbm\Release\"
+				PrecompiledHeaderFile=".\libs\tcbm\x64Release\tcbm.pch"
+				AssemblerListingLocation=".\libs\tcbmx64Release\"
+				ObjectFile=".\libs\tcbm\x64Release\"
+				ProgramDataBaseFileName=".\libs\tcbm\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\tcbm\Release\tcbm.lib"
+				OutputFile=".\libs\tcbm\x64Release\tcbm.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

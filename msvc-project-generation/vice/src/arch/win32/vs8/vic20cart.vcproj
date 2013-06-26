@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\vic20cart\DXDebug"
-			IntermediateDirectory=".\libs\vic20cart\DXDebug"
+			OutputDirectory=".\libs\vic20cart\Win32DXDebug"
+			IntermediateDirectory=".\libs\vic20cart\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20cart\DXDebug\vic20cart.pch"
-				AssemblerListingLocation=".\libs\vic20cart\DXDebug\"
-				ObjectFile=".\libs\vic20cart\DXDebug\"
-				ProgramDataBaseFileName=".\libs\vic20cart\DXDebug\"
+				PrecompiledHeaderFile=".\libs\vic20cart\Win32DXDebug\vic20cart.pch"
+				AssemblerListingLocation=".\libs\vic20cartWin32DXDebug\"
+				ObjectFile=".\libs\vic20cart\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\vic20cart\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20cart\DXDebug\vic20cart.lib"
+				OutputFile=".\libs\vic20cart\Win32DXDebug\vic20cart.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\vic20cart\DXRelease"
-			IntermediateDirectory=".\libs\vic20cart\DXRelease"
+			OutputDirectory=".\libs\vic20cart\Win32DXRelease"
+			IntermediateDirectory=".\libs\vic20cart\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20cart\DXRelease\vic20cart.pch"
-				AssemblerListingLocation=".\libs\vic20cart\DXRelease\"
-				ObjectFile=".\libs\vic20cart\DXRelease\"
-				ProgramDataBaseFileName=".\libs\vic20cart\DXRelease\"
+				PrecompiledHeaderFile=".\libs\vic20cart\Win32DXRelease\vic20cart.pch"
+				AssemblerListingLocation=".\libs\vic20cartWin32DXRelease\"
+				ObjectFile=".\libs\vic20cart\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\vic20cart\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20cart\DXRelease\vic20cart.lib"
+				OutputFile=".\libs\vic20cart\Win32DXRelease\vic20cart.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\vic20cart\Debug"
-			IntermediateDirectory=".\libs\vic20cart\Debug"
+			OutputDirectory=".\libs\vic20cart\Win32Debug"
+			IntermediateDirectory=".\libs\vic20cart\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20cart\Debug\vic20cart.pch"
-				AssemblerListingLocation=".\libs\vic20cart\Debug\"
-				ObjectFile=".\libs\vic20cart\Debug\"
-				ProgramDataBaseFileName=".\libs\vic20cart\Debug\"
+				PrecompiledHeaderFile=".\libs\vic20cart\Win32Debug\vic20cart.pch"
+				AssemblerListingLocation=".\libs\vic20cartWin32Debug\"
+				ObjectFile=".\libs\vic20cart\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\vic20cart\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20cart\Debug\vic20cart.lib"
+				OutputFile=".\libs\vic20cart\Win32Debug\vic20cart.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\vic20cart\Release"
-			IntermediateDirectory=".\libs\vic20cart\Release"
+			OutputDirectory=".\libs\vic20cart\Win32Release"
+			IntermediateDirectory=".\libs\vic20cart\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20cart\Release\vic20cart.pch"
-				AssemblerListingLocation=".\libs\vic20cart\Release\"
-				ObjectFile=".\libs\vic20cart\Release\"
-				ProgramDataBaseFileName=".\libs\vic20cart\Release\"
+				PrecompiledHeaderFile=".\libs\vic20cart\Win32Release\vic20cart.pch"
+				AssemblerListingLocation=".\libs\vic20cartWin32Release\"
+				ObjectFile=".\libs\vic20cart\Win32Release\"
+				ProgramDataBaseFileName=".\libs\vic20cart\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20cart\Release\vic20cart.lib"
+				OutputFile=".\libs\vic20cart\Win32Release\vic20cart.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20cart\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\vic20cart\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20cart\DXDebug\vic20cart.pch"
-				AssemblerListingLocation=".\libs\vic20cart\DXDebug\"
-				ObjectFile=".\libs\vic20cart\DXDebug\"
-				ProgramDataBaseFileName=".\libs\vic20cart\DXDebug\"
+				PrecompiledHeaderFile=".\libs\vic20cart\ItaniumDXDebug\vic20cart.pch"
+				AssemblerListingLocation=".\libs\vic20cartItaniumDXDebug\"
+				ObjectFile=".\libs\vic20cart\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\vic20cart\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20cart\DXDebug\vic20cart.lib"
+				OutputFile=".\libs\vic20cart\ItaniumDXDebug\vic20cart.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20cart\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\vic20cart\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20cart\DXRelease\vic20cart.pch"
-				AssemblerListingLocation=".\libs\vic20cart\DXRelease\"
-				ObjectFile=".\libs\vic20cart\DXRelease\"
-				ProgramDataBaseFileName=".\libs\vic20cart\DXRelease\"
+				PrecompiledHeaderFile=".\libs\vic20cart\ItaniumDXRelease\vic20cart.pch"
+				AssemblerListingLocation=".\libs\vic20cartItaniumDXRelease\"
+				ObjectFile=".\libs\vic20cart\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\vic20cart\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20cart\DXRelease\vic20cart.lib"
+				OutputFile=".\libs\vic20cart\ItaniumDXRelease\vic20cart.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20cart\ItaniumDebug"
+			IntermediateDirectory=".\libs\vic20cart\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20cart\Debug\vic20cart.pch"
-				AssemblerListingLocation=".\libs\vic20cart\Debug\"
-				ObjectFile=".\libs\vic20cart\Debug\"
-				ProgramDataBaseFileName=".\libs\vic20cart\Debug\"
+				PrecompiledHeaderFile=".\libs\vic20cart\ItaniumDebug\vic20cart.pch"
+				AssemblerListingLocation=".\libs\vic20cartItaniumDebug\"
+				ObjectFile=".\libs\vic20cart\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\vic20cart\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20cart\Debug\vic20cart.lib"
+				OutputFile=".\libs\vic20cart\ItaniumDebug\vic20cart.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20cart\ItaniumRelease"
+			IntermediateDirectory=".\libs\vic20cart\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20cart\Release\vic20cart.pch"
-				AssemblerListingLocation=".\libs\vic20cart\Release\"
-				ObjectFile=".\libs\vic20cart\Release\"
-				ProgramDataBaseFileName=".\libs\vic20cart\Release\"
+				PrecompiledHeaderFile=".\libs\vic20cart\ItaniumRelease\vic20cart.pch"
+				AssemblerListingLocation=".\libs\vic20cartItaniumRelease\"
+				ObjectFile=".\libs\vic20cart\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\vic20cart\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20cart\Release\vic20cart.lib"
+				OutputFile=".\libs\vic20cart\ItaniumRelease\vic20cart.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20cart\x64DXDebug"
+			IntermediateDirectory=".\libs\vic20cart\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20cart\DXDebug\vic20cart.pch"
-				AssemblerListingLocation=".\libs\vic20cart\DXDebug\"
-				ObjectFile=".\libs\vic20cart\DXDebug\"
-				ProgramDataBaseFileName=".\libs\vic20cart\DXDebug\"
+				PrecompiledHeaderFile=".\libs\vic20cart\x64DXDebug\vic20cart.pch"
+				AssemblerListingLocation=".\libs\vic20cartx64DXDebug\"
+				ObjectFile=".\libs\vic20cart\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\vic20cart\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20cart\DXDebug\vic20cart.lib"
+				OutputFile=".\libs\vic20cart\x64DXDebug\vic20cart.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20cart\x64DXRelease"
+			IntermediateDirectory=".\libs\vic20cart\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20cart\DXRelease\vic20cart.pch"
-				AssemblerListingLocation=".\libs\vic20cart\DXRelease\"
-				ObjectFile=".\libs\vic20cart\DXRelease\"
-				ProgramDataBaseFileName=".\libs\vic20cart\DXRelease\"
+				PrecompiledHeaderFile=".\libs\vic20cart\x64DXRelease\vic20cart.pch"
+				AssemblerListingLocation=".\libs\vic20cartx64DXRelease\"
+				ObjectFile=".\libs\vic20cart\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\vic20cart\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20cart\DXRelease\vic20cart.lib"
+				OutputFile=".\libs\vic20cart\x64DXRelease\vic20cart.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20cart\x64Debug"
+			IntermediateDirectory=".\libs\vic20cart\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20cart\Debug\vic20cart.pch"
-				AssemblerListingLocation=".\libs\vic20cart\Debug\"
-				ObjectFile=".\libs\vic20cart\Debug\"
-				ProgramDataBaseFileName=".\libs\vic20cart\Debug\"
+				PrecompiledHeaderFile=".\libs\vic20cart\x64Debug\vic20cart.pch"
+				AssemblerListingLocation=".\libs\vic20cartx64Debug\"
+				ObjectFile=".\libs\vic20cart\x64Debug\"
+				ProgramDataBaseFileName=".\libs\vic20cart\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20cart\Debug\vic20cart.lib"
+				OutputFile=".\libs\vic20cart\x64Debug\vic20cart.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\vic20cart\x64Release"
+			IntermediateDirectory=".\libs\vic20cart\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20cart\Release\vic20cart.pch"
-				AssemblerListingLocation=".\libs\vic20cart\Release\"
-				ObjectFile=".\libs\vic20cart\Release\"
-				ProgramDataBaseFileName=".\libs\vic20cart\Release\"
+				PrecompiledHeaderFile=".\libs\vic20cart\x64Release\vic20cart.pch"
+				AssemblerListingLocation=".\libs\vic20cartx64Release\"
+				ObjectFile=".\libs\vic20cart\x64Release\"
+				ProgramDataBaseFileName=".\libs\vic20cart\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20cart\Release\vic20cart.lib"
+				OutputFile=".\libs\vic20cart\x64Release\vic20cart.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

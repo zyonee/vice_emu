@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\raster\DXDebug"
-			IntermediateDirectory=".\libs\raster\DXDebug"
+			OutputDirectory=".\libs\raster\Win32DXDebug"
+			IntermediateDirectory=".\libs\raster\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\raster\DXDebug\raster.pch"
-				AssemblerListingLocation=".\libs\raster\DXDebug\"
-				ObjectFile=".\libs\raster\DXDebug\"
-				ProgramDataBaseFileName=".\libs\raster\DXDebug\"
+				PrecompiledHeaderFile=".\libs\raster\Win32DXDebug\raster.pch"
+				AssemblerListingLocation=".\libs\rasterWin32DXDebug\"
+				ObjectFile=".\libs\raster\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\raster\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\raster\DXDebug\raster.lib"
+				OutputFile=".\libs\raster\Win32DXDebug\raster.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\raster\DXRelease"
-			IntermediateDirectory=".\libs\raster\DXRelease"
+			OutputDirectory=".\libs\raster\Win32DXRelease"
+			IntermediateDirectory=".\libs\raster\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\raster\DXRelease\raster.pch"
-				AssemblerListingLocation=".\libs\raster\DXRelease\"
-				ObjectFile=".\libs\raster\DXRelease\"
-				ProgramDataBaseFileName=".\libs\raster\DXRelease\"
+				PrecompiledHeaderFile=".\libs\raster\Win32DXRelease\raster.pch"
+				AssemblerListingLocation=".\libs\rasterWin32DXRelease\"
+				ObjectFile=".\libs\raster\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\raster\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\raster\DXRelease\raster.lib"
+				OutputFile=".\libs\raster\Win32DXRelease\raster.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\raster\Debug"
-			IntermediateDirectory=".\libs\raster\Debug"
+			OutputDirectory=".\libs\raster\Win32Debug"
+			IntermediateDirectory=".\libs\raster\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\raster\Debug\raster.pch"
-				AssemblerListingLocation=".\libs\raster\Debug\"
-				ObjectFile=".\libs\raster\Debug\"
-				ProgramDataBaseFileName=".\libs\raster\Debug\"
+				PrecompiledHeaderFile=".\libs\raster\Win32Debug\raster.pch"
+				AssemblerListingLocation=".\libs\rasterWin32Debug\"
+				ObjectFile=".\libs\raster\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\raster\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\raster\Debug\raster.lib"
+				OutputFile=".\libs\raster\Win32Debug\raster.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\raster\Release"
-			IntermediateDirectory=".\libs\raster\Release"
+			OutputDirectory=".\libs\raster\Win32Release"
+			IntermediateDirectory=".\libs\raster\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\raster\Release\raster.pch"
-				AssemblerListingLocation=".\libs\raster\Release\"
-				ObjectFile=".\libs\raster\Release\"
-				ProgramDataBaseFileName=".\libs\raster\Release\"
+				PrecompiledHeaderFile=".\libs\raster\Win32Release\raster.pch"
+				AssemblerListingLocation=".\libs\rasterWin32Release\"
+				ObjectFile=".\libs\raster\Win32Release\"
+				ProgramDataBaseFileName=".\libs\raster\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\raster\Release\raster.lib"
+				OutputFile=".\libs\raster\Win32Release\raster.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\raster\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\raster\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\raster\DXDebug\raster.pch"
-				AssemblerListingLocation=".\libs\raster\DXDebug\"
-				ObjectFile=".\libs\raster\DXDebug\"
-				ProgramDataBaseFileName=".\libs\raster\DXDebug\"
+				PrecompiledHeaderFile=".\libs\raster\ItaniumDXDebug\raster.pch"
+				AssemblerListingLocation=".\libs\rasterItaniumDXDebug\"
+				ObjectFile=".\libs\raster\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\raster\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\raster\DXDebug\raster.lib"
+				OutputFile=".\libs\raster\ItaniumDXDebug\raster.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\raster\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\raster\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\raster\DXRelease\raster.pch"
-				AssemblerListingLocation=".\libs\raster\DXRelease\"
-				ObjectFile=".\libs\raster\DXRelease\"
-				ProgramDataBaseFileName=".\libs\raster\DXRelease\"
+				PrecompiledHeaderFile=".\libs\raster\ItaniumDXRelease\raster.pch"
+				AssemblerListingLocation=".\libs\rasterItaniumDXRelease\"
+				ObjectFile=".\libs\raster\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\raster\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\raster\DXRelease\raster.lib"
+				OutputFile=".\libs\raster\ItaniumDXRelease\raster.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\raster\ItaniumDebug"
+			IntermediateDirectory=".\libs\raster\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\raster\Debug\raster.pch"
-				AssemblerListingLocation=".\libs\raster\Debug\"
-				ObjectFile=".\libs\raster\Debug\"
-				ProgramDataBaseFileName=".\libs\raster\Debug\"
+				PrecompiledHeaderFile=".\libs\raster\ItaniumDebug\raster.pch"
+				AssemblerListingLocation=".\libs\rasterItaniumDebug\"
+				ObjectFile=".\libs\raster\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\raster\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\raster\Debug\raster.lib"
+				OutputFile=".\libs\raster\ItaniumDebug\raster.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\raster\ItaniumRelease"
+			IntermediateDirectory=".\libs\raster\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\raster\Release\raster.pch"
-				AssemblerListingLocation=".\libs\raster\Release\"
-				ObjectFile=".\libs\raster\Release\"
-				ProgramDataBaseFileName=".\libs\raster\Release\"
+				PrecompiledHeaderFile=".\libs\raster\ItaniumRelease\raster.pch"
+				AssemblerListingLocation=".\libs\rasterItaniumRelease\"
+				ObjectFile=".\libs\raster\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\raster\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\raster\Release\raster.lib"
+				OutputFile=".\libs\raster\ItaniumRelease\raster.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\raster\x64DXDebug"
+			IntermediateDirectory=".\libs\raster\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\raster\DXDebug\raster.pch"
-				AssemblerListingLocation=".\libs\raster\DXDebug\"
-				ObjectFile=".\libs\raster\DXDebug\"
-				ProgramDataBaseFileName=".\libs\raster\DXDebug\"
+				PrecompiledHeaderFile=".\libs\raster\x64DXDebug\raster.pch"
+				AssemblerListingLocation=".\libs\rasterx64DXDebug\"
+				ObjectFile=".\libs\raster\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\raster\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\raster\DXDebug\raster.lib"
+				OutputFile=".\libs\raster\x64DXDebug\raster.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\raster\x64DXRelease"
+			IntermediateDirectory=".\libs\raster\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\raster\DXRelease\raster.pch"
-				AssemblerListingLocation=".\libs\raster\DXRelease\"
-				ObjectFile=".\libs\raster\DXRelease\"
-				ProgramDataBaseFileName=".\libs\raster\DXRelease\"
+				PrecompiledHeaderFile=".\libs\raster\x64DXRelease\raster.pch"
+				AssemblerListingLocation=".\libs\rasterx64DXRelease\"
+				ObjectFile=".\libs\raster\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\raster\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\raster\DXRelease\raster.lib"
+				OutputFile=".\libs\raster\x64DXRelease\raster.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\raster\x64Debug"
+			IntermediateDirectory=".\libs\raster\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\raster\Debug\raster.pch"
-				AssemblerListingLocation=".\libs\raster\Debug\"
-				ObjectFile=".\libs\raster\Debug\"
-				ProgramDataBaseFileName=".\libs\raster\Debug\"
+				PrecompiledHeaderFile=".\libs\raster\x64Debug\raster.pch"
+				AssemblerListingLocation=".\libs\rasterx64Debug\"
+				ObjectFile=".\libs\raster\x64Debug\"
+				ProgramDataBaseFileName=".\libs\raster\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\raster\Debug\raster.lib"
+				OutputFile=".\libs\raster\x64Debug\raster.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\raster\x64Release"
+			IntermediateDirectory=".\libs\raster\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\raster\Release\raster.pch"
-				AssemblerListingLocation=".\libs\raster\Release\"
-				ObjectFile=".\libs\raster\Release\"
-				ProgramDataBaseFileName=".\libs\raster\Release\"
+				PrecompiledHeaderFile=".\libs\raster\x64Release\raster.pch"
+				AssemblerListingLocation=".\libs\rasterx64Release\"
+				ObjectFile=".\libs\raster\x64Release\"
+				ProgramDataBaseFileName=".\libs\raster\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\raster\Release\raster.lib"
+				OutputFile=".\libs\raster\x64Release\raster.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

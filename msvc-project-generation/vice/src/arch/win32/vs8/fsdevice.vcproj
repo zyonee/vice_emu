@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\fsdevice\DXDebug"
-			IntermediateDirectory=".\libs\fsdevice\DXDebug"
+			OutputDirectory=".\libs\fsdevice\Win32DXDebug"
+			IntermediateDirectory=".\libs\fsdevice\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\fsdevice\DXDebug\fsdevice.pch"
-				AssemblerListingLocation=".\libs\fsdevice\DXDebug\"
-				ObjectFile=".\libs\fsdevice\DXDebug\"
-				ProgramDataBaseFileName=".\libs\fsdevice\DXDebug\"
+				PrecompiledHeaderFile=".\libs\fsdevice\Win32DXDebug\fsdevice.pch"
+				AssemblerListingLocation=".\libs\fsdeviceWin32DXDebug\"
+				ObjectFile=".\libs\fsdevice\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\fsdevice\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\fsdevice\DXDebug\fsdevice.lib"
+				OutputFile=".\libs\fsdevice\Win32DXDebug\fsdevice.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\fsdevice\DXRelease"
-			IntermediateDirectory=".\libs\fsdevice\DXRelease"
+			OutputDirectory=".\libs\fsdevice\Win32DXRelease"
+			IntermediateDirectory=".\libs\fsdevice\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\fsdevice\DXRelease\fsdevice.pch"
-				AssemblerListingLocation=".\libs\fsdevice\DXRelease\"
-				ObjectFile=".\libs\fsdevice\DXRelease\"
-				ProgramDataBaseFileName=".\libs\fsdevice\DXRelease\"
+				PrecompiledHeaderFile=".\libs\fsdevice\Win32DXRelease\fsdevice.pch"
+				AssemblerListingLocation=".\libs\fsdeviceWin32DXRelease\"
+				ObjectFile=".\libs\fsdevice\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\fsdevice\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\fsdevice\DXRelease\fsdevice.lib"
+				OutputFile=".\libs\fsdevice\Win32DXRelease\fsdevice.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\fsdevice\Debug"
-			IntermediateDirectory=".\libs\fsdevice\Debug"
+			OutputDirectory=".\libs\fsdevice\Win32Debug"
+			IntermediateDirectory=".\libs\fsdevice\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\fsdevice\Debug\fsdevice.pch"
-				AssemblerListingLocation=".\libs\fsdevice\Debug\"
-				ObjectFile=".\libs\fsdevice\Debug\"
-				ProgramDataBaseFileName=".\libs\fsdevice\Debug\"
+				PrecompiledHeaderFile=".\libs\fsdevice\Win32Debug\fsdevice.pch"
+				AssemblerListingLocation=".\libs\fsdeviceWin32Debug\"
+				ObjectFile=".\libs\fsdevice\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\fsdevice\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\fsdevice\Debug\fsdevice.lib"
+				OutputFile=".\libs\fsdevice\Win32Debug\fsdevice.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\fsdevice\Release"
-			IntermediateDirectory=".\libs\fsdevice\Release"
+			OutputDirectory=".\libs\fsdevice\Win32Release"
+			IntermediateDirectory=".\libs\fsdevice\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\fsdevice\Release\fsdevice.pch"
-				AssemblerListingLocation=".\libs\fsdevice\Release\"
-				ObjectFile=".\libs\fsdevice\Release\"
-				ProgramDataBaseFileName=".\libs\fsdevice\Release\"
+				PrecompiledHeaderFile=".\libs\fsdevice\Win32Release\fsdevice.pch"
+				AssemblerListingLocation=".\libs\fsdeviceWin32Release\"
+				ObjectFile=".\libs\fsdevice\Win32Release\"
+				ProgramDataBaseFileName=".\libs\fsdevice\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\fsdevice\Release\fsdevice.lib"
+				OutputFile=".\libs\fsdevice\Win32Release\fsdevice.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\fsdevice\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\fsdevice\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\fsdevice\DXDebug\fsdevice.pch"
-				AssemblerListingLocation=".\libs\fsdevice\DXDebug\"
-				ObjectFile=".\libs\fsdevice\DXDebug\"
-				ProgramDataBaseFileName=".\libs\fsdevice\DXDebug\"
+				PrecompiledHeaderFile=".\libs\fsdevice\ItaniumDXDebug\fsdevice.pch"
+				AssemblerListingLocation=".\libs\fsdeviceItaniumDXDebug\"
+				ObjectFile=".\libs\fsdevice\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\fsdevice\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\fsdevice\DXDebug\fsdevice.lib"
+				OutputFile=".\libs\fsdevice\ItaniumDXDebug\fsdevice.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\fsdevice\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\fsdevice\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\fsdevice\DXRelease\fsdevice.pch"
-				AssemblerListingLocation=".\libs\fsdevice\DXRelease\"
-				ObjectFile=".\libs\fsdevice\DXRelease\"
-				ProgramDataBaseFileName=".\libs\fsdevice\DXRelease\"
+				PrecompiledHeaderFile=".\libs\fsdevice\ItaniumDXRelease\fsdevice.pch"
+				AssemblerListingLocation=".\libs\fsdeviceItaniumDXRelease\"
+				ObjectFile=".\libs\fsdevice\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\fsdevice\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\fsdevice\DXRelease\fsdevice.lib"
+				OutputFile=".\libs\fsdevice\ItaniumDXRelease\fsdevice.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\fsdevice\ItaniumDebug"
+			IntermediateDirectory=".\libs\fsdevice\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\fsdevice\Debug\fsdevice.pch"
-				AssemblerListingLocation=".\libs\fsdevice\Debug\"
-				ObjectFile=".\libs\fsdevice\Debug\"
-				ProgramDataBaseFileName=".\libs\fsdevice\Debug\"
+				PrecompiledHeaderFile=".\libs\fsdevice\ItaniumDebug\fsdevice.pch"
+				AssemblerListingLocation=".\libs\fsdeviceItaniumDebug\"
+				ObjectFile=".\libs\fsdevice\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\fsdevice\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\fsdevice\Debug\fsdevice.lib"
+				OutputFile=".\libs\fsdevice\ItaniumDebug\fsdevice.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\fsdevice\ItaniumRelease"
+			IntermediateDirectory=".\libs\fsdevice\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\fsdevice\Release\fsdevice.pch"
-				AssemblerListingLocation=".\libs\fsdevice\Release\"
-				ObjectFile=".\libs\fsdevice\Release\"
-				ProgramDataBaseFileName=".\libs\fsdevice\Release\"
+				PrecompiledHeaderFile=".\libs\fsdevice\ItaniumRelease\fsdevice.pch"
+				AssemblerListingLocation=".\libs\fsdeviceItaniumRelease\"
+				ObjectFile=".\libs\fsdevice\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\fsdevice\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\fsdevice\Release\fsdevice.lib"
+				OutputFile=".\libs\fsdevice\ItaniumRelease\fsdevice.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\fsdevice\x64DXDebug"
+			IntermediateDirectory=".\libs\fsdevice\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\fsdevice\DXDebug\fsdevice.pch"
-				AssemblerListingLocation=".\libs\fsdevice\DXDebug\"
-				ObjectFile=".\libs\fsdevice\DXDebug\"
-				ProgramDataBaseFileName=".\libs\fsdevice\DXDebug\"
+				PrecompiledHeaderFile=".\libs\fsdevice\x64DXDebug\fsdevice.pch"
+				AssemblerListingLocation=".\libs\fsdevicex64DXDebug\"
+				ObjectFile=".\libs\fsdevice\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\fsdevice\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\fsdevice\DXDebug\fsdevice.lib"
+				OutputFile=".\libs\fsdevice\x64DXDebug\fsdevice.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\fsdevice\x64DXRelease"
+			IntermediateDirectory=".\libs\fsdevice\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\fsdevice\DXRelease\fsdevice.pch"
-				AssemblerListingLocation=".\libs\fsdevice\DXRelease\"
-				ObjectFile=".\libs\fsdevice\DXRelease\"
-				ProgramDataBaseFileName=".\libs\fsdevice\DXRelease\"
+				PrecompiledHeaderFile=".\libs\fsdevice\x64DXRelease\fsdevice.pch"
+				AssemblerListingLocation=".\libs\fsdevicex64DXRelease\"
+				ObjectFile=".\libs\fsdevice\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\fsdevice\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\fsdevice\DXRelease\fsdevice.lib"
+				OutputFile=".\libs\fsdevice\x64DXRelease\fsdevice.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\fsdevice\x64Debug"
+			IntermediateDirectory=".\libs\fsdevice\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\fsdevice\Debug\fsdevice.pch"
-				AssemblerListingLocation=".\libs\fsdevice\Debug\"
-				ObjectFile=".\libs\fsdevice\Debug\"
-				ProgramDataBaseFileName=".\libs\fsdevice\Debug\"
+				PrecompiledHeaderFile=".\libs\fsdevice\x64Debug\fsdevice.pch"
+				AssemblerListingLocation=".\libs\fsdevicex64Debug\"
+				ObjectFile=".\libs\fsdevice\x64Debug\"
+				ProgramDataBaseFileName=".\libs\fsdevice\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\fsdevice\Debug\fsdevice.lib"
+				OutputFile=".\libs\fsdevice\x64Debug\fsdevice.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\fsdevice\x64Release"
+			IntermediateDirectory=".\libs\fsdevice\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\fsdevice\Release\fsdevice.pch"
-				AssemblerListingLocation=".\libs\fsdevice\Release\"
-				ObjectFile=".\libs\fsdevice\Release\"
-				ProgramDataBaseFileName=".\libs\fsdevice\Release\"
+				PrecompiledHeaderFile=".\libs\fsdevice\x64Release\fsdevice.pch"
+				AssemblerListingLocation=".\libs\fsdevicex64Release\"
+				ObjectFile=".\libs\fsdevice\x64Release\"
+				ProgramDataBaseFileName=".\libs\fsdevice\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\fsdevice\Release\fsdevice.lib"
+				OutputFile=".\libs\fsdevice\x64Release\fsdevice.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

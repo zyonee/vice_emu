@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\rtc\DXDebug"
-			IntermediateDirectory=".\libs\rtc\DXDebug"
+			OutputDirectory=".\libs\rtc\Win32DXDebug"
+			IntermediateDirectory=".\libs\rtc\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rtc\DXDebug\rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\DXDebug\"
-				ObjectFile=".\libs\rtc\DXDebug\"
-				ProgramDataBaseFileName=".\libs\rtc\DXDebug\"
+				PrecompiledHeaderFile=".\libs\rtc\Win32DXDebug\rtc.pch"
+				AssemblerListingLocation=".\libs\rtcWin32DXDebug\"
+				ObjectFile=".\libs\rtc\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\rtc\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rtc\DXDebug\rtc.lib"
+				OutputFile=".\libs\rtc\Win32DXDebug\rtc.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\rtc\DXRelease"
-			IntermediateDirectory=".\libs\rtc\DXRelease"
+			OutputDirectory=".\libs\rtc\Win32DXRelease"
+			IntermediateDirectory=".\libs\rtc\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rtc\DXRelease\rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\DXRelease\"
-				ObjectFile=".\libs\rtc\DXRelease\"
-				ProgramDataBaseFileName=".\libs\rtc\DXRelease\"
+				PrecompiledHeaderFile=".\libs\rtc\Win32DXRelease\rtc.pch"
+				AssemblerListingLocation=".\libs\rtcWin32DXRelease\"
+				ObjectFile=".\libs\rtc\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\rtc\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rtc\DXRelease\rtc.lib"
+				OutputFile=".\libs\rtc\Win32DXRelease\rtc.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\rtc\Debug"
-			IntermediateDirectory=".\libs\rtc\Debug"
+			OutputDirectory=".\libs\rtc\Win32Debug"
+			IntermediateDirectory=".\libs\rtc\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rtc\Debug\rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\Debug\"
-				ObjectFile=".\libs\rtc\Debug\"
-				ProgramDataBaseFileName=".\libs\rtc\Debug\"
+				PrecompiledHeaderFile=".\libs\rtc\Win32Debug\rtc.pch"
+				AssemblerListingLocation=".\libs\rtcWin32Debug\"
+				ObjectFile=".\libs\rtc\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\rtc\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rtc\Debug\rtc.lib"
+				OutputFile=".\libs\rtc\Win32Debug\rtc.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\rtc\Release"
-			IntermediateDirectory=".\libs\rtc\Release"
+			OutputDirectory=".\libs\rtc\Win32Release"
+			IntermediateDirectory=".\libs\rtc\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rtc\Release\rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\Release\"
-				ObjectFile=".\libs\rtc\Release\"
-				ProgramDataBaseFileName=".\libs\rtc\Release\"
+				PrecompiledHeaderFile=".\libs\rtc\Win32Release\rtc.pch"
+				AssemblerListingLocation=".\libs\rtcWin32Release\"
+				ObjectFile=".\libs\rtc\Win32Release\"
+				ProgramDataBaseFileName=".\libs\rtc\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rtc\Release\rtc.lib"
+				OutputFile=".\libs\rtc\Win32Release\rtc.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rtc\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\rtc\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rtc\DXDebug\rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\DXDebug\"
-				ObjectFile=".\libs\rtc\DXDebug\"
-				ProgramDataBaseFileName=".\libs\rtc\DXDebug\"
+				PrecompiledHeaderFile=".\libs\rtc\ItaniumDXDebug\rtc.pch"
+				AssemblerListingLocation=".\libs\rtcItaniumDXDebug\"
+				ObjectFile=".\libs\rtc\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\rtc\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rtc\DXDebug\rtc.lib"
+				OutputFile=".\libs\rtc\ItaniumDXDebug\rtc.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rtc\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\rtc\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rtc\DXRelease\rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\DXRelease\"
-				ObjectFile=".\libs\rtc\DXRelease\"
-				ProgramDataBaseFileName=".\libs\rtc\DXRelease\"
+				PrecompiledHeaderFile=".\libs\rtc\ItaniumDXRelease\rtc.pch"
+				AssemblerListingLocation=".\libs\rtcItaniumDXRelease\"
+				ObjectFile=".\libs\rtc\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\rtc\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rtc\DXRelease\rtc.lib"
+				OutputFile=".\libs\rtc\ItaniumDXRelease\rtc.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rtc\ItaniumDebug"
+			IntermediateDirectory=".\libs\rtc\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rtc\Debug\rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\Debug\"
-				ObjectFile=".\libs\rtc\Debug\"
-				ProgramDataBaseFileName=".\libs\rtc\Debug\"
+				PrecompiledHeaderFile=".\libs\rtc\ItaniumDebug\rtc.pch"
+				AssemblerListingLocation=".\libs\rtcItaniumDebug\"
+				ObjectFile=".\libs\rtc\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\rtc\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rtc\Debug\rtc.lib"
+				OutputFile=".\libs\rtc\ItaniumDebug\rtc.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rtc\ItaniumRelease"
+			IntermediateDirectory=".\libs\rtc\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rtc\Release\rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\Release\"
-				ObjectFile=".\libs\rtc\Release\"
-				ProgramDataBaseFileName=".\libs\rtc\Release\"
+				PrecompiledHeaderFile=".\libs\rtc\ItaniumRelease\rtc.pch"
+				AssemblerListingLocation=".\libs\rtcItaniumRelease\"
+				ObjectFile=".\libs\rtc\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\rtc\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rtc\Release\rtc.lib"
+				OutputFile=".\libs\rtc\ItaniumRelease\rtc.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rtc\x64DXDebug"
+			IntermediateDirectory=".\libs\rtc\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rtc\DXDebug\rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\DXDebug\"
-				ObjectFile=".\libs\rtc\DXDebug\"
-				ProgramDataBaseFileName=".\libs\rtc\DXDebug\"
+				PrecompiledHeaderFile=".\libs\rtc\x64DXDebug\rtc.pch"
+				AssemblerListingLocation=".\libs\rtcx64DXDebug\"
+				ObjectFile=".\libs\rtc\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\rtc\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rtc\DXDebug\rtc.lib"
+				OutputFile=".\libs\rtc\x64DXDebug\rtc.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rtc\x64DXRelease"
+			IntermediateDirectory=".\libs\rtc\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rtc\DXRelease\rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\DXRelease\"
-				ObjectFile=".\libs\rtc\DXRelease\"
-				ProgramDataBaseFileName=".\libs\rtc\DXRelease\"
+				PrecompiledHeaderFile=".\libs\rtc\x64DXRelease\rtc.pch"
+				AssemblerListingLocation=".\libs\rtcx64DXRelease\"
+				ObjectFile=".\libs\rtc\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\rtc\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rtc\DXRelease\rtc.lib"
+				OutputFile=".\libs\rtc\x64DXRelease\rtc.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rtc\x64Debug"
+			IntermediateDirectory=".\libs\rtc\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rtc\Debug\rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\Debug\"
-				ObjectFile=".\libs\rtc\Debug\"
-				ProgramDataBaseFileName=".\libs\rtc\Debug\"
+				PrecompiledHeaderFile=".\libs\rtc\x64Debug\rtc.pch"
+				AssemblerListingLocation=".\libs\rtcx64Debug\"
+				ObjectFile=".\libs\rtc\x64Debug\"
+				ProgramDataBaseFileName=".\libs\rtc\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rtc\Debug\rtc.lib"
+				OutputFile=".\libs\rtc\x64Debug\rtc.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\rtc\x64Release"
+			IntermediateDirectory=".\libs\rtc\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\rtc\Release\rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\Release\"
-				ObjectFile=".\libs\rtc\Release\"
-				ProgramDataBaseFileName=".\libs\rtc\Release\"
+				PrecompiledHeaderFile=".\libs\rtc\x64Release\rtc.pch"
+				AssemblerListingLocation=".\libs\rtcx64Release\"
+				ObjectFile=".\libs\rtc\x64Release\"
+				ProgramDataBaseFileName=".\libs\rtc\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\rtc\Release\rtc.lib"
+				OutputFile=".\libs\rtc\x64Release\rtc.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -906,11 +906,11 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\rtc\rtc-58321a.c"
+			RelativePath="..\..\..\rtc\rtc.c"
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\rtc\rtc.c"
+			RelativePath="..\..\..\rtc\rtc-58321a.c"
 			>
 		</File>
 	</Files>

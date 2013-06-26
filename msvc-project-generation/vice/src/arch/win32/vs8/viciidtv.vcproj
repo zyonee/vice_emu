@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\viciidtv\DXDebug"
-			IntermediateDirectory=".\libs\viciidtv\DXDebug"
+			OutputDirectory=".\libs\viciidtv\Win32DXDebug"
+			IntermediateDirectory=".\libs\viciidtv\Win32DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -50,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\viciidtv\DXDebug\viciidtv.pch"
-				AssemblerListingLocation=".\libs\viciidtv\DXDebug\"
-				ObjectFile=".\libs\viciidtv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\viciidtv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\viciidtv\Win32DXDebug\viciidtv.pch"
+				AssemblerListingLocation=".\libs\viciidtvWin32DXDebug\"
+				ObjectFile=".\libs\viciidtv\Win32DXDebug\"
+				ProgramDataBaseFileName=".\libs\viciidtv\Win32DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\viciidtv\DXDebug\viciidtv.lib"
+				OutputFile=".\libs\viciidtv\Win32DXDebug\viciidtv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\libs\viciidtv\DXRelease"
-			IntermediateDirectory=".\libs\viciidtv\DXRelease"
+			OutputDirectory=".\libs\viciidtv\Win32DXRelease"
+			IntermediateDirectory=".\libs\viciidtv\Win32DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\viciidtv\DXRelease\viciidtv.pch"
-				AssemblerListingLocation=".\libs\viciidtv\DXRelease\"
-				ObjectFile=".\libs\viciidtv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\viciidtv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\viciidtv\Win32DXRelease\viciidtv.pch"
+				AssemblerListingLocation=".\libs\viciidtvWin32DXRelease\"
+				ObjectFile=".\libs\viciidtv\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\viciidtv\Win32DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\viciidtv\DXRelease\viciidtv.lib"
+				OutputFile=".\libs\viciidtv\Win32DXRelease\viciidtv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\viciidtv\Debug"
-			IntermediateDirectory=".\libs\viciidtv\Debug"
+			OutputDirectory=".\libs\viciidtv\Win32Debug"
+			IntermediateDirectory=".\libs\viciidtv\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -193,10 +193,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\viciidtv\Debug\viciidtv.pch"
-				AssemblerListingLocation=".\libs\viciidtv\Debug\"
-				ObjectFile=".\libs\viciidtv\Debug\"
-				ProgramDataBaseFileName=".\libs\viciidtv\Debug\"
+				PrecompiledHeaderFile=".\libs\viciidtv\Win32Debug\viciidtv.pch"
+				AssemblerListingLocation=".\libs\viciidtvWin32Debug\"
+				ObjectFile=".\libs\viciidtv\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\viciidtv\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\viciidtv\Debug\viciidtv.lib"
+				OutputFile=".\libs\viciidtv\Win32Debug\viciidtv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -235,8 +235,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\viciidtv\Release"
-			IntermediateDirectory=".\libs\viciidtv\Release"
+			OutputDirectory=".\libs\viciidtv\Win32Release"
+			IntermediateDirectory=".\libs\viciidtv\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -266,10 +266,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\viciidtv\Release\viciidtv.pch"
-				AssemblerListingLocation=".\libs\viciidtv\Release\"
-				ObjectFile=".\libs\viciidtv\Release\"
-				ProgramDataBaseFileName=".\libs\viciidtv\Release\"
+				PrecompiledHeaderFile=".\libs\viciidtv\Win32Release\viciidtv.pch"
+				AssemblerListingLocation=".\libs\viciidtvWin32Release\"
+				ObjectFile=".\libs\viciidtv\Win32Release\"
+				ProgramDataBaseFileName=".\libs\viciidtv\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -286,7 +286,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\viciidtv\Release\viciidtv.lib"
+				OutputFile=".\libs\viciidtv\Win32Release\viciidtv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -307,8 +307,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\viciidtv\ItaniumDXDebug"
+			IntermediateDirectory=".\libs\viciidtv\ItaniumDXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -337,10 +337,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\viciidtv\DXDebug\viciidtv.pch"
-				AssemblerListingLocation=".\libs\viciidtv\DXDebug\"
-				ObjectFile=".\libs\viciidtv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\viciidtv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\viciidtv\ItaniumDXDebug\viciidtv.pch"
+				AssemblerListingLocation=".\libs\viciidtvItaniumDXDebug\"
+				ObjectFile=".\libs\viciidtv\ItaniumDXDebug\"
+				ProgramDataBaseFileName=".\libs\viciidtv\ItaniumDXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -358,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\viciidtv\DXDebug\viciidtv.lib"
+				OutputFile=".\libs\viciidtv\ItaniumDXDebug\viciidtv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -379,8 +379,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\viciidtv\ItaniumDXRelease"
+			IntermediateDirectory=".\libs\viciidtv\ItaniumDXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -411,10 +411,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\viciidtv\DXRelease\viciidtv.pch"
-				AssemblerListingLocation=".\libs\viciidtv\DXRelease\"
-				ObjectFile=".\libs\viciidtv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\viciidtv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\viciidtv\ItaniumDXRelease\viciidtv.pch"
+				AssemblerListingLocation=".\libs\viciidtvItaniumDXRelease\"
+				ObjectFile=".\libs\viciidtv\ItaniumDXRelease\"
+				ProgramDataBaseFileName=".\libs\viciidtv\ItaniumDXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -431,7 +431,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\viciidtv\DXRelease\viciidtv.lib"
+				OutputFile=".\libs\viciidtv\ItaniumDXRelease\viciidtv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -452,8 +452,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\viciidtv\ItaniumDebug"
+			IntermediateDirectory=".\libs\viciidtv\ItaniumDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -482,10 +482,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\viciidtv\Debug\viciidtv.pch"
-				AssemblerListingLocation=".\libs\viciidtv\Debug\"
-				ObjectFile=".\libs\viciidtv\Debug\"
-				ProgramDataBaseFileName=".\libs\viciidtv\Debug\"
+				PrecompiledHeaderFile=".\libs\viciidtv\ItaniumDebug\viciidtv.pch"
+				AssemblerListingLocation=".\libs\viciidtvItaniumDebug\"
+				ObjectFile=".\libs\viciidtv\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\viciidtv\ItaniumDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -503,7 +503,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\viciidtv\Debug\viciidtv.lib"
+				OutputFile=".\libs\viciidtv\ItaniumDebug\viciidtv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -524,8 +524,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\viciidtv\ItaniumRelease"
+			IntermediateDirectory=".\libs\viciidtv\ItaniumRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -556,10 +556,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\viciidtv\Release\viciidtv.pch"
-				AssemblerListingLocation=".\libs\viciidtv\Release\"
-				ObjectFile=".\libs\viciidtv\Release\"
-				ProgramDataBaseFileName=".\libs\viciidtv\Release\"
+				PrecompiledHeaderFile=".\libs\viciidtv\ItaniumRelease\viciidtv.pch"
+				AssemblerListingLocation=".\libs\viciidtvItaniumRelease\"
+				ObjectFile=".\libs\viciidtv\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\viciidtv\ItaniumRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -576,7 +576,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\viciidtv\Release\viciidtv.lib"
+				OutputFile=".\libs\viciidtv\ItaniumRelease\viciidtv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -597,8 +597,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\viciidtv\x64DXDebug"
+			IntermediateDirectory=".\libs\viciidtv\x64DXDebug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -627,10 +627,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\viciidtv\DXDebug\viciidtv.pch"
-				AssemblerListingLocation=".\libs\viciidtv\DXDebug\"
-				ObjectFile=".\libs\viciidtv\DXDebug\"
-				ProgramDataBaseFileName=".\libs\viciidtv\DXDebug\"
+				PrecompiledHeaderFile=".\libs\viciidtv\x64DXDebug\viciidtv.pch"
+				AssemblerListingLocation=".\libs\viciidtvx64DXDebug\"
+				ObjectFile=".\libs\viciidtv\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\viciidtv\x64DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -648,7 +648,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\viciidtv\DXDebug\viciidtv.lib"
+				OutputFile=".\libs\viciidtv\x64DXDebug\viciidtv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -669,8 +669,8 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\viciidtv\x64DXRelease"
+			IntermediateDirectory=".\libs\viciidtv\x64DXRelease"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -701,10 +701,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\viciidtv\DXRelease\viciidtv.pch"
-				AssemblerListingLocation=".\libs\viciidtv\DXRelease\"
-				ObjectFile=".\libs\viciidtv\DXRelease\"
-				ProgramDataBaseFileName=".\libs\viciidtv\DXRelease\"
+				PrecompiledHeaderFile=".\libs\viciidtv\x64DXRelease\viciidtv.pch"
+				AssemblerListingLocation=".\libs\viciidtvx64DXRelease\"
+				ObjectFile=".\libs\viciidtv\x64DXRelease\"
+				ProgramDataBaseFileName=".\libs\viciidtv\x64DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -721,7 +721,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\viciidtv\DXRelease\viciidtv.lib"
+				OutputFile=".\libs\viciidtv\x64DXRelease\viciidtv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -742,8 +742,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\viciidtv\x64Debug"
+			IntermediateDirectory=".\libs\viciidtv\x64Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -772,10 +772,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\viciidtv\Debug\viciidtv.pch"
-				AssemblerListingLocation=".\libs\viciidtv\Debug\"
-				ObjectFile=".\libs\viciidtv\Debug\"
-				ProgramDataBaseFileName=".\libs\viciidtv\Debug\"
+				PrecompiledHeaderFile=".\libs\viciidtv\x64Debug\viciidtv.pch"
+				AssemblerListingLocation=".\libs\viciidtvx64Debug\"
+				ObjectFile=".\libs\viciidtv\x64Debug\"
+				ProgramDataBaseFileName=".\libs\viciidtv\x64Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -793,7 +793,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\viciidtv\Debug\viciidtv.lib"
+				OutputFile=".\libs\viciidtv\x64Debug\viciidtv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -814,8 +814,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory=".\libs\viciidtv\x64Release"
+			IntermediateDirectory=".\libs\viciidtv\x64Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -846,10 +846,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\viciidtv\Release\viciidtv.pch"
-				AssemblerListingLocation=".\libs\viciidtv\Release\"
-				ObjectFile=".\libs\viciidtv\Release\"
-				ProgramDataBaseFileName=".\libs\viciidtv\Release\"
+				PrecompiledHeaderFile=".\libs\viciidtv\x64Release\viciidtv.pch"
+				AssemblerListingLocation=".\libs\viciidtvx64Release\"
+				ObjectFile=".\libs\viciidtv\x64Release\"
+				ProgramDataBaseFileName=".\libs\viciidtv\x64Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -866,7 +866,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\viciidtv\Release\viciidtv.lib"
+				OutputFile=".\libs\viciidtv\x64Release\viciidtv.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
