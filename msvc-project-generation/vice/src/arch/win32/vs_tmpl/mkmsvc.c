@@ -221,6 +221,24 @@ static int test_win32_exception(char *name)
 
 /* ---------------------------------------------------------------------- */
 
+static char *msvc_cc_inc = "/I &quot;..\\msvc&quot;";
+
+static char *msvc_cc_inc_sid = "/I &quot;..\\msvc&quot; /I &quot;..\\..\\../&quot; /I &quot;../&quot; /I &quot;..\\..\\..\\sid&quot;";
+
+static char *msvc_file_end = "\t\t</File>\r\n";
+
+static char *msvc_libs_console = "version.lib wsock32.lib";
+
+static char *msvc_libs_gui[2] = {
+    "comctl32.lib dsound.lib dxguid.lib winmm.lib version.lib wsock32.lib",
+    "comctl32.lib version.lib winmm.lib wsock32.lib"
+};
+
+static char *msvc_preprodefs[2] = {
+    "_DEBUG",
+    "NDEBUG"
+};
+
 static char *msvc_cc_extra[4] = {
     "/D &quot;_DEBUG&quot;",
     "/D &quot;NDEBUG&quot;",
@@ -260,21 +278,619 @@ static char *msvc_predefs[4] = {
     "NODIRECTX,NDEBUG"
 };
 
-static char *msvc8_winid_copy[3] = {
+static char *msvc_winid_copy[3] = {
     "winid_x86.bat",
     "winid_ia64.bat",
     "winid_x64.bat"
 };
 
-static char *msvc8_preprodefs[2] = {
-    "_DEBUG",
-    "NDEBUG"
-};
+/* ---------------------------------------------------------------------- */
 
-static char *msvc8_libs_gui[2] = {
-    "comctl32.lib dsound.lib dxguid.lib winmm.lib version.lib wsock32.lib",
-    "comctl32.lib version.lib winmm.lib wsock32.lib"
-};
+static char *msvc9_project_start = "<?xml version=\"1.0\" encoding=\"Windows-1252\"?>\r\n"
+                                   "<VisualStudioProject\r\n"
+                                   "\tProjectType=\"Visual C++\"\r\n"
+                                   "\tVersion=\"9.00\"\r\n"
+                                   "\tName=\"%s\"\r\n"
+                                   "\tProjectGUID=\"{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}\"\r\n"
+                                   "\tTargetFrameworkVersion=\"131072\"\r\n"
+                                   "\t>\r\n"
+                                   "\t<Platforms>\r\n"
+                                   "\t\t<Platform\r\n"
+                                   "\t\t\tName=\"Win32\"\r\n"
+                                   "\t\t/>\r\n"
+                                   "\t\t<Platform\r\n"
+                                   "\t\t\tName=\"Itanium\"\r\n"
+                                   "\t\t/>\r\n"
+                                   "\t\t<Platform\r\n"
+                                   "\t\t\tName=\"x64\"\r\n"
+                                   "\t\t/>\r\n"
+                                   "\t</Platforms>\r\n"
+                                   "\t<ToolFiles>\r\n"
+                                   "\t</ToolFiles>\r\n"
+                                   "\t<Configurations>\r\n";
+
+static char *msvc9_config_part1 = "\t\t<Configuration\r\n"
+                                  "\t\t\tName=\"%s|%s\"\r\n";
+
+static char *msvc9_output_dir_app = "\t\t\tOutputDirectory=\".\\..\\..\\..\\..\\data\"\r\n";
+
+static char *msvc9_output_dir_lib = "\t\t\tOutputDirectory=\".\\libs\\%s\\%s%s\"\r\n";
+
+static char *msvc9_config_part2 = "\t\t\tIntermediateDirectory=\".\\libs\\%s\\%s%s\"\r\n"
+                                  "\t\t\tConfigurationType=\"%d\"\r\n"
+                                  "\t\t\tInheritedPropertySheets=\"$(VCInstallDir)VCProjectDefaults\\UpgradeFromVC71.vsprops\"\r\n"
+                                  "\t\t\tUseOfMFC=\"0\"\r\n"
+                                  "\t\t\tATLMinimizesCRunTimeLibraryUsage=\"false\"\r\n";
+
+static char *msvc9_charset = "\t\t\tCharacterSet=\"2\"\r\n";
+
+static char *msvc9_config_part3 = "\t\t\t>\r\n"
+                                  "\t\t\t<Tool\r\n"
+                                  "\t\t\t\tName=\"VCPreBuildEventTool\"\r\n"
+                                  "\t\t\t/>\r\n";
+
+static char *msvc9_cbt_custom = "\t\t\t<Tool\r\n"
+                                "\t\t\t\tName=\"VCCustomBuildTool\"\r\n"
+                                "\t\t\t\tCommandLine=\"%s&#x0D;&#x0A;\"\r\n"
+                                "\t\t\t\tOutputs=\"%s\"\r\n"
+                                "\t\t\t/>\r\n";
+
+static char *msvc9_cbt = "\t\t\t<Tool\r\n"
+                         "\t\t\t\tName=\"VCCustomBuildTool\"\r\n"
+                         "\t\t\t/>\r\n";
+
+static char *msvc9_config_part4 = "\t\t\t<Tool\r\n"
+                                  "\t\t\t\tName=\"VCXMLDataGeneratorTool\"\r\n"
+                                  "\t\t\t/>\r\n"
+                                  "\t\t\t<Tool\r\n"
+                                  "\t\t\t\tName=\"VCWebServiceProxyGeneratorTool\"\r\n"
+                                  "\t\t\t/>\r\n";
+
+static char *msvc9_midl_tool_gui = "\t\t\t<Tool\r\n"
+                                   "\t\t\t\tName=\"VCMIDLTool\"\r\n"
+                                   "\t\t\t\tPreprocessorDefinitions=\"%s\"\r\n"
+                                   "\t\t\t\tMkTypLibCompatible=\"true\"\r\n"
+                                   "\t\t\t\tSuppressStartupBanner=\"true\"\r\n"
+                                   "\t\t\t\tTargetEnvironment=\"%d\"\r\n"
+                                   "\t\t\t\tTypeLibraryName=\".\\..\\..\\..\\..\\data\\%s.tlb\"\r\n"
+                                   "\t\t\t/>\r\n";
+
+static char *msvc9_midl_tool_console = "\t\t\t<Tool\r\n"
+                                       "\t\t\t\tName=\"VCMIDLTool\"\r\n"
+                                       "%s"
+                                       "\t\t\t\tTypeLibraryName=\".\\..\\..\\..\\..\\data\\%s.tlb\"\r\n"
+                                       "\t\t\t/>\r\n";
+
+static char *msvc9_midl_tool_lib = "\t\t\t<Tool\r\n"
+                                   "\t\t\t\tName=\"VCMIDLTool\"\r\n"
+                                   "%s"
+                                   "\t\t\t/>\r\n";
+
+static char *msvc9_ct_part1 = "\t\t\t<Tool\r\n"
+                              "\t\t\t\tName=\"VCCLCompilerTool\"\r\n"
+                              "%s\r\n";
+
+static char *msvc9_aid = "\t\t\t\tAdditionalIncludeDirectories=\"..\\msvc,..\\,..\\..\\..\\";
+
+static char *msvc9_aid_cc = "\t\t\t\tAdditionalIncludeDirectories=\"..\\msvc\"\r\n";
+
+static char *msvc9_aid_sid = "\t\t\t\tAdditionalIncludeDirectories=\"..\\msvc,..\\,..\\..\\..\\,..\\..\\..\\resid\"\r\n";
+
+static char *msvc9_predef = "\t\t\t\tPreprocessorDefinitions=\"WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,";
+
+static char *msvc9_predef_cc = ",PACKAGE=\\&quot;%s\\&quot;,VERSION=\\&quot;0.7\\&quot;,SIZEOF_INT=4";
+
+static char *msvc9_string_pooling = "	\t\t\tStringPooling=\"true\"\r\n";
+
+static char *msvc9_rtl = "\t\t\t\tRuntimeLibrary=\"%d\"\r\n";
+
+static char *msvc9_efll = "\t\t\t\tEnableFunctionLevelLinking=\"true\"\r\n";
+
+static char *msvc9_ct_part2 = "\t\t\t\tUsePrecompiledHeader=\"0\"\r\n"
+                              "\t\t\t\tPrecompiledHeaderFile=\".\\libs\\%s\\%s%s\\%s.pch\"\r\n"
+                              "\t\t\t\tAssemblerListingLocation=\".\\libs\\%s\\%s%s\\\"\r\n"
+                              "\t\t\t\tObjectFile=\".\\libs\\%s\\%s%s\\\"\r\n"
+                              "\t\t\t\tProgramDataBaseFileName=\".\\libs\\%s\\%s%s\\\"\r\n"
+                              "\t\t\t\tWarningLevel=\"3\"\r\n"
+                              "\t\t\t\tSuppressStartupBanner=\"true\"\r\n";
+
+static char *msvc9_dif = "\t\t\t\tDebugInformationFormat=\"1\"\r\n";
+
+static char *msvc9_config_part5 = "\t\t\t\tCompileAs=\"0\"\r\n"
+                                  "\t\t\t/>\r\n"
+                                  "\t\t\t<Tool\r\n"
+                                  "\t\t\t\tName=\"VCManagedResourceCompilerTool\"\r\n"
+                                  "\t\t\t/>\r\n";
+
+static char *msvc9_rct_gui = "\t\t\t<Tool\r\n"
+                             "\t\t\t\tName=\"VCResourceCompilerTool\"\r\n"
+                             "\t\t\t\tPreprocessorDefinitions=\"WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,%s\"\r\n"
+                             "\t\t\t\tCulture=\"1033\"\r\n"
+                             "\t\t\t\tAdditionalIncludeDirectories=\"..\\msvc;..\\;..\\..\\..\\\"\r\n"
+                             "\t\t\t/>\r\n";
+
+static char *msvc9_rct_console = "\t\t\t<Tool\r\n"
+                                 "\t\t\t\tName=\"VCResourceCompilerTool\"\r\n"
+                                 "\t\t\t\tPreprocessorDefinitions=\"%s\"\r\n"
+                                 "\t\t\t\tCulture=\"1033\"\r\n"
+                                 "\t\t\t/>\r\n";
+
+static char *msvc9_rct_lib = "\t\t\t<Tool\r\n"
+                             "\t\t\t\tName=\"VCResourceCompilerTool\"\r\n"
+                             "\t\t\t\tCulture=\"1033\"\r\n"
+                             "\t\t\t/>\r\n";
+
+static char *msvc9_plet = "\t\t\t<Tool\r\n"
+                          "\t\t\t\tName=\"VCPreLinkEventTool\"\r\n"
+                          "\t\t\t/>\r\n";
+
+static char *msvc9_gdi = "\t\t\t\tGenerateDebugInformation=\"true\"\r\n";
+
+static char *msvc9_linker_tool = "\t\t\t<Tool\r\n"
+                                 "\t\t\t\tName=\"VCLinkerTool\"\r\n"
+                                 "\t\t\t\tAdditionalDependencies=\"%s\"\r\n"
+                                 "\t\t\t\tOutputFile=\".\\..\\..\\..\\..\\data\\%s.exe\"\r\n"
+                                 "\t\t\t\tLinkIncremental=\"%d\"\r\n"
+                                 "\t\t\t\tSuppressStartupBanner=\"true\"\r\n"
+                                 "%s"
+                                 "\t\t\t\tProgramDatabaseFile=\".\\..\\..\\..\\..\\data\\%s.pdb\"\r\n"
+                                 "\t\t\t\tSubSystem=\"%d\"\r\n"
+                                 "\t\t\t\tRandomizedBaseAddress=\"1\"\r\n"
+                                 "\t\t\t\tDataExecutionPrevention=\"0\"\r\n";
+
+static char *msvc9_target_machine = "\t\t\t\tTargetMachine=\"%d\"\r\n";
+
+static char *msvc9_lib_tool = "\t\t\t<Tool\r\n"
+                              "\t\t\t\tName=\"VCLibrarianTool\"\r\n"
+                              "\t\t\t\tOutputFile=\".\\libs\\%s\\%s%s\\%s.lib\"\r\n"
+                              "\t\t\t\tSuppressStartupBanner=\"true\"\r\n";
+
+static char *msvc9_manifest_tool = "\t\t\t<Tool\r\n"
+                                   "\t\t\t\tName=\"VCManifestTool\"\r\n"
+                                   "\t\t\t/>\r\n";
+
+static char *msvc9_app_ver_tool = "\t\t\t<Tool\r\n"
+                                  "\t\t\t\tName=\"VCAppVerifierTool\"\r\n"
+                                  "\t\t\t/>\r\n";
+
+static char *msvc9_config_part6 = "\t\t\t/>\r\n"
+                                  "\t\t\t<Tool\r\n"
+                                  "\t\t\t\tName=\"VCALinkTool\"\r\n"
+                                  "\t\t\t/>\r\n"
+                                  "%s"
+                                  "\t\t\t<Tool\r\n"
+                                  "\t\t\t\tName=\"VCXDCMakeTool\"\r\n"
+                                  "\t\t\t/>\r\n"
+                                  "\t\t\t<Tool\r\n"
+                                  "\t\t\t\tName=\"VCBscMakeTool\"\r\n"
+                                  "\t\t\t/>\r\n"
+                                  "\t\t\t<Tool\r\n"
+                                  "\t\t\t\tName=\"VCFxCopTool\"\r\n"
+                                  "\t\t\t/>\r\n"
+                                  "%s"
+                                  "\t\t\t<Tool\r\n"
+                                  "\t\t\t\tName=\"VCPostBuildEventTool\"\r\n"
+                                  "\t\t\t/>\r\n"
+                                  "\t\t</Configuration>\r\n";
+
+static char *msvc9_configs_files = "\t</Configurations>\r\n"
+                                   "\t<References>\r\n"
+                                   "\t</References>\r\n"
+                                   "\t<Files>\r\n";
+
+static char *msvc9_file = "\t\t<File\r\n"
+                          "\t\t\tRelativePath=\"..\\..\\..\\%s\"\r\n"
+                          "\t\t\t>\r\n"
+                          "\t\t</File>\r\n";
+
+static char *msvc9_res_file = "\t\t<File\r\n"
+                              "\t\t\tRelativePath=\"..\\%s\"\r\n"
+                              "\t\t\t>\r\n";
+
+static char *msvc9_res_conf = "\t\t\t<FileConfiguration\r\n"
+                              "\t\t\t\tName=\"%s|%s\"\r\n"
+                              "\t\t\t\t>\r\n"
+                              "\t\t\t\t<Tool\r\n"
+                              "\t\t\t\t\tName=\"VCCustomBuildTool\"\r\n"
+                              "\t\t\t\t\tCommandLine=\"copy /b ";
+
+static char *msvc9_res_conf_end = "\t\t\t\t\tOutputs=\"%s\"\r\n"
+                                  "\t\t\t\t/>\r\n"
+                                  "\t\t\t</FileConfiguration>\r\n";
+
+static char *msvc9_res_file_end = "\t\t</File>\r\n"
+                                  "\t\t<File\r\n"
+                                  "\t\t\tRelativePath=\".\\%s\"\r\n"
+                                  "\t\t\t>\r\n"
+                                  "\t\t</File>\r\n"
+                                  "\t\t<File\r\n"
+                                  "\t\t\tRelativePath=\"..\\vice.manifest\"\r\n"
+                                  "\t\t\t>\r\n";
+
+static char *msvc9_res_file_conf = "\t\t\t<FileConfiguration\r\n"
+                                   "\t\t\t\tName=\"%s|%s\"\r\n"
+                                   "\t\t\t\tExcludedFromBuild=\"true\"\r\n"
+                                   "\t\t\t\t>\r\n"
+                                   "\t\t\t\t<Tool\r\n"
+                                   "\t\t\t\t\tName=\"VCCustomBuildTool\"\r\n"
+                                   "\t\t\t\t/>\r\n"
+                                   "\t\t\t</FileConfiguration>\r\n";
+
+
+static char *msvc9_custom_file = "\t\t<File\r\n"
+                                 "\t\t\tRelativePath=\"%s\"\r\n"
+                                 "\t\t\t>\r\n";
+
+static char *msvc9_custom_file_conf = "\t\t\t<FileConfiguration\r\n"
+                                      "\t\t\t\tName=\"%s|%s\"\r\n"
+                                      "\t\t\t\t>\r\n"
+                                      "\t\t\t\t<Tool\r\n"
+                                      "\t\t\t\t\tName=\"VCCustomBuildTool\"\r\n"
+                                      "\t\t\t\t\tDescription=\"%s\"\r\n"
+                                      "\t\t\t\t\tCommandLine=\"%s&#x0D;&#x0A;\"\r\n"
+                                      "\t\t\t\t\tAdditionalDependencies=\"";
+
+static char *msvc9_custom_file_end = "\t\t\t\t\tOutputs=\"%s\"\r\n"
+                                     "\t\t\t\t/>\r\n"
+                                     "\t\t\t</FileConfiguration>\r\n";
+
+static char *msvc9_winid_file = "\t\t<File\r\n"
+                                "\t\t\tRelativePath=\".\\winid.bat\"\r\n"
+                                "\t\t\t>\r\n";
+
+static char *msvc9_winid_conf = "\t\t\t<FileConfiguration\r\n"
+                                "\t\t\t\tName=\"%s|%s\"\r\n"
+                                "\t\t\t\t>\r\n"
+                                "\t\t\t\t<Tool\r\n"
+                                "\t\t\t\t\tName=\"VCCustomBuildTool\"\r\n"
+                                "\t\t\t\t\tDescription=\"Generating winid.bat\"\r\n"
+                                "\t\t\t\t\tCommandLine=\"copy %s winid.bat&#x0D;&#x0A;\"\r\n"
+                                "\t\t\t\t\tAdditionalDependencies=\".\\%s;\"\r\n"
+                                "\t\t\t\t\tOutputs=\".\\winid.bat\"\r\n"
+                                "\t\t\t\t/>\r\n"
+                                "\t\t\t</FileConfiguration>\r\n";
+
+static char *msvc9_cc_file = "\t\t<File\r\n"
+                             "\t\t\tRelativePath=\"..\\..\\..\\%s\\%s.cc\"\r\n"
+                             "\t\t\t>\r\n";
+
+static char *msvc9_cc_conf = "\t\t\t<FileConfiguration\r\n"
+                             "\t\t\t\tName=\"%s|%s\"\r\n"
+                             "\t\t\t\t>\r\n"
+                             "\t\t\t\t<Tool\r\n"
+                             "\t\t\t\t\tName=\"VCCustomBuildTool\"\r\n"
+                             "\t\t\t\t\tCommandLine=\"cl /nologo %s %s /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; %s /D PACKAGE=\\&quot;%s\\&quot; /D VERSION=\\&quot;0.7\\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\\%s\\%s%s\\%s.pch&quot; /Fo&quot;libs\\%s\\%s%s/&quot; /Fd&quot;libs\\%s\\%s%s/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;\"\r\n"
+                             "\t\t\t\t\tOutputs=\"libs\\%s\\%s%s\\$(InputName).obj\"\r\n"
+                             "\t\t\t\t/>\r\n"
+                             "\t\t\t</FileConfiguration>\r\n";
+
+static char *msvc9_project_end = "\t</Files>\r\n"
+                                 "\t<Globals>\r\n"
+                                 "\t</Globals>\r\n"
+                                 "</VisualStudioProject>\r\n";
+
+static char *msvc9_main_project_start = "Project(\"{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}\") = \"%s\", \"%s.vcproj\", \"{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}\"\r\n";
+
+static char *msvc9_main_project_deps_start = "\tProjectSection(ProjectDependencies) = postProject\r\n";
+
+static char *msvc9_main_project_deps = "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X} = {8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}\r\n";
+
+static char *msvc9_main_project_deps_end = "\tEndProjectSection\r\n";
+
+static char *msvc9_main_project_end = "EndProject\r\n";
+
+static char *msvc9_main_global_start = "Global\r\n"
+                                       "\tGlobalSection(SolutionConfigurationPlatforms) = preSolution\r\n";
+
+static char *msvc9_main_confs = "\t\t%s|%s = %s|%s\r\n";
+
+static char *msvc9_global_mid = "\tEndGlobalSection\r\n"
+                                "\tGlobalSection(ProjectConfigurationPlatforms) = postSolution\r\n";
+
+static char *msvc9_global_confs1 = "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.%s|%s.ActiveCfg = %s|%s\r\n";
+
+static char *msvc9_global_confs2 = "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.%s|%s.Build.0 = %s|%s\r\n";
+
+static char *msvc9_global_end = "\tEndGlobalSection\r\n"
+                                "\tGlobalSection(SolutionProperties) = preSolution\r\n"
+                                "\t\tHideSolutionNode = FALSE\r\n"
+                                "\tEndGlobalSection\r\n"
+                                "EndGlobal\r\n";
+
+
+/* ### */
+static void generate_msvc9_sln(void)
+{
+    int i, j, k;
+    int index;
+    int exc = 0;
+
+    for (i = 0; project_info[i].name; i++) {
+        fprintf(mainfile, msvc9_main_project_start, project_info[i].name, project_info[i].name, i);
+        if (project_info[i].dep[0]) {
+            fprintf(mainfile, msvc9_main_project_deps_start);
+            for (j = 0; project_info[i].dep[j]; j++) {
+                index = pi_get_index_of_name(project_info[i].dep[j]);
+                fprintf(mainfile, msvc9_main_project_deps, index, index);
+            }
+            fprintf(mainfile, msvc9_main_project_deps_end);
+        }
+        fprintf(mainfile, msvc9_main_project_end);
+    }
+    fprintf(mainfile, msvc9_main_global_start);
+    for (i = 0; i < 4; i++) {
+        for (k = 0; k < 3; k++) {
+            fprintf(mainfile, msvc9_main_confs, msvc_type_name[i], msvc_platform[k], msvc_type_name[i], msvc_platform[k]);
+        }
+    }
+    fprintf(mainfile, msvc9_global_mid);
+    for (j = 0; project_info[j].name; j++) {
+        for (i = 0; i < 4; i++) {
+            for (k = 0; k < 3; k++) {
+                exc = test_win32_exception(project_info[j].name);
+                fprintf(mainfile, msvc9_global_confs1, j, msvc_type_name[i], msvc_platform[k], msvc_type_name[i], (exc) ? "Win32" : msvc_platform[k]);
+                fprintf(mainfile, msvc9_global_confs2, j, msvc_type_name[i], msvc_platform[k], msvc_type_name[i], (exc) ? "Win32" : msvc_platform[k]);
+            }
+        }
+    }
+    fprintf(mainfile, msvc9_global_end);
+}
+
+static int open_msvc9_main_project(void)
+{
+    pi_init();
+
+    mainfile = fopen("../vs9/vice.sln", "wb");
+
+    if (!mainfile) {
+        printf("Cannot open 'vice.sln' for output\n");
+        return 1;
+    }
+
+    fprintf(mainfile, "Microsoft Visual Studio Solution File, Format Version 10.00\r\n");
+    fprintf(mainfile, "# Visual Studio 2008\r\n");
+
+    return 0;
+}
+
+static void close_msvc9_main_project(void)
+{
+    generate_msvc9_sln();
+    pi_exit();
+    fclose(mainfile);
+}
+
+static int output_msvc9_file(char *fname, int filelist)
+{
+    char *filename;
+    int retval = 0;
+    FILE *outfile = NULL;
+    int i = 0;
+    int j, k;
+    char *temp_string;
+
+    if (filelist) {
+        i = pi_insert_name(cp_name);
+        if (cp_dep_names[0]) {
+            pi_insert_deps(cp_dep_names, i);
+        }
+        filename = malloc(strlen(fname) + sizeof("../vs9/.vcproj"));
+        sprintf(filename, "../vs9/%s.vcproj", fname);
+    } else {
+        filename = malloc(strlen(fname) + sizeof(".vcproj"));
+        sprintf(filename, "%s.vcproj", fname);
+    }
+
+    outfile = fopen(filename, "wb");
+    if (!outfile) {
+        printf("Cannot open %s for output\n", filename);
+        retval = 1;
+    }
+
+    if (!retval) {
+        fprintf(outfile, msvc9_project_start, cp_name, i);
+        for (i = 0; i < 4; i++) {
+            for (k = 0; k < 3; k++) {
+                fprintf(outfile, msvc9_config_part1, msvc_type_name[i], msvc_platform[k]);
+                if (cp_type != CP_TYPE_LIBRARY) {
+                    fprintf(outfile, msvc9_output_dir_app);
+                } else {
+                    fprintf(outfile, msvc9_output_dir_lib, cp_name, msvc_platform[k], msvc_type[i]);
+                }
+                fprintf(outfile, msvc9_config_part2, cp_name, msvc_platform[k], msvc_type[i], (cp_type == CP_TYPE_LIBRARY) ? 4 : 1);
+                if (cp_type == CP_TYPE_CONSOLE) {
+                    fprintf(outfile, msvc9_charset);
+                }
+                fprintf(outfile, msvc9_config_part3);
+                if (cp_post_custom_message) {
+                    fprintf(outfile, msvc9_cbt_custom, cp_post_custom_command, cp_post_custom_output);
+                } else {
+                    fprintf(outfile, msvc9_cbt);
+                }
+                fprintf(outfile, msvc9_config_part4);
+                switch (k) {
+                    default:
+                    case 0:
+                        temp_string = "";
+                        break;
+                    case 1:
+                        temp_string = "\t\t\t\tTargetEnvironment=\"2\"\r\n";
+                        break;
+                    case 2:
+                        temp_string = "\t\t\t\tTargetEnvironment=\"3\"\r\n";
+                        break;
+                }
+                switch (cp_type) {
+                    default:
+                    case CP_TYPE_GUI:
+                        fprintf(outfile, msvc9_midl_tool_gui, msvc_preprodefs[i & 1], k + 1, cp_name);
+                        break;
+                    case CP_TYPE_CONSOLE:
+                        fprintf(outfile, msvc9_midl_tool_console, temp_string, cp_name);
+                        break;
+                    case CP_TYPE_LIBRARY:
+                        fprintf(outfile, msvc9_midl_tool_lib, temp_string);
+                        break;
+                }
+                if (i & 1) {
+                    temp_string = "\t\t\t\tInlineFunctionExpansion=\"1\"";
+                } else {
+                    temp_string = "\t\t\t\tOptimization=\"0\"";
+                }
+                fprintf(outfile, msvc9_ct_part1, temp_string);
+                if (cp_cc_source_names[0]) {
+                    if (cp_source_names[0]) {
+                        fprintf(outfile, msvc9_aid_sid);
+                    } else {
+                        fprintf(outfile, msvc9_aid_cc);
+                    }
+                } else {
+                    fprintf(outfile, msvc9_aid);
+                    if (cp_include_dirs[0]) {
+                        for (j = 0; cp_include_dirs[j]; j++) {
+                            fprintf(outfile, ",..\\..\\..\\%s", cp_include_dirs[j]);
+                        }
+                    }
+                    fprintf(outfile, "\"\r\n");
+                }
+                fprintf(outfile, msvc9_predef);
+                fprintf(outfile, msvc_predefs[i]);
+                if (cp_cc_source_names[0]) {
+                    fprintf(outfile, msvc9_predef_cc, cp_name);
+                }
+                fprintf(outfile, "\"\r\n");
+                if (i & 1) {
+                    fprintf(outfile, msvc9_string_pooling);
+                }
+                fprintf(outfile, msvc9_rtl, (!(i & 1)));
+                if (i & 1) {
+                    fprintf(outfile, msvc9_efll);
+                }
+                fprintf(outfile, msvc9_ct_part2, cp_name, msvc_platform[k], msvc_type[i], cp_name, cp_name, msvc_platform[k], msvc_type[i], cp_name, msvc_platform[k], msvc_type[i], cp_name, msvc_platform[k], msvc_type[i]);
+                if (!(i & 1)) {
+                    fprintf(outfile, msvc9_dif);
+                }
+                fprintf(outfile, msvc9_config_part5);
+                switch (cp_type) {
+                    default:
+                    case CP_TYPE_GUI:
+                        fprintf(outfile, msvc9_rct_gui, msvc_predefs[i]);
+                        break;
+                    case CP_TYPE_CONSOLE:
+                        fprintf(outfile, msvc9_rct_console, msvc_predefs[i]);
+                        break;
+                    case CP_TYPE_LIBRARY:
+                        fprintf(outfile, msvc9_rct_lib);
+                        break;
+                }
+                fprintf(outfile, msvc9_plet);
+                if (cp_type != CP_TYPE_LIBRARY) {
+                    fprintf(outfile, msvc9_linker_tool, (cp_type == CP_TYPE_GUI) ? msvc_libs_gui[i >> 1] : msvc_libs_console, cp_name, (!(i &1)) + 1, (i & 1) ? "" : msvc9_gdi, cp_name, (cp_type == CP_TYPE_GUI) ? 2 : 1);
+                    if (k) {
+                        fprintf(outfile, msvc9_target_machine, (k == 1) ? 5 : 17);
+                    }
+                } else {
+                    fprintf(outfile, msvc9_lib_tool, cp_name, msvc_platform[k], msvc_type[i]);
+                }
+                fprintf(outfile, msvc9_config_part6, (cp_type == CP_TYPE_LIBRARY) ? "" : msvc9_manifest_tool, (cp_type == CP_TYPE_LIBRARY) ? "" : msvc9_app_ver_tool);
+            }
+        }
+        fprintf(outfile, msvc9_configs_files);
+        if (cp_source_names[0]) {
+            for (j = 0; cp_source_names[j]; j++) {
+                fprintf(outfile, msvc9_file, cp_source_names[j]);
+            }
+        }
+        if (cp_res_source_name) {
+            fprintf(outfile, msvc9_res_file, cp_res_source_name);
+            for (i = 0; i < 4; i++) {
+                for (k = 0; k < 3; k++) {
+                    fprintf(outfile, msvc9_res_conf, msvc_type_name[i], msvc_platform[k]);
+                    for (j = 0; cp_res_deps[j]; j++) {
+                        fprintf(outfile, "..\\%s ", cp_res_deps[j]);
+                        if (cp_res_deps[j + 1]) {
+                            fprintf(outfile, "+ ");
+                        }
+                    }
+                    fprintf(outfile, "%s /b&#x0D;&#x0A;\"\r\n", cp_res_output_name);
+                    fprintf(outfile, "\t\t\t\t\tAdditionalDependencies=\"..\\..\\..\\debug.h;");
+                    for (j = 0; cp_res_deps[j]; j++) {
+                        fprintf(outfile, "..\\%s;", cp_res_deps[j]);
+                    }
+                    fprintf(outfile, "\"\r\n");
+                    fprintf(outfile, msvc9_res_conf_end, cp_res_output_name);
+                }
+            }
+            fprintf(outfile, msvc9_res_file_end, cp_res_output_name);
+            for (i = 0; i < 4; i++) {
+                for (k = 0; k < 3; k++) {
+                    fprintf(outfile, msvc9_res_file_conf, msvc_type_name[i], msvc_platform[k]);
+                }
+            }
+            fprintf(outfile, msvc_file_end);
+        }
+        if (cp_custom_message) {
+            fprintf(outfile, msvc9_custom_file, cp_custom_source);
+            for (i = 0; i < 4; i++) {
+                for (k = 0; k < 3; k++) {
+                    fprintf(outfile, msvc9_custom_file_conf, msvc_type_name[i], msvc_platform[k], cp_custom_message, cp_custom_command);
+                    for (j = 0; cp_custom_deps[j]; j++) {
+                        fprintf(outfile, "%s;", cp_custom_deps[j]);
+                    }
+                    fprintf(outfile, "\"\r\n");
+                    fprintf(outfile, msvc9_custom_file_end, cp_custom_output);
+                }
+            }
+            fprintf(outfile, msvc_file_end);
+        }
+        if (!strcmp(cp_name, "base")) {
+            fprintf(outfile, msvc9_winid_file);
+            for (i = 0; i < 4; i++) {
+                for (k = 0; k < 3; k++) {
+                    fprintf(outfile, msvc9_winid_conf, msvc_type_name[i], msvc_platform[k], msvc_winid_copy[k], msvc_winid_copy[k]);
+                }
+            }
+            fprintf(outfile, msvc_file_end);
+        }
+        if (cp_cc_source_path) {
+            for (j = 0; cp_cc_source_names[j]; j++) {
+                fprintf(outfile, msvc9_cc_file, cp_cc_source_path, cp_cc_source_names[j]);
+                for (i = 0; i < 4; i++) {
+                    for (k = 0; k < 3; k++) {
+                        fprintf(outfile, msvc9_cc_conf, msvc_type_name[i], msvc_platform[k], msvc_flags[i & 1], (cp_source_names[0]) ? msvc_cc_inc_sid : msvc_cc_inc, msvc_cc_extra[i], cp_name, cp_name, msvc_platform[k], msvc_type[i], cp_name, cp_name, msvc_platform[k], msvc_type[i], cp_name, msvc_platform[k], msvc_type[i], cp_name, msvc_platform[k], msvc_type[i]);
+                    }
+                }
+                fprintf(outfile, msvc_file_end);
+            }
+        }
+        fprintf(outfile, msvc9_project_end);
+    }
+
+    if (outfile) {
+        fclose(outfile);
+    }
+
+    if (filename) {
+        free(filename);
+    }
+
+    if (cp_libs) {
+        free(cp_libs);
+        cp_libs = NULL;
+    }
+
+    if (read_buffer) {
+        free(read_buffer);
+        read_buffer = NULL;
+        read_buffer_line = 0;
+        read_buffer_pos = 0;
+        read_buffer_len = 0;
+    }
+
+    return retval;
+}
+
+/* ---------------------------------------------------------------------- */
 
 static char *msvc8_main_platform[3] = {
     "Itanium",
@@ -288,8 +904,6 @@ static char *msvc8_main_type[4] = {
     "DX Release",
     "Release"
 };
-
-static char *msvc8_libs_console = "version.lib wsock32.lib";
 
 static char *msvc8_project_start = "<?xml version=\"1.0\" encoding=\"Windows-1252\"?>\r\n"
                                    "<VisualStudioProject\r\n"
@@ -404,7 +1018,7 @@ static char *msvc8_efll = "\t\t\t\tEnableFunctionLevelLinking=\"true\"\r\n";
 
 static char *msvc8_ct_part3 = "\t\t\t\tUsePrecompiledHeader=\"0\"\r\n"
                               "\t\t\t\tPrecompiledHeaderFile=\".\\libs\\%s\\%s%s\\%s.pch\"\r\n"
-                              "\t\t\t\tAssemblerListingLocation=\".\\libs\\%s\%s%s\\\"\r\n"
+                              "\t\t\t\tAssemblerListingLocation=\".\\libs\\%s\\%s%s\\\"\r\n"
                               "\t\t\t\tObjectFile=\".\\libs\\%s\\%s%s\\\"\r\n"
                               "\t\t\t\tProgramDataBaseFileName=\".\\libs\\%s\\%s%s\\\"\r\n"
                               "\t\t\t\tWarningLevel=\"3\"\r\n"
@@ -514,8 +1128,6 @@ static char *msvc8_cpu_fileconf = "\t\t\t<FileConfiguration\r\n"
                                   "\t\t\t\t/>\r\n"
                                   "\t\t\t</FileConfiguration>\r\n";
 
-static char *msvc8_file_end = "\t\t</File>\r\n";
-
 static char *msvc8_custom_file = "\t\t<File\r\n"
                                  "\t\t\tRelativePath=\"%s\"\r\n"
                                  "\t\t\t>\r\n";
@@ -553,10 +1165,6 @@ static char *msvc8_winid_conf = "\t\t\t<FileConfiguration\r\n"
 static char *msvc8_cc_file = "\t\t<File\r\n"
                              "\t\t\tRelativePath=\"..\\..\\..\\%s\\%s.cc\"\r\n"
                              "\t\t\t>\r\n";
-
-static char *msvc8_cc_inc = "/I &quot;..\\msvc&quot;";
-
-static char *msvc8_cc_inc_sid = "/I &quot;..\\msvc&quot; /I &quot;..\\..\\../&quot; /I &quot;../&quot; /I &quot;..\\..\\..\\sid&quot;";
 
 static char *msvc8_cc_conf = "\t\t\t<FileConfiguration\r\n"
                              "\t\t\t\tName=\"%s|%s\"\r\n"
@@ -746,7 +1354,7 @@ static int output_msvc8_file(char *fname, int filelist)
                 switch (cp_type) {
                     default:
                     case CP_TYPE_GUI:
-                        fprintf(outfile, msvc8_midl_tool_gui, msvc8_preprodefs[i & 1], k + 1, cp_name);
+                        fprintf(outfile, msvc8_midl_tool_gui, msvc_preprodefs[i & 1], k + 1, cp_name);
                         break;
                     case CP_TYPE_CONSOLE:
                         if (k == 0) {
@@ -817,7 +1425,7 @@ static int output_msvc8_file(char *fname, int filelist)
                 if (cp_type == CP_TYPE_LIBRARY) {
                     fprintf(outfile, msvc8_lib_tool, cp_name, msvc_platform[k], msvc_type[i], cp_name);
                 } else {
-                    fprintf(outfile, msvc8_linker_tool_part1, (cp_type == CP_TYPE_GUI) ? msvc8_libs_gui[i >> 1] : msvc8_libs_console, cp_name, (!(i & 1)) + 1);
+                    fprintf(outfile, msvc8_linker_tool_part1, (cp_type == CP_TYPE_GUI) ? msvc_libs_gui[i >> 1] : msvc_libs_console, cp_name, (!(i & 1)) + 1);
                     if (!(i & 1)) {
                         fprintf(outfile, msvc8_linker_tool_debug);
                     }
@@ -856,7 +1464,7 @@ static int output_msvc8_file(char *fname, int filelist)
                         fprintf(outfile, msvc8_cpu_fileconf, msvc_type_name[(i * 2) + 1], msvc_platform[k]);
                     }
                 }
-                fprintf(outfile, msvc8_file_end);
+                fprintf(outfile, msvc_file_end);
             }
         }
         if (cp_custom_source) {
@@ -870,16 +1478,16 @@ static int output_msvc8_file(char *fname, int filelist)
                     fprintf(outfile, msvc8_custom_conf2, cp_custom_output);
                 }
             }
-            fprintf(outfile, msvc8_file_end);
+            fprintf(outfile, msvc_file_end);
         }
         if (!strcmp(cp_name, "base")) {
             fprintf(outfile, msvc8_winid_start);
             for (k = 0; k < 3; k++) {
                 for (i = 0; i < 4; i++) {
-                    fprintf(outfile, msvc8_winid_conf, msvc_type_name[i], msvc_platform[k], msvc8_winid_copy[k], msvc8_winid_copy[k]);
+                    fprintf(outfile, msvc8_winid_conf, msvc_type_name[i], msvc_platform[k], msvc_winid_copy[k], msvc_winid_copy[k]);
                 }
             }
-            fprintf(outfile, msvc8_file_end);
+            fprintf(outfile, msvc_file_end);
         }
 
         if (cp_cc_source_names[0]) {
@@ -887,10 +1495,10 @@ static int output_msvc8_file(char *fname, int filelist)
                 fprintf(outfile, msvc8_cc_file, cp_cc_source_path, cp_cc_source_names[j]);
                 for (k = 0; k < 3; k++) {
                     for (i = 0; i < 4; i++) {
-                        fprintf(outfile, msvc8_cc_conf, msvc_type_name[i], msvc_platform[k], msvc_flags[i & 1], (cp_source_names[0]) ? msvc8_cc_inc_sid : msvc8_cc_inc, msvc_cc_extra[i], cp_name, cp_name, msvc_platform[k], msvc_type[i], cp_name, cp_name, msvc_platform[k], msvc_type[i], cp_name, msvc_platform[k], msvc_type[i], cp_name, msvc_platform[k], msvc_type[i]);
+                        fprintf(outfile, msvc8_cc_conf, msvc_type_name[i], msvc_platform[k], msvc_flags[i & 1], (cp_source_names[0]) ? msvc_cc_inc_sid : msvc_cc_inc, msvc_cc_extra[i], cp_name, cp_name, msvc_platform[k], msvc_type[i], cp_name, cp_name, msvc_platform[k], msvc_type[i], cp_name, msvc_platform[k], msvc_type[i], cp_name, msvc_platform[k], msvc_type[i]);
                     }
                 }
-                fprintf(outfile, msvc8_file_end);
+                fprintf(outfile, msvc_file_end);
             }
         }
         if (cp_res_source_name) {
@@ -917,7 +1525,7 @@ static int output_msvc8_file(char *fname, int filelist)
                     fprintf(outfile, msvc8_manifest_conf, msvc_type_name[i], msvc_platform[k]);
                 }
             }
-            fprintf(outfile, msvc8_file_end);
+            fprintf(outfile, msvc_file_end);
         }
         fprintf(outfile, msvc8_end_project);
     }
@@ -2755,7 +3363,27 @@ int main(int argc, char *argv[])
             }
             if (!error && msvc9) {
                 current_level = 90;
-                printf("Not yet implemented.\n");
+                if (project_names[0]) {
+                    error = open_msvc9_main_project();
+                    for (i = 0; project_names[i] && !error; i++) {
+                        error = read_template_file(project_names[i]);
+#if MKMSVC_DEBUG
+                        printf("Parse done\n");
+#endif
+                        if (!error) {
+                            error = output_msvc9_file(project_names[i], 1);
+#if MKMSVC_DEBUG
+                            printf("Output done\n");
+#endif
+                        }
+                    }
+                    close_msvc9_main_project();
+                } else {
+                    error = output_msvc9_file(filename, 0);
+                }
+                if (!error) {
+                    free_buffers();
+                }
             }
             if (!error && msvc10) {
                 current_level = 100;

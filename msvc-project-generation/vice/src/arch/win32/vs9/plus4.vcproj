@@ -52,7 +52,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\plus4\Win32DXDebug\plus4.pch"
-				AssemblerListingLocation=".\libs\plus4Win32DXDebug\"
+				AssemblerListingLocation=".\libs\plus4\Win32DXDebug\"
 				ObjectFile=".\libs\plus4\Win32DXDebug\"
 				ProgramDataBaseFileName=".\libs\plus4\Win32DXDebug\"
 				WarningLevel="3"
@@ -124,7 +124,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\plus4\ItaniumDXDebug\plus4.pch"
-				AssemblerListingLocation=".\libs\plus4ItaniumDXDebug\"
+				AssemblerListingLocation=".\libs\plus4\ItaniumDXDebug\"
 				ObjectFile=".\libs\plus4\ItaniumDXDebug\"
 				ProgramDataBaseFileName=".\libs\plus4\ItaniumDXDebug\"
 				WarningLevel="3"
@@ -196,7 +196,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\plus4\x64DXDebug\plus4.pch"
-				AssemblerListingLocation=".\libs\plus4x64DXDebug\"
+				AssemblerListingLocation=".\libs\plus4\x64DXDebug\"
 				ObjectFile=".\libs\plus4\x64DXDebug\"
 				ProgramDataBaseFileName=".\libs\plus4\x64DXDebug\"
 				WarningLevel="3"
@@ -269,7 +269,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\plus4\Win32DXRelease\plus4.pch"
-				AssemblerListingLocation=".\libs\plus4Win32DXRelease\"
+				AssemblerListingLocation=".\libs\plus4\Win32DXRelease\"
 				ObjectFile=".\libs\plus4\Win32DXRelease\"
 				ProgramDataBaseFileName=".\libs\plus4\Win32DXRelease\"
 				WarningLevel="3"
@@ -342,7 +342,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\plus4\ItaniumDXRelease\plus4.pch"
-				AssemblerListingLocation=".\libs\plus4ItaniumDXRelease\"
+				AssemblerListingLocation=".\libs\plus4\ItaniumDXRelease\"
 				ObjectFile=".\libs\plus4\ItaniumDXRelease\"
 				ProgramDataBaseFileName=".\libs\plus4\ItaniumDXRelease\"
 				WarningLevel="3"
@@ -415,7 +415,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\plus4\x64DXRelease\plus4.pch"
-				AssemblerListingLocation=".\libs\plus4x64DXRelease\"
+				AssemblerListingLocation=".\libs\plus4\x64DXRelease\"
 				ObjectFile=".\libs\plus4\x64DXRelease\"
 				ProgramDataBaseFileName=".\libs\plus4\x64DXRelease\"
 				WarningLevel="3"
@@ -485,7 +485,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\plus4\Win32Debug\plus4.pch"
-				AssemblerListingLocation=".\libs\plus4Win32Debug\"
+				AssemblerListingLocation=".\libs\plus4\Win32Debug\"
 				ObjectFile=".\libs\plus4\Win32Debug\"
 				ProgramDataBaseFileName=".\libs\plus4\Win32Debug\"
 				WarningLevel="3"
@@ -557,7 +557,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\plus4\ItaniumDebug\plus4.pch"
-				AssemblerListingLocation=".\libs\plus4ItaniumDebug\"
+				AssemblerListingLocation=".\libs\plus4\ItaniumDebug\"
 				ObjectFile=".\libs\plus4\ItaniumDebug\"
 				ProgramDataBaseFileName=".\libs\plus4\ItaniumDebug\"
 				WarningLevel="3"
@@ -629,7 +629,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\plus4\x64Debug\plus4.pch"
-				AssemblerListingLocation=".\libs\plus4x64Debug\"
+				AssemblerListingLocation=".\libs\plus4\x64Debug\"
 				ObjectFile=".\libs\plus4\x64Debug\"
 				ProgramDataBaseFileName=".\libs\plus4\x64Debug\"
 				WarningLevel="3"
@@ -702,7 +702,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\plus4\Win32Release\plus4.pch"
-				AssemblerListingLocation=".\libs\plus4Win32Release\"
+				AssemblerListingLocation=".\libs\plus4\Win32Release\"
 				ObjectFile=".\libs\plus4\Win32Release\"
 				ProgramDataBaseFileName=".\libs\plus4\Win32Release\"
 				WarningLevel="3"
@@ -775,7 +775,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\plus4\ItaniumRelease\plus4.pch"
-				AssemblerListingLocation=".\libs\plus4ItaniumRelease\"
+				AssemblerListingLocation=".\libs\plus4\ItaniumRelease\"
 				ObjectFile=".\libs\plus4\ItaniumRelease\"
 				ProgramDataBaseFileName=".\libs\plus4\ItaniumRelease\"
 				WarningLevel="3"
@@ -848,7 +848,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\plus4\x64Release\plus4.pch"
-				AssemblerListingLocation=".\libs\plus4x64Release\"
+				AssemblerListingLocation=".\libs\plus4\x64Release\"
 				ObjectFile=".\libs\plus4\x64Release\"
 				ProgramDataBaseFileName=".\libs\plus4\x64Release\"
 				WarningLevel="3"
@@ -891,6 +891,10 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\plus4\plus4cpu.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\plus4\digiblaster.c"
 			>
 		</File>
@@ -924,10 +928,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\plus4\plus4cart.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\plus4\plus4cpu.c"
 			>
 		</File>
 		<File

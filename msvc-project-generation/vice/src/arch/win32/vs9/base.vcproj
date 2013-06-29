@@ -52,7 +52,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\base\Win32DXDebug\base.pch"
-				AssemblerListingLocation=".\libs\baseWin32DXDebug\"
+				AssemblerListingLocation=".\libs\base\Win32DXDebug\"
 				ObjectFile=".\libs\base\Win32DXDebug\"
 				ProgramDataBaseFileName=".\libs\base\Win32DXDebug\"
 				WarningLevel="3"
@@ -124,7 +124,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\base\ItaniumDXDebug\base.pch"
-				AssemblerListingLocation=".\libs\baseItaniumDXDebug\"
+				AssemblerListingLocation=".\libs\base\ItaniumDXDebug\"
 				ObjectFile=".\libs\base\ItaniumDXDebug\"
 				ProgramDataBaseFileName=".\libs\base\ItaniumDXDebug\"
 				WarningLevel="3"
@@ -196,7 +196,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\base\x64DXDebug\base.pch"
-				AssemblerListingLocation=".\libs\basex64DXDebug\"
+				AssemblerListingLocation=".\libs\base\x64DXDebug\"
 				ObjectFile=".\libs\base\x64DXDebug\"
 				ProgramDataBaseFileName=".\libs\base\x64DXDebug\"
 				WarningLevel="3"
@@ -269,7 +269,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\base\Win32DXRelease\base.pch"
-				AssemblerListingLocation=".\libs\baseWin32DXRelease\"
+				AssemblerListingLocation=".\libs\base\Win32DXRelease\"
 				ObjectFile=".\libs\base\Win32DXRelease\"
 				ProgramDataBaseFileName=".\libs\base\Win32DXRelease\"
 				WarningLevel="3"
@@ -342,7 +342,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\base\ItaniumDXRelease\base.pch"
-				AssemblerListingLocation=".\libs\baseItaniumDXRelease\"
+				AssemblerListingLocation=".\libs\base\ItaniumDXRelease\"
 				ObjectFile=".\libs\base\ItaniumDXRelease\"
 				ProgramDataBaseFileName=".\libs\base\ItaniumDXRelease\"
 				WarningLevel="3"
@@ -415,7 +415,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\base\x64DXRelease\base.pch"
-				AssemblerListingLocation=".\libs\basex64DXRelease\"
+				AssemblerListingLocation=".\libs\base\x64DXRelease\"
 				ObjectFile=".\libs\base\x64DXRelease\"
 				ProgramDataBaseFileName=".\libs\base\x64DXRelease\"
 				WarningLevel="3"
@@ -485,7 +485,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\base\Win32Debug\base.pch"
-				AssemblerListingLocation=".\libs\baseWin32Debug\"
+				AssemblerListingLocation=".\libs\base\Win32Debug\"
 				ObjectFile=".\libs\base\Win32Debug\"
 				ProgramDataBaseFileName=".\libs\base\Win32Debug\"
 				WarningLevel="3"
@@ -557,7 +557,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\base\ItaniumDebug\base.pch"
-				AssemblerListingLocation=".\libs\baseItaniumDebug\"
+				AssemblerListingLocation=".\libs\base\ItaniumDebug\"
 				ObjectFile=".\libs\base\ItaniumDebug\"
 				ProgramDataBaseFileName=".\libs\base\ItaniumDebug\"
 				WarningLevel="3"
@@ -629,7 +629,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\base\x64Debug\base.pch"
-				AssemblerListingLocation=".\libs\basex64Debug\"
+				AssemblerListingLocation=".\libs\base\x64Debug\"
 				ObjectFile=".\libs\base\x64Debug\"
 				ProgramDataBaseFileName=".\libs\base\x64Debug\"
 				WarningLevel="3"
@@ -702,7 +702,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\base\Win32Release\base.pch"
-				AssemblerListingLocation=".\libs\baseWin32Release\"
+				AssemblerListingLocation=".\libs\base\Win32Release\"
 				ObjectFile=".\libs\base\Win32Release\"
 				ProgramDataBaseFileName=".\libs\base\Win32Release\"
 				WarningLevel="3"
@@ -775,7 +775,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\base\ItaniumRelease\base.pch"
-				AssemblerListingLocation=".\libs\baseItaniumRelease\"
+				AssemblerListingLocation=".\libs\base\ItaniumRelease\"
 				ObjectFile=".\libs\base\ItaniumRelease\"
 				ProgramDataBaseFileName=".\libs\base\ItaniumRelease\"
 				WarningLevel="3"
@@ -848,7 +848,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\base\x64Release\base.pch"
-				AssemblerListingLocation=".\libs\basex64Release\"
+				AssemblerListingLocation=".\libs\base\x64Release\"
 				ObjectFile=".\libs\base\x64Release\"
 				ProgramDataBaseFileName=".\libs\base\x64Release\"
 				WarningLevel="3"
@@ -1083,6 +1083,26 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\..\traps.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\util.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\vsync.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\zfile.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\zipcode.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\translate.txt"
 			>
 			<FileConfiguration
@@ -1219,18 +1239,6 @@
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="..\..\..\traps.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\util.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\vsync.c"
-			>
-		</File>
-		<File
 			RelativePath=".\winid.bat"
 			>
 			<FileConfiguration
@@ -1365,14 +1373,6 @@
 					Outputs=".\winid.bat"
 				/>
 			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\..\..\zfile.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\zipcode.c"
-			>
 		</File>
 	</Files>
 	<Globals>

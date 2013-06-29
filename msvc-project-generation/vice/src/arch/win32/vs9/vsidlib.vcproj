@@ -52,7 +52,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vsidlib\Win32DXDebug\vsidlib.pch"
-				AssemblerListingLocation=".\libs\vsidlibWin32DXDebug\"
+				AssemblerListingLocation=".\libs\vsidlib\Win32DXDebug\"
 				ObjectFile=".\libs\vsidlib\Win32DXDebug\"
 				ProgramDataBaseFileName=".\libs\vsidlib\Win32DXDebug\"
 				WarningLevel="3"
@@ -124,7 +124,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vsidlib\ItaniumDXDebug\vsidlib.pch"
-				AssemblerListingLocation=".\libs\vsidlibItaniumDXDebug\"
+				AssemblerListingLocation=".\libs\vsidlib\ItaniumDXDebug\"
 				ObjectFile=".\libs\vsidlib\ItaniumDXDebug\"
 				ProgramDataBaseFileName=".\libs\vsidlib\ItaniumDXDebug\"
 				WarningLevel="3"
@@ -196,7 +196,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vsidlib\x64DXDebug\vsidlib.pch"
-				AssemblerListingLocation=".\libs\vsidlibx64DXDebug\"
+				AssemblerListingLocation=".\libs\vsidlib\x64DXDebug\"
 				ObjectFile=".\libs\vsidlib\x64DXDebug\"
 				ProgramDataBaseFileName=".\libs\vsidlib\x64DXDebug\"
 				WarningLevel="3"
@@ -269,7 +269,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vsidlib\Win32DXRelease\vsidlib.pch"
-				AssemblerListingLocation=".\libs\vsidlibWin32DXRelease\"
+				AssemblerListingLocation=".\libs\vsidlib\Win32DXRelease\"
 				ObjectFile=".\libs\vsidlib\Win32DXRelease\"
 				ProgramDataBaseFileName=".\libs\vsidlib\Win32DXRelease\"
 				WarningLevel="3"
@@ -342,7 +342,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vsidlib\ItaniumDXRelease\vsidlib.pch"
-				AssemblerListingLocation=".\libs\vsidlibItaniumDXRelease\"
+				AssemblerListingLocation=".\libs\vsidlib\ItaniumDXRelease\"
 				ObjectFile=".\libs\vsidlib\ItaniumDXRelease\"
 				ProgramDataBaseFileName=".\libs\vsidlib\ItaniumDXRelease\"
 				WarningLevel="3"
@@ -415,7 +415,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vsidlib\x64DXRelease\vsidlib.pch"
-				AssemblerListingLocation=".\libs\vsidlibx64DXRelease\"
+				AssemblerListingLocation=".\libs\vsidlib\x64DXRelease\"
 				ObjectFile=".\libs\vsidlib\x64DXRelease\"
 				ProgramDataBaseFileName=".\libs\vsidlib\x64DXRelease\"
 				WarningLevel="3"
@@ -485,7 +485,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vsidlib\Win32Debug\vsidlib.pch"
-				AssemblerListingLocation=".\libs\vsidlibWin32Debug\"
+				AssemblerListingLocation=".\libs\vsidlib\Win32Debug\"
 				ObjectFile=".\libs\vsidlib\Win32Debug\"
 				ProgramDataBaseFileName=".\libs\vsidlib\Win32Debug\"
 				WarningLevel="3"
@@ -557,7 +557,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vsidlib\ItaniumDebug\vsidlib.pch"
-				AssemblerListingLocation=".\libs\vsidlibItaniumDebug\"
+				AssemblerListingLocation=".\libs\vsidlib\ItaniumDebug\"
 				ObjectFile=".\libs\vsidlib\ItaniumDebug\"
 				ProgramDataBaseFileName=".\libs\vsidlib\ItaniumDebug\"
 				WarningLevel="3"
@@ -629,7 +629,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vsidlib\x64Debug\vsidlib.pch"
-				AssemblerListingLocation=".\libs\vsidlibx64Debug\"
+				AssemblerListingLocation=".\libs\vsidlib\x64Debug\"
 				ObjectFile=".\libs\vsidlib\x64Debug\"
 				ProgramDataBaseFileName=".\libs\vsidlib\x64Debug\"
 				WarningLevel="3"
@@ -702,7 +702,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vsidlib\Win32Release\vsidlib.pch"
-				AssemblerListingLocation=".\libs\vsidlibWin32Release\"
+				AssemblerListingLocation=".\libs\vsidlib\Win32Release\"
 				ObjectFile=".\libs\vsidlib\Win32Release\"
 				ProgramDataBaseFileName=".\libs\vsidlib\Win32Release\"
 				WarningLevel="3"
@@ -775,7 +775,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vsidlib\ItaniumRelease\vsidlib.pch"
-				AssemblerListingLocation=".\libs\vsidlibItaniumRelease\"
+				AssemblerListingLocation=".\libs\vsidlib\ItaniumRelease\"
 				ObjectFile=".\libs\vsidlib\ItaniumRelease\"
 				ProgramDataBaseFileName=".\libs\vsidlib\ItaniumRelease\"
 				WarningLevel="3"
@@ -848,7 +848,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vsidlib\x64Release\vsidlib.pch"
-				AssemblerListingLocation=".\libs\vsidlibx64Release\"
+				AssemblerListingLocation=".\libs\vsidlib\x64Release\"
 				ObjectFile=".\libs\vsidlib\x64Release\"
 				ProgramDataBaseFileName=".\libs\vsidlib\x64Release\"
 				WarningLevel="3"
@@ -890,6 +890,10 @@
 	<References>
 	</References>
 	<Files>
+		<File
+			RelativePath="..\..\..\c64\vsidcpu.c"
+			>
+		</File>
 		<File
 			RelativePath="..\..\..\c64\c64-cmdline-options.c"
 			>
@@ -984,10 +988,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\c64\vsidcia2.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\c64\vsidcpu.c"
 			>
 		</File>
 		<File

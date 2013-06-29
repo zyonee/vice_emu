@@ -52,7 +52,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\cbm2common\Win32DXDebug\cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2commonWin32DXDebug\"
+				AssemblerListingLocation=".\libs\cbm2common\Win32DXDebug\"
 				ObjectFile=".\libs\cbm2common\Win32DXDebug\"
 				ProgramDataBaseFileName=".\libs\cbm2common\Win32DXDebug\"
 				WarningLevel="3"
@@ -124,7 +124,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\cbm2common\ItaniumDXDebug\cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2commonItaniumDXDebug\"
+				AssemblerListingLocation=".\libs\cbm2common\ItaniumDXDebug\"
 				ObjectFile=".\libs\cbm2common\ItaniumDXDebug\"
 				ProgramDataBaseFileName=".\libs\cbm2common\ItaniumDXDebug\"
 				WarningLevel="3"
@@ -196,7 +196,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\cbm2common\x64DXDebug\cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2commonx64DXDebug\"
+				AssemblerListingLocation=".\libs\cbm2common\x64DXDebug\"
 				ObjectFile=".\libs\cbm2common\x64DXDebug\"
 				ProgramDataBaseFileName=".\libs\cbm2common\x64DXDebug\"
 				WarningLevel="3"
@@ -269,7 +269,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\cbm2common\Win32DXRelease\cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2commonWin32DXRelease\"
+				AssemblerListingLocation=".\libs\cbm2common\Win32DXRelease\"
 				ObjectFile=".\libs\cbm2common\Win32DXRelease\"
 				ProgramDataBaseFileName=".\libs\cbm2common\Win32DXRelease\"
 				WarningLevel="3"
@@ -342,7 +342,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\cbm2common\ItaniumDXRelease\cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2commonItaniumDXRelease\"
+				AssemblerListingLocation=".\libs\cbm2common\ItaniumDXRelease\"
 				ObjectFile=".\libs\cbm2common\ItaniumDXRelease\"
 				ProgramDataBaseFileName=".\libs\cbm2common\ItaniumDXRelease\"
 				WarningLevel="3"
@@ -415,7 +415,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\cbm2common\x64DXRelease\cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2commonx64DXRelease\"
+				AssemblerListingLocation=".\libs\cbm2common\x64DXRelease\"
 				ObjectFile=".\libs\cbm2common\x64DXRelease\"
 				ProgramDataBaseFileName=".\libs\cbm2common\x64DXRelease\"
 				WarningLevel="3"
@@ -485,7 +485,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\cbm2common\Win32Debug\cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2commonWin32Debug\"
+				AssemblerListingLocation=".\libs\cbm2common\Win32Debug\"
 				ObjectFile=".\libs\cbm2common\Win32Debug\"
 				ProgramDataBaseFileName=".\libs\cbm2common\Win32Debug\"
 				WarningLevel="3"
@@ -557,7 +557,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\cbm2common\ItaniumDebug\cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2commonItaniumDebug\"
+				AssemblerListingLocation=".\libs\cbm2common\ItaniumDebug\"
 				ObjectFile=".\libs\cbm2common\ItaniumDebug\"
 				ProgramDataBaseFileName=".\libs\cbm2common\ItaniumDebug\"
 				WarningLevel="3"
@@ -629,7 +629,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\cbm2common\x64Debug\cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2commonx64Debug\"
+				AssemblerListingLocation=".\libs\cbm2common\x64Debug\"
 				ObjectFile=".\libs\cbm2common\x64Debug\"
 				ProgramDataBaseFileName=".\libs\cbm2common\x64Debug\"
 				WarningLevel="3"
@@ -702,7 +702,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\cbm2common\Win32Release\cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2commonWin32Release\"
+				AssemblerListingLocation=".\libs\cbm2common\Win32Release\"
 				ObjectFile=".\libs\cbm2common\Win32Release\"
 				ProgramDataBaseFileName=".\libs\cbm2common\Win32Release\"
 				WarningLevel="3"
@@ -775,7 +775,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\cbm2common\ItaniumRelease\cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2commonItaniumRelease\"
+				AssemblerListingLocation=".\libs\cbm2common\ItaniumRelease\"
 				ObjectFile=".\libs\cbm2common\ItaniumRelease\"
 				ProgramDataBaseFileName=".\libs\cbm2common\ItaniumRelease\"
 				WarningLevel="3"
@@ -848,7 +848,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\cbm2common\x64Release\cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2commonx64Release\"
+				AssemblerListingLocation=".\libs\cbm2common\x64Release\"
 				ObjectFile=".\libs\cbm2common\x64Release\"
 				ProgramDataBaseFileName=".\libs\cbm2common\x64Release\"
 				WarningLevel="3"
@@ -891,6 +891,10 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\cbm2\cbm2cpu.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\cbm2\cbm2-cmdline-options.c"
 			>
 		</File>
@@ -908,10 +912,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\cbm2\cbm2cia1.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\cbm2\cbm2cpu.c"
 			>
 		</File>
 		<File

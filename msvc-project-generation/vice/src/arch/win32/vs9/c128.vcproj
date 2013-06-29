@@ -52,7 +52,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\c128\Win32DXDebug\c128.pch"
-				AssemblerListingLocation=".\libs\c128Win32DXDebug\"
+				AssemblerListingLocation=".\libs\c128\Win32DXDebug\"
 				ObjectFile=".\libs\c128\Win32DXDebug\"
 				ProgramDataBaseFileName=".\libs\c128\Win32DXDebug\"
 				WarningLevel="3"
@@ -124,7 +124,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\c128\ItaniumDXDebug\c128.pch"
-				AssemblerListingLocation=".\libs\c128ItaniumDXDebug\"
+				AssemblerListingLocation=".\libs\c128\ItaniumDXDebug\"
 				ObjectFile=".\libs\c128\ItaniumDXDebug\"
 				ProgramDataBaseFileName=".\libs\c128\ItaniumDXDebug\"
 				WarningLevel="3"
@@ -196,7 +196,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\c128\x64DXDebug\c128.pch"
-				AssemblerListingLocation=".\libs\c128x64DXDebug\"
+				AssemblerListingLocation=".\libs\c128\x64DXDebug\"
 				ObjectFile=".\libs\c128\x64DXDebug\"
 				ProgramDataBaseFileName=".\libs\c128\x64DXDebug\"
 				WarningLevel="3"
@@ -269,7 +269,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\c128\Win32DXRelease\c128.pch"
-				AssemblerListingLocation=".\libs\c128Win32DXRelease\"
+				AssemblerListingLocation=".\libs\c128\Win32DXRelease\"
 				ObjectFile=".\libs\c128\Win32DXRelease\"
 				ProgramDataBaseFileName=".\libs\c128\Win32DXRelease\"
 				WarningLevel="3"
@@ -342,7 +342,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\c128\ItaniumDXRelease\c128.pch"
-				AssemblerListingLocation=".\libs\c128ItaniumDXRelease\"
+				AssemblerListingLocation=".\libs\c128\ItaniumDXRelease\"
 				ObjectFile=".\libs\c128\ItaniumDXRelease\"
 				ProgramDataBaseFileName=".\libs\c128\ItaniumDXRelease\"
 				WarningLevel="3"
@@ -415,7 +415,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\c128\x64DXRelease\c128.pch"
-				AssemblerListingLocation=".\libs\c128x64DXRelease\"
+				AssemblerListingLocation=".\libs\c128\x64DXRelease\"
 				ObjectFile=".\libs\c128\x64DXRelease\"
 				ProgramDataBaseFileName=".\libs\c128\x64DXRelease\"
 				WarningLevel="3"
@@ -485,7 +485,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\c128\Win32Debug\c128.pch"
-				AssemblerListingLocation=".\libs\c128Win32Debug\"
+				AssemblerListingLocation=".\libs\c128\Win32Debug\"
 				ObjectFile=".\libs\c128\Win32Debug\"
 				ProgramDataBaseFileName=".\libs\c128\Win32Debug\"
 				WarningLevel="3"
@@ -557,7 +557,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\c128\ItaniumDebug\c128.pch"
-				AssemblerListingLocation=".\libs\c128ItaniumDebug\"
+				AssemblerListingLocation=".\libs\c128\ItaniumDebug\"
 				ObjectFile=".\libs\c128\ItaniumDebug\"
 				ProgramDataBaseFileName=".\libs\c128\ItaniumDebug\"
 				WarningLevel="3"
@@ -629,7 +629,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\c128\x64Debug\c128.pch"
-				AssemblerListingLocation=".\libs\c128x64Debug\"
+				AssemblerListingLocation=".\libs\c128\x64Debug\"
 				ObjectFile=".\libs\c128\x64Debug\"
 				ProgramDataBaseFileName=".\libs\c128\x64Debug\"
 				WarningLevel="3"
@@ -702,7 +702,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\c128\Win32Release\c128.pch"
-				AssemblerListingLocation=".\libs\c128Win32Release\"
+				AssemblerListingLocation=".\libs\c128\Win32Release\"
 				ObjectFile=".\libs\c128\Win32Release\"
 				ProgramDataBaseFileName=".\libs\c128\Win32Release\"
 				WarningLevel="3"
@@ -775,7 +775,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\c128\ItaniumRelease\c128.pch"
-				AssemblerListingLocation=".\libs\c128ItaniumRelease\"
+				AssemblerListingLocation=".\libs\c128\ItaniumRelease\"
 				ObjectFile=".\libs\c128\ItaniumRelease\"
 				ProgramDataBaseFileName=".\libs\c128\ItaniumRelease\"
 				WarningLevel="3"
@@ -848,7 +848,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\c128\x64Release\c128.pch"
-				AssemblerListingLocation=".\libs\c128x64Release\"
+				AssemblerListingLocation=".\libs\c128\x64Release\"
 				ObjectFile=".\libs\c128\x64Release\"
 				ProgramDataBaseFileName=".\libs\c128\x64Release\"
 				WarningLevel="3"
@@ -891,6 +891,10 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\c128\c128cpu.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\c128\c128-cmdline-options.c"
 			>
 		</File>
@@ -908,10 +912,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\c128\c128cia1.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\c128\c128cpu.c"
 			>
 		</File>
 		<File

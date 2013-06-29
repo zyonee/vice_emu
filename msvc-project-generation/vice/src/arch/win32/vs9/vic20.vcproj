@@ -52,7 +52,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vic20\Win32DXDebug\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20Win32DXDebug\"
+				AssemblerListingLocation=".\libs\vic20\Win32DXDebug\"
 				ObjectFile=".\libs\vic20\Win32DXDebug\"
 				ProgramDataBaseFileName=".\libs\vic20\Win32DXDebug\"
 				WarningLevel="3"
@@ -124,7 +124,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vic20\ItaniumDXDebug\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20ItaniumDXDebug\"
+				AssemblerListingLocation=".\libs\vic20\ItaniumDXDebug\"
 				ObjectFile=".\libs\vic20\ItaniumDXDebug\"
 				ProgramDataBaseFileName=".\libs\vic20\ItaniumDXDebug\"
 				WarningLevel="3"
@@ -196,7 +196,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vic20\x64DXDebug\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20x64DXDebug\"
+				AssemblerListingLocation=".\libs\vic20\x64DXDebug\"
 				ObjectFile=".\libs\vic20\x64DXDebug\"
 				ProgramDataBaseFileName=".\libs\vic20\x64DXDebug\"
 				WarningLevel="3"
@@ -269,7 +269,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vic20\Win32DXRelease\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20Win32DXRelease\"
+				AssemblerListingLocation=".\libs\vic20\Win32DXRelease\"
 				ObjectFile=".\libs\vic20\Win32DXRelease\"
 				ProgramDataBaseFileName=".\libs\vic20\Win32DXRelease\"
 				WarningLevel="3"
@@ -342,7 +342,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vic20\ItaniumDXRelease\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20ItaniumDXRelease\"
+				AssemblerListingLocation=".\libs\vic20\ItaniumDXRelease\"
 				ObjectFile=".\libs\vic20\ItaniumDXRelease\"
 				ProgramDataBaseFileName=".\libs\vic20\ItaniumDXRelease\"
 				WarningLevel="3"
@@ -415,7 +415,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vic20\x64DXRelease\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20x64DXRelease\"
+				AssemblerListingLocation=".\libs\vic20\x64DXRelease\"
 				ObjectFile=".\libs\vic20\x64DXRelease\"
 				ProgramDataBaseFileName=".\libs\vic20\x64DXRelease\"
 				WarningLevel="3"
@@ -485,7 +485,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vic20\Win32Debug\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20Win32Debug\"
+				AssemblerListingLocation=".\libs\vic20\Win32Debug\"
 				ObjectFile=".\libs\vic20\Win32Debug\"
 				ProgramDataBaseFileName=".\libs\vic20\Win32Debug\"
 				WarningLevel="3"
@@ -557,7 +557,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vic20\ItaniumDebug\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20ItaniumDebug\"
+				AssemblerListingLocation=".\libs\vic20\ItaniumDebug\"
 				ObjectFile=".\libs\vic20\ItaniumDebug\"
 				ProgramDataBaseFileName=".\libs\vic20\ItaniumDebug\"
 				WarningLevel="3"
@@ -629,7 +629,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vic20\x64Debug\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20x64Debug\"
+				AssemblerListingLocation=".\libs\vic20\x64Debug\"
 				ObjectFile=".\libs\vic20\x64Debug\"
 				ProgramDataBaseFileName=".\libs\vic20\x64Debug\"
 				WarningLevel="3"
@@ -702,7 +702,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vic20\Win32Release\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20Win32Release\"
+				AssemblerListingLocation=".\libs\vic20\Win32Release\"
 				ObjectFile=".\libs\vic20\Win32Release\"
 				ProgramDataBaseFileName=".\libs\vic20\Win32Release\"
 				WarningLevel="3"
@@ -775,7 +775,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vic20\ItaniumRelease\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20ItaniumRelease\"
+				AssemblerListingLocation=".\libs\vic20\ItaniumRelease\"
 				ObjectFile=".\libs\vic20\ItaniumRelease\"
 				ProgramDataBaseFileName=".\libs\vic20\ItaniumRelease\"
 				WarningLevel="3"
@@ -848,7 +848,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vic20\x64Release\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20x64Release\"
+				AssemblerListingLocation=".\libs\vic20\x64Release\"
 				ObjectFile=".\libs\vic20\x64Release\"
 				ProgramDataBaseFileName=".\libs\vic20\x64Release\"
 				WarningLevel="3"
@@ -890,6 +890,10 @@
 	<References>
 	</References>
 	<Files>
+		<File
+			RelativePath="..\..\..\vic20\vic20cpu.c"
+			>
+		</File>
 		<File
 			RelativePath="..\..\..\vic20\vic-cmdline-options.c"
 			>
@@ -944,10 +948,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\vic20\vic20bus.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\vic20\vic20cpu.c"
 			>
 		</File>
 		<File

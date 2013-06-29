@@ -52,7 +52,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\pet\Win32DXDebug\pet.pch"
-				AssemblerListingLocation=".\libs\petWin32DXDebug\"
+				AssemblerListingLocation=".\libs\pet\Win32DXDebug\"
 				ObjectFile=".\libs\pet\Win32DXDebug\"
 				ProgramDataBaseFileName=".\libs\pet\Win32DXDebug\"
 				WarningLevel="3"
@@ -124,7 +124,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\pet\ItaniumDXDebug\pet.pch"
-				AssemblerListingLocation=".\libs\petItaniumDXDebug\"
+				AssemblerListingLocation=".\libs\pet\ItaniumDXDebug\"
 				ObjectFile=".\libs\pet\ItaniumDXDebug\"
 				ProgramDataBaseFileName=".\libs\pet\ItaniumDXDebug\"
 				WarningLevel="3"
@@ -196,7 +196,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\pet\x64DXDebug\pet.pch"
-				AssemblerListingLocation=".\libs\petx64DXDebug\"
+				AssemblerListingLocation=".\libs\pet\x64DXDebug\"
 				ObjectFile=".\libs\pet\x64DXDebug\"
 				ProgramDataBaseFileName=".\libs\pet\x64DXDebug\"
 				WarningLevel="3"
@@ -269,7 +269,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\pet\Win32DXRelease\pet.pch"
-				AssemblerListingLocation=".\libs\petWin32DXRelease\"
+				AssemblerListingLocation=".\libs\pet\Win32DXRelease\"
 				ObjectFile=".\libs\pet\Win32DXRelease\"
 				ProgramDataBaseFileName=".\libs\pet\Win32DXRelease\"
 				WarningLevel="3"
@@ -342,7 +342,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\pet\ItaniumDXRelease\pet.pch"
-				AssemblerListingLocation=".\libs\petItaniumDXRelease\"
+				AssemblerListingLocation=".\libs\pet\ItaniumDXRelease\"
 				ObjectFile=".\libs\pet\ItaniumDXRelease\"
 				ProgramDataBaseFileName=".\libs\pet\ItaniumDXRelease\"
 				WarningLevel="3"
@@ -415,7 +415,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\pet\x64DXRelease\pet.pch"
-				AssemblerListingLocation=".\libs\petx64DXRelease\"
+				AssemblerListingLocation=".\libs\pet\x64DXRelease\"
 				ObjectFile=".\libs\pet\x64DXRelease\"
 				ProgramDataBaseFileName=".\libs\pet\x64DXRelease\"
 				WarningLevel="3"
@@ -485,7 +485,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\pet\Win32Debug\pet.pch"
-				AssemblerListingLocation=".\libs\petWin32Debug\"
+				AssemblerListingLocation=".\libs\pet\Win32Debug\"
 				ObjectFile=".\libs\pet\Win32Debug\"
 				ProgramDataBaseFileName=".\libs\pet\Win32Debug\"
 				WarningLevel="3"
@@ -557,7 +557,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\pet\ItaniumDebug\pet.pch"
-				AssemblerListingLocation=".\libs\petItaniumDebug\"
+				AssemblerListingLocation=".\libs\pet\ItaniumDebug\"
 				ObjectFile=".\libs\pet\ItaniumDebug\"
 				ProgramDataBaseFileName=".\libs\pet\ItaniumDebug\"
 				WarningLevel="3"
@@ -629,7 +629,7 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\pet\x64Debug\pet.pch"
-				AssemblerListingLocation=".\libs\petx64Debug\"
+				AssemblerListingLocation=".\libs\pet\x64Debug\"
 				ObjectFile=".\libs\pet\x64Debug\"
 				ProgramDataBaseFileName=".\libs\pet\x64Debug\"
 				WarningLevel="3"
@@ -702,7 +702,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\pet\Win32Release\pet.pch"
-				AssemblerListingLocation=".\libs\petWin32Release\"
+				AssemblerListingLocation=".\libs\pet\Win32Release\"
 				ObjectFile=".\libs\pet\Win32Release\"
 				ProgramDataBaseFileName=".\libs\pet\Win32Release\"
 				WarningLevel="3"
@@ -775,7 +775,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\pet\ItaniumRelease\pet.pch"
-				AssemblerListingLocation=".\libs\petItaniumRelease\"
+				AssemblerListingLocation=".\libs\pet\ItaniumRelease\"
 				ObjectFile=".\libs\pet\ItaniumRelease\"
 				ProgramDataBaseFileName=".\libs\pet\ItaniumRelease\"
 				WarningLevel="3"
@@ -848,7 +848,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\pet\x64Release\pet.pch"
-				AssemblerListingLocation=".\libs\petx64Release\"
+				AssemblerListingLocation=".\libs\pet\x64Release\"
 				ObjectFile=".\libs\pet\x64Release\"
 				ProgramDataBaseFileName=".\libs\pet\x64Release\"
 				WarningLevel="3"
@@ -891,6 +891,10 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\pet\petcpu.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\pet\6809.c"
 			>
 		</File>
@@ -924,10 +928,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\pet\petcolour.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\pet\petcpu.c"
 			>
 		</File>
 		<File
