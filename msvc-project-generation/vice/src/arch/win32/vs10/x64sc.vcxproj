@@ -1,49 +1,49 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Itanium">
-      <Configuration>Debug</Configuration>
-      <Platform>Itanium</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
+    <ProjectConfiguration Include="DX Debug|Win32">
+      <Configuration>DX Debug</Configuration>
       <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
-      <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="DX Debug|Itanium">
       <Configuration>DX Debug</Configuration>
       <Platform>Itanium</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="DX Debug|Win32">
-      <Configuration>DX Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="DX Debug|x64">
       <Configuration>DX Debug</Configuration>
       <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DX Release|Itanium">
-      <Configuration>DX Release</Configuration>
-      <Platform>Itanium</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="DX Release|Win32">
       <Configuration>DX Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="DX Release|Itanium">
+      <Configuration>DX Release</Configuration>
+      <Platform>Itanium</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="DX Release|x64">
       <Configuration>DX Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Itanium">
-      <Configuration>Release</Configuration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Itanium">
+      <Configuration>Debug</Configuration>
       <Platform>Itanium</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Itanium">
+      <Configuration>Release</Configuration>
+      <Platform>Itanium</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -51,14 +51,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC948}</ProjectGuid>
+    <ProjectGuid>{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC907}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
@@ -66,35 +62,11 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
@@ -102,14 +74,38 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
@@ -117,31 +113,15 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
@@ -149,7 +129,27 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
@@ -192,39 +192,39 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\..\..\..\..\data\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\libs\x64sc\x64Release\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
@@ -268,6 +268,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
+      <TargetMachine>MachineX64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">
@@ -351,7 +352,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <TargetMachine>MachineX64</TargetMachine>
+      <TargetMachine>MachineIA64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">
@@ -393,6 +394,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
+      <TargetMachine>MachineX64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">
@@ -476,7 +478,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <TargetMachine>MachineX64</TargetMachine>
+      <TargetMachine>MachineIA64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -518,6 +520,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
+      <TargetMachine>MachineX64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">
@@ -601,7 +604,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <TargetMachine>MachineX64</TargetMachine>
+      <TargetMachine>MachineIA64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -643,6 +646,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
+      <TargetMachine>MachineX64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">
@@ -726,7 +730,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <TargetMachine>MachineX64</TargetMachine>
+      <TargetMachine>MachineIA64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -734,50 +738,50 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\resc64.rc">
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
-</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">resc64cat.rc;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">resc64cat.rc;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">resc64cat.rc;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">resc64cat.rc;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
-</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">resc64cat.rc;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">resc64cat.rc;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">resc64cat.rc;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">resc64cat.rc;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
-</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">resc64cat.rc;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">resc64cat.rc;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">resc64cat.rc;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">resc64cat.rc;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
-</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">resc64cat.rc;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">resc64cat.rc;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">resc64cat.rc;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resc64cat.rc /b
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\debug.h;..\resc64.rc;..\res.rc;..\resacia.rc;..\rescia.rc;..\resdrivec64.rc;..\reside64.rc;..\resreu.rc;..\resgeoram.rc;..\resramcart.rc;..\resplus256k.rc;..\resplus60k.rc;..\resc64_256k.rc;..\resmmc64.rc;..\resmmcreplay.rc;..\resretroreplay.rc;..\resrs232user.rc;..\ressid.rc;..\resvicii.rc;..\resdigimax.rc;..\resmouse.rc;..\resmidi.rc;..\resdqbb.rc;..\resisepic.rc;..\reslightpen.rc;..\ressoundexpander.rc;..\reseasyflash.rc;..\resautostart.rc;..\resmagicvoice.rc;..\resexpert.rc;..\resds12c887rtc.rc;..\restfe.rc;%(AdditionalInputs)</AdditionalInputs>
@@ -787,51 +791,51 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuildStep Include="..\vice.manifest">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </CustomBuildStep>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="arch.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc901}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc90f}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="base.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc902}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc910}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="c64cart.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc908}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc922}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="c64cartsystem.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc909}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc923}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="c64commoncart.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc90a}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc924}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="c64exp.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc90d}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc927}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="c64sc.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc90e}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc928}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="core.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc914}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc92d}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="diskimage.vcxproj">
@@ -839,111 +843,111 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="drive.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc917}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="fileio.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc918}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="fsdevice.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc919}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="gfxoutputdrv.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc91e}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="iec.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc91f}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="iecbus.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc921}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="iecieee.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc922}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="ieee.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc923}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="imagecontents.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc924}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="monitor.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc925}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="p64.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc926}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="parallel.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc927}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="platform.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc92a}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="printerdrv.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc92d}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="raster.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc92e}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="resid.vcxproj">
       <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc92f}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="residfp.vcxproj">
+    <ProjectReference Include="fileio.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc917}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="fsdevice.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc930}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="gfxoutputdrv.vcxproj">
       <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc931}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="rs232drv.vcxproj">
+    <ProjectReference Include="iec.vcxproj">
       <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc932}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="rtc.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc933}</Project>
+    <ProjectReference Include="iecbus.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc934}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="serial.vcxproj">
+    <ProjectReference Include="iecieee.vcxproj">
       <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc935}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="sid.vcxproj">
+    <ProjectReference Include="ieee.vcxproj">
       <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc936}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="sounddrv.vcxproj">
+    <ProjectReference Include="imagecontents.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc918}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="monitor.vcxproj">
       <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc937}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="tape.vcxproj">
+    <ProjectReference Include="p64.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc919}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="parallel.vcxproj">
       <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc938}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="userport.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc93a}</Project>
+    <ProjectReference Include="platform.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc91a}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="vdrive.vcxproj">
+    <ProjectReference Include="printerdrv.vcxproj">
       <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc93c}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="viciisc.vcxproj">
+    <ProjectReference Include="raster.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc93d}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="resid.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc93e}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="residfp.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc940}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="rs232drv.vcxproj">
       <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc941}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="rtc.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc921}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="serial.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc91b}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="sid.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc943}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="sounddrv.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc944}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="tape.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc91c}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="userport.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc946}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="vdrive.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc91d}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="viciisc.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc94c}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
     <ProjectReference Include="video.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc942}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc94d}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

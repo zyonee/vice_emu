@@ -1,49 +1,49 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Itanium">
-      <Configuration>Debug</Configuration>
-      <Platform>Itanium</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
+    <ProjectConfiguration Include="DX Debug|Win32">
+      <Configuration>DX Debug</Configuration>
       <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
-      <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="DX Debug|Itanium">
       <Configuration>DX Debug</Configuration>
       <Platform>Itanium</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="DX Debug|Win32">
-      <Configuration>DX Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="DX Debug|x64">
       <Configuration>DX Debug</Configuration>
       <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DX Release|Itanium">
-      <Configuration>DX Release</Configuration>
-      <Platform>Itanium</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="DX Release|Win32">
       <Configuration>DX Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="DX Release|Itanium">
+      <Configuration>DX Release</Configuration>
+      <Platform>Itanium</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="DX Release|x64">
       <Configuration>DX Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Itanium">
-      <Configuration>Release</Configuration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Itanium">
+      <Configuration>Debug</Configuration>
       <Platform>Itanium</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Itanium">
+      <Configuration>Release</Configuration>
+      <Platform>Itanium</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -51,14 +51,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC936}</ProjectGuid>
+    <ProjectGuid>{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC943}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
@@ -66,35 +62,11 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
@@ -102,14 +74,38 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
@@ -117,31 +113,15 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
@@ -149,7 +129,27 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
@@ -180,39 +180,39 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">.\libs\sid\ItaniumRelease\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\libs\sid\x64Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\libs\sid\x64Release\</IntDir>
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
@@ -221,7 +221,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\resid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;_DEBUG;PACKAGE="sid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;_DEBUG;PACKAGE="resid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -249,7 +249,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\resid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;_DEBUG;PACKAGE="sid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;_DEBUG;PACKAGE="resid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -277,7 +277,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\resid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;_DEBUG;PACKAGE="sid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;_DEBUG;PACKAGE="resid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -302,7 +302,7 @@
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\resid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NDEBUG;PACKAGE="sid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NDEBUG;PACKAGE="resid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -331,7 +331,7 @@
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\resid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NDEBUG;PACKAGE="sid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NDEBUG;PACKAGE="resid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -360,7 +360,7 @@
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\resid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NDEBUG;PACKAGE="sid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NDEBUG;PACKAGE="resid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -386,7 +386,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\resid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NODIRECTX;_DEBUG;PACKAGE="sid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NODIRECTX;_DEBUG;PACKAGE="resid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -414,7 +414,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\resid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NODIRECTX;_DEBUG;PACKAGE="sid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NODIRECTX;_DEBUG;PACKAGE="resid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -442,7 +442,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\resid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NODIRECTX;_DEBUG;PACKAGE="sid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NODIRECTX;_DEBUG;PACKAGE="resid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -467,7 +467,7 @@
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\resid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NODIRECTX;NDEBUG;PACKAGE="sid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NODIRECTX;NDEBUG;PACKAGE="resid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -496,7 +496,7 @@
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\resid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NODIRECTX;NDEBUG;PACKAGE="sid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NODIRECTX;NDEBUG;PACKAGE="resid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -525,7 +525,7 @@
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\resid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NODIRECTX;NDEBUG;PACKAGE="sid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NODIRECTX;NDEBUG;PACKAGE="resid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -554,85 +554,85 @@
     <ClCompile Include="..\..\..\sid\sid-snapshot.c" />
     <ClCompile Include="..\..\..\sid\sid.c" />
     <CustomBuild Include="..\..\..\sid\resid-fp.cc">
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumDXDebug\sid.pch" /Fo"libs\sid\ItaniumDXDebug/" /Fd"libs\sid\ItaniumDXDebug/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">libs\sid\ItaniumDXDebug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32DXDebug\sid.pch" /Fo"libs\sid\Win32DXDebug/" /Fd"libs\sid\Win32DXDebug/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32DXDebug\sid.pch" /Fo"libs\sid\Win32DXDebug/" /Fd"libs\sid\Win32DXDebug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">libs\sid\Win32DXDebug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64DXDebug\sid.pch" /Fo"libs\sid\x64DXDebug/" /Fd"libs\sid\x64DXDebug/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumDXDebug\sid.pch" /Fo"libs\sid\ItaniumDXDebug/" /Fd"libs\sid\ItaniumDXDebug/" /FD /TP /c "%(FullPath)"
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">libs\sid\ItaniumDXDebug\%(Filename).obj;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64DXDebug\sid.pch" /Fo"libs\sid\x64DXDebug/" /Fd"libs\sid\x64DXDebug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">libs\sid\x64DXDebug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumDXRelease\sid.pch" /Fo"libs\sid\ItaniumDXRelease/" /Fd"libs\sid\ItaniumDXRelease/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">libs\sid\ItaniumDXRelease\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32DXRelease\sid.pch" /Fo"libs\sid\Win32DXRelease/" /Fd"libs\sid\Win32DXRelease/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32DXRelease\sid.pch" /Fo"libs\sid\Win32DXRelease/" /Fd"libs\sid\Win32DXRelease/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">libs\sid\Win32DXRelease\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64DXRelease\sid.pch" /Fo"libs\sid\x64DXRelease/" /Fd"libs\sid\x64DXRelease/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumDXRelease\sid.pch" /Fo"libs\sid\ItaniumDXRelease/" /Fd"libs\sid\ItaniumDXRelease/" /FD /TP /c "%(FullPath)"
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">libs\sid\ItaniumDXRelease\%(Filename).obj;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64DXRelease\sid.pch" /Fo"libs\sid\x64DXRelease/" /Fd"libs\sid\x64DXRelease/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">libs\sid\x64DXRelease\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumDebug\sid.pch" /Fo"libs\sid\ItaniumDebug/" /Fd"libs\sid\ItaniumDebug/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">libs\sid\ItaniumDebug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32Debug\sid.pch" /Fo"libs\sid\Win32Debug/" /Fd"libs\sid\Win32Debug/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32Debug\sid.pch" /Fo"libs\sid\Win32Debug/" /Fd"libs\sid\Win32Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">libs\sid\Win32Debug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64Debug\sid.pch" /Fo"libs\sid\x64Debug/" /Fd"libs\sid\x64Debug/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumDebug\sid.pch" /Fo"libs\sid\ItaniumDebug/" /Fd"libs\sid\ItaniumDebug/" /FD /TP /c "%(FullPath)"
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">libs\sid\ItaniumDebug\%(Filename).obj;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64Debug\sid.pch" /Fo"libs\sid\x64Debug/" /Fd"libs\sid\x64Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libs\sid\x64Debug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumRelease\sid.pch" /Fo"libs\sid\ItaniumRelease/" /Fd"libs\sid\ItaniumRelease/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">libs\sid\ItaniumRelease\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32Release\sid.pch" /Fo"libs\sid\Win32Release/" /Fd"libs\sid\Win32Release/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32Release\sid.pch" /Fo"libs\sid\Win32Release/" /Fd"libs\sid\Win32Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">libs\sid\Win32Release\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64Release\sid.pch" /Fo"libs\sid\x64Release/" /Fd"libs\sid\x64Release/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumRelease\sid.pch" /Fo"libs\sid\ItaniumRelease/" /Fd"libs\sid\ItaniumRelease/" /FD /TP /c "%(FullPath)"
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">libs\sid\ItaniumRelease\%(Filename).obj;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64Release\sid.pch" /Fo"libs\sid\x64Release/" /Fd"libs\sid\x64Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libs\sid\x64Release\%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="..\..\..\sid\resid.cc">
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumDXDebug\sid.pch" /Fo"libs\sid\ItaniumDXDebug/" /Fd"libs\sid\ItaniumDXDebug/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">libs\sid\ItaniumDXDebug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32DXDebug\sid.pch" /Fo"libs\sid\Win32DXDebug/" /Fd"libs\sid\Win32DXDebug/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32DXDebug\sid.pch" /Fo"libs\sid\Win32DXDebug/" /Fd"libs\sid\Win32DXDebug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">libs\sid\Win32DXDebug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64DXDebug\sid.pch" /Fo"libs\sid\x64DXDebug/" /Fd"libs\sid\x64DXDebug/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumDXDebug\sid.pch" /Fo"libs\sid\ItaniumDXDebug/" /Fd"libs\sid\ItaniumDXDebug/" /FD /TP /c "%(FullPath)"
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">libs\sid\ItaniumDXDebug\%(Filename).obj;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64DXDebug\sid.pch" /Fo"libs\sid\x64DXDebug/" /Fd"libs\sid\x64DXDebug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">libs\sid\x64DXDebug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumDXRelease\sid.pch" /Fo"libs\sid\ItaniumDXRelease/" /Fd"libs\sid\ItaniumDXRelease/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">libs\sid\ItaniumDXRelease\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32DXRelease\sid.pch" /Fo"libs\sid\Win32DXRelease/" /Fd"libs\sid\Win32DXRelease/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32DXRelease\sid.pch" /Fo"libs\sid\Win32DXRelease/" /Fd"libs\sid\Win32DXRelease/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">libs\sid\Win32DXRelease\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64DXRelease\sid.pch" /Fo"libs\sid\x64DXRelease/" /Fd"libs\sid\x64DXRelease/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumDXRelease\sid.pch" /Fo"libs\sid\ItaniumDXRelease/" /Fd"libs\sid\ItaniumDXRelease/" /FD /TP /c "%(FullPath)"
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">libs\sid\ItaniumDXRelease\%(Filename).obj;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64DXRelease\sid.pch" /Fo"libs\sid\x64DXRelease/" /Fd"libs\sid\x64DXRelease/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">libs\sid\x64DXRelease\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumDebug\sid.pch" /Fo"libs\sid\ItaniumDebug/" /Fd"libs\sid\ItaniumDebug/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">libs\sid\ItaniumDebug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32Debug\sid.pch" /Fo"libs\sid\Win32Debug/" /Fd"libs\sid\Win32Debug/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32Debug\sid.pch" /Fo"libs\sid\Win32Debug/" /Fd"libs\sid\Win32Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">libs\sid\Win32Debug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64Debug\sid.pch" /Fo"libs\sid\x64Debug/" /Fd"libs\sid\x64Debug/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumDebug\sid.pch" /Fo"libs\sid\ItaniumDebug/" /Fd"libs\sid\ItaniumDebug/" /FD /TP /c "%(FullPath)"
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">libs\sid\ItaniumDebug\%(Filename).obj;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64Debug\sid.pch" /Fo"libs\sid\x64Debug/" /Fd"libs\sid\x64Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libs\sid\x64Debug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumRelease\sid.pch" /Fo"libs\sid\ItaniumRelease/" /Fd"libs\sid\ItaniumRelease/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">libs\sid\ItaniumRelease\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32Release\sid.pch" /Fo"libs\sid\Win32Release/" /Fd"libs\sid\Win32Release/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Win32Release\sid.pch" /Fo"libs\sid\Win32Release/" /Fd"libs\sid\Win32Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">libs\sid\Win32Release\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /D PACKAGE=\"sid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64Release\sid.pch" /Fo"libs\sid\x64Release/" /Fd"libs\sid\x64Release/" /FD /TP /c "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\ItaniumRelease\sid.pch" /Fo"libs\sid\ItaniumRelease/" /Fd"libs\sid\ItaniumRelease/" /FD /TP /c "%(FullPath)"
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">libs\sid\ItaniumRelease\%(Filename).obj;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /MT /W3 /EHsc /I "..\msvc" /I "..\..\../" /I "../" /I "..\..\..\sid" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\x64Release\sid.pch" /Fo"libs\sid\x64Release/" /Fd"libs\sid\x64Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libs\sid\x64Release\%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="base.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc902}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc910}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

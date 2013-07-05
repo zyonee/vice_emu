@@ -1,49 +1,49 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Itanium">
-      <Configuration>Debug</Configuration>
-      <Platform>Itanium</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
+    <ProjectConfiguration Include="DX Debug|Win32">
+      <Configuration>DX Debug</Configuration>
       <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
-      <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="DX Debug|Itanium">
       <Configuration>DX Debug</Configuration>
       <Platform>Itanium</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="DX Debug|Win32">
-      <Configuration>DX Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="DX Debug|x64">
       <Configuration>DX Debug</Configuration>
       <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DX Release|Itanium">
-      <Configuration>DX Release</Configuration>
-      <Platform>Itanium</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="DX Release|Win32">
       <Configuration>DX Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="DX Release|Itanium">
+      <Configuration>DX Release</Configuration>
+      <Platform>Itanium</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="DX Release|x64">
       <Configuration>DX Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Itanium">
-      <Configuration>Release</Configuration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Itanium">
+      <Configuration>Debug</Configuration>
       <Platform>Itanium</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Itanium">
+      <Configuration>Release</Configuration>
+      <Platform>Itanium</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -51,14 +51,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC901}</ProjectGuid>
+    <ProjectGuid>{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC90F}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
@@ -66,35 +62,11 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
@@ -102,14 +74,38 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
@@ -117,31 +113,15 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
@@ -149,7 +129,27 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
@@ -180,39 +180,39 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">.\libs\arch\ItaniumRelease\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\libs\arch\x64Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\libs\arch\x64Release\</IntDir>
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
@@ -548,189 +548,189 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\archdep.c" />
-    <ClCompile Include="..\blockdev.c" />
-    <ClCompile Include="..\c128ui.c" />
-    <ClCompile Include="..\c64dtvui.c" />
-    <ClCompile Include="..\c64ui.c" />
-    <ClCompile Include="..\catweaselmkiii.c" />
-    <ClCompile Include="..\cbm2ui.c" />
-    <ClCompile Include="..\cbm5x0ui.c" />
-    <ClCompile Include="..\console.c" />
-    <ClCompile Include="..\dinput_handle.c" />
-    <ClCompile Include="..\dirent.c" />
-    <ClCompile Include="..\dynlib.c" />
-    <ClCompile Include="..\fullscrn.c" />
-    <ClCompile Include="..\gifdrv.c" />
-    <ClCompile Include="..\hardsid.c" />
-    <ClCompile Include="..\intl.c" />
-    <ClCompile Include="..\joy.c" />
-    <ClCompile Include="..\kbd.c" />
-    <ClCompile Include="..\lightpendrv.c" />
-    <ClCompile Include="..\mididrv.c" />
-    <ClCompile Include="..\mousedrv.c" />
-    <ClCompile Include="..\parsid.c" />
-    <ClCompile Include="..\petui.c" />
-    <ClCompile Include="..\plus4ui.c" />
-    <ClCompile Include="..\rawnetarch.c" />
-    <ClCompile Include="..\rs232.c" />
-    <ClCompile Include="..\rs232dev.c" />
-    <ClCompile Include="..\rs232net.c" />
-    <ClCompile Include="..\scpu64ui.c" />
-    <ClCompile Include="..\signals.c" />
-    <ClCompile Include="..\statusbar.c" />
-    <ClCompile Include="..\system.c" />
-    <ClCompile Include="..\ui-resources.c" />
-    <ClCompile Include="..\ui.c" />
-    <ClCompile Include="..\uiacia.c" />
-    <ClCompile Include="..\uiattach.c" />
-    <ClCompile Include="..\uiautostart.c" />
-    <ClCompile Include="..\uic128.c" />
-    <ClCompile Include="..\uic128model.c" />
-    <ClCompile Include="..\uic64_256k.c" />
-    <ClCompile Include="..\uic64burstmod.c" />
-    <ClCompile Include="..\uic64cart.c" />
-    <ClCompile Include="..\uic64dtv.c" />
-    <ClCompile Include="..\uic64dtvmodel.c" />
-    <ClCompile Include="..\uic64model.c" />
-    <ClCompile Include="..\uicart.c" />
-    <ClCompile Include="..\uicbm2model.c" />
-    <ClCompile Include="..\uicbm5x0model.c" />
-    <ClCompile Include="..\uicbm2set.c" />
-    <ClCompile Include="..\uicbm5x0set.c" />
-    <ClCompile Include="..\uicia.c" />
-    <ClCompile Include="..\uicmdline.c" />
-    <ClCompile Include="..\uiconsole.c" />
-    <ClCompile Include="..\uidatasette.c" />
-    <ClCompile Include="..\uidigimax.c" />
-    <ClCompile Include="..\uidqbb.c" />
-    <ClCompile Include="..\uidrivec128.c" />
-    <ClCompile Include="..\uidrivec64.c" />
-    <ClCompile Include="..\uidrivepetcbm2.c" />
-    <ClCompile Include="..\uidriveplus4.c" />
-    <ClCompile Include="..\uidrivevic20.c" />
-    <ClCompile Include="..\uids12c887rtc.c" />
-    <ClCompile Include="..\uieasyflash.c" />
-    <ClCompile Include="..\uievent.c" />
-    <ClCompile Include="..\uiexpert.c" />
-    <ClCompile Include="..\uifliplist.c" />
-    <ClCompile Include="..\uigeoram.c" />
-    <ClCompile Include="..\uihelp.c" />
-    <ClCompile Include="..\uiide64.c" />
-    <ClCompile Include="..\uiisepic.c" />
-    <ClCompile Include="..\uijoystick.c" />
-    <ClCompile Include="..\uikeyboard.c" />
-    <ClCompile Include="..\uilib.c" />
-    <ClCompile Include="..\uilightpen.c" />
-    <ClCompile Include="..\uimagicvoice.c" />
-    <ClCompile Include="..\uimediafile.c" />
-    <ClCompile Include="..\uimidi.c" />
-    <ClCompile Include="..\uimmc64.c" />
-    <ClCompile Include="..\uimmcreplay.c" />
-    <ClCompile Include="..\uimon.c" />
-    <ClCompile Include="..\uimouse.c" />
-    <ClCompile Include="..\uinetwork.c" />
-    <ClCompile Include="..\uiperipheral.c" />
-    <ClCompile Include="..\uipetcolour.c" />
-    <ClCompile Include="..\uipetdww.c" />
-    <ClCompile Include="..\uipetmodel.c" />
-    <ClCompile Include="..\uipetreu.c" />
-    <ClCompile Include="..\uipetset.c" />
-    <ClCompile Include="..\uiplus256k.c" />
-    <ClCompile Include="..\uiplus4cart.c" />
-    <ClCompile Include="..\uiplus4mem.c" />
-    <ClCompile Include="..\uiplus4model.c" />
-    <ClCompile Include="..\uiplus60k.c" />
-    <ClCompile Include="..\uiquicksnapshot.c" />
-    <ClCompile Include="..\uiram.c" />
-    <ClCompile Include="..\uiramcart.c" />
-    <ClCompile Include="..\uiretroreplay.c" />
-    <ClCompile Include="..\uireu.c" />
-    <ClCompile Include="..\uirom.c" />
-    <ClCompile Include="..\uirs232.c" />
-    <ClCompile Include="..\uirs232user.c" />
-    <ClCompile Include="..\uiscpu64.c" />
-    <ClCompile Include="..\uisid.c" />
-    <ClCompile Include="..\uisidcart.c" />
-    <ClCompile Include="..\uisiddtv.c" />
-    <ClCompile Include="..\uisnapshot.c" />
-    <ClCompile Include="..\uisound.c" />
-    <ClCompile Include="..\uisoundexpander.c" />
-    <ClCompile Include="..\uisoundsampler.c" />
-    <ClCompile Include="..\uispeed.c" />
-    <ClCompile Include="..\uited.c" />
-    <ClCompile Include="..\uitfe.c" />
-    <ClCompile Include="..\uiv364speech.c" />
-    <ClCompile Include="..\uivic.c" />
-    <ClCompile Include="..\uivic20model.c" />
-    <ClCompile Include="..\uivicii.c" />
-    <ClCompile Include="..\uivicset.c" />
-    <ClCompile Include="..\uivideo.c" />
-    <ClCompile Include="..\vic20ui.c" />
-    <ClCompile Include="..\video-ddraw.c" />
-    <ClCompile Include="..\video-dx9.c" />
-    <ClCompile Include="..\video.c" />
-    <ClCompile Include="..\vsidui.c" />
-    <ClCompile Include="..\vsyncarch.c" />
-    <ClCompile Include="..\winmain.c" />
+    <ClCompile Include="..\..\..\arch\win32\archdep.c" />
+    <ClCompile Include="..\..\..\arch\win32\blockdev.c" />
+    <ClCompile Include="..\..\..\arch\win32\c128ui.c" />
+    <ClCompile Include="..\..\..\arch\win32\c64dtvui.c" />
+    <ClCompile Include="..\..\..\arch\win32\c64ui.c" />
+    <ClCompile Include="..\..\..\arch\win32\catweaselmkiii.c" />
+    <ClCompile Include="..\..\..\arch\win32\cbm2ui.c" />
+    <ClCompile Include="..\..\..\arch\win32\cbm5x0ui.c" />
+    <ClCompile Include="..\..\..\arch\win32\console.c" />
+    <ClCompile Include="..\..\..\arch\win32\dinput_handle.c" />
+    <ClCompile Include="..\..\..\arch\win32\dirent.c" />
+    <ClCompile Include="..\..\..\arch\win32\dynlib.c" />
+    <ClCompile Include="..\..\..\arch\win32\fullscrn.c" />
+    <ClCompile Include="..\..\..\arch\win32\gifdrv.c" />
+    <ClCompile Include="..\..\..\arch\win32\hardsid.c" />
+    <ClCompile Include="..\..\..\arch\win32\intl.c" />
+    <ClCompile Include="..\..\..\arch\win32\joy.c" />
+    <ClCompile Include="..\..\..\arch\win32\kbd.c" />
+    <ClCompile Include="..\..\..\arch\win32\lightpendrv.c" />
+    <ClCompile Include="..\..\..\arch\win32\mididrv.c" />
+    <ClCompile Include="..\..\..\arch\win32\mousedrv.c" />
+    <ClCompile Include="..\..\..\arch\win32\parsid.c" />
+    <ClCompile Include="..\..\..\arch\win32\petui.c" />
+    <ClCompile Include="..\..\..\arch\win32\plus4ui.c" />
+    <ClCompile Include="..\..\..\arch\win32\rawnetarch.c" />
+    <ClCompile Include="..\..\..\arch\win32\rs232.c" />
+    <ClCompile Include="..\..\..\arch\win32\rs232dev.c" />
+    <ClCompile Include="..\..\..\arch\win32\rs232net.c" />
+    <ClCompile Include="..\..\..\arch\win32\scpu64ui.c" />
+    <ClCompile Include="..\..\..\arch\win32\signals.c" />
+    <ClCompile Include="..\..\..\arch\win32\statusbar.c" />
+    <ClCompile Include="..\..\..\arch\win32\system.c" />
+    <ClCompile Include="..\..\..\arch\win32\ui-resources.c" />
+    <ClCompile Include="..\..\..\arch\win32\ui.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiacia.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiattach.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiautostart.c" />
+    <ClCompile Include="..\..\..\arch\win32\uic128.c" />
+    <ClCompile Include="..\..\..\arch\win32\uic128model.c" />
+    <ClCompile Include="..\..\..\arch\win32\uic64_256k.c" />
+    <ClCompile Include="..\..\..\arch\win32\uic64burstmod.c" />
+    <ClCompile Include="..\..\..\arch\win32\uic64cart.c" />
+    <ClCompile Include="..\..\..\arch\win32\uic64dtv.c" />
+    <ClCompile Include="..\..\..\arch\win32\uic64dtvmodel.c" />
+    <ClCompile Include="..\..\..\arch\win32\uic64model.c" />
+    <ClCompile Include="..\..\..\arch\win32\uicart.c" />
+    <ClCompile Include="..\..\..\arch\win32\uicbm2model.c" />
+    <ClCompile Include="..\..\..\arch\win32\uicbm5x0model.c" />
+    <ClCompile Include="..\..\..\arch\win32\uicbm2set.c" />
+    <ClCompile Include="..\..\..\arch\win32\uicbm5x0set.c" />
+    <ClCompile Include="..\..\..\arch\win32\uicia.c" />
+    <ClCompile Include="..\..\..\arch\win32\uicmdline.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiconsole.c" />
+    <ClCompile Include="..\..\..\arch\win32\uidatasette.c" />
+    <ClCompile Include="..\..\..\arch\win32\uidigimax.c" />
+    <ClCompile Include="..\..\..\arch\win32\uidqbb.c" />
+    <ClCompile Include="..\..\..\arch\win32\uidrivec128.c" />
+    <ClCompile Include="..\..\..\arch\win32\uidrivec64.c" />
+    <ClCompile Include="..\..\..\arch\win32\uidrivepetcbm2.c" />
+    <ClCompile Include="..\..\..\arch\win32\uidriveplus4.c" />
+    <ClCompile Include="..\..\..\arch\win32\uidrivevic20.c" />
+    <ClCompile Include="..\..\..\arch\win32\uids12c887rtc.c" />
+    <ClCompile Include="..\..\..\arch\win32\uieasyflash.c" />
+    <ClCompile Include="..\..\..\arch\win32\uievent.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiexpert.c" />
+    <ClCompile Include="..\..\..\arch\win32\uifliplist.c" />
+    <ClCompile Include="..\..\..\arch\win32\uigeoram.c" />
+    <ClCompile Include="..\..\..\arch\win32\uihelp.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiide64.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiisepic.c" />
+    <ClCompile Include="..\..\..\arch\win32\uijoystick.c" />
+    <ClCompile Include="..\..\..\arch\win32\uikeyboard.c" />
+    <ClCompile Include="..\..\..\arch\win32\uilib.c" />
+    <ClCompile Include="..\..\..\arch\win32\uilightpen.c" />
+    <ClCompile Include="..\..\..\arch\win32\uimagicvoice.c" />
+    <ClCompile Include="..\..\..\arch\win32\uimediafile.c" />
+    <ClCompile Include="..\..\..\arch\win32\uimidi.c" />
+    <ClCompile Include="..\..\..\arch\win32\uimmc64.c" />
+    <ClCompile Include="..\..\..\arch\win32\uimmcreplay.c" />
+    <ClCompile Include="..\..\..\arch\win32\uimon.c" />
+    <ClCompile Include="..\..\..\arch\win32\uimouse.c" />
+    <ClCompile Include="..\..\..\arch\win32\uinetwork.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiperipheral.c" />
+    <ClCompile Include="..\..\..\arch\win32\uipetcolour.c" />
+    <ClCompile Include="..\..\..\arch\win32\uipetdww.c" />
+    <ClCompile Include="..\..\..\arch\win32\uipetmodel.c" />
+    <ClCompile Include="..\..\..\arch\win32\uipetreu.c" />
+    <ClCompile Include="..\..\..\arch\win32\uipetset.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiplus256k.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiplus4cart.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiplus4mem.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiplus4model.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiplus60k.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiquicksnapshot.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiram.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiramcart.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiretroreplay.c" />
+    <ClCompile Include="..\..\..\arch\win32\uireu.c" />
+    <ClCompile Include="..\..\..\arch\win32\uirom.c" />
+    <ClCompile Include="..\..\..\arch\win32\uirs232.c" />
+    <ClCompile Include="..\..\..\arch\win32\uirs232user.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiscpu64.c" />
+    <ClCompile Include="..\..\..\arch\win32\uisid.c" />
+    <ClCompile Include="..\..\..\arch\win32\uisidcart.c" />
+    <ClCompile Include="..\..\..\arch\win32\uisiddtv.c" />
+    <ClCompile Include="..\..\..\arch\win32\uisnapshot.c" />
+    <ClCompile Include="..\..\..\arch\win32\uisound.c" />
+    <ClCompile Include="..\..\..\arch\win32\uisoundexpander.c" />
+    <ClCompile Include="..\..\..\arch\win32\uisoundsampler.c" />
+    <ClCompile Include="..\..\..\arch\win32\uispeed.c" />
+    <ClCompile Include="..\..\..\arch\win32\uited.c" />
+    <ClCompile Include="..\..\..\arch\win32\uitfe.c" />
+    <ClCompile Include="..\..\..\arch\win32\uiv364speech.c" />
+    <ClCompile Include="..\..\..\arch\win32\uivic.c" />
+    <ClCompile Include="..\..\..\arch\win32\uivic20model.c" />
+    <ClCompile Include="..\..\..\arch\win32\uivicii.c" />
+    <ClCompile Include="..\..\..\arch\win32\uivicset.c" />
+    <ClCompile Include="..\..\..\arch\win32\uivideo.c" />
+    <ClCompile Include="..\..\..\arch\win32\vic20ui.c" />
+    <ClCompile Include="..\..\..\arch\win32\video-ddraw.c" />
+    <ClCompile Include="..\..\..\arch\win32\video-dx9.c" />
+    <ClCompile Include="..\..\..\arch\win32\video.c" />
+    <ClCompile Include="..\..\..\arch\win32\vsidui.c" />
+    <ClCompile Include="..\..\..\arch\win32\vsyncarch.c" />
+    <ClCompile Include="..\..\..\arch\win32\winmain.c" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\res.txt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">Generating res.h</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
-</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">..\res.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">Generating res.h</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">..\res.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">Generating res.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">..\res.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">Generating res.h</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">..\res.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">Generating res.h</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
-</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">..\res.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">Generating res.h</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">..\res.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">Generating res.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">..\res.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">Generating res.h</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">..\res.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">Generating res.h</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
-</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">..\res.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating res.h</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\res.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">Generating res.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">..\res.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating res.h</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\res.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">Generating res.h</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
-</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">..\res.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating res.h</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\res.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">Generating res.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">..\res.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating res.h</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
 </Command>
@@ -740,23 +740,23 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="base.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc902}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc910}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="geninfocontrib.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc91a}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc911}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="genmsvcver.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc91b}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc912}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="gentranslate.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc91c}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc913}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="genwinres.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc91d}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc914}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
