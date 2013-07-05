@@ -243,7 +243,6 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">
     <Midl>
-      <TargetEnvironment>X64</TargetEnvironment>
       <TypeLibraryName>.\..\..\..\..\data\cartconv.tlb</TypeLibraryName>
     </Midl>
     <ClCompile>
@@ -319,7 +318,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">
     <Midl>
-      <TargetEnvironment>Itanium</TargetEnvironment>
+      <TargetEnvironment>X64</TargetEnvironment>
       <TypeLibraryName>.\..\..\..\..\data\cartconv.tlb</TypeLibraryName>
     </Midl>
     <ClCompile>
@@ -357,7 +356,6 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">
     <Midl>
-      <TargetEnvironment>X64</TargetEnvironment>
       <TypeLibraryName>.\..\..\..\..\data\cartconv.tlb</TypeLibraryName>
     </Midl>
     <ClCompile>
@@ -433,7 +431,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">
     <Midl>
-      <TargetEnvironment>Itanium</TargetEnvironment>
+      <TargetEnvironment>X64</TargetEnvironment>
       <TypeLibraryName>.\..\..\..\..\data\cartconv.tlb</TypeLibraryName>
     </Midl>
     <ClCompile>
@@ -471,7 +469,6 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
-      <TargetEnvironment>X64</TargetEnvironment>
       <TypeLibraryName>.\..\..\..\..\data\cartconv.tlb</TypeLibraryName>
     </Midl>
     <ClCompile>
@@ -547,7 +544,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
-      <TargetEnvironment>Itanium</TargetEnvironment>
+      <TargetEnvironment>X64</TargetEnvironment>
       <TypeLibraryName>.\..\..\..\..\data\cartconv.tlb</TypeLibraryName>
     </Midl>
     <ClCompile>
@@ -585,7 +582,6 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
-      <TargetEnvironment>X64</TargetEnvironment>
       <TypeLibraryName>.\..\..\..\..\data\cartconv.tlb</TypeLibraryName>
     </Midl>
     <ClCompile>
@@ -661,7 +657,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
-      <TargetEnvironment>Itanium</TargetEnvironment>
+      <TargetEnvironment>X64</TargetEnvironment>
       <TypeLibraryName>.\..\..\..\..\data\cartconv.tlb</TypeLibraryName>
     </Midl>
     <ClCompile>
