@@ -1,13 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DX Debug|Win32">
       <Configuration>DX Debug</Configuration>
       <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DX Debug|Itanium">
-      <Configuration>DX Debug</Configuration>
-      <Platform>Itanium</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="DX Debug|x64">
       <Configuration>DX Debug</Configuration>
@@ -17,10 +13,6 @@
       <Configuration>DX Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="DX Release|Itanium">
-      <Configuration>DX Release</Configuration>
-      <Platform>Itanium</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="DX Release|x64">
       <Configuration>DX Release</Configuration>
       <Platform>x64</Platform>
@@ -29,10 +21,6 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|Itanium">
-      <Configuration>Debug</Configuration>
-      <Platform>Itanium</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
@@ -40,10 +28,6 @@
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Itanium">
-      <Configuration>Release</Configuration>
-      <Platform>Itanium</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -73,22 +57,6 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <PlatformToolset>v110</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -129,22 +97,6 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
@@ -166,61 +118,41 @@
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">.\libs\c64scpu64\Win32DXDebug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">.\libs\c64scpu64\Win32DXDebug\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">.\libs\c64scpu64\ItaniumDXDebug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">.\libs\c64scpu64\ItaniumDXDebug\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">.\libs\c64scpu64\x64DXDebug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">.\libs\c64scpu64\x64DXDebug\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">.\libs\c64scpu64\Win32DXRelease\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">.\libs\c64scpu64\Win32DXRelease\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">.\libs\c64scpu64\ItaniumDXRelease\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">.\libs\c64scpu64\ItaniumDXRelease\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">.\libs\c64scpu64\x64DXRelease\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">.\libs\c64scpu64\x64DXRelease\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\libs\c64scpu64\Win32Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\libs\c64scpu64\Win32Debug\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">.\libs\c64scpu64\ItaniumDebug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">.\libs\c64scpu64\ItaniumDebug\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\libs\c64scpu64\x64Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\libs\c64scpu64\x64Debug\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\libs\c64scpu64\Win32Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\libs\c64scpu64\Win32Release\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">.\libs\c64scpu64\ItaniumRelease\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">.\libs\c64scpu64\ItaniumRelease\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\libs\c64scpu64\x64Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\libs\c64scpu64\x64Release\</IntDir>
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Debug|x64'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Release|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
@@ -247,34 +179,6 @@
     </ResourceCompile>
     <Lib>
       <OutputFile>.\libs\c64scpu64\Win32DXDebug\c64scpu64.lib</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-    </Lib>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DX Debug|Itanium'">
-    <Midl>
-      <TargetEnvironment>Itanium</TargetEnvironment>
-    </Midl>
-    <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\c64\cart;..\..\..\drive;..\..\..\drive\iec\c64exp;..\..\..\lib\p64;..\..\..\monitor;..\..\..\raster;..\..\..\sid;..\..\..\tape;..\..\..\userport;..\..\..\vicii;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\libs\c64scpu64\ItaniumDXDebug\c64scpu64.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\libs\c64scpu64\ItaniumDXDebug\</AssemblerListingLocation>
-      <ObjectFileName>.\libs\c64scpu64\ItaniumDXDebug\</ObjectFileName>
-      <ProgramDataBaseFileName>.\libs\c64scpu64\ItaniumDXDebug\</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>OldStyle</DebugInformationFormat>
-      <CompileAs>Default</CompileAs>
-    </ClCompile>
-    <ResourceCompile>
-      <Culture>0x0409</Culture>
-    </ResourceCompile>
-    <Lib>
-      <OutputFile>.\libs\c64scpu64\ItaniumDXDebug\c64scpu64.lib</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
   </ItemDefinitionGroup>
@@ -332,35 +236,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|Itanium'">
-    <Midl>
-      <TargetEnvironment>Itanium</TargetEnvironment>
-    </Midl>
-    <ClCompile>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\c64\cart;..\..\..\drive;..\..\..\drive\iec\c64exp;..\..\..\lib\p64;..\..\..\monitor;..\..\..\raster;..\..\..\sid;..\..\..\tape;..\..\..\userport;..\..\..\vicii;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\libs\c64scpu64\ItaniumDXRelease\c64scpu64.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\libs\c64scpu64\ItaniumDXRelease\</AssemblerListingLocation>
-      <ObjectFileName>.\libs\c64scpu64\ItaniumDXRelease\</ObjectFileName>
-      <ProgramDataBaseFileName>.\libs\c64scpu64\ItaniumDXRelease\</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <CompileAs>Default</CompileAs>
-    </ClCompile>
-    <ResourceCompile>
-      <Culture>0x0409</Culture>
-    </ResourceCompile>
-    <Lib>
-      <OutputFile>.\libs\c64scpu64\ItaniumDXRelease\c64scpu64.lib</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-    </Lib>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DX Release|x64'">
     <Midl>
       <TargetEnvironment>X64</TargetEnvironment>
@@ -415,34 +290,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">
-    <Midl>
-      <TargetEnvironment>Itanium</TargetEnvironment>
-    </Midl>
-    <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\c64\cart;..\..\..\drive;..\..\..\drive\iec\c64exp;..\..\..\lib\p64;..\..\..\monitor;..\..\..\raster;..\..\..\sid;..\..\..\tape;..\..\..\userport;..\..\..\vicii;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NODIRECTX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\libs\c64scpu64\ItaniumDebug\c64scpu64.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\libs\c64scpu64\ItaniumDebug\</AssemblerListingLocation>
-      <ObjectFileName>.\libs\c64scpu64\ItaniumDebug\</ObjectFileName>
-      <ProgramDataBaseFileName>.\libs\c64scpu64\ItaniumDebug\</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>OldStyle</DebugInformationFormat>
-      <CompileAs>Default</CompileAs>
-    </ClCompile>
-    <ResourceCompile>
-      <Culture>0x0409</Culture>
-    </ResourceCompile>
-    <Lib>
-      <OutputFile>.\libs\c64scpu64\ItaniumDebug\c64scpu64.lib</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-    </Lib>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
       <TargetEnvironment>X64</TargetEnvironment>
@@ -494,35 +341,6 @@
     </ResourceCompile>
     <Lib>
       <OutputFile>.\libs\c64scpu64\Win32Release\c64scpu64.lib</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-    </Lib>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">
-    <Midl>
-      <TargetEnvironment>Itanium</TargetEnvironment>
-    </Midl>
-    <ClCompile>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\msvc;..\;..\..\..\;..\..\..\c64\cart;..\..\..\drive;..\..\..\drive\iec\c64exp;..\..\..\lib\p64;..\..\..\monitor;..\..\..\raster;..\..\..\sid;..\..\..\tape;..\..\..\userport;..\..\..\vicii;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NODIRECTX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\libs\c64scpu64\ItaniumRelease\c64scpu64.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\libs\c64scpu64\ItaniumRelease\</AssemblerListingLocation>
-      <ObjectFileName>.\libs\c64scpu64\ItaniumRelease\</ObjectFileName>
-      <ProgramDataBaseFileName>.\libs\c64scpu64\ItaniumRelease\</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <CompileAs>Default</CompileAs>
-    </ClCompile>
-    <ResourceCompile>
-      <Culture>0x0409</Culture>
-    </ResourceCompile>
-    <Lib>
-      <OutputFile>.\libs\c64scpu64\ItaniumRelease\c64scpu64.lib</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
   </ItemDefinitionGroup>
