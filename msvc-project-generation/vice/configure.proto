@@ -3734,7 +3734,6 @@ AC_OUTPUT([Makefile
            src/arch/win32/vs10/Makefile
            src/arch/win32/vc11/Makefile
            src/arch/win32/watcom/Makefile
-           src/arch/win64/Makefile
            src/c128/Makefile
            src/c64/Makefile
            src/c64/cart/Makefile
