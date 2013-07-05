@@ -1446,6 +1446,9 @@ Package=<4>
     Project_Dep_Name rs232drv
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name rtc
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name serial
     End Project Dependency
     Begin Project Dependency

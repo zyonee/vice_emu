@@ -959,19 +959,11 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_lex.l"
-			>
-		</File>
-		<File
 			RelativePath="..\..\..\monitor\mon_memory.c"
 			>
 		</File>
 		<File
 			RelativePath="..\..\..\monitor\mon_parse.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\monitor\mon_parse.y"
 			>
 		</File>
 		<File

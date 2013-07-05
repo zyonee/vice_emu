@@ -1010,10 +1010,6 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\plus4\ted-badline.h"
-			>
-		</File>
-		<File
 			RelativePath="..\..\..\plus4\ted-cmdline-options.c"
 			>
 		</File>

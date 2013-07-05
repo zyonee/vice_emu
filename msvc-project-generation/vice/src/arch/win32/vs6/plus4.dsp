@@ -248,10 +248,6 @@ SOURCE="..\..\..\plus4\ted-badline.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\..\plus4\ted-badline.h"
-# End Source File
-# Begin Source File
-
 SOURCE="..\..\..\plus4\ted-cmdline-options.c"
 # End Source File
 # Begin Source File
