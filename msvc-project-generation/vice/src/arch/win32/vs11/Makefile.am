@@ -70,7 +70,6 @@ EXTRA_DIST = \
 	video.vcxproj \
 	vsid.vcxproj \
 	vsidlib.vcxproj \
-	winid_ia64.bat \
 	winid_x64.bat \
 	winid_x86.bat \
 	x128.vcxproj \
