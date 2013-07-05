@@ -1,7 +1,7 @@
 ## Makefile.am for the Win32 version of `libarch.a'.
 
 if !CROSS
-SUBDIRS = evc mingw32 msvc utils vs_tmpl vs6 vs70 vs71 vs8 vs9 vs10 watcom
+SUBDIRS = evc mingw32 msvc utils vs_tmpl vs6 vs70 vs71 vs8 vs9 vs10 vs11 watcom
 endif
 
 SUFFIXES = .rc
