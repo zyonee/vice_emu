@@ -11,6 +11,7 @@ SUBDIRS = \
 	qnx4 \
 	syllable-files \
 	win32-msvc \
+	win32-msvc6 \
 	win64-msvc \
 	win32-watcom \
 	winmips-msvc
