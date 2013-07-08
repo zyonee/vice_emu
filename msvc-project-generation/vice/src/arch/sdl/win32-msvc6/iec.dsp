@@ -40,10 +40,10 @@ RSC=rc.exe
 # PROP Output_Dir "libs\iec\Release"
 # PROP Intermediate_Dir "libs\iec\Release"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MD /W3 /GX /O2  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -63,10 +63,10 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\iec\Debug"
 # PROP Intermediate_Dir "libs\iec\Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MDd /W3 /GX /Z7 /Od  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -74,7 +74,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ENDIF 
+!ENDIF
 
 # Begin Target
 
@@ -82,19 +82,19 @@ LIB32=link.exe -lib
 # Name "iec - Win32 Debug"
 # Begin Source File
 
-SOURCE=..\..\..\drive\iec\cia1571d.c
+SOURCE="..\..\..\drive\iec\cia1571d.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\iec\cia1581d.c
+SOURCE="..\..\..\drive\iec\cia1581d.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\iec\fdd.c
+SOURCE="..\..\..\drive\iec\fdd.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\iec\glue1571.c
+SOURCE="..\..\..\drive\iec\glue1571.c"
 # End Source File
 # Begin Source File
 
@@ -106,31 +106,31 @@ SOURCE="..\..\..\drive\iec\iec-resources.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\iec\iec.c
+SOURCE="..\..\..\drive\iec\iec.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\iec\iecrom.c
+SOURCE="..\..\..\drive\iec\iecrom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\iec\memiec.c
+SOURCE="..\..\..\drive\iec\memiec.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\iec\pc8477.c
+SOURCE="..\..\..\drive\iec\pc8477.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\iec\via1d1541.c
+SOURCE="..\..\..\drive\iec\via1d1541.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\iec\via4000.c
+SOURCE="..\..\..\drive\iec\via4000.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\iec\wd1770.c
+SOURCE="..\..\..\drive\iec\wd1770.c"
 # End Source File
 # End Target
 # End Project

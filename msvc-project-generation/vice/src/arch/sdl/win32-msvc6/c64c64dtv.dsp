@@ -40,10 +40,10 @@ RSC=rc.exe
 # PROP Output_Dir "libs\c64c64dtv\Release"
 # PROP Intermediate_Dir "libs\c64c64dtv\Release"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\drive\iec\c64exp" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\rs232drv" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MD /W3 /GX /O2  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\drive\iec\c64exp" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\rs232drv" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\vicii"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -63,10 +63,10 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\c64c64dtv\Debug"
 # PROP Intermediate_Dir "libs\c64c64dtv\Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\drive\iec\c64exp" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\rs232drv" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MDd /W3 /GX /Z7 /Od  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\drive\iec\c64exp" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\rs232drv" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\vicii"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -74,7 +74,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ENDIF 
+!ENDIF
 
 # Begin Target
 
@@ -82,47 +82,47 @@ LIB32=link.exe -lib
 # Name "c64c64dtv - Win32 Debug"
 # Begin Source File
 
-SOURCE=..\..\..\c64\c64bus.c
+SOURCE="..\..\..\c64\c64bus.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\c64drive.c
+SOURCE="..\..\..\c64\c64drive.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\c64fastiec.c
+SOURCE="..\..\..\c64\c64fastiec.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\c64keyboard.c
+SOURCE="..\..\..\c64\c64keyboard.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\c64parallel.c
+SOURCE="..\..\..\c64\c64parallel.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\c64printer.c
+SOURCE="..\..\..\c64\c64printer.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\c64rom.c
+SOURCE="..\..\..\c64\c64rom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\c64romset.c
+SOURCE="..\..\..\c64\c64romset.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\c64rsuser.c
+SOURCE="..\..\..\c64\c64rsuser.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\c64video.c
+SOURCE="..\..\..\c64\c64video.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\patchrom.c
+SOURCE="..\..\..\c64\patchrom.c"
 # End Source File
 # End Target
 # End Project

@@ -40,10 +40,10 @@ RSC=rc.exe
 # PROP Output_Dir "libs\cbm2common\Release"
 # PROP Intermediate_Dir "libs\cbm2common\Release"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\crtc" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\monitor" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MD /W3 /GX /O2  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\crtc" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\userport" /I "..\..\..\vicii"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -63,10 +63,10 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\cbm2common\Debug"
 # PROP Intermediate_Dir "libs\cbm2common\Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\crtc" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\monitor" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MDd /W3 /GX /Z7 /Od  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\crtc" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\userport" /I "..\..\..\vicii"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -74,7 +74,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ENDIF 
+!ENDIF
 
 # Begin Target
 
@@ -86,63 +86,73 @@ SOURCE="..\..\..\cbm2\cbm2-cmdline-options.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\cbm2\cbm2acia1.c
+SOURCE="..\..\..\cbm2\cbm2acia1.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\cbm2\cbm2bus.c
+SOURCE="..\..\..\cbm2\cbm2bus.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\cbm2\cbm2cart.c
+SOURCE="..\..\..\cbm2\cbm2cart.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\cbm2\cbm2cia1.c
+SOURCE="..\..\..\cbm2\cbm2cia1.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\cbm2\cbm2cpu.c
+SOURCE="..\..\..\cbm2\cbm2datasette.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\cbm2\cbm2datasette.c
+SOURCE="..\..\..\cbm2\cbm2drive.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\cbm2\cbm2drive.c
+SOURCE="..\..\..\cbm2\cbm2iec.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\cbm2\cbm2iec.c
+SOURCE="..\..\..\cbm2\cbm2memsnapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\cbm2\cbm2memsnapshot.c
+SOURCE="..\..\..\cbm2\cbm2model.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\cbm2\cbm2model.c
+SOURCE="..\..\..\cbm2\cbm2printer.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\cbm2\cbm2printer.c
+SOURCE="..\..\..\cbm2\cbm2romset.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\cbm2\cbm2romset.c
+SOURCE="..\..\..\cbm2\cbm2sound.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\cbm2\cbm2sound.c
+SOURCE="..\..\..\cbm2\cbm2tpi1.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\cbm2\cbm2tpi1.c
+SOURCE="..\..\..\cbm2\cbm2tpi2.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\cbm2\cbm2tpi2.c
+SOURCE="..\..\..\cbm2\cbm2cpu.c"
+
+!IF  "$(CFG)" == "cbm2common - Win32 Release"
+
+# ADD CPP /Ot /Oa /Ow /Oi /Op /Oy
+# SUBTRACT CPP /Os
+
+!ELSEIF  "$(CFG)" == "cbm2common - Win32 Debug"
+
+!ENDIF
+
 # End Source File
 # End Target
 # End Project

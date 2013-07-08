@@ -1,5 +1,6 @@
 EXTRA_DIST = \
-	arch.tmpl \
+	arch_native.tmpl \
+	arch_sdl.tmpl \
 	base.tmpl \
 	c128.tmpl \
 	c1541.tmpl \

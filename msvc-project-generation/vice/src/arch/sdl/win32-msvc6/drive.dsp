@@ -40,10 +40,10 @@ RSC=rc.exe
 # PROP Output_Dir "libs\drive\Release"
 # PROP Intermediate_Dir "libs\drive\Release"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\rtc" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MD /W3 /GX /O2  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\rtc" /I "..\..\..\vdrive"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -63,10 +63,10 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\drive\Debug"
 # PROP Intermediate_Dir "libs\drive\Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\rtc" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MDd /W3 /GX /Z7 /Od  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\rtc" /I "..\..\..\vdrive"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -74,7 +74,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ENDIF 
+!ENDIF
 
 # Begin Target
 
@@ -110,35 +110,55 @@ SOURCE="..\..\..\drive\drive-writeprotect.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\drive.c
+SOURCE="..\..\..\drive\drive.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\drivecpu.c
+SOURCE="..\..\..\drive\driveimage.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\drivecpu65c02.c
+SOURCE="..\..\..\drive\drivemem.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\driveimage.c
+SOURCE="..\..\..\drive\driverom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\drivemem.c
+SOURCE="..\..\..\drive\drivesync.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\driverom.c
+SOURCE="..\..\..\drive\rotation.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\drivesync.c
+SOURCE="..\..\..\drive\drivecpu.c"
+
+!IF  "$(CFG)" == "drive - Win32 Release"
+
+# ADD CPP /Ot /Oa /Ow /Oi /Op /Oy
+# SUBTRACT CPP /Os
+
+!ELSEIF  "$(CFG)" == "drive - Win32 Debug"
+
+!ENDIF
+
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\drive\rotation.c
+SOURCE="..\..\..\drive\drivecpu65c02.c"
+
+!IF  "$(CFG)" == "drive - Win32 Release"
+
+# ADD CPP /Ot /Oa /Ow /Oi /Op /Oy
+# SUBTRACT CPP /Os
+
+!ELSEIF  "$(CFG)" == "drive - Win32 Debug"
+
+!ENDIF
+
 # End Source File
 # End Target
 # End Project

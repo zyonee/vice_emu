@@ -1,3 +1,124 @@
+/*
+ * mkmsvc - win32 project files generation program.
+ *
+ * Written by
+ *  Marco van den Heuvel <blackystardust68@yahoo.com>
+ *
+ * This file is part of VICE, the Versatile Commodore Emulator.
+ * See README for copyright notice.
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307  USA.
+ *
+ */
+
+/* Tested and confirmed working for:
+
+   version | platform | type
+   -------------------------
+      6    |    x86   | Release
+      6    |    x86   | Debug
+      6    |    x86   | DX-Release
+ */
+
+/* Untested:
+   version | platform | type
+   -------------------------
+      6    |    x86   | DX-Debug
+      6    |    x86   | SDL-Release
+      6    |    x86   | SDL-Debug
+     7.0   |    x86   | Release
+     7.0   |    x86   | Debug
+     7.0   |    x86   | DX-Release
+     7.0   |    x86   | DX-Debug
+     7.0   |    x86   | SDL-Release
+     7.0   |    x86   | SDL-Debug
+     7.1   |    x86   | Release
+     7.1   |    x86   | Debug
+     7.1   |    x86   | DX-Release
+     7.1   |    x86   | DX-Debug
+     7.1   |    x86   | SDL-Release
+     7.1   |    x86   | SDL-Debug
+      8    |    x86   | Release
+      8    |    x86   | Debug
+      8    |    x86   | DX-Release
+      8    |    x86   | DX-Debug
+      8    |    x86   | SDL-Release
+      8    |    x86   | SDL-Debug
+      8    |    x64   | Release
+      8    |    x64   | Debug
+      8    |    x64   | DX-Release
+      8    |    x64   | DX-Debug
+      8    |    x64   | SDL-Release
+      8    |    x64   | SDL-Debug
+      8    |    ia64  | Release
+      8    |    ia64  | Debug
+      8    |    ia64  | DX-Release
+      8    |    ia64  | DX-Debug
+      8    |    ia64  | SDL-Release
+      8    |    ia64  | SDL-Debug
+      9    |    x86   | Release
+      9    |    x86   | Debug
+      9    |    x86   | DX-Release
+      9    |    x86   | DX-Debug
+      9    |    x86   | SDL-Release
+      9    |    x86   | SDL-Debug
+      9    |    x64   | Release
+      9    |    x64   | Debug
+      9    |    x64   | DX-Release
+      9    |    x64   | DX-Debug
+      9    |    x64   | SDL-Release
+      9    |    x64   | SDL-Debug
+      9    |    ia64  | Release
+      9    |    ia64  | Debug
+      9    |    ia64  | DX-Release
+      9    |    ia64  | DX-Debug
+      9    |    ia64  | SDL-Release
+      9    |    ia64  | SDL-Debug
+     10    |    x86   | Release
+     10    |    x86   | Debug
+     10    |    x86   | DX-Release
+     10    |    x86   | DX-Debug
+     10    |    x86   | SDL-Release
+     10    |    x86   | SDL-Debug
+     10    |    x64   | Release
+     10    |    x64   | Debug
+     10    |    x64   | DX-Release
+     10    |    x64   | DX-Debug
+     10    |    x64   | SDL-Release
+     10    |    x64   | SDL-Debug
+     10    |    ia64  | Release
+     10    |    ia64  | Debug
+     10    |    ia64  | DX-Release
+     10    |    ia64  | DX-Debug
+     10    |    ia64  | SDL-Release
+     10    |    ia64  | SDL-Debug
+     11    |    x86   | Release
+     11    |    x86   | Debug
+     11    |    x86   | DX-Release
+     11    |    x86   | DX-Debug
+     11    |    x86   | SDL-Release
+     11    |    x86   | SDL-Debug
+     11    |    x64   | Release
+     11    |    x64   | Debug
+     11    |    x64   | DX-Release
+     11    |    x64   | DX-Debug
+     11    |    x64   | SDL-Release
+     11    |    x64   | SDL-Debug
+ */
+
 #include <stdio.h>
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -8,6 +129,12 @@
 
 #define CP_PROJECT_NAMES_STRING       "PROJECTS ="
 #define CP_PROJECT_NAMES_SIZE         sizeof(CP_PROJECT_NAMES_STRING) - 1
+
+#define CP_PROJECT_NAMES_NAT_STRING   "PROJECTS_NATIVE ="
+#define CP_PROJECT_NAMES_NAT_SIZE     sizeof(CP_PROJECT_NAMES_NAT_STRING) - 1
+
+#define CP_PROJECT_NAMES_SDL_STRING   "PROJECTS_SDL ="
+#define CP_PROJECT_NAMES_SDL_SIZE     sizeof(CP_PROJECT_NAMES_SDL_STRING) - 1
 
 #define CP_NAME_STRING                "PROJECTNAME = "
 #define CP_NAME_SIZE                  sizeof(CP_NAME_STRING) - 1
@@ -26,6 +153,12 @@
 
 #define CP_SOURCES_STRING             "SOURCES ="
 #define CP_SOURCES_SIZE               sizeof(CP_SOURCES_STRING) - 1
+
+#define CP_SDL_SOURCES_STRING         "SDL_SOURCES ="
+#define CP_SDL_SOURCES_SIZE           sizeof(CP_SDL_SOURCES_STRING) - 1
+
+#define CP_NATIVE_SOURCES_STRING      "NATIVE_SOURCES ="
+#define CP_NATIVE_SOURCES_SIZE        sizeof(CP_NATIVE_SOURCES_STRING) - 1
 
 #define CP_CPUSOURCES_STRING          "CPUSOURCES ="
 #define CP_CPUSOURCES_SIZE            sizeof(CP_CPUSOURCES_STRING) - 1
@@ -94,12 +227,20 @@ static FILE *mainfile = NULL;
 /* project names */
 static char *project_names[MAX_NAMES];
 
+/* sdl specific project names */
+static char *project_names_sdl[MAX_NAMES];
+
+/* native specific project names */
+static char *project_names_native[MAX_NAMES];
+
 /* current project file parameters */
 static char *cp_name = NULL;
 static int cp_type = -1;
 static char *cp_dep_names[MAX_DEP_NAMES];
 static char *cp_include_dirs[MAX_DIRS];
 static char *cp_source_names[MAX_NAMES];
+static char *cp_sdl_source_names[MAX_NAMES];
+static char *cp_native_source_names[MAX_NAMES];
 static char *cp_cpusource_names[MAX_CPU_NAMES];
 static char *cp_libs = NULL;
 static char *cp_libs_elements[MAX_LIBS];
@@ -619,7 +760,7 @@ static char *msvc10_main_end = "\tEndGlobalSection\r\n"
                                "\tEndGlobalSection\r\n"
                                "EndGlobal\r\n";
 
-static void generate_msvc10_11_sln(int msvc11)
+static void generate_msvc10_11_sln(int msvc11, int sdl)
 {
     int i, j, k;
     int index;
@@ -648,7 +789,7 @@ static void generate_msvc10_11_sln(int msvc11)
     fprintf(mainfile, msvc10_main_end);
 }
 
-static int open_msvc10_11_main_project(int msvc11)
+static int open_msvc10_11_main_project(int msvc11, int sdl)
 {
     pi_init();
 
@@ -674,14 +815,14 @@ static int open_msvc10_11_main_project(int msvc11)
     return 0;
 }
 
-static void close_msvc10_11_main_project(int msvc11)
+static void close_msvc10_11_main_project(int msvc11, int sdl)
 {
-    generate_msvc10_11_sln(msvc11);
+    generate_msvc10_11_sln(msvc11, sdl);
     pi_exit();
     fclose(mainfile);
 }
 
-static int output_msvc10_11_file(char *fname, int filelist, int msvc11)
+static int output_msvc10_11_file(char *fname, int filelist, int msvc11, int sdl)
 {
     char *filename;
     int retval = 0;
@@ -883,6 +1024,16 @@ static int output_msvc10_11_file(char *fname, int filelist, int msvc11)
             if (cp_source_names[0]) {
                 for (j = 0; cp_source_names[j]; j++) {
                     fprintf(outfile, msvc10_source, cp_source_names[j]);
+                }
+            }
+            if (cp_sdl_source_names[0] && sdl) {
+                for (j = 0; cp_sdl_source_names[j]; j++) {
+                    fprintf(outfile, msvc10_source, cp_sdl_source_names[j]);
+                }
+            }
+            if (cp_native_source_names[0] && !sdl) {
+                for (j = 0; cp_native_source_names[j]; j++) {
+                    fprintf(outfile, msvc10_source, cp_native_source_names[j]);
                 }
             }
             if (cp_cc_source_names[0]) {
@@ -1303,7 +1454,7 @@ static char *msvc9_global_end = "\tEndGlobalSection\r\n"
                                 "\tEndGlobalSection\r\n"
                                 "EndGlobal\r\n";
 
-static void generate_msvc9_sln(void)
+static void generate_msvc9_sln(int sdl)
 {
     int i, j, k;
     int index;
@@ -1340,7 +1491,7 @@ static void generate_msvc9_sln(void)
     fprintf(mainfile, msvc9_global_end);
 }
 
-static int open_msvc9_main_project(void)
+static int open_msvc9_main_project(int sdl)
 {
     pi_init();
 
@@ -1357,14 +1508,14 @@ static int open_msvc9_main_project(void)
     return 0;
 }
 
-static void close_msvc9_main_project(void)
+static void close_msvc9_main_project(int sdl)
 {
-    generate_msvc9_sln();
+    generate_msvc9_sln(sdl);
     pi_exit();
     fclose(mainfile);
 }
 
-static int output_msvc9_file(char *fname, int filelist)
+static int output_msvc9_file(char *fname, int filelist, int sdl)
 {
     char *filename;
     int retval = 0;
@@ -1503,6 +1654,16 @@ static int output_msvc9_file(char *fname, int filelist)
         if (cp_source_names[0]) {
             for (j = 0; cp_source_names[j]; j++) {
                 fprintf(outfile, msvc9_file, cp_source_names[j]);
+            }
+        }
+        if (cp_sdl_source_names[0] && sdl) {
+            for (j = 0; cp_sdl_source_names[j]; j++) {
+                fprintf(outfile, msvc9_file, cp_sdl_source_names[j]);
+            }
+        }
+        if (cp_native_source_names[0] && !sdl) {
+            for (j = 0; cp_native_source_names[j]; j++) {
+                fprintf(outfile, msvc9_file, cp_native_source_names[j]);
             }
         }
         if (cp_res_source_name) {
@@ -1942,7 +2103,7 @@ static char *msvc8_main_end = "\tEndGlobalSection\r\n"
                               "\tEndGlobalSection\r\n"
                               "EndGlobal\r\n";
 
-static void generate_msvc8_sln(void)
+static void generate_msvc8_sln(int sdl)
 {
     int i, j, k;
     int index;
@@ -1984,7 +2145,7 @@ static void generate_msvc8_sln(void)
     fprintf(mainfile, msvc8_main_end);
 }
 
-static int open_msvc8_main_project(void)
+static int open_msvc8_main_project(int sdl)
 {
     pi_init();
 
@@ -2001,14 +2162,14 @@ static int open_msvc8_main_project(void)
     return 0;
 }
 
-static void close_msvc8_main_project(void)
+static void close_msvc8_main_project(int sdl)
 {
-    generate_msvc8_sln();
+    generate_msvc8_sln(sdl);
     pi_exit();
     fclose(mainfile);
 }
 
-static int output_msvc8_file(char *fname, int filelist)
+static int output_msvc8_file(char *fname, int filelist, int sdl)
 {
     char *filename;
     int retval = 0;
@@ -2160,6 +2321,16 @@ static int output_msvc8_file(char *fname, int filelist)
                 fprintf(outfile, msvc8_file, cp_source_names[j]);
             }
         }
+        if (cp_sdl_source_names[0] && sdl) {
+            for (j = 0; cp_sdl_source_names[j]; j++) {
+                fprintf(outfile, msvc8_file, cp_sdl_source_names[j]);
+            }
+        }
+        if (cp_native_source_names[0] && !sdl) {
+            for (j = 0; cp_native_source_names[j]; j++) {
+                fprintf(outfile, msvc8_file, cp_native_source_names[j]);
+            }
+        }
         if (cp_cpusource_names[0]) {
             for (j = 0; cp_cpusource_names[j]; j++) {
                 fprintf(outfile, msvc8_cpu_file, cp_cpusource_names[j]);
@@ -2308,7 +2479,7 @@ static char *msvc71_project_global_start = "Global\r\n"
                                            "\tEndGlobalSection\r\n"
                                            "\tGlobalSection(ProjectConfiguration) = postSolution\r\n";
 
-static void generate_msvc71_sln(void)
+static void generate_msvc71_sln(int sdl)
 {
     int i, j;
     int index;
@@ -2330,7 +2501,7 @@ static void generate_msvc71_sln(void)
     fprintf(mainfile, msvc7x_main_project_end);
 }
 
-static int open_msvc71_main_project(void)
+static int open_msvc71_main_project(int sdl)
 {
     pi_init();
 
@@ -2344,9 +2515,9 @@ static int open_msvc71_main_project(void)
     return 0;
 }
 
-static void close_msvc71_main_project(void)
+static void close_msvc71_main_project(int sdl)
 {
-    generate_msvc71_sln();
+    generate_msvc71_sln(sdl);
     pi_exit();
     fclose(mainfile);
 }
@@ -2609,7 +2780,7 @@ static char *msvc70_main_project_deps = "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9
 static char *msvc70_main_project_conf = "\tEndGlobalSection\r\n"
                                         "\tGlobalSection(ProjectConfiguration) = postSolution\r\n";
 
-static void generate_msvc70_sln(void)
+static void generate_msvc70_sln(int sdl)
 {
     int i, j;
 
@@ -2631,7 +2802,7 @@ static void generate_msvc70_sln(void)
     fprintf(mainfile, msvc7x_main_project_end);
 }
 
-static int open_msvc70_main_project(void)
+static int open_msvc70_main_project(int sdl)
 {
     pi_init();
 
@@ -2645,14 +2816,14 @@ static int open_msvc70_main_project(void)
     return 0;
 }
 
-static void close_msvc70_main_project(void)
+static void close_msvc70_main_project(int sdl)
 {
-    generate_msvc70_sln();
+    generate_msvc70_sln(sdl);
     pi_exit();
     fclose(mainfile);
 }
 
-static int output_msvc7_file(char *fname, int filelist, int version)
+static int output_msvc7_file(char *fname, int filelist, int version, int sdl)
 {
     char *filename;
     int retval = 0;
@@ -2791,6 +2962,16 @@ static int output_msvc7_file(char *fname, int filelist, int version)
                 fprintf(outfile, msvc70_file, cp_source_names[i]);
             }
         }
+        if (cp_sdl_source_names[0] && sdl) {
+            for (i = 0; cp_sdl_source_names[i]; i++) {
+                fprintf(outfile, msvc70_file, cp_sdl_source_names[i]);
+            }
+        }
+        if (cp_native_source_names[0] && !sdl) {
+            for (i = 0; cp_native_source_names[i]; i++) {
+                fprintf(outfile, msvc70_file, cp_native_source_names[i]);
+            }
+        }
         if (cp_custom_message) {
             fprintf(outfile, msvc70_file_start, cp_custom_source);
             for (i = 0; i < 4; i++) {
@@ -2883,7 +3064,7 @@ static char *msvc6_library_id = "0x0104";
 static char *msvc6_gui_id =     "0x0101";
 
 /* MSVC6 header */
-static char *msvc6_header = "# Microsoft Developer Studio Project File - Name=\"%s\" - Package Owner=<4>\r\n"
+static char *msvc6_header1 = "# Microsoft Developer Studio Project File - Name=\"%s\" - Package Owner=<4>\r\n"
                            "# Microsoft Developer Studio Generated Build File, Format Version 6.00\r\n"
                            "# ** DO NOT EDIT **\r\n"
                            "\r\n"
@@ -2902,11 +3083,13 @@ static char *msvc6_header = "# Microsoft Developer Studio Project File - Name=\"
                            "!MESSAGE Possible choices for configuration are:\r\n"
                            "!MESSAGE \r\n"
                            "!MESSAGE \"%s - Win32 Release\" (based on \"Win32 (x86) %s\")\r\n"
-                           "!MESSAGE \"%s - Win32 Debug\" (based on \"Win32 (x86) %s\")\r\n"
-                           "!MESSAGE \"%s - Win32 DX Release\" (based on \"Win32 (x86) %s\")\r\n"
-                           "!MESSAGE \"%s - Win32 DX Debug\" (based on \"Win32 (x86) %s\")\r\n"
-                           "!MESSAGE \r\n"
-                           "\r\n";
+                           "!MESSAGE \"%s - Win32 Debug\" (based on \"Win32 (x86) %s\")\r\n";
+
+static char *msvc6_header_native = "!MESSAGE \"%s - Win32 DX Release\" (based on \"Win32 (x86) %s\")\r\n"
+                                   "!MESSAGE \"%s - Win32 DX Debug\" (based on \"Win32 (x86) %s\")\r\n";
+
+static char *msvc6_header2 = "!MESSAGE \r\n"
+                             "\r\n";
 
 /* MSVC6 begin project section */
 static char *msvc6_section1 = "# Begin Project\r\n"
@@ -2918,13 +3101,18 @@ static char *msvc6_section1 = "# Begin Project\r\n"
                               "RSC=rc.exe\r\n"
                               "\r\n";
 
-static char *msvc6_begin_ifs[4] = {
+static char *msvc6_begin_ifs_native[4] = {
     "!IF  \"$(CFG)\" == \"%s - Win32 Release\"\r\n\r\n",
     "!ELSEIF  \"$(CFG)\" == \"%s - Win32 Debug\"\r\n\r\n",
     "!ELSEIF  \"$(CFG)\" == \"%s - Win32 DX Release\"\r\n\r\n",
     "!ELSEIF  \"$(CFG)\" == \"%s - Win32 DX Debug\"\r\n\r\n"
 };
-    
+
+static char *msvc6_begin_ifs_sdl[2] = {
+    "!IF  \"$(CFG)\" == \"%s - Win32 Release\"\r\n\r\n",
+    "!ELSEIF  \"$(CFG)\" == \"%s - Win32 Debug\"\r\n\r\n"
+};
+
 static char *msvc6_releases[4] = {
     "Release",
     "Debug",
@@ -2952,34 +3140,54 @@ static char *msvc6_app_section1 = "# PROP Ignore_Export_Lib 0\r\n";
 
 static char *msvc6_section3 = "# PROP Target_Dir \"\"\r\n";
 
-static char *msvc6_base_cpp_lib_gui_part1[4] = {
+static char *msvc6_base_cpp_lib_gui_part1_native[4] = {
     "/MT /W3 /GX /O2",
     "/MTd /W3 /GX /Z7 /Od",
     "/MT /W3 /GX /O2",
     "/MTd /W3 /GX /Z7 /Od"
 };
 
-static char *msvc6_base_cpp_lib_gui_part2[4] = {
+static char *msvc6_base_cpp_lib_gui_part1_sdl[2] = {
+    "/MD /W3 /GX /O2",
+    "/MDd /W3 /GX /Z7 /Od",
+};
+
+static char *msvc6_base_cpp_lib_gui_part2_native[4] = {
     " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\" /D \"NODIRECTX\" /D \"NDEBUG\" /YX /FD /c",
     " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\" /D \"NODIRECTX\" /D \"_DEBUG\" /YX /FD /c",
     " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\"  /D \"NDEBUG\" /YX /FD /c",
     " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\" /D \"_DEBUG\" /YX /FD /c"
 };
 
-static char *msvc6_base_cpp_cc[4] = {
+static char *msvc6_base_cpp_lib_gui_part2_sdl[2] = {
+    " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\"  /D \"NDEBUG\" /YX /FD /c",
+    " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\" /D \"_DEBUG\" /YX /FD /c"
+};
+
+static char *msvc6_base_cpp_cc_native[4] = {
     " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\" /D \"NODIRECTX\" /D \"NDEBUG\" /D PACKAGE=\\\"%s\\\" /D VERSION=\\\"0.7\\\" /D SIZEOF_INT=4",
     " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\" /D \"NODIRECTX\" /D \"_DEBUG\" /D PACKAGE=\\\"%s\\\" /D VERSION=\\\"0.7\\\" /D SIZEOF_INT=4",
     " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\"  /D \"NDEBUG\" /D PACKAGE=\\\"%s\\\" /D VERSION=\\\"0.7\\\" /D SIZEOF_INT=4",
     " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\" /D \"_DEBUG\" /D PACKAGE=\\\"%s\\\" /D VERSION=\\\"0.7\\\" /D SIZEOF_INT=4"
 };
 
+static char *msvc6_base_cpp_cc_sdl[2] = {
+    " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\"  /D \"NDEBUG\" /D PACKAGE=\\\"%s\\\" /D VERSION=\\\"0.7\\\" /D SIZEOF_INT=4",
+    " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\" /D \"_DEBUG\" /D PACKAGE=\\\"%s\\\" /D VERSION=\\\"0.7\\\" /D SIZEOF_INT=4"
+};
+
 static char *msvc6_base_cpp_cc_end = " /YX /FD /c\r\n";
 
-static char *msvc6_base_cpp_console_part1[4] = {
+static char *msvc6_base_cpp_console_part1_native[4] = {
     "/MT /W3 /GX /O2",
     "/MTd /W3 /Gm /GX /Zi /Od",
     "/MT /W3 /GX /O2",
     "/MTd /W3 /GX /Z7 /Od"
+};
+
+static char *msvc6_base_cpp_console_part1_sdl[2] = {
+    "/MD /W3 /GX /O2",
+    "/MDd /W3 /GX /Z7 /Od"
 };
 
 static char *msvc6_base_cpp_console_part2[4] = {
@@ -2996,11 +3204,18 @@ static char *msvc6_base_mtl[2] = {
     "# ADD MTL /nologo /D \"_DEBUG\" /mktyplib203 /o \"NUL\" /win32\r\n"
 };
 
-static char *msvc6_base_rsc[4] = {
+static char *msvc6_base_rsc_native[4] = {
     "# ADD BASE RSC /l 0x409 /d \"NDEBUG\" /d \"WIN32\" /d \"IDE_COMPILE\" /d \"NODIRECTX\"\r\n"
     "# ADD RSC /l 0x409 /i \"..\\msvc\" /i \"..\\\\\" /i \"..\\..\\..\\\\\" /d \"NDEBUG\" /d \"WIN32\" /d \"IDE_COMPILE\" /d \"NODIRECTX\"\r\n",
     "# ADD BASE RSC /l 0x409 /d \"_DEBUG\" /d \"WIN32\" /d \"IDE_COMPILE\" /d \"NODIRECTX\"\r\n"
     "# ADD RSC /l 0x409 /i \"..\\msvc\" /i \"..\\\\\" /i \"..\\..\\..\\\\\" /d \"_DEBUG\" /d \"WIN32\" /d \"IDE_COMPILE\" /d \"NODIRECTX\"\r\n",
+    "# ADD BASE RSC /l 0x409 /d \"NDEBUG\" /d \"WIN32\" /d \"IDE_COMPILE\"\r\n"
+    "# ADD RSC /l 0x409 /i \"..\\msvc\" /i \"..\\\\\" /i \"..\\..\\..\\\\\" /d \"NDEBUG\" /d \"WIN32\" /d \"IDE_COMPILE\"\r\n",
+    "# ADD BASE RSC /l 0x409 /d \"_DEBUG\" /d \"WIN32\" /d \"IDE_COMPILE\"\r\n"
+    "# ADD RSC /l 0x409 /i \"..\\msvc\" /i \"..\\\\\" /i \"..\\..\\..\\\\\" /d \"_DEBUG\" /d \"WIN32\" /d \"IDE_COMPILE\"\r\n"
+};
+
+static char *msvc6_base_rsc_sdl[2] = {
     "# ADD BASE RSC /l 0x409 /d \"NDEBUG\" /d \"WIN32\" /d \"IDE_COMPILE\"\r\n"
     "# ADD RSC /l 0x409 /i \"..\\msvc\" /i \"..\\\\\" /i \"..\\..\\..\\\\\" /d \"NDEBUG\" /d \"WIN32\" /d \"IDE_COMPILE\"\r\n",
     "# ADD BASE RSC /l 0x409 /d \"_DEBUG\" /d \"WIN32\" /d \"IDE_COMPILE\"\r\n"
@@ -3019,14 +3234,28 @@ static char *msvc6_link32_console = "LINK32=link.exe\r\n"
                                     "# ADD BASE LINK32 %s /nologo /subsystem:console /machine:I386\r\n"
                                     "# ADD LINK32 %s /nologo /subsystem:console /machine:I386\r\n\r\n";
 
+static char *msvc6_link32_console_sdl_debug = "LINK32=link.exe\r\n"
+                                              "# ADD BASE LINK32 %s %s /nologo /subsystem:console /machine:I386 /NODEFAULTLIB:msvcrt.lib\r\n"
+                                              "# ADD LINK32 %s %s /nologo /subsystem:console /machine:I386 /NODEFAULTLIB:msvcrt.lib\r\n\r\n";
+
+static char *msvc6_link32_console_sdl_release = "LINK32=link.exe\r\n"
+                                                "# ADD BASE LINK32 %s %s /nologo /subsystem:console /machine:I386\r\n"
+                                                "# ADD LINK32 %s %s /nologo /subsystem:console /machine:I386\r\n\r\n";
+
 static char *msvc6_link32_gui = "LINK32=link.exe\r\n"
                                 "# ADD BASE LINK32 %s%s /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept\r\n"
                                 "# ADD LINK32 %s%s /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept\r\n\r\n";
+
+static char *msvc6_link32_gui_sdl_debug = "LINK32=link.exe\r\n"
+                                          "# ADD BASE LINK32 %s%s /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept /NODEFAULTLIB:msvcrt.lib\r\n"
+                                          "# ADD LINK32 %s%s /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept /NODEFAULTLIB:msvcrt.lib\r\n\r\n";
 
 static char *msvc6_dx_libs[2] = {
     "",
     " dsound.lib dxguid.lib"
 };
+
+static char *msvc6_sdl_libs = " SDLmain.lib SDL.lib opengl32.lib";
 
 static char *msvc6_endif = "!ENDIF\r\n"
                            "\r\n";
@@ -3034,9 +3263,10 @@ static char *msvc6_endif = "!ENDIF\r\n"
 static char *msvc6_begin_target = "# Begin Target\r\n"
                                   "\r\n"
                                   "# Name \"%s - Win32 Release\"\r\n"
-                                  "# Name \"%s - Win32 Debug\"\r\n"
-                                  "# Name \"%s - Win32 DX Release\"\r\n"
-                                  "# Name \"%s - Win32 DX Debug\"\r\n";
+                                  "# Name \"%s - Win32 Debug\"\r\n";
+
+static char *msvc6_dx_targets = "# Name \"%s - Win32 DX Release\"\r\n"
+                                "# Name \"%s - Win32 DX Debug\"\r\n";
 
 static char *msvc6_source = "# Begin Source File\r\n"
                             "\r\n"
@@ -3086,8 +3316,9 @@ static char *msvc6_custom_cpu_source = "# Begin Source File\r\n"
                                        "# SUBTRACT CPP /Os\r\n"
                                        "\r\n"
                                        "!ELSEIF  \"$(CFG)\" == \"%s - Win32 Debug\"\r\n"
-                                       "\r\n"
-                                       "!ELSEIF  \"$(CFG)\" == \"%s - Win32 DX Release\"\r\n"
+                                       "\r\n";
+
+static char *msvc6_custom_cpu_native = "!ELSEIF  \"$(CFG)\" == \"%s - Win32 DX Release\"\r\n"
                                        "\r\n"
                                        "# ADD BASE CPP /Ot /Oa /Ow /Oi /Op /Oy\r\n"
                                        "# SUBTRACT BASE CPP /Os\r\n"
@@ -3095,10 +3326,11 @@ static char *msvc6_custom_cpu_source = "# Begin Source File\r\n"
                                        "# SUBTRACT CPP /Os\r\n"
                                        "\r\n"
                                        "!ELSEIF  \"$(CFG)\" == \"%s - Win32 DX Debug\"\r\n"
-                                       "\r\n"
-                                       "!ENDIF\r\n"
-                                       "\r\n"
-                                       "# End Source File\r\n";
+                                       "\r\n";
+
+static char *msvc6_custom_cpu_end = "!ENDIF\r\n"
+                                    "\r\n"
+                                    "# End Source File\r\n";
 
 static char *msvc6_begin_cc_source = "# Begin Source File\r\n"
                                      "\r\n"
@@ -3111,9 +3343,13 @@ static char *msvc6_cc_custom_build_part1 = "# Begin Custom Build\r\n"
                                            "\r\n"
                                            "\"libs\\%s\\%s\\$(InputName).obj\" : $(SOURCE) \"$(INTDIR)\" \"$(OUTDIR)\"\r\n";
 
-static char *msvc6_cc_custom_build_part2a = "\tcl /nologo %s /EHsc /I \"..\\msvc\" ";
+static char *msvc6_cc_custom_build_part2a_native = "\tcl /nologo %s /EHsc /I \"..\\msvc\" ";
 
-static char *msvc6_cc_custom_build_part2b = "\tcl /nologo %s /EHsc /I \"..\\msvc\" /I \"..\\\\\" /I \"..\\..\\..\\\\\" ";
+static char *msvc6_cc_custom_build_part2a_sdl = "\tcl /nologo %s /EHsc /I \".\\\\\" /I \"..\\\\\" ";
+
+static char *msvc6_cc_custom_build_part2b_native = "\tcl /nologo %s /EHsc /I \"..\\msvc\" /I \"..\\\\\" /I \"..\\..\\..\\\\\" ";
+
+static char *msvc6_cc_custom_build_part2b_sdl = "\tcl /nologo %s /EHsc /I \".\\\\\" /I \"..\\\\\" /I \"..\\..\\..\\\\\" ";
 
 static char *msvc6_cc_custom_build_part3 = "%s /Fp\"libs\\%s\\%s\\%s.pch\" /Fo\"libs\\%s\\%s\\\\\" /Fd\"libs\\%s\\%s\\\\\" /FD /TP /c \"$(InputPath)\"\r\n"
                                            "\r\n"
@@ -3147,9 +3383,13 @@ static char *msvc6_res_source_part3 = "!ENDIF\r\n"
                                       "SOURCE=\"..\\vice.manifest\"\r\n"
                                       "# End Source File\r\n";
 
-static int open_msvc6_main_project(void)
+static int open_msvc6_main_project(int sdl)
 {
-    mainfile = fopen("../vs6/vice.dsw", "wb");
+    if (sdl) {
+        mainfile = fopen("../../sdl/win32-msvc6/vice.dsw", "wb");
+    } else {
+        mainfile = fopen("../vs6/vice.dsw", "wb");
+    }
 
     if (!mainfile) {
         printf("Cannot open 'vice.dsw' for output\n");
@@ -3161,7 +3401,7 @@ static int open_msvc6_main_project(void)
     return 0;
 }
 
-static void close_msvc6_main_project(void)
+static void close_msvc6_main_project(int sdl)
 {
     fprintf(mainfile, "Global:\r\n\r\n");
     fprintf(mainfile, "Package=<5>\r\n{{{\r\n}}}\r\n\r\n");
@@ -3170,7 +3410,7 @@ static void close_msvc6_main_project(void)
     fclose(mainfile);
 }
 
-static int output_msvc6_file(char *fname, int filelist)
+static int output_msvc6_file(char *fname, int filelist, int sdl)
 {
     char *filename;
     int retval = 0;
@@ -3179,13 +3419,26 @@ static int output_msvc6_file(char *fname, int filelist)
     char *real_id = NULL;
     char *mtl = (cp_type == CP_TYPE_GUI) ? "MTL=midl.exe\r\n" : "";
     int i, j;
+    int max_i = (sdl) ? 2 : 4;
+    char *rfname;
+
+    if (!strcmp(fname, "arch_native") || !strcmp(fname, "arch_sdl")) {
+        rfname = "arch";
+    } else {
+        rfname = fname;
+    }
 
     if (filelist) {
-        filename = malloc(strlen(fname) + sizeof("../vs6/.dsp"));
-        sprintf(filename, "../vs6/%s.dsp", fname);
+        if (sdl) {
+            filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc6/.dsp"));
+            sprintf(filename, "../../sdl/win32-msvc6/%s.dsp", rfname);
+        } else {
+            filename = malloc(strlen(rfname) + sizeof("../vs6/.dsp"));
+            sprintf(filename, "../vs6/%s.dsp", rfname);
+        }
     } else {
-        filename = malloc(strlen(fname) + sizeof(".dsp"));
-        sprintf(filename, "%s.dsp", fname);
+        filename = malloc(strlen(rfname) + sizeof(".dsp"));
+        sprintf(filename, "%s.dsp", rfname);
     }
 
     outfile = fopen(filename, "wb");
@@ -3223,10 +3476,18 @@ static int output_msvc6_file(char *fname, int filelist)
                 real_id = msvc6_gui_id;
                 break;
         }
-        fprintf(outfile, msvc6_header, cp_name, real_type, real_id, cp_name, cp_name, cp_name, cp_name, cp_name, real_type, cp_name, real_type, cp_name, real_type, cp_name, real_type);
+        fprintf(outfile, msvc6_header1, cp_name, real_type, real_id, cp_name, cp_name, cp_name, cp_name, cp_name, real_type, cp_name, real_type);
+        if (!sdl) {
+            fprintf(outfile, msvc6_header_native, cp_name, real_type, cp_name, real_type);
+        }
+        fprintf(outfile, msvc6_header2);
         fprintf(outfile, msvc6_section1, mtl, cp_name);
-        for (i = 0; i < 4; i++) {
-            fprintf(outfile, msvc6_begin_ifs[i], cp_name);
+        for (i = 0; i < max_i; i++) {
+            if (sdl) {
+                fprintf(outfile, msvc6_begin_ifs_sdl[i], cp_name);
+            } else {
+                fprintf(outfile, msvc6_begin_ifs_native[i], cp_name);
+            }
             fprintf(outfile, msvc6_begin_section, msvc6_enable_debug[i], msvc6_releases[i], msvc6_releases[i], msvc6_enable_debug[i]);
             if (cp_type != CP_TYPE_LIBRARY) {
                 fprintf(outfile, msvc6_middle_section_app);
@@ -3240,21 +3501,47 @@ static int output_msvc6_file(char *fname, int filelist)
             fprintf(outfile, msvc6_section3);
             if (cp_type != CP_TYPE_CONSOLE) {
                 if (!cp_source_names[0] && cp_cc_source_names[0]) {
-                    fprintf(outfile, "# ADD BASE CPP /nologo %s ", msvc6_base_cpp_lib_gui_part1[i]);
-                    fprintf(outfile, msvc6_base_cpp_cc[i], cp_name);
+                    if (sdl) {
+                        fprintf(outfile, "# ADD BASE CPP /nologo %s ", msvc6_base_cpp_lib_gui_part1_sdl[i]);
+                        fprintf(outfile, msvc6_base_cpp_cc_sdl[i], cp_name);
+                    } else {
+                        fprintf(outfile, "# ADD BASE CPP /nologo %s ", msvc6_base_cpp_lib_gui_part1_native[i]);
+                        fprintf(outfile, msvc6_base_cpp_cc_native[i], cp_name);
+                    }
                     fprintf(outfile, msvc6_base_cpp_cc_end);
                 } else {
-                    fprintf(outfile, "# ADD BASE CPP /nologo %s %s\r\n", msvc6_base_cpp_lib_gui_part1[i], msvc6_base_cpp_lib_gui_part2[i]);
+                    if (sdl) {
+                        fprintf(outfile, "# ADD BASE CPP /nologo %s %s\r\n", msvc6_base_cpp_lib_gui_part1_sdl[i], msvc6_base_cpp_lib_gui_part2_sdl[i]);
+                    } else {
+                        fprintf(outfile, "# ADD BASE CPP /nologo %s %s\r\n", msvc6_base_cpp_lib_gui_part1_native[i], msvc6_base_cpp_lib_gui_part2_native[i]);
+                    }
                 }
-                fprintf(outfile, "# ADD CPP /nologo %s", msvc6_base_cpp_lib_gui_part1[i]);
+                if (sdl) {
+                    fprintf(outfile, "# ADD CPP /nologo %s", msvc6_base_cpp_lib_gui_part1_sdl[i]);
+                } else {
+                    fprintf(outfile, "# ADD CPP /nologo %s", msvc6_base_cpp_lib_gui_part1_native[i]);
+                }
             } else {
-                fprintf(outfile, "# ADD BASE CPP /nologo %s %s\r\n", msvc6_base_cpp_console_part1[i], msvc6_base_cpp_console_part2[i]);
-                fprintf(outfile, "# ADD CPP /nologo %s", msvc6_base_cpp_console_part1[i]);
+                if (sdl) {
+                    fprintf(outfile, "# ADD BASE CPP /nologo %s %s\r\n", msvc6_base_cpp_console_part1_sdl[i], msvc6_base_cpp_console_part2[i]);
+                    fprintf(outfile, "# ADD CPP /nologo %s", msvc6_base_cpp_console_part1_sdl[i]);
+                } else {
+                    fprintf(outfile, "# ADD BASE CPP /nologo %s %s\r\n", msvc6_base_cpp_console_part1_native[i], msvc6_base_cpp_console_part2[i]);
+                    fprintf(outfile, "# ADD CPP /nologo %s", msvc6_base_cpp_console_part1_native[i]);
+                }
             }
             if (!cp_source_names[0] && cp_cc_source_names[0]) {
-                fprintf(outfile, " /I \"..\\msvc\"");
+                if (sdl) {
+                    fprintf(outfile, " /I \".\\\"");
+                } else {
+                    fprintf(outfile, " /I \"..\\msvc\"");
+                }
             } else {
-                fprintf(outfile, " /I \"..\\msvc\" /I \"..\\\\\" /I \"..\\..\\..\\\\\"");
+                if (sdl) {
+                    fprintf(outfile, " /I \".\\\" /I \"..\\\\\" /I \"..\\..\\..\\\\\"");
+                } else {
+                    fprintf(outfile, " /I \"..\\msvc\" /I \"..\\\\\" /I \"..\\..\\..\\\\\"");
+                }
                 if (cp_include_dirs[0]) {
                     for (j = 0; cp_include_dirs[j]; j++) {
                         fprintf(outfile, " /I \"..\\..\\..\\%s\"", cp_include_dirs[j]);
@@ -3263,10 +3550,18 @@ static int output_msvc6_file(char *fname, int filelist)
             }
             if (cp_type != CP_TYPE_CONSOLE) {
                 if (!cp_source_names[0] && cp_cc_source_names[0]) {
-                    fprintf(outfile, msvc6_base_cpp_cc[i], cp_name);
+                    if (sdl) {
+                        fprintf(outfile, msvc6_base_cpp_cc_sdl[i], cp_name);
+                    } else {
+                        fprintf(outfile, msvc6_base_cpp_cc_native[i], cp_name);
+                    }
                     fprintf(outfile, msvc6_base_cpp_cc_end);
                 } else {
-                    fprintf(outfile, " %s\r\n", msvc6_base_cpp_lib_gui_part2[i]);
+                    if (sdl) {
+                        fprintf(outfile, " %s\r\n", msvc6_base_cpp_lib_gui_part2_sdl[i]);
+                    } else {
+                        fprintf(outfile, " %s\r\n", msvc6_base_cpp_lib_gui_part2_native[i]);
+                    }
                 }
             } else {
                 fprintf(outfile, " %s\r\n", msvc6_base_cpp_console_part2[i]);
@@ -3274,7 +3569,11 @@ static int output_msvc6_file(char *fname, int filelist)
             if (cp_type == CP_TYPE_GUI) {
                 fprintf(outfile, msvc6_base_mtl[i & 1]);
             }
-            fprintf(outfile, msvc6_base_rsc[i]);
+            if (sdl) {
+                fprintf(outfile, msvc6_base_rsc_sdl[i]);
+            } else {
+                fprintf(outfile, msvc6_base_rsc_native[i]);
+            }
             fprintf(outfile, msvc6_bsc32);
             switch (cp_type) {
                 default:
@@ -3282,10 +3581,26 @@ static int output_msvc6_file(char *fname, int filelist)
                     fprintf(outfile, msvc6_lib32);
                     break;
                 case CP_TYPE_CONSOLE:
-                    fprintf(outfile, msvc6_link32_console, cp_libs, cp_libs);
+                    if (sdl) {
+                        if (i & 1) {
+                            fprintf(outfile, msvc6_link32_console_sdl_debug, cp_libs, msvc6_sdl_libs, cp_libs, msvc6_sdl_libs);
+                        } else {
+                            fprintf(outfile, msvc6_link32_console_sdl_release, cp_libs, msvc6_sdl_libs, cp_libs, msvc6_sdl_libs);
+                        }
+                    } else {
+                        fprintf(outfile, msvc6_link32_console, cp_libs, cp_libs);
+                    }
                     break;
                 case CP_TYPE_GUI:
-                    fprintf(outfile, msvc6_link32_gui, cp_libs, msvc6_dx_libs[i >> 1], cp_libs, msvc6_dx_libs[i >> 1]);
+                    if (sdl) {
+                        if (i & 1) {
+                            fprintf(outfile, msvc6_link32_gui_sdl_debug, cp_libs, msvc6_sdl_libs, cp_libs, msvc6_sdl_libs);
+                        } else {
+                            fprintf(outfile, msvc6_link32_gui, cp_libs, msvc6_sdl_libs, cp_libs, msvc6_sdl_libs);
+                        }
+                    } else {
+                        fprintf(outfile, msvc6_link32_gui, cp_libs, msvc6_dx_libs[i >> 1], cp_libs, msvc6_dx_libs[i >> 1]);
+                    }
                     break;
             }
             if (cp_post_custom_message) {
@@ -3293,19 +3608,38 @@ static int output_msvc6_file(char *fname, int filelist)
             }
         }
         fprintf(outfile, msvc6_endif);
-        fprintf(outfile, msvc6_begin_target, cp_name, cp_name, cp_name, cp_name);
+        fprintf(outfile, msvc6_begin_target, cp_name, cp_name);
+        if (!sdl) {
+            fprintf(outfile, msvc6_dx_targets, cp_name, cp_name);
+        }
         if (cp_cc_source_names[0]) {
             for (j = 0; cp_cc_source_names[j]; j++) {
                 fprintf(outfile, msvc6_begin_cc_source, cp_cc_source_path, cp_cc_source_names[j]);
-                for (i = 0; i < 4; i++) {
-                    fprintf(outfile, msvc6_begin_ifs[i], cp_name);
+                for (i = 0; i < max_i; i++) {
+                    if (sdl) {
+                        fprintf(outfile, msvc6_begin_ifs_sdl[i], cp_name);
+                    } else {
+                        fprintf(outfile, msvc6_begin_ifs_native[i], cp_name);
+                    }
                     fprintf(outfile, msvc6_cc_custom_build_part1, cp_cc_source_path, cp_cc_source_names[j], cp_cc_source_names[j], cp_name, msvc6_releases[i]);
                     if (cp_source_names[0]) {
-                        fprintf(outfile, msvc6_cc_custom_build_part2b, msvc6_base_cpp_lib_gui_part1[i]);
+                        if (sdl) {
+                            fprintf(outfile, msvc6_cc_custom_build_part2b_sdl, msvc6_base_cpp_lib_gui_part1_sdl[i]);
+                        } else {
+                            fprintf(outfile, msvc6_cc_custom_build_part2b_native, msvc6_base_cpp_lib_gui_part1_native[i]);
+                        }
                     } else {
-                        fprintf(outfile, msvc6_cc_custom_build_part2a, msvc6_base_cpp_lib_gui_part1[i]);
+                        if (sdl) {
+                            fprintf(outfile, msvc6_cc_custom_build_part2a_sdl, msvc6_base_cpp_lib_gui_part1_sdl[i]);
+                        } else {
+                            fprintf(outfile, msvc6_cc_custom_build_part2a_native, msvc6_base_cpp_lib_gui_part1_native[i]);
+                        }
                     }
-                    fprintf(outfile, msvc6_cc_custom_build_part3, msvc6_base_cpp_cc[i], cp_name, msvc6_releases[i], cp_name, cp_name, msvc6_releases[i], cp_name, msvc6_releases[i]);
+                    if (sdl) {
+                        fprintf(outfile, msvc6_cc_custom_build_part3, msvc6_base_cpp_cc_sdl[i], cp_name, msvc6_releases[i], cp_name, cp_name, msvc6_releases[i], cp_name, msvc6_releases[i]);
+                    } else {
+                        fprintf(outfile, msvc6_cc_custom_build_part3, msvc6_base_cpp_cc_native[i], cp_name, msvc6_releases[i], cp_name, cp_name, msvc6_releases[i], cp_name, msvc6_releases[i]);
+                    }
                 }
                 fprintf(outfile, "%s# End Source File\r\n", msvc6_endif);
             }
@@ -3315,15 +3649,33 @@ static int output_msvc6_file(char *fname, int filelist)
                 fprintf(outfile, msvc6_source, cp_source_names[j]);
             }
         }
+        if (cp_sdl_source_names[0] && sdl) {
+            for (j = 0; cp_sdl_source_names[j]; j++) {
+                fprintf(outfile, msvc6_source, cp_sdl_source_names[j]);
+            }
+        }
+        if (cp_native_source_names[0] && !sdl) {
+            for (j = 0; cp_native_source_names[j]; j++) {
+                fprintf(outfile, msvc6_source, cp_native_source_names[j]);
+            }
+        }
         if (cp_cpusource_names[0]) {
             for (j = 0; cp_cpusource_names[j]; j++) {
-                fprintf(outfile, msvc6_custom_cpu_source, cp_cpusource_names[j], cp_name, cp_name, cp_name, cp_name);
+                fprintf(outfile, msvc6_custom_cpu_source, cp_cpusource_names[j], cp_name, cp_name);
+                if (!sdl) {
+                    fprintf(outfile, msvc6_custom_cpu_native, cp_name, cp_name);
+                }
+                fprintf(outfile, msvc6_custom_cpu_end);
             }
         }
         if (cp_custom_message) {
             fprintf(outfile, msvc6_custom_source, cp_custom_source);
-            for (i = 0; i < 4; i++) {
-                fprintf(outfile, msvc6_begin_ifs[i], cp_name);
+            for (i = 0; i < max_i; i++) {
+                if (sdl) {
+                    fprintf(outfile, msvc6_begin_ifs_sdl[i], cp_name);
+                } else {
+                    fprintf(outfile, msvc6_begin_ifs_native[i], cp_name);
+                }
                 fprintf(outfile, msvc6_custom_section_part1);
                 for (j = 0; cp_custom_deps[j]; j++) {
                     fprintf(outfile, "\"%s\"\t", cp_custom_deps[j]);
@@ -3334,10 +3686,14 @@ static int output_msvc6_file(char *fname, int filelist)
             fprintf(outfile, msvc6_end_custom_source);
         }
         if (cp_type == CP_TYPE_GUI) {
-            if (cp_res_source_name) {
+            if (cp_res_source_name && !sdl) {
                 fprintf(outfile, msvc6_res_source_start, cp_res_source_name);
-                for (i = 0; i < 4; i++) {
-                    fprintf(outfile, msvc6_begin_ifs[i], cp_name);
+                for (i = 0; i < max_i; i++) {
+                    if (sdl) {
+                        fprintf(outfile, msvc6_begin_ifs_sdl[i], cp_name);
+                    } else {
+                        fprintf(outfile, msvc6_begin_ifs_native[i], cp_name);
+                    }
                     fprintf(outfile, msvc6_res_source_part1);
                     for (j = 0; cp_res_deps[j]; j++) {
                         fprintf(outfile, "\t\"..\\%s\"", cp_res_deps[j]);
@@ -3539,6 +3895,8 @@ static int parse_template(char *filename)
     cp_dep_names[0] = NULL;
     cp_include_dirs[0] = NULL;
     cp_source_names[0] = NULL;
+    cp_sdl_source_names[0] = NULL;
+    cp_native_source_names[0] = NULL;
     cp_custom_message = NULL;
     cp_custom_source = NULL;
     cp_custom_deps[0] = NULL;
@@ -3603,13 +3961,33 @@ static int parse_template(char *filename)
         }
         if (!parsed && !strncmp(line, CP_PROJECT_NAMES_STRING, CP_PROJECT_NAMES_SIZE)) {
 #if MKMSVC_DEBUG
-            printf("Line %d is a project name: %s\n", read_buffer_line, line + CP_PROJECT_NAMES_SIZE);
+            printf("Line %d is a project name line\n", read_buffer_line);
 #endif
             if (fill_line_names(project_names, MAX_NAMES)) {
                 printf("Error parsing project names in line %d of %s\n", read_buffer_line, filename);
                 return 1;
             }
             is_main_project_template = 1;
+            parsed = 1;
+        }
+        if (!parsed && !strncmp(line, CP_PROJECT_NAMES_NAT_STRING, CP_PROJECT_NAMES_NAT_SIZE)) {
+#if MKMSVC_DEBUG
+            printf("Line %d is a native project name line\n", read_buffer_line);
+#endif
+            if (fill_line_names(project_names_native, MAX_NAMES)) {
+                printf("Error parsing native project names in line %d of %s\n", read_buffer_line, filename);
+                return 1;
+            }
+            parsed = 1;
+        }
+        if (!parsed && !strncmp(line, CP_PROJECT_NAMES_SDL_STRING, CP_PROJECT_NAMES_SDL_SIZE)) {
+#if MKMSVC_DEBUG
+            printf("Line %d is an sdl project name line\n", read_buffer_line);
+#endif
+            if (fill_line_names(project_names_sdl, MAX_NAMES)) {
+                printf("Error parsing sdl project names in line %d of %s\n", read_buffer_line, filename);
+                return 1;
+            }
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_DEPS_STRING, CP_DEPS_SIZE)) {
@@ -3638,6 +4016,26 @@ static int parse_template(char *filename)
 #endif
             if (fill_line_names(cp_source_names, MAX_NAMES)) {
                 printf("Error parsing source name in line %d of %s\n", read_buffer_line, filename);
+                return 1;
+            }
+            parsed = 1;
+        }
+        if (!parsed && !strncmp(line, CP_SDL_SOURCES_STRING, CP_SDL_SOURCES_SIZE)) {
+#if MKMSVC_DEBUG
+            printf("Line %d is an sdl project sources line\n", read_buffer_line);
+#endif
+            if (fill_line_names(cp_sdl_source_names, MAX_NAMES)) {
+                printf("Error parsing sdl source name in line %d of %s\n", read_buffer_line, filename);
+                return 1;
+            }
+            parsed = 1;
+        }
+        if (!parsed && !strncmp(line, CP_NATIVE_SOURCES_STRING, CP_NATIVE_SOURCES_SIZE)) {
+#if MKMSVC_DEBUG
+            printf("Line %d is a native project sources line\n", read_buffer_line);
+#endif
+            if (fill_line_names(cp_native_source_names, MAX_NAMES)) {
+                printf("Error parsing native source name in line %d of %s\n", read_buffer_line, filename);
                 return 1;
             }
             parsed = 1;
@@ -3821,13 +4219,14 @@ static int parse_template(char *filename)
     return 0;
 }
 
-static int read_template_file(char *fname)
+static int read_template_file(char *fname, int sdl)
 {
-    char *filename = malloc(strlen(fname) + sizeof(".tmpl"));
+    char *filename;
     struct stat statbuf;
     FILE *infile = NULL;
     int retval = 0;
 
+    filename = malloc(strlen(fname) + sizeof(".tmpl"));
     sprintf(filename, "%s.tmpl", fname);
 
     if (stat(filename, &statbuf) < 0) {
@@ -3883,7 +4282,7 @@ static int read_template_file(char *fname)
 
 static void usage(void)
 {
-    printf("Usage: mkmsvc <basename> <generation options>\n\n");
+    printf("Usage: mkmsvc <basename> <generation options> <type>\n\n");
     printf("basename is the name of a template file, without the '.tmpl' extension.\n");
     printf("generation options are:\n");
     printf("-4 = msvc4 mips makefile generation\n");
@@ -3894,6 +4293,9 @@ static void usage(void)
     printf("-9 = msvc9 (2008) project file generation\n");
     printf("-10 = msvc10 (2010) project file generation\n");
     printf("-11 = msvc11 (2012) project file generation\n\n");
+    printf("types are:\n");
+    printf("-native = generate native project files.\n");
+    printf("-sdl = generate SDL project files.\n");
 }
 
 int main(int argc, char *argv[])
@@ -3907,6 +4309,8 @@ int main(int argc, char *argv[])
     int msvc9 = 0;
     int msvc10 = 0;
     int msvc11 = 0;
+    int native = 0;
+    int sdl = 0;
     int error = 0;
     char *filename = NULL;
 
@@ -3947,6 +4351,12 @@ int main(int argc, char *argv[])
                 if (!strcmp(argv[i], "-11")) {
                     msvc11 = 1;
                 }
+                if (!strcmp(argv[i], "-native")) {
+                    native = 1;
+                }
+                if (!strcmp(argv[i], "-sdl")) {
+                    sdl = 1;
+                }
             }
         }
 
@@ -3955,192 +4365,221 @@ int main(int argc, char *argv[])
             filename = "vice";
         }
 
-        project_names[0] = NULL;
+        /* at least ONE version has to be given */
+        if (!msvc4 && !msvc6 && !msvc70 && !msvc71 && !msvc8 && !msvc9 && !msvc10 && !msvc11) {
+            printf("Error: No generation option(s) given\n");
+            error = 1;
+        }
 
-        if (read_template_file(filename)) {
-            printf("Generation error.\n");
-        } else {
-            names_buffer = read_buffer;
-            read_buffer = NULL;
-            read_buffer_line = 0;
-            read_buffer_pos = 0;
-            read_buffer_len = 0;
-            if (msvc4) {
-                current_level = 40;
-                printf("Not yet implemented.\n");
-            }
-            if (!error && msvc6) {
-                current_level = 60;
-                if (project_names[0]) {
-                    error = open_msvc6_main_project();
-                    for (i = 0; project_names[i] && !error; i++) {
-                        error = read_template_file(project_names[i]);
-#if MKMSVC_DEBUG
-                        printf("Parse done\n");
-#endif
-                        if (!error) {
-                            error = output_msvc6_file(project_names[i], 1);
-#if MKMSVC_DEBUG
-                            printf("Output done\n");
-#endif
-                        }
-                    }
-                    close_msvc6_main_project();
-                } else {
-                    error = output_msvc6_file(filename, 0);
-                }
-                if (!error) {
-                    free_buffers();
-                }
-            }
-            if (!error && msvc70) {
-                current_level = 70;
-                if (project_names[0]) {
-                    error = open_msvc70_main_project();
-                    for (i = 0; project_names[i] && !error; i++) {
-                        error = read_template_file(project_names[i]);
-#if MKMSVC_DEBUG
-                        printf("Parse done\n");
-#endif
-                        if (!error) {
-                            error = output_msvc7_file(project_names[i], 1, 70);
-#if MKMSVC_DEBUG
-                            printf("Output done\n");
-#endif
-                        }
-                    }
-                    close_msvc70_main_project();
-                } else {
-                    error = output_msvc7_file(filename, 0, 70);
-                }
-                if (!error) {
-                    free_buffers();
-                }
-            }
-            if (!error && msvc71) {
-                current_level = 71;
-                if (project_names[0]) {
-                    error = open_msvc71_main_project();
-                    for (i = 0; project_names[i] && !error; i++) {
-                        error = read_template_file(project_names[i]);
-#if MKMSVC_DEBUG
-                        printf("Parse done\n");
-#endif
-                        if (!error) {
-                            error = output_msvc7_file(project_names[i], 1, 71);
-#if MKMSVC_DEBUG
-                            printf("Output done\n");
-#endif
-                        }
-                    }
-                    close_msvc71_main_project();
-                } else {
-                    error = output_msvc7_file(filename, 0, 71);
-                }
-                if (!error) {
-                    free_buffers();
-                }
-            }
-            if (!error && msvc8) {
-                current_level = 80;
-                if (project_names[0]) {
-                    error = open_msvc8_main_project();
-                    for (i = 0; project_names[i] && !error; i++) {
-                        error = read_template_file(project_names[i]);
-#if MKMSVC_DEBUG
-                        printf("Parse done\n");
-#endif
-                        if (!error) {
-                            error = output_msvc8_file(project_names[i], 1);
-#if MKMSVC_DEBUG
-                            printf("Output done\n");
-#endif
-                        }
-                    }
-                    close_msvc8_main_project();
-                } else {
-                    error = output_msvc8_file(filename, 0);
-                }
-                if (!error) {
-                    free_buffers();
-                }
-            }
-            if (!error && msvc9) {
-                current_level = 90;
-                if (project_names[0]) {
-                    error = open_msvc9_main_project();
-                    for (i = 0; project_names[i] && !error; i++) {
-                        error = read_template_file(project_names[i]);
-#if MKMSVC_DEBUG
-                        printf("Parse done\n");
-#endif
-                        if (!error) {
-                            error = output_msvc9_file(project_names[i], 1);
-#if MKMSVC_DEBUG
-                            printf("Output done\n");
-#endif
-                        }
-                    }
-                    close_msvc9_main_project();
-                } else {
-                    error = output_msvc9_file(filename, 0);
-                }
-                if (!error) {
-                    free_buffers();
-                }
-            }
-            if (!error && msvc10) {
-                current_level = 100;
-                if (project_names[0]) {
-                    error = open_msvc10_11_main_project(0);
-                    for (i = 0; project_names[i] && !error; i++) {
-                        error = read_template_file(project_names[i]);
-#if MKMSVC_DEBUG
-                        printf("Parse done\n");
-#endif
-                        if (!error) {
-                            error = output_msvc10_11_file(project_names[i], 1, 0);
-#if MKMSVC_DEBUG
-                            printf("Output done\n");
-#endif
-                        }
-                    }
-                    close_msvc10_11_main_project(0);
-                } else {
-                    error = output_msvc10_11_file(filename, 0, 0);
-                }
-                if (!error) {
-                    free_buffers();
-                }
-            }
-            if (!error && msvc11) {
-                current_level = 110;
-                if (project_names[0]) {
-                    error = open_msvc10_11_main_project(1);
-                    for (i = 0; project_names[i] && !error; i++) {
-                        error = read_template_file(project_names[i]);
-#if MKMSVC_DEBUG
-                        printf("Parse done\n");
-#endif
-                        if (!error) {
-                            error = output_msvc10_11_file(project_names[i], 1, 1);
-#if MKMSVC_DEBUG
-                            printf("Output done\n");
-#endif
-                        }
-                    }
-                    close_msvc10_11_main_project(1);
-                } else {
-                    error = output_msvc10_11_file(filename, 0, 1);
-                }
-                if (!error) {
-                    free_buffers();
-                }
-            }
-            if (error) {
+        /* ONE type has to be given */
+        if (native + sdl != 1) {
+            printf("Error: One type needs to be given\n");
+            error = 1;
+        }
+
+        project_names[0] = NULL;
+        project_names_sdl[0] = NULL;
+        project_names_native[0] = NULL;
+
+        if (!error) {
+            if (read_template_file(filename, sdl)) {
                 printf("Generation error.\n");
             } else {
-                printf("Generation complete.\n");
+                names_buffer = read_buffer;
+                read_buffer = NULL;
+                read_buffer_line = 0;
+                read_buffer_pos = 0;
+                read_buffer_len = 0;
+                if (msvc4) {
+                    current_level = 40;
+                    printf("Not yet implemented.\n");
+                }
+                if (!error && msvc6) {
+                    current_level = 60;
+                    if (project_names[0]) {
+                        error = open_msvc6_main_project(sdl);
+                        for (i = 0; project_names[i] && !error; i++) {
+                            error = read_template_file(project_names[i], sdl);
+                            if (!error) {
+                                error = output_msvc6_file(project_names[i], 1, sdl);
+                            }
+                        }
+                        if (sdl) {
+                            if (project_names_sdl[0] && !error) {
+                                for (i = 0; project_names_sdl[i] && !error; i++) {
+                                    error = read_template_file(project_names_sdl[i], sdl);
+                                    if (!error) {
+                                        error = output_msvc6_file(project_names_sdl[i], 1, sdl);
+                                    }
+                                }
+                            }
+                        } else {
+                            if (project_names_native[0] && !error) {
+                                for (i = 0; project_names_native[i] && !error; i++) {
+                                    error = read_template_file(project_names_native[i], sdl);
+                                    if (!error) {
+                                        error = output_msvc6_file(project_names_native[i], 1, sdl);
+                                    }
+                                }
+                            }
+                        }
+                        close_msvc6_main_project(sdl);
+                    } else {
+                        error = output_msvc6_file(filename, 0, sdl);
+                    }
+                    if (!error) {
+                        free_buffers();
+                    }
+                }
+                if (!error && msvc70) {
+                    current_level = 70;
+                    if (project_names[0]) {
+                        error = open_msvc70_main_project(sdl);
+                        for (i = 0; project_names[i] && !error; i++) {
+                            error = read_template_file(project_names[i], sdl);
+#if MKMSVC_DEBUG
+                            printf("Parse done\n");
+#endif
+                            if (!error) {
+                                error = output_msvc7_file(project_names[i], 1, 70, sdl);
+#if MKMSVC_DEBUG
+                                printf("Output done\n");
+#endif
+                            }
+                        }
+                        close_msvc70_main_project(sdl);
+                    } else {
+                        error = output_msvc7_file(filename, 0, 70, sdl);
+                    }
+                    if (!error) {
+                        free_buffers();
+                    }
+                }
+                if (!error && msvc71) {
+                    current_level = 71;
+                    if (project_names[0]) {
+                        error = open_msvc71_main_project(sdl);
+                        for (i = 0; project_names[i] && !error; i++) {
+                            error = read_template_file(project_names[i], sdl);
+#if MKMSVC_DEBUG
+                            printf("Parse done\n");
+#endif
+                            if (!error) {
+                                error = output_msvc7_file(project_names[i], 1, 71, sdl);
+#if MKMSVC_DEBUG
+                                printf("Output done\n");
+#endif
+                            }
+                        }
+                        close_msvc71_main_project(sdl);
+                    } else {
+                        error = output_msvc7_file(filename, 0, 71, sdl);
+                    }
+                    if (!error) {
+                        free_buffers();
+                    }
+                }
+                if (!error && msvc8) {
+                    current_level = 80;
+                    if (project_names[0]) {
+                        error = open_msvc8_main_project(sdl);
+                        for (i = 0; project_names[i] && !error; i++) {
+                            error = read_template_file(project_names[i], sdl);
+#if MKMSVC_DEBUG
+                            printf("Parse done\n");
+#endif
+                            if (!error) {
+                                error = output_msvc8_file(project_names[i], 1, sdl);
+#if MKMSVC_DEBUG
+                                printf("Output done\n");
+#endif
+                            }
+                        }
+                        close_msvc8_main_project(sdl);
+                    } else {
+                        error = output_msvc8_file(filename, 0, sdl);
+                    }
+                    if (!error) {
+                        free_buffers();
+                    }
+                }
+                if (!error && msvc9) {
+                    current_level = 90;
+                    if (project_names[0]) {
+                        error = open_msvc9_main_project(sdl);
+                        for (i = 0; project_names[i] && !error; i++) {
+                            error = read_template_file(project_names[i], sdl);
+#if MKMSVC_DEBUG
+                            printf("Parse done\n");
+#endif
+                            if (!error) {
+                                error = output_msvc9_file(project_names[i], 1, sdl);
+#if MKMSVC_DEBUG
+                                printf("Output done\n");
+#endif
+                            }
+                        }
+                        close_msvc9_main_project(sdl);
+                    } else {
+                        error = output_msvc9_file(filename, 0, sdl);
+                    }
+                    if (!error) {
+                        free_buffers();
+                    }
+                }
+                if (!error && msvc10) {
+                    current_level = 100;
+                    if (project_names[0]) {
+                        error = open_msvc10_11_main_project(0, sdl);
+                        for (i = 0; project_names[i] && !error; i++) {
+                            error = read_template_file(project_names[i], sdl);
+#if MKMSVC_DEBUG
+                            printf("Parse done\n");
+#endif
+                            if (!error) {
+                                error = output_msvc10_11_file(project_names[i], 1, 0, sdl);
+#if MKMSVC_DEBUG
+                                printf("Output done\n");
+#endif
+                            }
+                        }
+                        close_msvc10_11_main_project(0, sdl);
+                    } else {
+                        error = output_msvc10_11_file(filename, 0, 0, sdl);
+                    }
+                    if (!error) {
+                        free_buffers();
+                    }
+                }
+                if (!error && msvc11) {
+                    current_level = 110;
+                    if (project_names[0]) {
+                        error = open_msvc10_11_main_project(1, sdl);
+                        for (i = 0; project_names[i] && !error; i++) {
+                            error = read_template_file(project_names[i], sdl);
+#if MKMSVC_DEBUG
+                            printf("Parse done\n");
+#endif
+                            if (!error) {
+                                error = output_msvc10_11_file(project_names[i], 1, 1, sdl);
+#if MKMSVC_DEBUG
+                                printf("Output done\n");
+#endif
+                            }
+                        }
+                        close_msvc10_11_main_project(1, sdl);
+                    } else {
+                        error = output_msvc10_11_file(filename, 0, 1, sdl);
+                    }
+                    if (!error) {
+                        free_buffers();
+                    }
+                }
+                if (error) {
+                    printf("Generation error.\n");
+                } else {
+                    printf("Generation complete.\n");
+                }
             }
         }
     }

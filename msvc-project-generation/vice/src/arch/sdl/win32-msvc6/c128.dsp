@@ -40,10 +40,10 @@ RSC=rc.exe
 # PROP Output_Dir "libs\c128\Release"
 # PROP Intermediate_Dir "libs\c128\Release"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\c64" /I "..\..\..\sid" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\vdc" /I "..\..\..\monitor" /I "..\..\..\rtc" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MD /W3 /GX /O2  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\rtc" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\userport" /I "..\..\..\vdc" /I "..\..\..\vicii" /I "..\..\..\video"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -63,10 +63,10 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\c128\Debug"
 # PROP Intermediate_Dir "libs\c128\Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\c64" /I "..\..\..\sid" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\vdc" /I "..\..\..\monitor" /I "..\..\..\rtc" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MDd /W3 /GX /Z7 /Od  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\rtc" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\userport" /I "..\..\..\vdc" /I "..\..\..\vicii" /I "..\..\..\video"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -74,7 +74,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ENDIF 
+!ENDIF
 
 # Begin Target
 
@@ -94,79 +94,89 @@ SOURCE="..\..\..\c128\c128-snapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\c128.c
+SOURCE="..\..\..\c128\c128.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\c128cia1.c
+SOURCE="..\..\..\c128\c128cia1.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\c128cpu.c
+SOURCE="..\..\..\c128\c128drive.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\c128drive.c
+SOURCE="..\..\..\c128\c128fastiec.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\c128fastiec.c
+SOURCE="..\..\..\c128\c128mem.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\c128mem.c
+SOURCE="..\..\..\c128\c128meminit.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\c128meminit.c
+SOURCE="..\..\..\c128\c128memlimit.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\c128memlimit.c
+SOURCE="..\..\..\c128\c128memrom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\c128memrom.c
+SOURCE="..\..\..\c128\c128memsnapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\c128memsnapshot.c
+SOURCE="..\..\..\c128\c128mmu.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\c128model.c
+SOURCE="..\..\..\c128\c128model.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\c128mmu.c
+SOURCE="..\..\..\c128\c128rom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\c128rom.c
+SOURCE="..\..\..\c128\c128romset.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\c128romset.c
+SOURCE="..\..\..\c128\c128video.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\c128video.c
+SOURCE="..\..\..\c128\daa.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\daa.c
+SOURCE="..\..\..\c128\functionrom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\functionrom.c
+SOURCE="..\..\..\c128\z80.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\z80.c
+SOURCE="..\..\..\c128\z80mem.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c128\z80mem.c
+SOURCE="..\..\..\c128\c128cpu.c"
+
+!IF  "$(CFG)" == "c128 - Win32 Release"
+
+# ADD CPP /Ot /Oa /Ow /Oi /Op /Oy
+# SUBTRACT CPP /Os
+
+!ELSEIF  "$(CFG)" == "c128 - Win32 Debug"
+
+!ENDIF
+
 # End Source File
 # End Target
 # End Project

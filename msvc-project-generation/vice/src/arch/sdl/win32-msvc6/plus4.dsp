@@ -40,10 +40,10 @@ RSC=rc.exe
 # PROP Output_Dir "libs\plus4\Release"
 # PROP Intermediate_Dir "libs\plus4\Release"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /I "..\..\..\core" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MD /W3 /GX /O2  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\core" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\video"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -63,10 +63,10 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\plus4\Debug"
 # PROP Intermediate_Dir "libs\plus4\Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /I "..\..\..\core" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MDd /W3 /GX /Z7 /Od  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\core" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\video"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -74,7 +74,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ENDIF 
+!ENDIF
 
 # Begin Target
 
@@ -102,7 +102,7 @@ SOURCE="..\..\..\plus4\plus4-snapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4.c
+SOURCE="..\..\..\plus4\plus4.c"
 # End Source File
 # Begin Source File
 
@@ -110,109 +110,91 @@ SOURCE="..\..\..\plus4\plus4acia.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4bus.c
+SOURCE="..\..\..\plus4\plus4bus.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4cart.c
+SOURCE="..\..\..\plus4\plus4cart.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4cpu.c
-
-!IF  "$(CFG)" == "plus4 - Win32 Release"
-
-# ADD CPP /Ot /Oa /Ow /Oi /Op /Oy
-# SUBTRACT CPP /Os
-
-!ELSEIF  "$(CFG)" == "plus4 - Win32 Debug"
-
-!ENDIF 
-
+SOURCE="..\..\..\plus4\plus4datasette.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4datasette.c
+SOURCE="..\..\..\plus4\plus4drive.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4drive.c
+SOURCE="..\..\..\plus4\plus4iec.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4iec.c
+SOURCE="..\..\..\plus4\plus4mem.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4mem.c
+SOURCE="..\..\..\plus4\plus4memcsory256k.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4memcsory256k.c
+SOURCE="..\..\..\plus4\plus4memhannes256k.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4memhannes256k.c
+SOURCE="..\..\..\plus4\plus4memlimit.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4memlimit.c
+SOURCE="..\..\..\plus4\plus4memrom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4memrom.c
+SOURCE="..\..\..\plus4\plus4memsnapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4memsnapshot.c
+SOURCE="..\..\..\plus4\plus4model.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4model.c
+SOURCE="..\..\..\plus4\plus4parallel.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4parallel.c
+SOURCE="..\..\..\plus4\plus4pio1.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4pio1.c
+SOURCE="..\..\..\plus4\plus4pio2.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4pio2.c
+SOURCE="..\..\..\plus4\plus4printer.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4printer.c
+SOURCE="..\..\..\plus4\plus4rom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4rom.c
+SOURCE="..\..\..\plus4\plus4romset.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4romset.c
+SOURCE="..\..\..\plus4\plus4speech.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4speech.c
+SOURCE="..\..\..\plus4\plus4tcbm.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\plus4tcbm.c
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\plus4\plus4video.c
+SOURCE="..\..\..\plus4\plus4video.c"
 # End Source File
 # Begin Source File
 
 SOURCE="..\..\..\plus4\ted-badline.c"
-# End Source File
-# Begin Source File
-
-SOURCE="..\..\..\plus4\ted-badline.h"
 # End Source File
 # Begin Source File
 
@@ -260,7 +242,21 @@ SOURCE="..\..\..\plus4\ted-timing.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\plus4\ted.c
+SOURCE="..\..\..\plus4\ted.c"
+# End Source File
+# Begin Source File
+
+SOURCE="..\..\..\plus4\plus4cpu.c"
+
+!IF  "$(CFG)" == "plus4 - Win32 Release"
+
+# ADD CPP /Ot /Oa /Ow /Oi /Op /Oy
+# SUBTRACT CPP /Os
+
+!ELSEIF  "$(CFG)" == "plus4 - Win32 Debug"
+
+!ENDIF
+
 # End Source File
 # End Target
 # End Project

@@ -40,10 +40,10 @@ RSC=rc.exe
 # PROP Output_Dir "libs\c64dtv\Release"
 # PROP Intermediate_Dir "libs\c64dtv\Release"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\vicii" /I "..\..\..\c64" /I "..\..\..\raster" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MD /W3 /GX /O2  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\raster" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\userport" /I "..\..\..\vicii" /I "..\..\..\video"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -63,10 +63,10 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\c64dtv\Debug"
 # PROP Intermediate_Dir "libs\c64dtv\Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\vicii" /I "..\..\..\c64" /I "..\..\..\raster" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MDd /W3 /GX /Z7 /Od  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\raster" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\userport" /I "..\..\..\vicii" /I "..\..\..\video"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -74,7 +74,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ENDIF 
+!ENDIF
 
 # Begin Target
 
@@ -94,35 +94,31 @@ SOURCE="..\..\..\c64dtv\c64dtv-snapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64dtv\c64dtv.c
+SOURCE="..\..\..\c64dtv\c64dtv.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64dtv\c64dtvblitter.c
+SOURCE="..\..\..\c64dtv\c64dtvblitter.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64dtv\c64dtvcia1.c
+SOURCE="..\..\..\c64dtv\c64dtvcia1.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64dtv\c64dtvcia2.c
+SOURCE="..\..\..\c64dtv\c64dtvcia2.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\..\c64dtv\c64dtvcpu.c"
+SOURCE="..\..\..\c64dtv\c64dtvdma.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64dtv\c64dtvdma.c
+SOURCE="..\..\..\c64dtv\c64dtvflash.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64dtv\c64dtvflash.c
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\c64dtv\c64dtviec.c
+SOURCE="..\..\..\c64dtv\c64dtviec.c"
 # End Source File
 # Begin Source File
 
@@ -130,7 +126,7 @@ SOURCE="..\..\..\c64dtv\c64dtvmem.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64dtv\c64dtvmeminit.c
+SOURCE="..\..\..\c64dtv\c64dtvmeminit.c"
 # End Source File
 # Begin Source File
 
@@ -146,11 +142,11 @@ SOURCE="..\..\..\c64dtv\c64dtvmodel.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64dtv\c64dtvpla.c
+SOURCE="..\..\..\c64dtv\c64dtvpla.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64dtv\c64dtvsound.c
+SOURCE="..\..\..\c64dtv\c64dtvsound.c"
 # End Source File
 # Begin Source File
 
@@ -158,7 +154,21 @@ SOURCE="..\..\..\c64dtv\flash-trap.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64dtv\hummeradc.c
+SOURCE="..\..\..\c64dtv\hummeradc.c"
+# End Source File
+# Begin Source File
+
+SOURCE="..\..\..\c64dtv\c64dtvcpu.c"
+
+!IF  "$(CFG)" == "c64dtv - Win32 Release"
+
+# ADD CPP /Ot /Oa /Ow /Oi /Op /Oy
+# SUBTRACT CPP /Os
+
+!ELSEIF  "$(CFG)" == "c64dtv - Win32 Debug"
+
+!ENDIF
+
 # End Source File
 # End Target
 # End Project

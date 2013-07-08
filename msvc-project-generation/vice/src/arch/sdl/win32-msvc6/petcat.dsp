@@ -41,16 +41,16 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\petcat\Release"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# ADD BASE RSC /l 0x409 /d "NDEBUG"
-# ADD RSC /l 0x409 /d "NDEBUG"
+# ADD BASE CPP /nologo /MD /W3 /GX /O2  /D "WIN32" /D "_CONSOLE" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_MBCS" /D "NDEBUG" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive"  /D "WIN32" /D "_CONSOLE" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_MBCS" /D "NDEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib /nologo /subsystem:console /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib wsock32.lib version.lib SDLmain.lib SDL.lib /nologo /subsystem:console /machine:I386
+# ADD BASE LINK32 advapi32.lib comdlg32.lib gdi32.lib kernel32.lib odbc32.lib odbccp32.lib ole32.lib oleaut32.lib shell32.lib user32.lib uuid.lib version.lib winspool.lib wsock32.lib  SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /machine:I386
+# ADD LINK32 advapi32.lib comdlg32.lib gdi32.lib kernel32.lib odbc32.lib odbccp32.lib ole32.lib oleaut32.lib shell32.lib user32.lib uuid.lib version.lib winspool.lib wsock32.lib  SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /machine:I386
 
 !ELSEIF  "$(CFG)" == "petcat - Win32 Debug"
 
@@ -65,18 +65,18 @@ LINK32=link.exe
 # PROP Intermediate_Dir "libs\petcat\Debug"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# ADD BASE RSC /l 0x409 /d "_DEBUG"
-# ADD RSC /l 0x409 /d "_DEBUG"
+# ADD BASE CPP /nologo /MDd /W3 /GX /Z7 /Od  /D "WIN32" /D "_CONSOLE" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H "/D "_MBCS" /D "_DEBUG" /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive"  /D "WIN32" /D "_CONSOLE" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H "/D "_MBCS" /D "_DEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib wsock32.lib version.lib SDLmain.lib SDL.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept /NODEFAULTLIB:msvcrt.lib
+# ADD BASE LINK32 advapi32.lib comdlg32.lib gdi32.lib kernel32.lib odbc32.lib odbccp32.lib ole32.lib oleaut32.lib shell32.lib user32.lib uuid.lib version.lib winspool.lib wsock32.lib  SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /machine:I386 /NODEFAULTLIB:msvcrt.lib
+# ADD LINK32 advapi32.lib comdlg32.lib gdi32.lib kernel32.lib odbc32.lib odbccp32.lib ole32.lib oleaut32.lib shell32.lib user32.lib uuid.lib version.lib winspool.lib wsock32.lib  SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /machine:I386 /NODEFAULTLIB:msvcrt.lib
 
-!ENDIF 
+!ENDIF
 
 # Begin Target
 
@@ -84,43 +84,43 @@ LINK32=link.exe
 # Name "petcat - Win32 Debug"
 # Begin Source File
 
-SOURCE=..\..\..\charset.c
+SOURCE="..\..\..\charset.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\findpath.c
+SOURCE="..\..\..\findpath.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\ioutil.c
+SOURCE="..\..\..\ioutil.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\lib.c
+SOURCE="..\..\..\lib.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\log.c
+SOURCE="..\..\..\log.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\petcat.c
+SOURCE="..\..\..\petcat.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\rawfile.c
+SOURCE="..\..\..\rawfile.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\resources.c
+SOURCE="..\..\..\resources.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\util.c
+SOURCE="..\..\..\util.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\zipcode.c
+SOURCE="..\..\..\zipcode.c"
 # End Source File
 # End Target
 # End Project

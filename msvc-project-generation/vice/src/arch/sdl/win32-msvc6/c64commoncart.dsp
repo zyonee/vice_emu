@@ -40,10 +40,10 @@ RSC=rc.exe
 # PROP Output_Dir "libs\c64commoncart\Release"
 # PROP Intermediate_Dir "libs\c64commoncart\Release"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\rtc" /I "..\..\..\vicii" /I "..\..\..\drive" /I "..\..\..\sid" /I "..\..\..\monitor" /I "..\..\..\core" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MD /W3 /GX /O2  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\core" /I "..\..\..\drive" /I "..\..\..\monitor" /I "..\..\..\rtc" /I "..\..\..\sid" /I "..\..\..\vicii"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -63,10 +63,10 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\c64commoncart\Debug"
 # PROP Intermediate_Dir "libs\c64commoncart\Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\rtc" /I "..\..\..\vicii" /I "..\..\..\drive" /I "..\..\..\sid" /I "..\..\..\monitor" /I "..\..\..\core" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MDd /W3 /GX /Z7 /Od  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\core" /I "..\..\..\drive" /I "..\..\..\monitor" /I "..\..\..\rtc" /I "..\..\..\sid" /I "..\..\..\vicii"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -74,7 +74,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ENDIF 
+!ENDIF
 
 # Begin Target
 
@@ -82,31 +82,31 @@ LIB32=link.exe -lib
 # Name "c64commoncart - Win32 Debug"
 # Begin Source File
 
-SOURCE=..\..\..\c64\cart\c64acia1.c
+SOURCE="..\..\..\c64\cart\c64acia1.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\cart\digimax.c
+SOURCE="..\..\..\c64\cart\digimax.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\cart\ds12c887rtc.c
+SOURCE="..\..\..\c64\cart\ds12c887rtc.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\cart\georam.c
+SOURCE="..\..\..\c64\cart\georam.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\cart\sfx_soundexpander.c
+SOURCE="..\..\..\c64\cart\sfx_soundexpander.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\cart\sfx_soundsampler.c
+SOURCE="..\..\..\c64\cart\sfx_soundsampler.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\c64\cart\tfe.c
+SOURCE="..\..\..\c64\cart\tfe.c"
 # End Source File
 # End Target
 # End Project

@@ -1,7 +1,6 @@
-# Project names, one per line, preceeded by a tab
+# Project names, one per line, preceeded by a tab, common to both native and SDL
 PROJECTS =
 	_vice
-	arch
 	base
 	c128
 	c1541
@@ -27,9 +26,7 @@ PROJECTS =
 	fileio
 	fsdevice
 	geninfocontrib
-	genmsvcver
 	gentranslate
-	genwinres
 	gfxoutputdrv
 	iec
 	iec128dcr
@@ -79,3 +76,13 @@ PROJECTS =
 	xplus4
 	xscpu64
 	xvic
+
+# Native only project names, one per line, preceeded by a tab
+PROJECTS_NATIVE =
+	arch_native
+	genmsvcver
+	genwinres
+
+# SDL only project names, one per line, preceeded by a tab
+PROJECTS_SDL =
+	arch_sdl

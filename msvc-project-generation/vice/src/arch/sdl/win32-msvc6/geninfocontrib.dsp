@@ -39,19 +39,21 @@ RSC=rc.exe
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "..\..\..\..\data"
 # PROP Intermediate_Dir "libs\geninfocontrib\Release"
+# PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_CONSOLE" /D "_MBCS" /D "_CRT_SECURE_NO_DEPRECATE" /YX /FD /c
-# ADD BASE RSC /l 0x409 /d "NDEBUG"
-# ADD RSC /l 0x409 /d "NDEBUG"
+# ADD BASE CPP /nologo /MD /W3 /GX /O2  /D "WIN32" /D "_CONSOLE" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_MBCS" /D "NDEBUG" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\" /I "..\\" /I "..\..\..\\"  /D "WIN32" /D "_CONSOLE" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_MBCS" /D "NDEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
-# Begin Custom Build
-InputPath=..\..\..\..\data\geninfocontrib.exe
+# ADD BASE LINK32 advapi32.lib comdlg32.lib gdi32.lib kernel32.lib odbc32.lib odbccp32.lib ole32.lib oleaut32.lib shell32.lib user32.lib uuid.lib version.lib winspool.lib wsock32.lib  SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /machine:I386
+# ADD LINK32 advapi32.lib comdlg32.lib gdi32.lib kernel32.lib odbc32.lib odbccp32.lib ole32.lib oleaut32.lib shell32.lib user32.lib uuid.lib version.lib winspool.lib wsock32.lib  SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /machine:I386
+
+# Begin Custom Build - Generating infocontrib.h
+InputPath="..\..\..\..\data\geninfocontrib.exe"
 SOURCE="$(InputPath)"
 
 "..\..\..\infocontrib.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -63,8 +65,8 @@ SOURCE="$(InputPath)"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
-# PROP BASE Output_Dir "geninfocontrib___Win32_Debug"
-# PROP BASE Intermediate_Dir "geninfocontrib___Win32_Debug"
+# PROP BASE Output_Dir "Debug"
+# PROP BASE Intermediate_Dir "Debug"
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
@@ -72,18 +74,19 @@ SOURCE="$(InputPath)"
 # PROP Intermediate_Dir "libs\geninfocontrib\Debug"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /D "_CRT_SECURE_NO_DEPRECATE" /YX /FD /GZ /c
-# ADD BASE RSC /l 0x409 /d "_DEBUG"
-# ADD RSC /l 0x409 /d "_DEBUG"
+# ADD BASE CPP /nologo /MDd /W3 /GX /Z7 /Od  /D "WIN32" /D "_CONSOLE" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H "/D "_MBCS" /D "_DEBUG" /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\" /I "..\\" /I "..\..\..\\"  /D "WIN32" /D "_CONSOLE" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H "/D "_MBCS" /D "_DEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
-# Begin Custom Build
-InputPath=..\..\..\..\data\geninfocontrib.exe
+# ADD BASE LINK32 advapi32.lib comdlg32.lib gdi32.lib kernel32.lib odbc32.lib odbccp32.lib ole32.lib oleaut32.lib shell32.lib user32.lib uuid.lib version.lib winspool.lib wsock32.lib  SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /machine:I386 /NODEFAULTLIB:msvcrt.lib
+# ADD LINK32 advapi32.lib comdlg32.lib gdi32.lib kernel32.lib odbc32.lib odbccp32.lib ole32.lib oleaut32.lib shell32.lib user32.lib uuid.lib version.lib winspool.lib wsock32.lib  SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /machine:I386 /NODEFAULTLIB:msvcrt.lib
+
+# Begin Custom Build - Generating infocontrib.h
+InputPath="..\..\..\..\data\geninfocontrib.exe"
 SOURCE="$(InputPath)"
 
 "..\..\..\infocontrib.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -91,7 +94,7 @@ SOURCE="$(InputPath)"
 
 # End Custom Build
 
-!ENDIF 
+!ENDIF
 
 # Begin Target
 
@@ -99,7 +102,7 @@ SOURCE="$(InputPath)"
 # Name "geninfocontrib - Win32 Debug"
 # Begin Source File
 
-SOURCE=..\..\win32\utils\geninfocontrib.c
+SOURCE="..\..\..\arch\win32\utils\geninfocontrib.c"
 # End Source File
 # End Target
 # End Project

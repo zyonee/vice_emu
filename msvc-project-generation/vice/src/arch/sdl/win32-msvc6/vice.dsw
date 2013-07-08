@@ -12,6 +12,15 @@ Package=<5>
 Package=<4>
 {{{
     Begin Project Dependency
+    Project_Dep_Name c1541
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name cartconv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name petcat
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name vsid
     End Project Dependency
     Begin Project Dependency
@@ -43,36 +52,6 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name xvic
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name petcat
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c1541
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name cartconv
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "arch"=".\arch.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name geninfocontrib
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name gentranslate
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name base
     End Project Dependency
 }}}
 
@@ -123,82 +102,37 @@ Package=<4>
     Project_Dep_Name arch
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name p64
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name base
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name vdrive
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name diskimage
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name tape
+    Project_Dep_Name fileio
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name imagecontents
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name fileio
+    Project_Dep_Name p64
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name platform
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name serial
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name platform
+    Project_Dep_Name tape
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name vdrive
     End Project Dependency
 }}}
 
 ###############################################################################
 
 Project: "c64"=".\c64.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name base
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "vsidlib"=".\vsidlib.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name base
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "c64sc"=".\c64sc.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name base
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "c64scpu64"=".\c64scpu64.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -238,6 +172,9 @@ Package=<4>
 {{{
     Begin Project Dependency
     Project_Dep_Name base
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name rtc
     End Project Dependency
 }}}
 
@@ -333,7 +270,22 @@ Package=<4>
 
 ###############################################################################
 
-Project: "scpu64"=".\scpu64.dsp" - Package Owner=<4>
+Project: "c64sc"=".\c64sc.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name base
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "c64scpu64"=".\c64scpu64.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -483,7 +435,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "gentranslate"=".\gentranslate.dsp" - Package Owner=<4>
+Project: "geninfocontrib"=".\geninfocontrib.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -495,7 +447,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "geninfocontrib"=".\geninfocontrib.dsp" - Package Owner=<4>
+Project: "gentranslate"=".\gentranslate.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -695,9 +647,6 @@ Package=<5>
 
 Package=<4>
 {{{
-    Begin Project Dependency
-    Project_Dep_Name base
-    End Project Dependency
 }}}
 
 ###############################################################################
@@ -774,7 +723,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "residfp"=".\residfp.dsp" - Package Owner=<4>
+Project: "residdtv"=".\residdtv.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -786,7 +735,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "residdtv"=".\residdtv.dsp" - Package Owner=<4>
+Project: "residfp"=".\residfp.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -814,6 +763,18 @@ Package=<4>
 ###############################################################################
 
 Project: "rtc"=".\rtc.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "scpu64"=".\scpu64.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -967,7 +928,7 @@ Package=<4>
     End Project Dependency
 }}}
 
-##############################################################################
+###############################################################################
 
 Project: "vicii"=".\vicii.dsp" - Package Owner=<4>
 
@@ -982,7 +943,7 @@ Package=<4>
     End Project Dependency
 }}}
 
-##############################################################################
+###############################################################################
 
 Project: "viciidtv"=".\viciidtv.dsp" - Package Owner=<4>
 
@@ -997,7 +958,7 @@ Package=<4>
     End Project Dependency
 }}}
 
-##############################################################################
+###############################################################################
 
 Project: "viciisc"=".\viciisc.dsp" - Package Owner=<4>
 
@@ -1029,135 +990,6 @@ Package=<4>
 
 ###############################################################################
 
-Project: "x128"=".\x128.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name arch
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name base
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name drive
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name fileio
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name fsdevice
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name gfxoutputdrv
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name userport
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name p64
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name iec
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64exp
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name iec128dcr
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name iecieee
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name ieee
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name parallel
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name printerdrv
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name resid
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name residfp
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name rs232drv
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name serial
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name sid
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name sounddrv
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name vicii
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c128
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64c128
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name rtc
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name raster
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name vdrive
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name vdc
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name video
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name monitor
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64cart
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64commoncart
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64cartsystem
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name diskimage
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name tape
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name imagecontents
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name core
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name iecbus
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name platform
-    End Project Dependency
-}}}
-
-###############################################################################
-
 Project: "vsid"=".\vsid.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -1173,7 +1005,16 @@ Package=<4>
     Project_Dep_Name base
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name vsidlib
+    Project_Dep_Name core
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name monitor
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name platform
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name raster
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name resid
@@ -1194,19 +1035,154 @@ Package=<4>
     Project_Dep_Name vicii
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name raster
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name video
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name monitor
+    Project_Dep_Name vsidlib
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "vsidlib"=".\vsidlib.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name base
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "x128"=".\x128.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name arch
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name base
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name c64c128
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name c64cart
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name c64cartsystem
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name c64commoncart
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name c64exp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name c128
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name core
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name diskimage
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name drive
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name fileio
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name fsdevice
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name gfxoutputdrv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name iec
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name iec128dcr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name iecbus
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name iecieee
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ieee
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name imagecontents
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name monitor
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name p64
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name parallel
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name platform
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name printerdrv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name raster
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name resid
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name residfp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name rs232drv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name rtc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name serial
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name sid
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name sounddrv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tape
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name userport
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name vdc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name vdrive
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name vicii
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name video
     End Project Dependency
 }}}
 
@@ -1230,6 +1206,24 @@ Package=<4>
     Project_Dep_Name c64
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name c64cart
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name c64cartsystem
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name c64commoncart
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name c64exp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name core
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name diskimage
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name drive
     End Project Dependency
     Begin Project Dependency
@@ -1242,16 +1236,10 @@ Package=<4>
     Project_Dep_Name gfxoutputdrv
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name userport
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name p64
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name iec
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name c64exp
+    Project_Dep_Name iecbus
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name iecieee
@@ -1260,10 +1248,25 @@ Package=<4>
     Project_Dep_Name ieee
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name imagecontents
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name monitor
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name p64
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name parallel
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name platform
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name printerdrv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name raster
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name resid
@@ -1275,6 +1278,9 @@ Package=<4>
     Project_Dep_Name rs232drv
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name rtc
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name serial
     End Project Dependency
     Begin Project Dependency
@@ -1282,171 +1288,21 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name sounddrv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tape
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name userport
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name vdrive
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name vicii
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name rtc
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name raster
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name vdrive
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name video
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name monitor
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64cart
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64commoncart
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64cartsystem
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name diskimage
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name tape
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name imagecontents
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name core
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name iecbus
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name platform
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "x64sc"=".\x64sc.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name arch
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name base
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64sc
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name drive
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name fileio
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name fsdevice
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name gfxoutputdrv
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name userport
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name p64
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name iec
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64exp
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name iecieee
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name ieee
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name parallel
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name printerdrv
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name resid
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name residfp
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name rs232drv
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name serial
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name sid
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name sounddrv
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name viciisc
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name rtc
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name raster
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name vdrive
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name video
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name monitor
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64cart
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64commoncart
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64cartsystem
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name diskimage
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name tape
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name imagecontents
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name core
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name iecbus
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name platform
     End Project Dependency
 }}}
 
@@ -1476,6 +1332,15 @@ Package=<4>
     Project_Dep_Name c64dtvstubs
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name c64exp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name core
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name diskimage
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name drive
     End Project Dependency
     Begin Project Dependency
@@ -1488,19 +1353,10 @@ Package=<4>
     Project_Dep_Name gfxoutputdrv
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name userport
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name p64
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name rtc
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name iec
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name c64exp
+    Project_Dep_Name iecbus
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name iecieee
@@ -1509,10 +1365,25 @@ Package=<4>
     Project_Dep_Name ieee
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name imagecontents
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name monitor
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name p64
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name parallel
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name platform
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name printerdrv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name raster
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name residdtv
@@ -1524,6 +1395,9 @@ Package=<4>
     Project_Dep_Name rs232drv
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name rtc
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name serial
     End Project Dependency
     Begin Project Dependency
@@ -1533,37 +1407,139 @@ Package=<4>
     Project_Dep_Name sounddrv
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name viciidtv
+    Project_Dep_Name tape
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name raster
+    Project_Dep_Name userport
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name vdrive
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name viciidtv
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name video
     End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "x64sc"=".\x64sc.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
     Begin Project Dependency
-    Project_Dep_Name monitor
+    Project_Dep_Name arch
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name diskimage
+    Project_Dep_Name base
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name tape
+    Project_Dep_Name c64cart
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name imagecontents
+    Project_Dep_Name c64cartsystem
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name c64commoncart
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name c64exp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name c64sc
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name core
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name diskimage
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name drive
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name fileio
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name fsdevice
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name gfxoutputdrv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name iec
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name iecbus
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name iecieee
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ieee
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name imagecontents
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name monitor
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name p64
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name parallel
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name platform
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name printerdrv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name raster
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name resid
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name residfp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name rs232drv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name rtc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name serial
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name sid
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name sounddrv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tape
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name userport
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name vdrive
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name viciisc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name video
     End Project Dependency
 }}}
 
@@ -1590,6 +1566,15 @@ Package=<4>
     Project_Dep_Name cbm2common
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name core
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name crtc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name diskimage
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name drive
     End Project Dependency
     Begin Project Dependency
@@ -1602,25 +1587,31 @@ Package=<4>
     Project_Dep_Name gfxoutputdrv
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name userport
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name p64
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name rtc
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name iecieee
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name ieee
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name imagecontents
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name monitor
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name p64
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name parallel
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name platform
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name printerdrv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name raster
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name resid
@@ -1632,6 +1623,9 @@ Package=<4>
     Project_Dep_Name rs232drv
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name rtc
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name serial
     End Project Dependency
     Begin Project Dependency
@@ -1641,34 +1635,16 @@ Package=<4>
     Project_Dep_Name sounddrv
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name raster
+    Project_Dep_Name tape
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name crtc
+    Project_Dep_Name userport
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name vdrive
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name video
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name monitor
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name diskimage
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name tape
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name imagecontents
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name core
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name platform
     End Project Dependency
 }}}
 
@@ -1689,10 +1665,16 @@ Package=<4>
     Project_Dep_Name base
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name cbm2common
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name cbm5x0
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name cbm2common
+    Project_Dep_Name core
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name diskimage
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name drive
@@ -1707,25 +1689,31 @@ Package=<4>
     Project_Dep_Name gfxoutputdrv
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name userport
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name p64
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name rtc
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name iecieee
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name ieee
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name imagecontents
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name monitor
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name p64
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name parallel
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name platform
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name printerdrv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name raster
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name resid
@@ -1737,6 +1725,9 @@ Package=<4>
     Project_Dep_Name rs232drv
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name rtc
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name serial
     End Project Dependency
     Begin Project Dependency
@@ -1746,34 +1737,19 @@ Package=<4>
     Project_Dep_Name sounddrv
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name vicii
+    Project_Dep_Name tape
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name raster
+    Project_Dep_Name userport
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name vdrive
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name vicii
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name video
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name monitor
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name diskimage
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name tape
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name imagecontents
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name core
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name platform
     End Project Dependency
 }}}
 
@@ -1794,6 +1770,15 @@ Package=<4>
     Project_Dep_Name base
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name core
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name crtc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name diskimage
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name drive
     End Project Dependency
     Begin Project Dependency
@@ -1806,16 +1791,16 @@ Package=<4>
     Project_Dep_Name gfxoutputdrv
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name userport
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name rtc
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name iecieee
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name ieee
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name imagecontents
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name monitor
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name p64
@@ -1827,7 +1812,13 @@ Package=<4>
     Project_Dep_Name pet
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name platform
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name printerdrv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name raster
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name resid
@@ -1836,46 +1827,31 @@ Package=<4>
     Project_Dep_Name residfp
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name rs232drv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name rtc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name serial
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name sid
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name sounddrv
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name raster
+    Project_Dep_Name tape
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name rs232drv
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name serial
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name crtc
+    Project_Dep_Name userport
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name vdrive
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name video
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name monitor
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name diskimage
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name tape
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name imagecontents
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name core
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name platform
     End Project Dependency
 }}}
 
@@ -1896,6 +1872,12 @@ Package=<4>
     Project_Dep_Name base
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name core
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name diskimage
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name drive
     End Project Dependency
     Begin Project Dependency
@@ -1908,28 +1890,37 @@ Package=<4>
     Project_Dep_Name gfxoutputdrv
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name userport
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name p64
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name rtc
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name iec
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name plus4exp
+    Project_Dep_Name iecbus
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name iecieee
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name imagecontents
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name monitor
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name p64
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name platform
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name plus4
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name plus4exp
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name printerdrv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name raster
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name resid
@@ -1938,49 +1929,34 @@ Package=<4>
     Project_Dep_Name residfp
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name rs232drv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name rtc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name serial
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name sid
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name sounddrv
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name raster
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name rs232drv
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name serial
+    Project_Dep_Name tape
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name tcbm
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name userport
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name vdrive
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name video
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name monitor
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name diskimage
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name tape
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name imagecontents
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name core
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name iecbus
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name platform
     End Project Dependency
 }}}
 
@@ -2001,10 +1977,25 @@ Package=<4>
     Project_Dep_Name base
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name c64exp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name c64cart
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name c64cartsystem
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name c64commoncart
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name c64scpu64
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name scpu64
+    Project_Dep_Name core
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name diskimage
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name drive
@@ -2019,16 +2010,10 @@ Package=<4>
     Project_Dep_Name gfxoutputdrv
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name userport
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name p64
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name iec
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name c64exp
+    Project_Dep_Name iecbus
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name iecieee
@@ -2037,10 +2022,25 @@ Package=<4>
     Project_Dep_Name ieee
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name imagecontents
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name monitor
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name p64
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name parallel
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name platform
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name printerdrv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name raster
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name resid
@@ -2052,6 +2052,12 @@ Package=<4>
     Project_Dep_Name rs232drv
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name rtc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name scpu64
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name serial
     End Project Dependency
     Begin Project Dependency
@@ -2061,46 +2067,16 @@ Package=<4>
     Project_Dep_Name sounddrv
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name viciisc
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name rtc
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name raster
+    Project_Dep_Name userport
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name vdrive
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name viciisc
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name video
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name monitor
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64cart
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64commoncart
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name c64cartsystem
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name diskimage
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name imagecontents
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name core
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name iecbus
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name platform
     End Project Dependency
 }}}
 
@@ -2121,6 +2097,15 @@ Package=<4>
     Project_Dep_Name base
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name c64commoncart
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name core
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name diskimage
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name drive
     End Project Dependency
     Begin Project Dependency
@@ -2133,16 +2118,10 @@ Package=<4>
     Project_Dep_Name gfxoutputdrv
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name userport
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name p64
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name rtc
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name iec
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name iecbus
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name iecieee
@@ -2151,10 +2130,25 @@ Package=<4>
     Project_Dep_Name ieee
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name imagecontents
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name monitor
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name p64
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name parallel
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name platform
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name printerdrv
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name raster
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name resid
@@ -2166,6 +2160,9 @@ Package=<4>
     Project_Dep_Name rs232drv
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name rtc
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name serial
     End Project Dependency
     Begin Project Dependency
@@ -2175,43 +2172,43 @@ Package=<4>
     Project_Dep_Name sounddrv
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name tape
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name userport
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name vdrive
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name vic20
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name vic20cart
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name c64commoncart
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name raster
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name vdrive
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name video
     End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "arch"=".\arch.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
     Begin Project Dependency
-    Project_Dep_Name monitor
+    Project_Dep_Name base
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name diskimage
+    Project_Dep_Name geninfocontrib
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name tape
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name imagecontents
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name core
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name iecbus
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name platform
+    Project_Dep_Name gentranslate
     End Project Dependency
 }}}
 

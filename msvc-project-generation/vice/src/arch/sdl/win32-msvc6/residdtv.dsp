@@ -4,7 +4,7 @@
 
 # TARGTYPE "Win32 (x86) Static Library" 0x0104
 
-CFG=resid - Win32 Debug
+CFG=residdtv - Win32 Debug
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
@@ -40,10 +40,10 @@ RSC=rc.exe
 # PROP Output_Dir "libs\residdtv\Release"
 # PROP Intermediate_Dir "libs\residdtv\Release"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\\" /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MD /W3 /GX /O2  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -63,10 +63,10 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\residdtv\Debug"
 # PROP Intermediate_Dir "libs\residdtv\Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /D "_DEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MDd /W3 /GX /Z7 /Od  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -74,7 +74,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ENDIF 
+!ENDIF
 
 # Begin Target
 
@@ -82,234 +82,206 @@ LIB32=link.exe -lib
 # Name "residdtv - Win32 Debug"
 # Begin Source File
 
-SOURCE=..\..\..\resid-dtv\envelope.cc
+SOURCE="..\..\..\resid-dtv\envelope.cc"
 
 !IF  "$(CFG)" == "residdtv - Win32 Release"
 
 # Begin Custom Build
-InputPath=..\..\..\resid-dtv\envelope.cc
+InputPath="..\..\..\resid-dtv\envelope.cc"
 InputName=envelope
 
-"libs\residdtv\Release/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MD /W3 /EHsc /I ".\\" /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Release/residdtv.pch" /Fo"libs\residdtv\Release/" /Fd"libs\residdtv\Release/" /FD /TP /c "$(InputPath)"
+"libs\residdtv\Release\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MD /W3 /GX /O2 /EHsc /I ".\\" /I "..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Release\residdtv.pch" /Fo"libs\residdtv\Release\\" /Fd"libs\residdtv\Release\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "residdtv - Win32 Debug"
 
 # Begin Custom Build
-InputPath=..\..\..\resid-dtv\envelope.cc
+InputPath="..\..\..\resid-dtv\envelope.cc"
 InputName=envelope
 
-"libs\residdtv\Debug/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MDd /W3 /EHsc /Z7 /Od /I ".\\" /D "_DEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Debug/residdtv.pch" /Fo"libs\residdtv\Debug/" /Fd"libs\residdtv\Debug/" /FD /TP /c "$(InputPath)"
+"libs\residdtv\Debug\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MDd /W3 /GX /Z7 /Od /EHsc /I ".\\" /I "..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Debug\residdtv.pch" /Fo"libs\residdtv\Debug\\" /Fd"libs\residdtv\Debug\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\resid-dtv\envelope.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\resid-dtv\extfilt.cc
+SOURCE="..\..\..\resid-dtv\extfilt.cc"
 
 !IF  "$(CFG)" == "residdtv - Win32 Release"
 
 # Begin Custom Build
-InputPath=..\..\..\resid-dtv\extfilt.cc
+InputPath="..\..\..\resid-dtv\extfilt.cc"
 InputName=extfilt
 
-"libs\residdtv\Release/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MD /W3 /EHsc /I ".\\" /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Release/residdtv.pch" /Fo"libs\residdtv\Release/" /Fd"libs\residdtv\Release/" /FD /TP /c "$(InputPath)"
+"libs\residdtv\Release\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MD /W3 /GX /O2 /EHsc /I ".\\" /I "..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Release\residdtv.pch" /Fo"libs\residdtv\Release\\" /Fd"libs\residdtv\Release\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "residdtv - Win32 Debug"
 
 # Begin Custom Build
-InputPath=..\..\..\resid-dtv\extfilt.cc
+InputPath="..\..\..\resid-dtv\extfilt.cc"
 InputName=extfilt
 
-"libs\residdtv\Debug/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MDd /W3 /EHsc /Z7 /Od /I ".\\" /D "_DEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Debug/residdtv.pch" /Fo"libs\residdtv\Debug/" /Fd"libs\residdtv\Debug/" /FD /TP /c "$(InputPath)"
+"libs\residdtv\Debug\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MDd /W3 /GX /Z7 /Od /EHsc /I ".\\" /I "..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Debug\residdtv.pch" /Fo"libs\residdtv\Debug\\" /Fd"libs\residdtv\Debug\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\resid-dtv\extfilt.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\resid-dtv\filter.cc
+SOURCE="..\..\..\resid-dtv\filter.cc"
 
 !IF  "$(CFG)" == "residdtv - Win32 Release"
 
 # Begin Custom Build
-InputPath=..\..\..\resid-dtv\filter.cc
+InputPath="..\..\..\resid-dtv\filter.cc"
 InputName=filter
 
-"libs\residdtv\Release/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MD /W3 /EHsc /I ".\\" /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Release/residdtv.pch" /Fo"libs\residdtv\Release/" /Fd"libs\residdtv\Release/" /FD /TP /c "$(InputPath)"
+"libs\residdtv\Release\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MD /W3 /GX /O2 /EHsc /I ".\\" /I "..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Release\residdtv.pch" /Fo"libs\residdtv\Release\\" /Fd"libs\residdtv\Release\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "residdtv - Win32 Debug"
 
 # Begin Custom Build
-InputPath=..\..\..\resid-dtv\filter.cc
+InputPath="..\..\..\resid-dtv\filter.cc"
 InputName=filter
 
-"libs\residdtv\Debug/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MDd /W3 /EHsc /Z7 /Od /I ".\\" /D "_DEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Debug/residdtv.pch" /Fo"libs\residdtv\Debug/" /Fd"libs\residdtv\Debug/" /FD /TP /c "$(InputPath)"
+"libs\residdtv\Debug\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MDd /W3 /GX /Z7 /Od /EHsc /I ".\\" /I "..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Debug\residdtv.pch" /Fo"libs\residdtv\Debug\\" /Fd"libs\residdtv\Debug\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\resid-dtv\filter.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\resid-dtv\sid.cc
+SOURCE="..\..\..\resid-dtv\sid.cc"
 
 !IF  "$(CFG)" == "residdtv - Win32 Release"
 
 # Begin Custom Build
-InputPath=..\..\..\resid-dtv\sid.cc
+InputPath="..\..\..\resid-dtv\sid.cc"
 InputName=sid
 
-"libs\residdtv\Release/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MD /W3 /EHsc /I ".\\" /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Release/residdtv.pch" /Fo"libs\residdtv\Release/" /Fd"libs\residdtv\Release/" /FD /TP /c "$(InputPath)"
+"libs\residdtv\Release\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MD /W3 /GX /O2 /EHsc /I ".\\" /I "..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Release\residdtv.pch" /Fo"libs\residdtv\Release\\" /Fd"libs\residdtv\Release\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "residdtv - Win32 Debug"
 
 # Begin Custom Build
-InputPath=..\..\..\resid-dtv\sid.cc
+InputPath="..\..\..\resid-dtv\sid.cc"
 InputName=sid
 
-"libs\residdtv\Debug/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MDd /W3 /EHsc /Z7 /Od /I ".\\" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /D "_DEBUG" /Fp"libs\residdtv\Debug/residdtv.pch" /Fo"libs\residdtv\Debug/" /Fd"libs\residdtv\Debug/" /FD /TP /c "$(InputPath)"
+"libs\residdtv\Debug\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MDd /W3 /GX /Z7 /Od /EHsc /I ".\\" /I "..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Debug\residdtv.pch" /Fo"libs\residdtv\Debug\\" /Fd"libs\residdtv\Debug\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\resid-dtv\sid.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\resid-dtv\siddefs.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\resid-dtv\version.cc
+SOURCE="..\..\..\resid-dtv\version.cc"
 
 !IF  "$(CFG)" == "residdtv - Win32 Release"
 
 # Begin Custom Build
-InputPath=..\..\..\resid-dtv\version.cc
+InputPath="..\..\..\resid-dtv\version.cc"
 InputName=version
 
-"libs\residdtv\Release/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MD /W3 /EHsc /I ".\\" /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Release/residdtv.pch" /Fo"libs\residdtv\Release/" /Fd"libs\residdtv\Release/" /FD /TP /c "$(InputPath)"
+"libs\residdtv\Release\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MD /W3 /GX /O2 /EHsc /I ".\\" /I "..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Release\residdtv.pch" /Fo"libs\residdtv\Release\\" /Fd"libs\residdtv\Release\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "residdtv - Win32 Debug"
 
 # Begin Custom Build
-InputPath=..\..\..\resid-dtv\version.cc
+InputPath="..\..\..\resid-dtv\version.cc"
 InputName=version
 
-"libs\residdtv\Debug/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MDd /W3 /EHsc /Z7 /Od /I ".\\" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /D "_DEBUG" /Fp"libs\residdtv\Debug/residdtv.pch" /Fo"libs\residdtv\Debug/" /Fd"libs\residdtv\Debug/" /FD /TP /c "$(InputPath)"
+"libs\residdtv\Debug\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MDd /W3 /GX /Z7 /Od /EHsc /I ".\\" /I "..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Debug\residdtv.pch" /Fo"libs\residdtv\Debug\\" /Fd"libs\residdtv\Debug\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\resid-dtv\voice.cc
+SOURCE="..\..\..\resid-dtv\voice.cc"
 
 !IF  "$(CFG)" == "residdtv - Win32 Release"
 
 # Begin Custom Build
-InputPath=..\..\..\resid-dtv\voice.cc
+InputPath="..\..\..\resid-dtv\voice.cc"
 InputName=voice
 
-"libs\residdtv\Release/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MD /W3 /EHsc /I ".\\" /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Release/residdtv.pch" /Fo"libs\residdtv\Release/" /Fd"libs\residdtv\Release/" /FD /TP /c "$(InputPath)"
+"libs\residdtv\Release\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MD /W3 /GX /O2 /EHsc /I ".\\" /I "..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Release\residdtv.pch" /Fo"libs\residdtv\Release\\" /Fd"libs\residdtv\Release\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "residdtv - Win32 Debug"
 
 # Begin Custom Build
-InputPath=..\..\..\resid-dtv\voice.cc
+InputPath="..\..\..\resid-dtv\voice.cc"
 InputName=voice
 
-"libs\residdtv\Debug/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MDd /W3 /EHsc /Z7 /Od /I ".\\" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /D "_DEBUG" /Fp"libs\residdtv\Debug/residdtv.pch" /Fo"libs\residdtv\Debug/" /Fd"libs\residdtv\Debug/" /FD /TP /c "$(InputPath)"
+"libs\residdtv\Debug\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MDd /W3 /GX /Z7 /Od /EHsc /I ".\\" /I "..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Debug\residdtv.pch" /Fo"libs\residdtv\Debug\\" /Fd"libs\residdtv\Debug\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\resid-dtv\voice.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\resid-dtv\wave.cc
+SOURCE="..\..\..\resid-dtv\wave.cc"
 
 !IF  "$(CFG)" == "residdtv - Win32 Release"
 
 # Begin Custom Build
-InputPath=..\..\..\resid-dtv\wave.cc
+InputPath="..\..\..\resid-dtv\wave.cc"
 InputName=wave
 
-"libs\residdtv\Release/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MD /W3 /EHsc /I ".\\" /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Release/residdtv.pch" /Fo"libs\residdtv\Release/" /Fd"libs\residdtv\Release/" /FD /TP /c "$(InputPath)"
+"libs\residdtv\Release\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MD /W3 /GX /O2 /EHsc /I ".\\" /I "..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Release\residdtv.pch" /Fo"libs\residdtv\Release\\" /Fd"libs\residdtv\Release\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "residdtv - Win32 Debug"
 
 # Begin Custom Build
-InputPath=..\..\..\resid-dtv\wave.cc
+InputPath="..\..\..\resid-dtv\wave.cc"
 InputName=wave
 
-"libs\residdtv\Debug/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MDd /W3 /EHsc /Z7 /Od /I ".\\" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /D PACKAGE=\"residdtv\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /D "_DEBUG" /Fp"libs\residdtv\Debug/residdtv.pch" /Fo"libs\residdtv\Debug/" /Fd"libs\residdtv\Debug/" /FD /TP /c "$(InputPath)"
+"libs\residdtv\Debug\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MDd /W3 /GX /Z7 /Od /EHsc /I ".\\" /I "..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residdtv\Debug\residdtv.pch" /Fo"libs\residdtv\Debug\\" /Fd"libs\residdtv\Debug\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
-!ENDIF 
+!ENDIF
 
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\resid-dtv\wave.h
 # End Source File
 # End Target
 # End Project

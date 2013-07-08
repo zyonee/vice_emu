@@ -40,10 +40,10 @@ RSC=rc.exe
 # PROP Output_Dir "libs\vic20\Release"
 # PROP Intermediate_Dir "libs\vic20\Release"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /I "..\..\..\vic20\cart" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MD /W3 /GX /O2  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\userport" /I "..\..\..\vic20\cart" /I "..\..\..\video"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -63,10 +63,10 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\vic20\Debug"
 # PROP Intermediate_Dir "libs\vic20\Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /I "..\..\..\vic20\cart" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MDd /W3 /GX /Z7 /Od  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\userport" /I "..\..\..\vic20\cart" /I "..\..\..\video"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -74,7 +74,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ENDIF 
+!ENDIF
 
 # Begin Target
 
@@ -114,7 +114,7 @@ SOURCE="..\..\..\vic20\vic-timing.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic.c
+SOURCE="..\..\..\vic20\vic.c"
 # End Source File
 # Begin Source File
 
@@ -130,87 +130,97 @@ SOURCE="..\..\..\vic20\vic20-snapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20.c
+SOURCE="..\..\..\vic20\vic20.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20bus.c
+SOURCE="..\..\..\vic20\vic20bus.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20cpu.c
+SOURCE="..\..\..\vic20\vic20datasette.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20datasette.c
+SOURCE="..\..\..\vic20\vic20drive.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20drive.c
+SOURCE="..\..\..\vic20\vic20iec.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20iec.c
+SOURCE="..\..\..\vic20\vic20ieeevia1.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20ieeevia1.c
+SOURCE="..\..\..\vic20\vic20ieeevia2.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20ieeevia2.c
+SOURCE="..\..\..\vic20\vic20io.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20io.c
+SOURCE="..\..\..\vic20\vic20mem.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20mem.c
+SOURCE="..\..\..\vic20\vic20memrom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20memrom.c
+SOURCE="..\..\..\vic20\vic20memsnapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20memsnapshot.c
+SOURCE="..\..\..\vic20\vic20model.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20model.c
+SOURCE="..\..\..\vic20\vic20printer.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20printer.c
+SOURCE="..\..\..\vic20\vic20rom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20rom.c
+SOURCE="..\..\..\vic20\vic20romset.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20romset.c
+SOURCE="..\..\..\vic20\vic20rsuser.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20rsuser.c
+SOURCE="..\..\..\vic20\vic20sound.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20sound.c
+SOURCE="..\..\..\vic20\vic20via1.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20via1.c
+SOURCE="..\..\..\vic20\vic20via2.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20via2.c
+SOURCE="..\..\..\vic20\vic20video.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\vic20\vic20video.c
+SOURCE="..\..\..\vic20\vic20cpu.c"
+
+!IF  "$(CFG)" == "vic20 - Win32 Release"
+
+# ADD CPP /Ot /Oa /Ow /Oi /Op /Oy
+# SUBTRACT CPP /Os
+
+!ELSEIF  "$(CFG)" == "vic20 - Win32 Debug"
+
+!ENDIF
+
 # End Source File
 # End Target
 # End Project

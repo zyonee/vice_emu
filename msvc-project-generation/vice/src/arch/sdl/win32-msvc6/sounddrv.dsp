@@ -40,10 +40,10 @@ RSC=rc.exe
 # PROP Output_Dir "libs\sounddrv\Release"
 # PROP Intermediate_Dir "libs\sounddrv\Release"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MD /W3 /GX /O2  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\" /I "..\\" /I "..\..\..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -63,10 +63,10 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\sounddrv\Debug"
 # PROP Intermediate_Dir "libs\sounddrv\Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MDd /W3 /GX /Z7 /Od  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\" /I "..\\" /I "..\..\..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -74,7 +74,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ENDIF 
+!ENDIF
 
 # Begin Target
 
@@ -82,39 +82,47 @@ LIB32=link.exe -lib
 # Name "sounddrv - Win32 Debug"
 # Begin Source File
 
-SOURCE=..\..\..\sounddrv\soundaiff.c
+SOURCE="..\..\..\sounddrv\soundaiff.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\sounddrv\sounddummy.c
+SOURCE="..\..\..\sounddrv\sounddummy.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\sounddrv\sounddump.c
+SOURCE="..\..\..\sounddrv\sounddump.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\sounddrv\soundfs.c
+SOURCE="..\..\..\sounddrv\sounddx.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\sounddrv\soundiff.c
+SOURCE="..\..\..\sounddrv\soundfs.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\sounddrv\soundmovie.c
+SOURCE="..\..\..\sounddrv\soundiff.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\sounddrv\soundvoc.c
+SOURCE="..\..\..\sounddrv\soundmovie.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\sounddrv\soundwav.c
+SOURCE="..\..\..\sounddrv\soundvoc.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\sounddrv\soundwmm.c
+SOURCE="..\..\..\sounddrv\soundwav.c"
+# End Source File
+# Begin Source File
+
+SOURCE="..\..\..\sounddrv\soundwmm.c"
+# End Source File
+# Begin Source File
+
+SOURCE="..\..\..\sounddrv\soundsdl.c"
 # End Source File
 # End Target
 # End Project

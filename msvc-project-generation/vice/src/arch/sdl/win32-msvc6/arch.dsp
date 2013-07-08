@@ -40,10 +40,10 @@ RSC=rc.exe
 # PROP Output_Dir "libs\arch\Release"
 # PROP Intermediate_Dir "libs\arch\Release"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\platform" /I "..\..\..\drive" /I "..\..\..\userport" /I "..\..\..\vdrive" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\c64dtv" /I "..\..\..\c128" /I "..\..\..\vic20" /I "..\..\..\pet" /I "..\..\..\cbm2" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\lib\libffmpeg" /I "..\..\..\plus4" /I "..\..\..\rs232drv" /I "..\..\..\sid" /I "..\..\..\imagecontents" /I "..\..\win32\msvc\wpcap" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MD /W3 /GX /O2  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\arch\win32\msvc\wpcap" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\c64dtv" /I "..\..\..\c128" /I "..\..\..\cbm2" /I "..\..\..\drive" /I "..\..\..\imagecontents" /I "..\..\..\lib\libffmpeg" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\pet" /I "..\..\..\platform" /I "..\..\..\plus4" /I "..\..\..\raster" /I "..\..\..\rs232drv" /I "..\..\..\sid" /I "..\..\..\userport" /I "..\..\..\vdrive" /I "..\..\..\vic20"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -63,10 +63,10 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\arch\Debug"
 # PROP Intermediate_Dir "libs\arch\Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\platform" /I "..\..\..\drive" /I "..\..\..\userport" /I "..\..\..\vdrive" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\c64dtv" /I "..\..\..\c128" /I "..\..\..\vic20" /I "..\..\..\pet" /I "..\..\..\cbm2" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\lib\libffmpeg" /I "..\..\..\plus4" /I "..\..\..\rs232drv" /I "..\..\..\sid" /I "..\..\..\imagecontents" /I "..\..\win32\msvc\wpcap" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MDd /W3 /GX /Z7 /Od  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /Z7 /Od /I ".\" /I "..\\" /I "..\..\..\\" /I "..\..\..\arch\win32\msvc\wpcap" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\c64dtv" /I "..\..\..\c128" /I "..\..\..\cbm2" /I "..\..\..\drive" /I "..\..\..\imagecontents" /I "..\..\..\lib\libffmpeg" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\pet" /I "..\..\..\platform" /I "..\..\..\plus4" /I "..\..\..\raster" /I "..\..\..\rs232drv" /I "..\..\..\sid" /I "..\..\..\userport" /I "..\..\..\vdrive" /I "..\..\..\vic20"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -74,7 +74,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ENDIF 
+!ENDIF
 
 # Begin Target
 
@@ -82,327 +82,327 @@ LIB32=link.exe -lib
 # Name "arch - Win32 Debug"
 # Begin Source File
 
-SOURCE=..\archdep.c
+SOURCE="..\..\..\arch\sdl\archdep.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\blockdev.c
+SOURCE="..\..\..\arch\sdl\blockdev.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\catweaselmkiii.c
+SOURCE="..\..\..\arch\sdl\catweaselmkiii.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\console.c
+SOURCE="..\..\..\arch\sdl\console.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\dynlib.c
+SOURCE="..\..\..\arch\sdl\dynlib.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\fullscreen.c
+SOURCE="..\..\..\arch\sdl\fullscreen.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\hardsid.c
+SOURCE="..\..\..\arch\sdl\hardsid.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\joy.c
+SOURCE="..\..\..\arch\sdl\joy.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\kbd.c
+SOURCE="..\..\..\arch\sdl\kbd.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\lightpendrv.c
+SOURCE="..\..\..\arch\sdl\lightpendrv.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_c128hw.c
+SOURCE="..\..\..\arch\sdl\menu_c128hw.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_c64_common_expansions.c
+SOURCE="..\..\..\arch\sdl\menu_c64_common_expansions.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_c64_expansions.c
+SOURCE="..\..\..\arch\sdl\menu_c64_expansions.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_c64cart.c
+SOURCE="..\..\..\arch\sdl\menu_c64cart.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_c64dtvhw.c
+SOURCE="..\..\..\arch\sdl\menu_c64dtvhw.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_c64hw.c
+SOURCE="..\..\..\arch\sdl\menu_c64hw.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_c64model.c
+SOURCE="..\..\..\arch\sdl\menu_c64model.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_cbm2cart.c
+SOURCE="..\..\..\arch\sdl\menu_cbm2cart.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_cbm2hw.c
+SOURCE="..\..\..\arch\sdl\menu_cbm2hw.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_common.c
+SOURCE="..\..\..\arch\sdl\menu_common.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_debug.c
+SOURCE="..\..\..\arch\sdl\menu_debug.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_drive.c
+SOURCE="..\..\..\arch\sdl\menu_drive.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_drive_rom.c
+SOURCE="..\..\..\arch\sdl\menu_drive_rom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_ffmpeg.c
+SOURCE="..\..\..\arch\sdl\menu_ffmpeg.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_help.c
+SOURCE="..\..\..\arch\sdl\menu_help.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_joystick.c
+SOURCE="..\..\..\arch\sdl\menu_joystick.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_lightpen.c
+SOURCE="..\..\..\arch\sdl\menu_lightpen.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_midi.c
+SOURCE="..\..\..\arch\sdl\menu_midi.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_mouse.c
+SOURCE="..\..\..\arch\sdl\menu_mouse.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_network.c
+SOURCE="..\..\..\arch\sdl\menu_network.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_petcart.c
+SOURCE="..\..\..\arch\sdl\menu_petcart.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_pethw.c
+SOURCE="..\..\..\arch\sdl\menu_pethw.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_plus4cart.c
+SOURCE="..\..\..\arch\sdl\menu_plus4cart.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_plus4hw.c
+SOURCE="..\..\..\arch\sdl\menu_plus4hw.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_printer.c
+SOURCE="..\..\..\arch\sdl\menu_printer.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_ram.c
+SOURCE="..\..\..\arch\sdl\menu_ram.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_reset.c
+SOURCE="..\..\..\arch\sdl\menu_reset.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_rom.c
+SOURCE="..\..\..\arch\sdl\menu_rom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_rs232.c
+SOURCE="..\..\..\arch\sdl\menu_rs232.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_scpu64hw.c
+SOURCE="..\..\..\arch\sdl\menu_scpu64hw.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_screenshot.c
+SOURCE="..\..\..\arch\sdl\menu_screenshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_settings.c
+SOURCE="..\..\..\arch\sdl\menu_settings.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_sid.c
+SOURCE="..\..\..\arch\sdl\menu_sid.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_snapshot.c
+SOURCE="..\..\..\arch\sdl\menu_snapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_sound.c
+SOURCE="..\..\..\arch\sdl\menu_sound.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_speed.c
+SOURCE="..\..\..\arch\sdl\menu_speed.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_tape.c
+SOURCE="..\..\..\arch\sdl\menu_tape.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_tfe.c
+SOURCE="..\..\..\arch\sdl\menu_tfe.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_vic20cart.c
+SOURCE="..\..\..\arch\sdl\menu_vic20cart.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_vic20hw.c
+SOURCE="..\..\..\arch\sdl\menu_vic20hw.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\menu_video.c
+SOURCE="..\..\..\arch\sdl\menu_video.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\mousedrv.c
+SOURCE="..\..\..\arch\sdl\mousedrv.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\rawnetarch.c
+SOURCE="..\..\..\arch\sdl\rawnetarch.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\rs232.c
+SOURCE="..\..\..\arch\sdl\rs232.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\rs232dev.c
+SOURCE="..\..\..\arch\sdl\rs232dev.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\rs232net.c
+SOURCE="..\..\..\arch\sdl\rs232net.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\sdlmain.c
+SOURCE="..\..\..\arch\sdl\sdlmain.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\signals.c
+SOURCE="..\..\..\arch\sdl\signals.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\ui.c
+SOURCE="..\..\..\arch\sdl\ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\uicmdline.c
+SOURCE="..\..\..\arch\sdl\uicmdline.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\uifilereq.c
+SOURCE="..\..\..\arch\sdl\uifilereq.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\uihotkey.c
+SOURCE="..\..\..\arch\sdl\uihotkey.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\uimenu.c
+SOURCE="..\..\..\arch\sdl\uimenu.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\uimon.c
+SOURCE="..\..\..\arch\sdl\uimon.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\uimsgbox.c
+SOURCE="..\..\..\arch\sdl\uimsgbox.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\uipause.c
+SOURCE="..\..\..\arch\sdl\uipause.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\uipoll.c
+SOURCE="..\..\..\arch\sdl\uipoll.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\uistatusbar.c
+SOURCE="..\..\..\arch\sdl\uistatusbar.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\video.c
+SOURCE="..\..\..\arch\sdl\video.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\vkbd.c
+SOURCE="..\..\..\arch\sdl\vkbd.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\vsidui.c
+SOURCE="..\..\..\arch\sdl\vsidui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\vsyncarch.c
+SOURCE="..\..\..\arch\sdl\vsyncarch.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\x128_ui.c
+SOURCE="..\..\..\arch\sdl\x128_ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\x64_ui.c
+SOURCE="..\..\..\arch\sdl\x64_ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\x64dtv_ui.c
+SOURCE="..\..\..\arch\sdl\x64dtv_ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\x64sc_ui.c
+SOURCE="..\..\..\arch\sdl\x64sc_ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\xcbm2_ui.c
+SOURCE="..\..\..\arch\sdl\xcbm2_ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\xpet_ui.c
+SOURCE="..\..\..\arch\sdl\xpet_ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\xplus4_ui.c
+SOURCE="..\..\..\arch\sdl\xplus4_ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\xscpu64_ui.c
+SOURCE="..\..\..\arch\sdl\xscpu64_ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\xvic_ui.c
+SOURCE="..\..\..\arch\sdl\xvic_ui.c"
 # End Source File
 # End Target
 # End Project

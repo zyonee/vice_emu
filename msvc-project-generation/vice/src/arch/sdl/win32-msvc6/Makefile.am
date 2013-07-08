@@ -41,6 +41,7 @@ EXTRA_DIST = \
 	iecieee.dsp \
 	ieee.dsp \
 	imagecontents.dsp \
+	inttypes.h \
 	monitor.dsp \
 	p64.dsp \
 	parallel.dsp \
@@ -60,6 +61,7 @@ EXTRA_DIST = \
 	serial.dsp \
 	sid.dsp \
 	sounddrv.dsp \
+	stdint.h \
 	tape.dsp \
 	tcbm.dsp \
 	userport.dsp \
