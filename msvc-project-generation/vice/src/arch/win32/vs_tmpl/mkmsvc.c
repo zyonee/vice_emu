@@ -31,14 +31,14 @@
       6    |    x86   | Release
       6    |    x86   | Debug
       6    |    x86   | DX-Release
+      6    |    x86   | DX-Debug
+      6    |    x86   | SDL-Release
+      6    |    x86   | SDL-Debug
  */
 
 /* Untested:
    version | platform | type
    -------------------------
-      6    |    x86   | DX-Debug
-      6    |    x86   | SDL-Release
-      6    |    x86   | SDL-Debug
      7.0   |    x86   | Release
      7.0   |    x86   | Debug
      7.0   |    x86   | DX-Release
