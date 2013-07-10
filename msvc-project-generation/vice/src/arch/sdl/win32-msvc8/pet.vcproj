@@ -1,196 +1,272 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="pet"
-	SccProjectName=""
-	SccLocalPath="">
+	ProjectGUID="{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC925}"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\libs\pet\Debug"
 			IntermediateDirectory=".\libs\pet\Debug"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\crtc,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\video"
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\pet\Debug\pet.pch"
 				AssemblerListingLocation=".\libs\pet\Debug\"
 				ObjectFile=".\libs\pet\Debug\"
 				ProgramDataBaseFileName=".\libs\pet\Debug\"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\pet\Debug\pet.lib"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\libs\pet\Release"
 			IntermediateDirectory=".\libs\pet\Release"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\crtc,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\video"
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
-				StringPooling="TRUE"
+				StringPooling="true"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\pet\Release\pet.pch"
 				AssemblerListingLocation=".\libs\pet\Release\"
 				ObjectFile=".\libs\pet\Release\"
 				ProgramDataBaseFileName=".\libs\pet\Release\"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\pet\Release\pet.lib"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\..\pet\petcpu.c">
+			RelativePath="..\..\..\pet\6809.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\6809.c">
+			RelativePath="..\..\..\pet\pet-cmdline-options.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\pet-cmdline-options.c">
+			RelativePath="..\..\..\pet\pet-resources.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\pet-resources.c">
+			RelativePath="..\..\..\pet\pet-sidcart.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\pet-sidcart.c">
+			RelativePath="..\..\..\pet\pet-snapshot.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\pet-snapshot.c">
+			RelativePath="..\..\..\pet\pet.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\pet.c">
+			RelativePath="..\..\..\pet\petacia1.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petacia1.c">
+			RelativePath="..\..\..\pet\petbus.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petbus.c">
+			RelativePath="..\..\..\pet\petcolour.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petcolour.c">
+			RelativePath="..\..\..\pet\petcpu.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petdatasette.c">
+			RelativePath="..\..\..\pet\petdatasette.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petdrive.c">
+			RelativePath="..\..\..\pet\petdrive.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petdww.c">
+			RelativePath="..\..\..\pet\petdww.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\pethre.c">
+			RelativePath="..\..\..\pet\pethre.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petiec.c">
+			RelativePath="..\..\..\pet\petiec.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petmem.c">
+			RelativePath="..\..\..\pet\petmem.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petmemsnapshot.c">
+			RelativePath="..\..\..\pet\petmemsnapshot.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petmodel.c">
+			RelativePath="..\..\..\pet\petmodel.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petpia1.c">
+			RelativePath="..\..\..\pet\petpia1.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petpia2.c">
+			RelativePath="..\..\..\pet\petpia2.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petprinter.c">
+			RelativePath="..\..\..\pet\petprinter.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petreu.c">
+			RelativePath="..\..\..\pet\petreu.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petrom.c">
+			RelativePath="..\..\..\pet\petrom.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petromset.c">
+			RelativePath="..\..\..\pet\petromset.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petsound.c">
+			RelativePath="..\..\..\pet\petsound.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petvia.c">
+			RelativePath="..\..\..\pet\petvia.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petvideo.c">
+			RelativePath="..\..\..\pet\petvideo.c"
+			>
 		</File>
 	</Files>
 	<Globals>

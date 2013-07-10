@@ -1,154 +1,216 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="printerdrv"
-	SccProjectName=""
-	SccLocalPath="">
+	ProjectGUID="{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC92A}"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\libs\printerdrv\Debug"
 			IntermediateDirectory=".\libs\printerdrv\Debug"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\"
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\printerdrv\Debug\printerdrv.pch"
 				AssemblerListingLocation=".\libs\printerdrv\Debug\"
 				ObjectFile=".\libs\printerdrv\Debug\"
 				ProgramDataBaseFileName=".\libs\printerdrv\Debug\"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\printerdrv\Debug\printerdrv.lib"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\libs\printerdrv\Release"
 			IntermediateDirectory=".\libs\printerdrv\Release"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\"
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
-				StringPooling="TRUE"
+				StringPooling="true"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\printerdrv\Release\printerdrv.pch"
 				AssemblerListingLocation=".\libs\printerdrv\Release\"
 				ObjectFile=".\libs\printerdrv\Release\"
 				ProgramDataBaseFileName=".\libs\printerdrv\Release\"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\printerdrv\Release\printerdrv.lib"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\..\printerdrv\driver-select.c">
+			RelativePath="..\..\..\printerdrv\driver-select.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\printerdrv\drv-ascii.c">
+			RelativePath="..\..\..\printerdrv\drv-ascii.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\printerdrv\drv-mps803.c">
+			RelativePath="..\..\..\printerdrv\drv-mps803.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\printerdrv\drv-nl10.c">
+			RelativePath="..\..\..\printerdrv\drv-nl10.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\printerdrv\drv-raw.c">
+			RelativePath="..\..\..\printerdrv\drv-raw.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\printerdrv\interface-serial.c">
+			RelativePath="..\..\..\printerdrv\interface-serial.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\printerdrv\interface-userport.c">
+			RelativePath="..\..\..\printerdrv\interface-userport.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\printerdrv\output-graphics.c">
+			RelativePath="..\..\..\printerdrv\output-graphics.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\printerdrv\output-select.c">
+			RelativePath="..\..\..\printerdrv\output-select.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\printerdrv\output-text.c">
+			RelativePath="..\..\..\printerdrv\output-text.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\printerdrv\printer-serial.c">
+			RelativePath="..\..\..\printerdrv\printer-serial.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\printerdrv\printer-userport.c">
+			RelativePath="..\..\..\printerdrv\printer-userport.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\printerdrv\printer.c">
+			RelativePath="..\..\..\printerdrv\printer.c"
+			>
 		</File>
 	</Files>
 	<Globals>

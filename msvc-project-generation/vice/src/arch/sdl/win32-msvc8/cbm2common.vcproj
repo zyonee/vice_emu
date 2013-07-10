@@ -1,163 +1,228 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="cbm2common"
-	SccProjectName=""
-	SccLocalPath="">
+	ProjectGUID="{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC911}"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\libs\cbm2common\Debug"
 			IntermediateDirectory=".\libs\cbm2common\Debug"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\crtc,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vicii"
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\cbm2common\Debug\cbm2common.pch"
 				AssemblerListingLocation=".\libs\cbm2common\Debug\"
 				ObjectFile=".\libs\cbm2common\Debug\"
 				ProgramDataBaseFileName=".\libs\cbm2common\Debug\"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\cbm2common\Debug\cbm2common.lib"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\libs\cbm2common\Release"
 			IntermediateDirectory=".\libs\cbm2common\Release"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\crtc,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vicii"
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
-				StringPooling="TRUE"
+				StringPooling="true"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\cbm2common\Release\cbm2common.pch"
 				AssemblerListingLocation=".\libs\cbm2common\Release\"
 				ObjectFile=".\libs\cbm2common\Release\"
 				ProgramDataBaseFileName=".\libs\cbm2common\Release\"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\cbm2common\Release\cbm2common.lib"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2cpu.c">
+			RelativePath="..\..\..\cbm2\cbm2-cmdline-options.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2-cmdline-options.c">
+			RelativePath="..\..\..\cbm2\cbm2acia1.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2acia1.c">
+			RelativePath="..\..\..\cbm2\cbm2bus.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2bus.c">
+			RelativePath="..\..\..\cbm2\cbm2cart.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2cart.c">
+			RelativePath="..\..\..\cbm2\cbm2cia1.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2cia1.c">
+			RelativePath="..\..\..\cbm2\cbm2cpu.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2datasette.c">
+			RelativePath="..\..\..\cbm2\cbm2datasette.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2drive.c">
+			RelativePath="..\..\..\cbm2\cbm2drive.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2iec.c">
+			RelativePath="..\..\..\cbm2\cbm2iec.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2memsnapshot.c">
+			RelativePath="..\..\..\cbm2\cbm2memsnapshot.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2model.c">
+			RelativePath="..\..\..\cbm2\cbm2model.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2printer.c">
+			RelativePath="..\..\..\cbm2\cbm2printer.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2romset.c">
+			RelativePath="..\..\..\cbm2\cbm2romset.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2sound.c">
+			RelativePath="..\..\..\cbm2\cbm2sound.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2tpi1.c">
+			RelativePath="..\..\..\cbm2\cbm2tpi1.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\cbm2\cbm2tpi2.c">
+			RelativePath="..\..\..\cbm2\cbm2tpi2.c"
+			>
 		</File>
 	</Files>
 	<Globals>

@@ -1,145 +1,204 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="gfxoutputdrv"
-	SccProjectName=""
-	SccLocalPath="">
+	ProjectGUID="{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC91B}"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\libs\gfxoutputdrv\Debug"
 			IntermediateDirectory=".\libs\gfxoutputdrv\Debug"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\lib\libffmpeg"
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\gfxoutputdrv\Debug\gfxoutputdrv.pch"
 				AssemblerListingLocation=".\libs\gfxoutputdrv\Debug\"
 				ObjectFile=".\libs\gfxoutputdrv\Debug\"
 				ProgramDataBaseFileName=".\libs\gfxoutputdrv\Debug\"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\gfxoutputdrv\Debug\gfxoutputdrv.lib"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\libs\gfxoutputdrv\Release"
 			IntermediateDirectory=".\libs\gfxoutputdrv\Release"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\lib\libffmpeg"
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
-				StringPooling="TRUE"
+				StringPooling="true"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\gfxoutputdrv\Release\gfxoutputdrv.pch"
 				AssemblerListingLocation=".\libs\gfxoutputdrv\Release\"
 				ObjectFile=".\libs\gfxoutputdrv\Release\"
 				ProgramDataBaseFileName=".\libs\gfxoutputdrv\Release\"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\gfxoutputdrv\Release\gfxoutputdrv.lib"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\..\gfxoutputdrv\bmpdrv.c">
+			RelativePath="..\..\..\gfxoutputdrv\bmpdrv.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\gfxoutputdrv\doodledrv.c">
+			RelativePath="..\..\..\gfxoutputdrv\doodledrv.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\gfxoutputdrv\ffmpegdrv.c">
+			RelativePath="..\..\..\gfxoutputdrv\ffmpegdrv.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\gfxoutputdrv\ffmpeglib.c">
+			RelativePath="..\..\..\gfxoutputdrv\ffmpeglib.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\gfxoutputdrv\gfxoutput.c">
+			RelativePath="..\..\..\gfxoutputdrv\gfxoutput.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\gfxoutputdrv\iffdrv.c">
+			RelativePath="..\..\..\gfxoutputdrv\iffdrv.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\gfxoutputdrv\koaladrv.c">
+			RelativePath="..\..\..\gfxoutputdrv\koaladrv.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\gfxoutputdrv\nativedrv.c">
+			RelativePath="..\..\..\gfxoutputdrv\nativedrv.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\gfxoutputdrv\pcxdrv.c">
+			RelativePath="..\..\..\gfxoutputdrv\pcxdrv.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\gfxoutputdrv\ppmdrv.c">
+			RelativePath="..\..\..\gfxoutputdrv\ppmdrv.c"
+			>
 		</File>
 	</Files>
 	<Globals>

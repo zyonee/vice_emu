@@ -1,160 +1,224 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="vicii"
-	SccProjectName=""
-	SccLocalPath="">
+	ProjectGUID="{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC93C}"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\libs\vicii\Debug"
 			IntermediateDirectory=".\libs\vicii\Debug"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\c64,..\..\..\c64\cart,..\..\..\c64dtv,..\..\..\monitor,..\..\..\raster,..\..\..\video"
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vicii\Debug\vicii.pch"
 				AssemblerListingLocation=".\libs\vicii\Debug\"
 				ObjectFile=".\libs\vicii\Debug\"
 				ProgramDataBaseFileName=".\libs\vicii\Debug\"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\vicii\Debug\vicii.lib"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\libs\vicii\Release"
 			IntermediateDirectory=".\libs\vicii\Release"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\c64,..\..\..\c64\cart,..\..\..\c64dtv,..\..\..\monitor,..\..\..\raster,..\..\..\video"
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
-				StringPooling="TRUE"
+				StringPooling="true"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\vicii\Release\vicii.pch"
 				AssemblerListingLocation=".\libs\vicii\Release\"
 				ObjectFile=".\libs\vicii\Release\"
 				ProgramDataBaseFileName=".\libs\vicii\Release\"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\vicii\Release\vicii.lib"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\..\vicii\vicii-badline.c">
+			RelativePath="..\..\..\vicii\vicii-badline.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\vicii\vicii-clock-stretch.c">
+			RelativePath="..\..\..\vicii\vicii-clock-stretch.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\vicii\vicii-cmdline-options.c">
+			RelativePath="..\..\..\vicii\vicii-cmdline-options.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\vicii\vicii-color.c">
+			RelativePath="..\..\..\vicii\vicii-color.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\vicii\vicii-draw.c">
+			RelativePath="..\..\..\vicii\vicii-draw.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\vicii\vicii-fetch.c">
+			RelativePath="..\..\..\vicii\vicii-fetch.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\vicii\vicii-irq.c">
+			RelativePath="..\..\..\vicii\vicii-irq.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\vicii\vicii-mem.c">
+			RelativePath="..\..\..\vicii\vicii-mem.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\vicii\vicii-phi1.c">
+			RelativePath="..\..\..\vicii\vicii-phi1.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\vicii\vicii-resources.c">
+			RelativePath="..\..\..\vicii\vicii-resources.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\vicii\vicii-snapshot.c">
+			RelativePath="..\..\..\vicii\vicii-snapshot.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\vicii\vicii-sprites.c">
+			RelativePath="..\..\..\vicii\vicii-sprites.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\vicii\vicii-stubs.c">
+			RelativePath="..\..\..\vicii\vicii-stubs.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\vicii\vicii-timing.c">
+			RelativePath="..\..\..\vicii\vicii-timing.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\vicii\vicii.c">
+			RelativePath="..\..\..\vicii\vicii.c"
+			>
 		</File>
 	</Files>
 	<Globals>

@@ -1,202 +1,280 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="monitor"
-	SccProjectName=""
-	SccLocalPath="">
+	ProjectGUID="{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC922}"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\libs\monitor\Debug"
 			IntermediateDirectory=".\libs\monitor\Debug"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\vdrive"
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\monitor\Debug\monitor.pch"
 				AssemblerListingLocation=".\libs\monitor\Debug\"
 				ObjectFile=".\libs\monitor\Debug\"
 				ProgramDataBaseFileName=".\libs\monitor\Debug\"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\monitor\Debug\monitor.lib"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\libs\monitor\Release"
 			IntermediateDirectory=".\libs\monitor\Release"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\vdrive"
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
-				StringPooling="TRUE"
+				StringPooling="true"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\monitor\Release\monitor.pch"
 				AssemblerListingLocation=".\libs\monitor\Release\"
 				ObjectFile=".\libs\monitor\Release\"
 				ProgramDataBaseFileName=".\libs\monitor\Release\"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\monitor\Release\monitor.lib"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\..\monitor\asm6502.c">
+			RelativePath="..\..\..\monitor\asm6502.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\asm6502dtv.c">
+			RelativePath="..\..\..\monitor\asm6502dtv.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\asm65816.c">
+			RelativePath="..\..\..\monitor\asm65816.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\asm6809.c">
+			RelativePath="..\..\..\monitor\asm6809.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\asmR65C02.c">
+			RelativePath="..\..\..\monitor\asmR65C02.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\asmz80.c">
+			RelativePath="..\..\..\monitor\asmz80.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_assemble6502.c">
+			RelativePath="..\..\..\monitor\mon_assemble6502.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_assemble65816.c">
+			RelativePath="..\..\..\monitor\mon_assemble65816.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_assemble6809.c">
+			RelativePath="..\..\..\monitor\mon_assemble6809.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_assembleR65C02.c">
+			RelativePath="..\..\..\monitor\mon_assembleR65C02.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_assemblez80.c">
+			RelativePath="..\..\..\monitor\mon_assemblez80.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_breakpoint.c">
+			RelativePath="..\..\..\monitor\mon_breakpoint.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_command.c">
+			RelativePath="..\..\..\monitor\mon_command.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_disassemble.c">
+			RelativePath="..\..\..\monitor\mon_disassemble.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_drive.c">
+			RelativePath="..\..\..\monitor\mon_drive.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_file.c">
+			RelativePath="..\..\..\monitor\mon_file.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_lex.c">
+			RelativePath="..\..\..\monitor\mon_lex.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_memory.c">
+			RelativePath="..\..\..\monitor\mon_memory.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_parse.c">
+			RelativePath="..\..\..\monitor\mon_parse.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_register6502.c">
+			RelativePath="..\..\..\monitor\mon_register6502.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_register6502dtv.c">
+			RelativePath="..\..\..\monitor\mon_register6502dtv.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_register65816.c">
+			RelativePath="..\..\..\monitor\mon_register65816.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_registerR65C02.c">
+			RelativePath="..\..\..\monitor\mon_register6809.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_register6809.c">
+			RelativePath="..\..\..\monitor\mon_registerR65C02.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_registerz80.c">
+			RelativePath="..\..\..\monitor\mon_registerz80.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_ui.c">
+			RelativePath="..\..\..\monitor\mon_ui.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_util.c">
+			RelativePath="..\..\..\monitor\mon_util.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\monitor.c">
+			RelativePath="..\..\..\monitor\monitor.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\monitor_network.c">
+			RelativePath="..\..\..\monitor\monitor_network.c"
+			>
 		</File>
 	</Files>
 	<Globals>

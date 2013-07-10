@@ -1,298 +1,408 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="c64cart"
-	SccProjectName=""
-	SccLocalPath="">
+	ProjectGUID="{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC907}"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\libs\c64cart\Debug"
 			IntermediateDirectory=".\libs\c64cart\Debug"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\c64,..\..\..\core,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\rtc,..\..\..\sid,..\..\..\vicii"
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\c64cart\Debug\c64cart.pch"
 				AssemblerListingLocation=".\libs\c64cart\Debug\"
 				ObjectFile=".\libs\c64cart\Debug\"
 				ProgramDataBaseFileName=".\libs\c64cart\Debug\"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\c64cart\Debug\c64cart.lib"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\libs\c64cart\Release"
 			IntermediateDirectory=".\libs\c64cart\Release"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\c64,..\..\..\core,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\rtc,..\..\..\sid,..\..\..\vicii"
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
-				StringPooling="TRUE"
+				StringPooling="true"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\libs\c64cart\Release\c64cart.pch"
 				AssemblerListingLocation=".\libs\c64cart\Release\"
 				ObjectFile=".\libs\c64cart\Release\"
 				ProgramDataBaseFileName=".\libs\c64cart\Release\"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\c64cart\Release\c64cart.lib"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\..\c64\cart\actionreplay.c">
+			RelativePath="..\..\..\c64\cart\actionreplay.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\actionreplay2.c">
+			RelativePath="..\..\..\c64\cart\actionreplay2.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\actionreplay3.c">
+			RelativePath="..\..\..\c64\cart\actionreplay3.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\actionreplay4.c">
+			RelativePath="..\..\..\c64\cart\actionreplay4.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\atomicpower.c">
+			RelativePath="..\..\..\c64\cart\atomicpower.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\c64-generic.c">
+			RelativePath="..\..\..\c64\cart\c64-generic.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\c64-midi.c">
+			RelativePath="..\..\..\c64\cart\c64-midi.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\c64tpi.c">
+			RelativePath="..\..\..\c64\cart\c64tpi.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\capture.c">
+			RelativePath="..\..\..\c64\cart\capture.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\comal80.c">
+			RelativePath="..\..\..\c64\cart\comal80.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\delaep256.c">
+			RelativePath="..\..\..\c64\cart\delaep256.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\delaep64.c">
+			RelativePath="..\..\..\c64\cart\delaep64.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\delaep7x8.c">
+			RelativePath="..\..\..\c64\cart\delaep7x8.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\diashowmaker.c">
+			RelativePath="..\..\..\c64\cart\diashowmaker.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\dinamic.c">
+			RelativePath="..\..\..\c64\cart\dinamic.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\dqbb.c">
+			RelativePath="..\..\..\c64\cart\dqbb.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\easyflash.c">
+			RelativePath="..\..\..\c64\cart\easyflash.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\epyxfastload.c">
+			RelativePath="..\..\..\c64\cart\epyxfastload.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\exos.c">
+			RelativePath="..\..\..\c64\cart\exos.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\expert.c">
+			RelativePath="..\..\..\c64\cart\expert.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\final.c">
+			RelativePath="..\..\..\c64\cart\final.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\final3.c">
+			RelativePath="..\..\..\c64\cart\final3.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\finalplus.c">
+			RelativePath="..\..\..\c64\cart\finalplus.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\formel64.c">
+			RelativePath="..\..\..\c64\cart\formel64.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\freezeframe.c">
+			RelativePath="..\..\..\c64\cart\freezeframe.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\freezemachine.c">
+			RelativePath="..\..\..\c64\cart\freezemachine.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\funplay.c">
+			RelativePath="..\..\..\c64\cart\funplay.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\gamekiller.c">
+			RelativePath="..\..\..\c64\cart\gamekiller.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\gs.c">
+			RelativePath="..\..\..\c64\cart\gs.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\ide64.c">
+			RelativePath="..\..\..\c64\cart\ide64.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\isepic.c">
+			RelativePath="..\..\..\c64\cart\isepic.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\kcs.c">
+			RelativePath="..\..\..\c64\cart\kcs.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\kingsoft.c">
+			RelativePath="..\..\..\c64\cart\kingsoft.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\mach5.c">
+			RelativePath="..\..\..\c64\cart\mach5.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\magicdesk.c">
+			RelativePath="..\..\..\c64\cart\magicdesk.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\magicformel.c">
+			RelativePath="..\..\..\c64\cart\magicformel.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\magicvoice.c">
+			RelativePath="..\..\..\c64\cart\magicvoice.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\mikroass.c">
+			RelativePath="..\..\..\c64\cart\mikroass.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\mmc64.c">
+			RelativePath="..\..\..\c64\cart\mmc64.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\mmcreplay.c">
+			RelativePath="..\..\..\c64\cart\mmcreplay.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\ocean.c">
+			RelativePath="..\..\..\c64\cart\ocean.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\pagefox.c">
+			RelativePath="..\..\..\c64\cart\pagefox.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\prophet64.c">
+			RelativePath="..\..\..\c64\cart\prophet64.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\ramcart.c">
+			RelativePath="..\..\..\c64\cart\ramcart.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\retroreplay.c">
+			RelativePath="..\..\..\c64\cart\retroreplay.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\reu.c">
+			RelativePath="..\..\..\c64\cart\reu.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\rexep256.c">
+			RelativePath="..\..\..\c64\cart\rexep256.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\rexutility.c">
+			RelativePath="..\..\..\c64\cart\rexutility.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\ross.c">
+			RelativePath="..\..\..\c64\cart\ross.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\silverrock128.c">
+			RelativePath="..\..\..\c64\cart\silverrock128.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\simonsbasic.c">
+			RelativePath="..\..\..\c64\cart\simonsbasic.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\snapshot64.c">
+			RelativePath="..\..\..\c64\cart\snapshot64.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\stardos.c">
+			RelativePath="..\..\..\c64\cart\stardos.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\stb.c">
+			RelativePath="..\..\..\c64\cart\stb.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\superexplode5.c">
+			RelativePath="..\..\..\c64\cart\superexplode5.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\supergames.c">
+			RelativePath="..\..\..\c64\cart\supergames.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\supersnapshot.c">
+			RelativePath="..\..\..\c64\cart\supersnapshot.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\supersnapshot4.c">
+			RelativePath="..\..\..\c64\cart\supersnapshot4.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\warpspeed.c">
+			RelativePath="..\..\..\c64\cart\warpspeed.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\westermann.c">
+			RelativePath="..\..\..\c64\cart\westermann.c"
+			>
 		</File>
 		<File
-			RelativePath="..\..\..\c64\cart\zaxxon.c">
+			RelativePath="..\..\..\c64\cart\zaxxon.c"
+			>
 		</File>
 	</Files>
 	<Globals>
