@@ -11,6 +11,59 @@
 	</Platforms>
 	<Configurations>
 		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\cartconv\Debug"
+			ConfigurationType="1"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\drive,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile=".\libs\cartconv\Debug\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconv\Debug\"
+				ObjectFile=".\libs\cartconv\Debug\"
+				ProgramDataBaseFileName=".\libs\cartconv\Debug\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="1"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="/MACHINE:I386"
+				AdditionalDependencies="version.lib wsock32.lib SDLmain.lib SDL.lib opengl32.lib"
+				OutputFile=".\..\..\..\..\data\cartconv.exe"
+				LinkIncremental="2"
+				SuppressStartupBanner="TRUE"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile=".\..\..\..\..\data\cartconv.pdb"
+				SubSystem="1"/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\..\..\..\..\data\cartconv.tlb"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+		</Configuration>
+		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\..\..\..\..\data"
 			IntermediateDirectory=".\libs\cartconv\Release"
@@ -22,15 +75,15 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\drive,..\..\..\vdrive"
-				PreprocessorDefinitions="WIN32,_CONSOLE,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\cartconv\Release/cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\Release/"
-				ObjectFile=".\libs\cartconv\Release/"
-				ProgramDataBaseFileName=".\libs\cartconv\Release/"
+				PrecompiledHeaderFile=".\libs\cartconv\Release\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconv\Release\"
+				ObjectFile=".\libs\cartconv\Release\"
+				ProgramDataBaseFileName=".\libs\cartconv\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -39,15 +92,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib version.lib wsock32.lib SDLmain.lib SDL.lib opengl32.lib"
-				OutputFile=".\..\..\..\..\data/cartconv.exe"
+				AdditionalDependencies="version.lib wsock32.lib SDLmain.lib SDL.lib opengl32.lib"
+				OutputFile=".\..\..\..\..\data\cartconv.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\..\..\..\..\data/cartconv.pdb"
+				ProgramDatabaseFile=".\..\..\..\..\data\cartconv.pdb"
 				SubSystem="1"/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\..\..\..\..\data/cartconv.tlb"/>
+				TypeLibraryName=".\..\..\..\..\data\cartconv.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -56,64 +109,8 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG,WIN32,IDE_COMPILE"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-		</Configuration>
-		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory=".\..\..\..\..\data"
-			IntermediateDirectory=".\libs\cartconv\Debug"
-			ConfigurationType="1"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
-			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalOptions="&quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D "
-				Optimization="0"
-				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\drive,..\..\..\vdrive"
-				PreprocessorDefinitions="WIN32,_CONSOLE,IDE_COMPILE,_DEBUG"
-				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\cartconv\Debug/cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\Debug/"
-				ObjectFile=".\libs\cartconv\Debug/"
-				ProgramDataBaseFileName=".\libs\cartconv\Debug/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="1"
-				CompileAs="0"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib version.lib wsock32.lib SDLmain.lib SDL.lib opengl32.lib"
-				OutputFile=".\..\..\..\..\data/cartconv.exe"
-				LinkIncremental="2"
-				SuppressStartupBanner="TRUE"
-				IgnoreDefaultLibraryNames="msvcrt.lib"
-				ProgramDatabaseFile=".\..\..\..\..\data/cartconv.pdb"
-				SubSystem="1"/>
-			<Tool
-				Name="VCMIDLTool"
-				TypeLibraryName=".\..\..\..\..\data/cartconv.tlb"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG,WIN32,IDE_COMPILE"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
@@ -123,12 +120,6 @@
 	<Files>
 		<File
 			RelativePath="..\..\..\cartconv.c">
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalOptions="&quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D "/>
-			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

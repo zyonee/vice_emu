@@ -20,39 +20,37 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="&quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D "
 				Optimization="0"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\"
-				PreprocessorDefinitions="WIN32,_CONSOLE,IDE_COMPILE,_DEBUG"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\geninfocontrib\Debug/geninfocontrib.pch"
-				AssemblerListingLocation=".\libs\geninfocontrib\Debug/"
-				ObjectFile=".\libs\geninfocontrib\Debug/"
-				ProgramDataBaseFileName=".\libs\geninfocontrib\Debug/"
+				PrecompiledHeaderFile=".\libs\geninfocontrib\Debug\geninfocontrib.pch"
+				AssemblerListingLocation=".\libs\geninfocontrib\Debug\"
+				ObjectFile=".\libs\geninfocontrib\Debug\"
+				ProgramDataBaseFileName=".\libs\geninfocontrib\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
 				CompileAs="0"/>
 			<Tool
 				Name="VCCustomBuildTool"
-				Description="Generating infocontrib.h"
 				CommandLine="..\..\..\..\data\geninfocontrib ..\..\..\..\doc\vice.texi ..\..\..\infocontrib.h ..\..\..\infocontrib.sed
 "
 				Outputs="..\..\..\infocontrib.h"/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib version.lib wsock32.lib SDLmain.lib SDL.lib opengl32.lib"
-				OutputFile=".\..\..\..\..\data/geninfocontrib.exe"
+				AdditionalDependencies="version.lib wsock32.lib SDLmain.lib SDL.lib opengl32.lib"
+				OutputFile=".\..\..\..\..\data\geninfocontrib.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
-				IgnoreDefaultLibraryNames="msvcrt.lib"
-				ProgramDatabaseFile=".\..\..\..\..\data/geninfocontrib.pdb"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile=".\..\..\..\..\data\geninfocontrib.pdb"
 				SubSystem="1"/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\..\..\..\..\data/geninfocontrib.tlb"/>
+				TypeLibraryName=".\..\..\..\..\data\geninfocontrib.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -61,9 +59,8 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG,WIN32,IDE_COMPILE"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
@@ -81,36 +78,35 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\"
-				PreprocessorDefinitions="WIN32,_CONSOLE,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\geninfocontrib\Release/geninfocontrib.pch"
-				AssemblerListingLocation=".\libs\geninfocontrib\Release/"
-				ObjectFile=".\libs\geninfocontrib\Release/"
-				ProgramDataBaseFileName=".\libs\geninfocontrib\Release/"
+				PrecompiledHeaderFile=".\libs\geninfocontrib\Release\geninfocontrib.pch"
+				AssemblerListingLocation=".\libs\geninfocontrib\Release\"
+				ObjectFile=".\libs\geninfocontrib\Release\"
+				ProgramDataBaseFileName=".\libs\geninfocontrib\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
 			<Tool
 				Name="VCCustomBuildTool"
-				Description="Generating infocontrib.h"
 				CommandLine="..\..\..\..\data\geninfocontrib ..\..\..\..\doc\vice.texi ..\..\..\infocontrib.h ..\..\..\infocontrib.sed
 "
 				Outputs="..\..\..\infocontrib.h"/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib version.lib wsock32.lib SDLmain.lib SDL.lib opengl32.lib"
-				OutputFile=".\..\..\..\..\data/geninfocontrib.exe"
+				AdditionalDependencies="version.lib wsock32.lib SDLmain.lib SDL.lib opengl32.lib"
+				OutputFile=".\..\..\..\..\data\geninfocontrib.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\..\..\..\..\data/geninfocontrib.pdb"
+				ProgramDatabaseFile=".\..\..\..\..\data\geninfocontrib.pdb"
 				SubSystem="1"/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\..\..\..\..\data/geninfocontrib.tlb"/>
+				TypeLibraryName=".\..\..\..\..\data\geninfocontrib.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -119,9 +115,8 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG,WIN32,IDE_COMPILE"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
@@ -130,13 +125,7 @@
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\win32\utils\geninfocontrib.c">
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalOptions="&quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D  &quot;DONT_USE_UNISTD_H &quot;  /D "/>
-			</FileConfiguration>
+			RelativePath="..\..\..\arch\win32\utils\geninfocontrib.c">
 		</File>
 	</Files>
 	<Globals>

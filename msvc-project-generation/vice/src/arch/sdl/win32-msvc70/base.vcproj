@@ -24,10 +24,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\base\Debug/base.pch"
-				AssemblerListingLocation=".\libs\base\Debug/"
-				ObjectFile=".\libs\base\Debug/"
-				ProgramDataBaseFileName=".\libs\base\Debug/"
+				PrecompiledHeaderFile=".\libs\base\Debug\base.pch"
+				AssemblerListingLocation=".\libs\base\Debug\"
+				ObjectFile=".\libs\base\Debug\"
+				ProgramDataBaseFileName=".\libs\base\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -48,9 +48,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG,WIN32,IDE_COMPILE"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
+				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
@@ -70,10 +68,10 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\base\Release/base.pch"
-				AssemblerListingLocation=".\libs\base\Release/"
-				ObjectFile=".\libs\base\Release/"
-				ProgramDataBaseFileName=".\libs\base\Release/"
+				PrecompiledHeaderFile=".\libs\base\Release\base.pch"
+				AssemblerListingLocation=".\libs\base\Release\"
+				ObjectFile=".\libs\base\Release\"
+				ProgramDataBaseFileName=".\libs\base\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -93,9 +91,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG,WIN32,IDE_COMPILE"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
+				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
@@ -246,29 +242,6 @@
 			RelativePath="..\..\..\translate.c">
 		</File>
 		<File
-			RelativePath="..\..\..\translate.txt">
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating translate.h and translate_table.h"
-					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h
-"
-					AdditionalDependencies="..\..\..\translate.txt;"
-					Outputs="$(InputDir)..\..\..\translate_table.h"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating translate.h and translate_table.h"
-					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h
-"
-					AdditionalDependencies="..\..\..\translate.txt;"
-					Outputs="$(InputDir)..\..\..\translate_table.h"/>
-			</FileConfiguration>
-		</File>
-		<File
 			RelativePath="..\..\..\traps.c">
 		</File>
 		<File
@@ -282,6 +255,29 @@
 		</File>
 		<File
 			RelativePath="..\..\..\zipcode.c">
+		</File>
+		<File
+			RelativePath="..\..\..\translate.txt">
+			<FileConfiguration
+				Name="Debug|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating translate.h and translate_table.h"
+					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h
+"
+					AdditionalDependencies="..\..\..\translate.txt;"
+					Outputs="..\..\..\translate_table.h"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating translate.h and translate_table.h"
+					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h
+"
+					AdditionalDependencies="..\..\..\translate.txt;"
+					Outputs="..\..\..\translate_table.h"/>
+			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

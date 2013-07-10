@@ -24,10 +24,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\parallel\Debug/parallel.pch"
-				AssemblerListingLocation=".\libs\parallel\Debug/"
-				ObjectFile=".\libs\parallel\Debug/"
-				ProgramDataBaseFileName=".\libs\parallel\Debug/"
+				PrecompiledHeaderFile=".\libs\parallel\Debug\parallel.pch"
+				AssemblerListingLocation=".\libs\parallel\Debug\"
+				ObjectFile=".\libs\parallel\Debug\"
+				ProgramDataBaseFileName=".\libs\parallel\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -48,9 +48,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG,WIN32,IDE_COMPILE"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
+				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
@@ -70,10 +68,10 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\parallel\Release/parallel.pch"
-				AssemblerListingLocation=".\libs\parallel\Release/"
-				ObjectFile=".\libs\parallel\Release/"
-				ProgramDataBaseFileName=".\libs\parallel\Release/"
+				PrecompiledHeaderFile=".\libs\parallel\Release\parallel.pch"
+				AssemblerListingLocation=".\libs\parallel\Release\"
+				ObjectFile=".\libs\parallel\Release\"
+				ProgramDataBaseFileName=".\libs\parallel\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -93,9 +91,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG,WIN32,IDE_COMPILE"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
+				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>

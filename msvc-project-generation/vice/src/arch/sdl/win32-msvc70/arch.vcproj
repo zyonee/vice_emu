@@ -24,10 +24,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\arch\Debug/arch.pch"
-				AssemblerListingLocation=".\libs\arch\Debug/"
-				ObjectFile=".\libs\arch\Debug/"
-				ProgramDataBaseFileName=".\libs\arch\Debug/"
+				PrecompiledHeaderFile=".\libs\arch\Debug\arch.pch"
+				AssemblerListingLocation=".\libs\arch\Debug\"
+				ObjectFile=".\libs\arch\Debug\"
+				ProgramDataBaseFileName=".\libs\arch\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -48,9 +48,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG,WIN32,IDE_COMPILE"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
+				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
@@ -70,10 +68,10 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\arch\Release/arch.pch"
-				AssemblerListingLocation=".\libs\arch\Release/"
-				ObjectFile=".\libs\arch\Release/"
-				ProgramDataBaseFileName=".\libs\arch\Release/"
+				PrecompiledHeaderFile=".\libs\arch\Release\arch.pch"
+				AssemblerListingLocation=".\libs\arch\Release\"
+				ObjectFile=".\libs\arch\Release\"
+				ProgramDataBaseFileName=".\libs\arch\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -93,256 +91,254 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG,WIN32,IDE_COMPILE"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
+				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\archdep.c">
+			RelativePath="..\..\..\arch\sdl\archdep.c">
 		</File>
 		<File
-			RelativePath="..\blockdev.c">
+			RelativePath="..\..\..\arch\sdl\blockdev.c">
 		</File>
 		<File
-			RelativePath="..\catweaselmkiii.c">
+			RelativePath="..\..\..\arch\sdl\catweaselmkiii.c">
 		</File>
 		<File
-			RelativePath="..\console.c">
+			RelativePath="..\..\..\arch\sdl\console.c">
 		</File>
 		<File
-			RelativePath="..\dynlib.c">
+			RelativePath="..\..\..\arch\sdl\dynlib.c">
 		</File>
 		<File
-			RelativePath="..\fullscreen.c">
+			RelativePath="..\..\..\arch\sdl\fullscreen.c">
 		</File>
 		<File
-			RelativePath="..\hardsid.c">
+			RelativePath="..\..\..\arch\sdl\hardsid.c">
 		</File>
 		<File
-			RelativePath="..\joy.c">
+			RelativePath="..\..\..\arch\sdl\joy.c">
 		</File>
 		<File
-			RelativePath="..\kbd.c">
+			RelativePath="..\..\..\arch\sdl\kbd.c">
 		</File>
 		<File
-			RelativePath="..\lightpendrv.c">
+			RelativePath="..\..\..\arch\sdl\lightpendrv.c">
 		</File>
 		<File
-			RelativePath="..\menu_c128hw.c">
+			RelativePath="..\..\..\arch\sdl\menu_c128hw.c">
 		</File>
 		<File
-			RelativePath="..\menu_c64_common_expansions.c">
+			RelativePath="..\..\..\arch\sdl\menu_c64_common_expansions.c">
 		</File>
 		<File
-			RelativePath="..\menu_c64_expansions.c">
+			RelativePath="..\..\..\arch\sdl\menu_c64_expansions.c">
 		</File>
 		<File
-			RelativePath="..\menu_c64cart.c">
+			RelativePath="..\..\..\arch\sdl\menu_c64cart.c">
 		</File>
 		<File
-			RelativePath="..\menu_c64dtvhw.c">
+			RelativePath="..\..\..\arch\sdl\menu_c64dtvhw.c">
 		</File>
 		<File
-			RelativePath="..\menu_c64hw.c">
+			RelativePath="..\..\..\arch\sdl\menu_c64hw.c">
 		</File>
 		<File
-			RelativePath="..\menu_c64model.c">
+			RelativePath="..\..\..\arch\sdl\menu_c64model.c">
 		</File>
 		<File
-			RelativePath="..\menu_cbm2cart.c">
+			RelativePath="..\..\..\arch\sdl\menu_cbm2cart.c">
 		</File>
 		<File
-			RelativePath="..\menu_cbm2hw.c">
+			RelativePath="..\..\..\arch\sdl\menu_cbm2hw.c">
 		</File>
 		<File
-			RelativePath="..\menu_common.c">
+			RelativePath="..\..\..\arch\sdl\menu_common.c">
 		</File>
 		<File
-			RelativePath="..\menu_debug.c">
+			RelativePath="..\..\..\arch\sdl\menu_debug.c">
 		</File>
 		<File
-			RelativePath="..\menu_drive.c">
+			RelativePath="..\..\..\arch\sdl\menu_drive.c">
 		</File>
 		<File
-			RelativePath="..\menu_drive_rom.c">
+			RelativePath="..\..\..\arch\sdl\menu_drive_rom.c">
 		</File>
 		<File
-			RelativePath="..\menu_ffmpeg.c">
+			RelativePath="..\..\..\arch\sdl\menu_ffmpeg.c">
 		</File>
 		<File
-			RelativePath="..\menu_help.c">
+			RelativePath="..\..\..\arch\sdl\menu_help.c">
 		</File>
 		<File
-			RelativePath="..\menu_joystick.c">
+			RelativePath="..\..\..\arch\sdl\menu_joystick.c">
 		</File>
 		<File
-			RelativePath="..\menu_lightpen.c">
+			RelativePath="..\..\..\arch\sdl\menu_lightpen.c">
 		</File>
 		<File
-			RelativePath="..\menu_midi.c">
+			RelativePath="..\..\..\arch\sdl\menu_midi.c">
 		</File>
 		<File
-			RelativePath="..\menu_mouse.c">
+			RelativePath="..\..\..\arch\sdl\menu_mouse.c">
 		</File>
 		<File
-			RelativePath="..\menu_network.c">
+			RelativePath="..\..\..\arch\sdl\menu_network.c">
 		</File>
 		<File
-			RelativePath="..\menu_petcart.c">
+			RelativePath="..\..\..\arch\sdl\menu_petcart.c">
 		</File>
 		<File
-			RelativePath="..\menu_pethw.c">
+			RelativePath="..\..\..\arch\sdl\menu_pethw.c">
 		</File>
 		<File
-			RelativePath="..\menu_plus4cart.c">
+			RelativePath="..\..\..\arch\sdl\menu_plus4cart.c">
 		</File>
 		<File
-			RelativePath="..\menu_plus4hw.c">
+			RelativePath="..\..\..\arch\sdl\menu_plus4hw.c">
 		</File>
 		<File
-			RelativePath="..\menu_printer.c">
+			RelativePath="..\..\..\arch\sdl\menu_printer.c">
 		</File>
 		<File
-			RelativePath="..\menu_ram.c">
+			RelativePath="..\..\..\arch\sdl\menu_ram.c">
 		</File>
 		<File
-			RelativePath="..\menu_reset.c">
+			RelativePath="..\..\..\arch\sdl\menu_reset.c">
 		</File>
 		<File
-			RelativePath="..\menu_rom.c">
+			RelativePath="..\..\..\arch\sdl\menu_rom.c">
 		</File>
 		<File
-			RelativePath="..\menu_rs232.c">
+			RelativePath="..\..\..\arch\sdl\menu_rs232.c">
 		</File>
 		<File
-			RelativePath="..\menu_scpu64hw.c">
+			RelativePath="..\..\..\arch\sdl\menu_scpu64hw.c">
 		</File>
 		<File
-			RelativePath="..\menu_screenshot.c">
+			RelativePath="..\..\..\arch\sdl\menu_screenshot.c">
 		</File>
 		<File
-			RelativePath="..\menu_settings.c">
+			RelativePath="..\..\..\arch\sdl\menu_settings.c">
 		</File>
 		<File
-			RelativePath="..\menu_sid.c">
+			RelativePath="..\..\..\arch\sdl\menu_sid.c">
 		</File>
 		<File
-			RelativePath="..\menu_snapshot.c">
+			RelativePath="..\..\..\arch\sdl\menu_snapshot.c">
 		</File>
 		<File
-			RelativePath="..\menu_sound.c">
+			RelativePath="..\..\..\arch\sdl\menu_sound.c">
 		</File>
 		<File
-			RelativePath="..\menu_speed.c">
+			RelativePath="..\..\..\arch\sdl\menu_speed.c">
 		</File>
 		<File
-			RelativePath="..\menu_tape.c">
+			RelativePath="..\..\..\arch\sdl\menu_tape.c">
 		</File>
 		<File
-			RelativePath="..\menu_tfe.c">
+			RelativePath="..\..\..\arch\sdl\menu_tfe.c">
 		</File>
 		<File
-			RelativePath="..\menu_vic20cart.c">
+			RelativePath="..\..\..\arch\sdl\menu_vic20cart.c">
 		</File>
 		<File
-			RelativePath="..\menu_vic20hw.c">
+			RelativePath="..\..\..\arch\sdl\menu_vic20hw.c">
 		</File>
 		<File
-			RelativePath="..\menu_video.c">
+			RelativePath="..\..\..\arch\sdl\menu_video.c">
 		</File>
 		<File
-			RelativePath="..\mousedrv.c">
+			RelativePath="..\..\..\arch\sdl\mousedrv.c">
 		</File>
 		<File
-			RelativePath="..\rawnetarch.c">
+			RelativePath="..\..\..\arch\sdl\rawnetarch.c">
 		</File>
 		<File
-			RelativePath="..\rs232.c">
+			RelativePath="..\..\..\arch\sdl\rs232.c">
 		</File>
 		<File
-			RelativePath="..\rs232dev.c">
+			RelativePath="..\..\..\arch\sdl\rs232dev.c">
 		</File>
 		<File
-			RelativePath="..\rs232net.c">
+			RelativePath="..\..\..\arch\sdl\rs232net.c">
 		</File>
 		<File
-			RelativePath="..\sdlmain.c">
+			RelativePath="..\..\..\arch\sdl\sdlmain.c">
 		</File>
 		<File
-			RelativePath="..\signals.c">
+			RelativePath="..\..\..\arch\sdl\signals.c">
 		</File>
 		<File
-			RelativePath="..\ui.c">
+			RelativePath="..\..\..\arch\sdl\ui.c">
 		</File>
 		<File
-			RelativePath="..\uicmdline.c">
+			RelativePath="..\..\..\arch\sdl\uicmdline.c">
 		</File>
 		<File
-			RelativePath="..\uifilereq.c">
+			RelativePath="..\..\..\arch\sdl\uifilereq.c">
 		</File>
 		<File
-			RelativePath="..\uihotkey.c">
+			RelativePath="..\..\..\arch\sdl\uihotkey.c">
 		</File>
 		<File
-			RelativePath="..\uimenu.c">
+			RelativePath="..\..\..\arch\sdl\uimenu.c">
 		</File>
 		<File
-			RelativePath="..\uimon.c">
+			RelativePath="..\..\..\arch\sdl\uimon.c">
 		</File>
 		<File
-			RelativePath="..\uimsgbox.c">
+			RelativePath="..\..\..\arch\sdl\uimsgbox.c">
 		</File>
 		<File
-			RelativePath="..\uipause.c">
+			RelativePath="..\..\..\arch\sdl\uipause.c">
 		</File>
 		<File
-			RelativePath="..\uipoll.c">
+			RelativePath="..\..\..\arch\sdl\uipoll.c">
 		</File>
 		<File
-			RelativePath="..\uistatusbar.c">
+			RelativePath="..\..\..\arch\sdl\uistatusbar.c">
 		</File>
 		<File
-			RelativePath="..\video.c">
+			RelativePath="..\..\..\arch\sdl\video.c">
 		</File>
 		<File
-			RelativePath="..\vkbd.c">
+			RelativePath="..\..\..\arch\sdl\vkbd.c">
 		</File>
 		<File
-			RelativePath="..\vsidui.c">
+			RelativePath="..\..\..\arch\sdl\vsidui.c">
 		</File>
 		<File
-			RelativePath="..\vsyncarch.c">
+			RelativePath="..\..\..\arch\sdl\vsyncarch.c">
 		</File>
 		<File
-			RelativePath="..\x128_ui.c">
+			RelativePath="..\..\..\arch\sdl\x128_ui.c">
 		</File>
 		<File
-			RelativePath="..\x64_ui.c">
+			RelativePath="..\..\..\arch\sdl\x64_ui.c">
 		</File>
 		<File
-			RelativePath="..\x64dtv_ui.c">
+			RelativePath="..\..\..\arch\sdl\x64dtv_ui.c">
 		</File>
 		<File
-			RelativePath="..\x64sc_ui.c">
+			RelativePath="..\..\..\arch\sdl\x64sc_ui.c">
 		</File>
 		<File
-			RelativePath="..\xcbm2_ui.c">
+			RelativePath="..\..\..\arch\sdl\xcbm2_ui.c">
 		</File>
 		<File
-			RelativePath="..\xpet_ui.c">
+			RelativePath="..\..\..\arch\sdl\xpet_ui.c">
 		</File>
 		<File
-			RelativePath="..\xplus4_ui.c">
+			RelativePath="..\..\..\arch\sdl\xplus4_ui.c">
 		</File>
 		<File
-			RelativePath="..\xscpu64_ui.c">
+			RelativePath="..\..\..\arch\sdl\xscpu64_ui.c">
 		</File>
 		<File
-			RelativePath="..\xvic_ui.c">
+			RelativePath="..\..\..\arch\sdl\xvic_ui.c">
 		</File>
 	</Files>
 	<Globals>

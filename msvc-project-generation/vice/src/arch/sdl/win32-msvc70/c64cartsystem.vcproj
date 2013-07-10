@@ -24,10 +24,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\c64cartsystem\Debug/c64cartsystem.pch"
-				AssemblerListingLocation=".\libs\c64cartsystem\Debug/"
-				ObjectFile=".\libs\c64cartsystem\Debug/"
-				ProgramDataBaseFileName=".\libs\c64cartsystem\Debug/"
+				PrecompiledHeaderFile=".\libs\c64cartsystem\Debug\c64cartsystem.pch"
+				AssemblerListingLocation=".\libs\c64cartsystem\Debug\"
+				ObjectFile=".\libs\c64cartsystem\Debug\"
+				ProgramDataBaseFileName=".\libs\c64cartsystem\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -48,9 +48,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG,WIN32,IDE_COMPILE"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
+				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
@@ -70,10 +68,10 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\c64cartsystem\Release/c64cartsystem.pch"
-				AssemblerListingLocation=".\libs\c64cartsystem\Release/"
-				ObjectFile=".\libs\c64cartsystem\Release/"
-				ProgramDataBaseFileName=".\libs\c64cartsystem\Release/"
+				PrecompiledHeaderFile=".\libs\c64cartsystem\Release\c64cartsystem.pch"
+				AssemblerListingLocation=".\libs\c64cartsystem\Release\"
+				ObjectFile=".\libs\c64cartsystem\Release\"
+				ProgramDataBaseFileName=".\libs\c64cartsystem\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -93,9 +91,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG,WIN32,IDE_COMPILE"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
+				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>

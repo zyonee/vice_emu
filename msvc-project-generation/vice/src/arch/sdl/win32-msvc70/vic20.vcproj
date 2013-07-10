@@ -24,10 +24,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\vic20\Debug/vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\Debug/"
-				ObjectFile=".\libs\vic20\Debug/"
-				ProgramDataBaseFileName=".\libs\vic20\Debug/"
+				PrecompiledHeaderFile=".\libs\vic20\Debug\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20\Debug\"
+				ObjectFile=".\libs\vic20\Debug\"
+				ProgramDataBaseFileName=".\libs\vic20\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -48,9 +48,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG,WIN32,IDE_COMPILE"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
+				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
@@ -70,10 +68,10 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\vic20\Release/vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\Release/"
-				ObjectFile=".\libs\vic20\Release/"
-				ProgramDataBaseFileName=".\libs\vic20\Release/"
+				PrecompiledHeaderFile=".\libs\vic20\Release\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20\Release\"
+				ObjectFile=".\libs\vic20\Release\"
+				ProgramDataBaseFileName=".\libs\vic20\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -93,14 +91,15 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG,WIN32,IDE_COMPILE"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
+				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
 	</Configurations>
 	<Files>
+		<File
+			RelativePath="..\..\..\vic20\vic20cpu.c">
+		</File>
 		<File
 			RelativePath="..\..\..\vic20\vic-cmdline-options.c">
 		</File>
@@ -142,19 +141,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\vic20\vic20bus.c">
-		</File>
-		<File
-			RelativePath="..\..\..\vic20\vic20cpu.c">
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="TRUE"
-					ImproveFloatingPointConsistency="TRUE"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="TRUE"/>
-			</FileConfiguration>
 		</File>
 		<File
 			RelativePath="..\..\..\vic20\vic20datasette.c">

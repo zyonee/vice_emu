@@ -24,10 +24,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\vsid\Debug/vsid.pch"
-				AssemblerListingLocation=".\libs\vsid\Debug/"
-				ObjectFile=".\libs\vsid\Debug/"
-				ProgramDataBaseFileName=".\libs\vsid\Debug/"
+				PrecompiledHeaderFile=".\libs\vsid\Debug\vsid.pch"
+				AssemblerListingLocation=".\libs\vsid\Debug\"
+				ObjectFile=".\libs\vsid\Debug\"
+				ProgramDataBaseFileName=".\libs\vsid\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -37,13 +37,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="comctl32.lib odbc32.lib odbccp32.lib version.lib winmm.lib wsock32.lib SDLmain.lib SDL.lib opengl32.lib"
-				OutputFile=".\..\..\..\..\data/vsid.exe"
+				AdditionalDependencies="comctl32.lib version.lib winmm.lib wsock32.lib SDLmain.lib SDL.lib opengl32.lib"
+				OutputFile=".\..\..\..\..\data\vsid.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
-				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\..\..\..\..\data/vsid.pdb"
+				ProgramDatabaseFile=".\..\..\..\..\data\vsid.pdb"
 				SubSystem="2"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -51,7 +50,7 @@
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName=".\..\..\..\..\data/vsid.tlb"/>
+				TypeLibraryName=".\..\..\..\..\data\vsid.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -60,7 +59,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG,WIN32,IDE_COMPILE"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				Culture="1033"
 				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
 			<Tool
@@ -84,10 +83,10 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\vsid\Release/vsid.pch"
-				AssemblerListingLocation=".\libs\vsid\Release/"
-				ObjectFile=".\libs\vsid\Release/"
-				ProgramDataBaseFileName=".\libs\vsid\Release/"
+				PrecompiledHeaderFile=".\libs\vsid\Release\vsid.pch"
+				AssemblerListingLocation=".\libs\vsid\Release\"
+				ObjectFile=".\libs\vsid\Release\"
+				ProgramDataBaseFileName=".\libs\vsid\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -96,12 +95,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="comctl32.lib odbc32.lib odbccp32.lib version.lib winmm.lib wsock32.lib SDLmain.lib SDL.lib opengl32.lib"
-				OutputFile=".\..\..\..\..\data/vsid.exe"
+				AdditionalDependencies="comctl32.lib version.lib winmm.lib wsock32.lib SDLmain.lib SDL.lib opengl32.lib"
+				OutputFile=".\..\..\..\..\data\vsid.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\..\..\..\..\data/vsid.pdb"
+				ProgramDatabaseFile=".\..\..\..\..\data\vsid.pdb"
 				SubSystem="2"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -109,7 +107,7 @@
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName=".\..\..\..\..\data/vsid.tlb"/>
+				TypeLibraryName=".\..\..\..\..\data\vsid.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -118,7 +116,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG,WIN32,IDE_COMPILE"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				Culture="1033"
 				AdditionalIncludeDirectories="..\msvc;..\;..\..\..\"/>
 			<Tool
