@@ -40,6 +40,8 @@
    7.0 (1300) |    x86   | DX-Debug
    7.0 (1300) |    x86   | SDL-Release
    7.0 (1300) |    x86   | SDL-Debug
+   7.1 (1310) |    x86   | SDL-Release
+   7.1 (1310) |    x86   | SDL-Debug
  */
 
 /* Untested:
@@ -49,8 +51,6 @@
      7.1   |    x86   | Debug
      7.1   |    x86   | DX-Release
      7.1   |    x86   | DX-Debug
-     7.1   |    x86   | SDL-Release
-     7.1   |    x86   | SDL-Debug
       8    |    x86   | Release
       8    |    x86   | Debug
       8    |    x86   | DX-Release
@@ -2494,6 +2494,13 @@ static char *msvc71_project_global_start = "Global\r\n"
                                            "\tEndGlobalSection\r\n"
                                            "\tGlobalSection(ProjectConfiguration) = postSolution\r\n";
 
+static char *msvc71_project_global_start_sdl = "Global\r\n"
+                                               "\tGlobalSection(SolutionConfiguration) = preSolution\r\n"
+                                               "\t\tDebug = Debug\r\n"
+                                               "\t\tRelease = Release\r\n"
+                                               "\tEndGlobalSection\r\n"
+                                               "\tGlobalSection(ProjectConfiguration) = postSolution\r\n";
+
 static void generate_msvc71_sln(int sdl)
 {
     int i, j;
@@ -2509,9 +2516,17 @@ static void generate_msvc71_sln(int sdl)
         }
         fprintf(mainfile, msvc71_project_deps_end);
     }
-    fprintf(mainfile, msvc71_project_global_start);
+    if (sdl) {
+        fprintf(mainfile, msvc71_project_global_start_sdl);
+    } else {
+        fprintf(mainfile, msvc71_project_global_start);
+    }
     for (i = 0; project_info[i].name; i++) {
-        fprintf(mainfile, msvc7x_main_project_confs, i, i, i, i, i, i, i, i);
+        if (sdl) {
+            fprintf(mainfile, msvc7x_main_project_confs_sdl, i, i, i, i);
+        } else {
+            fprintf(mainfile, msvc7x_main_project_confs, i, i, i, i, i, i, i, i);
+        }
     }
     fprintf(mainfile, msvc7x_main_project_end);
 }
@@ -2520,7 +2535,11 @@ static int open_msvc71_main_project(int sdl)
 {
     pi_init();
 
-    mainfile = fopen("../vs71/vice.sln", "wb");
+    if (sdl) {
+        mainfile = fopen("../../sdl/win32-msvc71/vice.sln", "wb");
+    } else {
+        mainfile = fopen("../vs71/vice.sln", "wb");
+    }
 
     if (!mainfile) {
         printf("Cannot open 'vice.sln' for output\n");
@@ -4605,6 +4624,25 @@ int main(int argc, char *argv[])
 #if MKMSVC_DEBUG
                                 printf("Output done\n");
 #endif
+                            }
+                        }
+                        if (sdl) {
+                            if (project_names_sdl[0] && !error) {
+                                for (i = 0; project_names_sdl[i] && !error; i++) {
+                                    error = read_template_file(project_names_sdl[i], sdl);
+                                    if (!error) {
+                                        error = output_msvc7_file(project_names_sdl[i], 1, 71, sdl);
+                                    }
+                                }
+                            }
+                        } else {
+                            if (project_names_native[0] && !error) {
+                                for (i = 0; project_names_native[i] && !error; i++) {
+                                    error = read_template_file(project_names_native[i], sdl);
+                                    if (!error) {
+                                        error = output_msvc7_file(project_names_native[i], 1, 71, sdl);
+                                    }
+                                }
                             }
                         }
                         close_msvc71_main_project(sdl);

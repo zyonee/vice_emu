@@ -112,6 +112,9 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\pet\petcpu.c">
+		</File>
+		<File
 			RelativePath="..\..\..\pet\6809.c">
 		</File>
 		<File
@@ -137,9 +140,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\pet\petcolour.c">
-		</File>
-		<File
-			RelativePath="..\..\..\pet\petcpu.c">
 		</File>
 		<File
 			RelativePath="..\..\..\pet\petdatasette.c">

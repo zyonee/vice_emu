@@ -112,6 +112,12 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\drive\drivecpu.c">
+		</File>
+		<File
+			RelativePath="..\..\..\drive\drivecpu65c02.c">
+		</File>
+		<File
 			RelativePath="..\..\..\drive\drive-check.c">
 		</File>
 		<File
@@ -134,12 +140,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\drive\drive.c">
-		</File>
-		<File
-			RelativePath="..\..\..\drive\drivecpu.c">
-		</File>
-		<File
-			RelativePath="..\..\..\drive\drivecpu65c02.c">
 		</File>
 		<File
 			RelativePath="..\..\..\drive\driveimage.c">

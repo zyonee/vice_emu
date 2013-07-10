@@ -112,6 +112,9 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\vic20\vic20cpu.c">
+		</File>
+		<File
 			RelativePath="..\..\..\vic20\vic-cmdline-options.c">
 		</File>
 		<File
@@ -152,9 +155,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\vic20\vic20bus.c">
-		</File>
-		<File
-			RelativePath="..\..\..\vic20\vic20cpu.c">
 		</File>
 		<File
 			RelativePath="..\..\..\vic20\vic20datasette.c">

@@ -256,6 +256,21 @@
 			RelativePath="..\..\..\translate.c">
 		</File>
 		<File
+			RelativePath="..\..\..\traps.c">
+		</File>
+		<File
+			RelativePath="..\..\..\util.c">
+		</File>
+		<File
+			RelativePath="..\..\..\vsync.c">
+		</File>
+		<File
+			RelativePath="..\..\..\zfile.c">
+		</File>
+		<File
+			RelativePath="..\..\..\zipcode.c">
+		</File>
+		<File
 			RelativePath="..\..\..\translate.txt">
 			<FileConfiguration
 				Name="Debug|Win32">
@@ -277,21 +292,6 @@
 					AdditionalDependencies="..\..\..\translate.txt;"
 					Outputs="..\..\..\translate_table.h"/>
 			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\..\..\traps.c">
-		</File>
-		<File
-			RelativePath="..\..\..\util.c">
-		</File>
-		<File
-			RelativePath="..\..\..\vsync.c">
-		</File>
-		<File
-			RelativePath="..\..\..\zfile.c">
-		</File>
-		<File
-			RelativePath="..\..\..\zipcode.c">
 		</File>
 	</Files>
 	<Globals>

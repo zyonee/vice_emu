@@ -133,9 +133,6 @@
 			RelativePath="..\..\..\c64dtv\c64dtvcia2.c">
 		</File>
 		<File
-			RelativePath="..\..\..\c64dtv\c64dtvcpu.c">
-		</File>
-		<File
 			RelativePath="..\..\..\c64dtv\c64dtvdma.c">
 		</File>
 		<File
@@ -170,6 +167,9 @@
 		</File>
 		<File
 			RelativePath="..\..\..\c64dtv\hummeradc.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c64dtv\c64dtvcpu.c">
 		</File>
 	</Files>
 	<Globals>

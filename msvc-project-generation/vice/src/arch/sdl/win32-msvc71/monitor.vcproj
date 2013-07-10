@@ -178,10 +178,10 @@
 			RelativePath="..\..\..\monitor\mon_register65816.c">
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_register6809.c">
+			RelativePath="..\..\..\monitor\mon_registerR65C02.c">
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_registerR65C02.c">
+			RelativePath="..\..\..\monitor\mon_register6809.c">
 		</File>
 		<File
 			RelativePath="..\..\..\monitor\mon_registerz80.c">
