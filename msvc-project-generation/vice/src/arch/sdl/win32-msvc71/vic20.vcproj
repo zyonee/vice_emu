@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "Windows-1252"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="vic20"
 	SccProjectName=""
 	SccLocalPath="">
@@ -51,6 +51,12 @@
 				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -94,12 +100,17 @@
 				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
-		<File
-			RelativePath="..\..\..\vic20\vic20cpu.c">
-		</File>
 		<File
 			RelativePath="..\..\..\vic20\vic-cmdline-options.c">
 		</File>
@@ -141,6 +152,9 @@
 		</File>
 		<File
 			RelativePath="..\..\..\vic20\vic20bus.c">
+		</File>
+		<File
+			RelativePath="..\..\..\vic20\vic20cpu.c">
 		</File>
 		<File
 			RelativePath="..\..\..\vic20\vic20datasette.c">
