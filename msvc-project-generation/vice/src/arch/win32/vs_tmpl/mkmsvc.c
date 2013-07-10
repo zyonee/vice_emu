@@ -40,6 +40,8 @@
    7.0 (1300) |    x86   | DX-Debug
    7.0 (1300) |    x86   | SDL-Release
    7.0 (1300) |    x86   | SDL-Debug
+   7.1 (1310) |    x86   | Release
+   7.1 (1310) |    x86   | Debug
    7.1 (1310) |    x86   | SDL-Release
    7.1 (1310) |    x86   | SDL-Debug
  */
@@ -47,8 +49,6 @@
 /* Untested:
    version | platform | type
    -------------------------
-     7.1   |    x86   | Release
-     7.1   |    x86   | Debug
      7.1   |    x86   | DX-Release
      7.1   |    x86   | DX-Debug
       8    |    x86   | Release
