@@ -1,6 +1,7 @@
 @echo off
 call ..\..\win32\vice-version.bat
-set VICEDIR=SDLVICE-%VICEVERSION%-win32
+call winid.bat
+set VICEDIR=SDLVICE-%VICEVERSION%-%WIN64TYPE%
 if not exist ..\..\..\..\data\x64.exe goto missingmsvc
 if not exist ..\..\..\..\data\x64dtv.exe goto missingmsvc
 if not exist ..\..\..\..\data\x64sc.exe goto missingmsvc

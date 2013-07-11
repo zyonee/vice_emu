@@ -9,14 +9,20 @@
 		<Platform
 			Name="Win32"
 		/>
+		<Platform
+			Name="Itanium"
+		/>
+		<Platform
+			Name="x64"
+		/>
 	</Platforms>
 	<ToolFiles>
 	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\vsidlib\Debug"
-			IntermediateDirectory=".\libs\vsidlib\Debug"
+			OutputDirectory=".\libs\vsidlib\Win32Debug"
+			IntermediateDirectory=".\libs\vsidlib\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -44,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vsidlib\Debug\vsidlib.pch"
-				AssemblerListingLocation=".\libs\vsidlib\Debug\"
-				ObjectFile=".\libs\vsidlib\Debug\"
-				ProgramDataBaseFileName=".\libs\vsidlib\Debug\"
+				PrecompiledHeaderFile=".\libs\vsidlib\Win32Debug\vsidlib.pch"
+				AssemblerListingLocation=".\libs\vsidlib\Win32Debug\"
+				ObjectFile=".\libs\vsidlib\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\vsidlib\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -65,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vsidlib\Debug\vsidlib.lib"
+				OutputFile=".\libs\vsidlib\Win32Debug\vsidlib.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -86,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\vsidlib\Release"
-			IntermediateDirectory=".\libs\vsidlib\Release"
+			OutputDirectory=".\libs\vsidlib\Win32Release"
+			IntermediateDirectory=".\libs\vsidlib\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -117,10 +123,10 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vsidlib\Release\vsidlib.pch"
-				AssemblerListingLocation=".\libs\vsidlib\Release\"
-				ObjectFile=".\libs\vsidlib\Release\"
-				ProgramDataBaseFileName=".\libs\vsidlib\Release\"
+				PrecompiledHeaderFile=".\libs\vsidlib\Win32Release\vsidlib.pch"
+				AssemblerListingLocation=".\libs\vsidlib\Win32Release\"
+				ObjectFile=".\libs\vsidlib\Win32Release\"
+				ProgramDataBaseFileName=".\libs\vsidlib\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -137,7 +143,297 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vsidlib\Release\vsidlib.lib"
+				OutputFile=".\libs\vsidlib\Win32Release\vsidlib.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Itanium"
+			OutputDirectory=".\libs\vsidlib\ItaniumDebug"
+			IntermediateDirectory=".\libs\vsidlib\ItaniumDebug"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="2"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\c64\cart,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\rs232drv,..\..\..\rtc,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vdrive,..\..\..\vicii"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\libs\vsidlib\ItaniumDebug\vsidlib.pch"
+				AssemblerListingLocation=".\libs\vsidlib\ItaniumDebug\"
+				ObjectFile=".\libs\vsidlib\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\vsidlib\ItaniumDebug\"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="1"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\vsidlib\ItaniumDebug\vsidlib.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Itanium"
+			OutputDirectory=".\libs\vsidlib\ItaniumRelease"
+			IntermediateDirectory=".\libs\vsidlib\ItaniumRelease"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="2"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\c64\cart,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\rs232drv,..\..\..\rtc,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vdrive,..\..\..\vicii"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\libs\vsidlib\ItaniumRelease\vsidlib.pch"
+				AssemblerListingLocation=".\libs\vsidlib\ItaniumRelease\"
+				ObjectFile=".\libs\vsidlib\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\vsidlib\ItaniumRelease\"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\vsidlib\ItaniumRelease\vsidlib.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|x64"
+			OutputDirectory=".\libs\vsidlib\x64Debug"
+			IntermediateDirectory=".\libs\vsidlib\x64Debug"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\c64\cart,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\rs232drv,..\..\..\rtc,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vdrive,..\..\..\vicii"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\libs\vsidlib\x64Debug\vsidlib.pch"
+				AssemblerListingLocation=".\libs\vsidlib\x64Debug\"
+				ObjectFile=".\libs\vsidlib\x64Debug\"
+				ProgramDataBaseFileName=".\libs\vsidlib\x64Debug\"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="1"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\vsidlib\x64Debug\vsidlib.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|x64"
+			OutputDirectory=".\libs\vsidlib\x64Release"
+			IntermediateDirectory=".\libs\vsidlib\x64Release"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\c64\cart,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\rs232drv,..\..\..\rtc,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vdrive,..\..\..\vicii"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\libs\vsidlib\x64Release\vsidlib.pch"
+				AssemblerListingLocation=".\libs\vsidlib\x64Release\"
+				ObjectFile=".\libs\vsidlib\x64Release\"
+				ProgramDataBaseFileName=".\libs\vsidlib\x64Release\"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\vsidlib\x64Release\vsidlib.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -160,6 +456,10 @@
 	<References>
 	</References>
 	<Files>
+		<File
+			RelativePath="..\..\..\c64\vsidcpu.c"
+			>
+		</File>
 		<File
 			RelativePath="..\..\..\c64\c64-cmdline-options.c"
 			>
@@ -254,10 +554,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\c64\vsidcia2.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\c64\vsidcpu.c"
 			>
 		</File>
 		<File

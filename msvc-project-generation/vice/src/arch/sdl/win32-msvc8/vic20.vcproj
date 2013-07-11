@@ -9,14 +9,20 @@
 		<Platform
 			Name="Win32"
 		/>
+		<Platform
+			Name="Itanium"
+		/>
+		<Platform
+			Name="x64"
+		/>
 	</Platforms>
 	<ToolFiles>
 	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\libs\vic20\Debug"
-			IntermediateDirectory=".\libs\vic20\Debug"
+			OutputDirectory=".\libs\vic20\Win32Debug"
+			IntermediateDirectory=".\libs\vic20\Win32Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -44,10 +50,10 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20\Debug\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\Debug\"
-				ObjectFile=".\libs\vic20\Debug\"
-				ProgramDataBaseFileName=".\libs\vic20\Debug\"
+				PrecompiledHeaderFile=".\libs\vic20\Win32Debug\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20\Win32Debug\"
+				ObjectFile=".\libs\vic20\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\vic20\Win32Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="1"
@@ -65,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20\Debug\vic20.lib"
+				OutputFile=".\libs\vic20\Win32Debug\vic20.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -86,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\libs\vic20\Release"
-			IntermediateDirectory=".\libs\vic20\Release"
+			OutputDirectory=".\libs\vic20\Win32Release"
+			IntermediateDirectory=".\libs\vic20\Win32Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -117,10 +123,10 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\vic20\Release\vic20.pch"
-				AssemblerListingLocation=".\libs\vic20\Release\"
-				ObjectFile=".\libs\vic20\Release\"
-				ProgramDataBaseFileName=".\libs\vic20\Release\"
+				PrecompiledHeaderFile=".\libs\vic20\Win32Release\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20\Win32Release\"
+				ObjectFile=".\libs\vic20\Win32Release\"
+				ProgramDataBaseFileName=".\libs\vic20\Win32Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				CompileAs="0"
@@ -137,7 +143,297 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\vic20\Release\vic20.lib"
+				OutputFile=".\libs\vic20\Win32Release\vic20.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Itanium"
+			OutputDirectory=".\libs\vic20\ItaniumDebug"
+			IntermediateDirectory=".\libs\vic20\ItaniumDebug"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="2"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vic20\cart,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\libs\vic20\ItaniumDebug\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20\ItaniumDebug\"
+				ObjectFile=".\libs\vic20\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\vic20\ItaniumDebug\"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="1"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\vic20\ItaniumDebug\vic20.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Itanium"
+			OutputDirectory=".\libs\vic20\ItaniumRelease"
+			IntermediateDirectory=".\libs\vic20\ItaniumRelease"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="2"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vic20\cart,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\libs\vic20\ItaniumRelease\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20\ItaniumRelease\"
+				ObjectFile=".\libs\vic20\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\vic20\ItaniumRelease\"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\vic20\ItaniumRelease\vic20.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|x64"
+			OutputDirectory=".\libs\vic20\x64Debug"
+			IntermediateDirectory=".\libs\vic20\x64Debug"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vic20\cart,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\libs\vic20\x64Debug\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20\x64Debug\"
+				ObjectFile=".\libs\vic20\x64Debug\"
+				ProgramDataBaseFileName=".\libs\vic20\x64Debug\"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="1"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\vic20\x64Debug\vic20.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|x64"
+			OutputDirectory=".\libs\vic20\x64Release"
+			IntermediateDirectory=".\libs\vic20\x64Release"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vic20\cart,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\libs\vic20\x64Release\vic20.pch"
+				AssemblerListingLocation=".\libs\vic20\x64Release\"
+				ObjectFile=".\libs\vic20\x64Release\"
+				ProgramDataBaseFileName=".\libs\vic20\x64Release\"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\vic20\x64Release\vic20.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -160,6 +456,10 @@
 	<References>
 	</References>
 	<Files>
+		<File
+			RelativePath="..\..\..\vic20\vic20cpu.c"
+			>
+		</File>
 		<File
 			RelativePath="..\..\..\vic20\vic-cmdline-options.c"
 			>
@@ -214,10 +514,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\vic20\vic20bus.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\vic20\vic20cpu.c"
 			>
 		</File>
 		<File
