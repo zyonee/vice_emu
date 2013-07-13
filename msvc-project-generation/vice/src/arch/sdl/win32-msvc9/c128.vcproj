@@ -458,6 +458,10 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\c128\c128cpu.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\c128\c128-cmdline-options.c"
 			>
 		</File>
@@ -475,10 +479,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\c128\c128cia1.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\c128\c128cpu.c"
 			>
 		</File>
 		<File

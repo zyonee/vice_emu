@@ -83,7 +83,6 @@
 				OutputFile=".\..\..\..\..\data\_vice.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\..\..\..\data\_vice.pdb"
 				SubSystem="2"
@@ -175,7 +174,6 @@
 				OutputFile=".\..\..\..\..\data\_vice.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\..\..\..\data\_vice.pdb"
 				SubSystem="2"
@@ -268,7 +266,6 @@
 				OutputFile=".\..\..\..\..\data\_vice.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\..\..\..\data\_vice.pdb"
 				SubSystem="2"
@@ -578,4 +575,6 @@
 	</References>
 	<Files>
 	</Files>
+	<Globals>
+	</Globals>
 </VisualStudioProject>

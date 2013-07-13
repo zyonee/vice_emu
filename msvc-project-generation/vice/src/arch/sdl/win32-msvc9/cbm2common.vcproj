@@ -458,6 +458,10 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\cbm2\cbm2cpu.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\cbm2\cbm2-cmdline-options.c"
 			>
 		</File>
@@ -475,10 +479,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\cbm2\cbm2cia1.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\cbm2\cbm2cpu.c"
 			>
 		</File>
 		<File

@@ -458,15 +458,7 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\..\scpu64\scpu64-cmdline-options.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\scpu64\scpu64-resources.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\scpu64\scpu64-snapshot.c"
+			RelativePath="..\..\..\scpu64\scpu64cpu.c"
 			>
 		</File>
 		<File
@@ -474,7 +466,7 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\scpu64\scpu64cpu.c"
+			RelativePath="..\..\..\scpu64\scpu64-cmdline-options.c"
 			>
 		</File>
 		<File
@@ -494,7 +486,15 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\..\scpu64\scpu64-resources.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\scpu64\scpu64rom.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\scpu64\scpu64-snapshot.c"
 			>
 		</File>
 		<File

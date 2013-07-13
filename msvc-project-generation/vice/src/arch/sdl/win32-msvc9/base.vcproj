@@ -650,6 +650,26 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\..\traps.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\util.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\vsync.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\zfile.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\zipcode.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\translate.txt"
 			>
 			<FileConfiguration
@@ -720,18 +740,6 @@
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="..\..\..\traps.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\util.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\vsync.c"
-			>
-		</File>
-		<File
 			RelativePath=".\winid.bat"
 			>
 			<FileConfiguration
@@ -800,14 +808,6 @@
 					Outputs=".\winid.bat"
 				/>
 			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\..\..\zfile.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\zipcode.c"
-			>
 		</File>
 	</Files>
 	<Globals>

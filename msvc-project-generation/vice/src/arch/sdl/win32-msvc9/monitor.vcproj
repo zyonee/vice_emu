@@ -546,11 +546,11 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_register6809.c"
+			RelativePath="..\..\..\monitor\mon_registerR65C02.c"
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\monitor\mon_registerR65C02.c"
+			RelativePath="..\..\..\monitor\mon_register6809.c"
 			>
 		</File>
 		<File

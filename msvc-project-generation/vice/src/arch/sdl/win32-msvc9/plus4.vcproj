@@ -458,6 +458,10 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\plus4\plus4cpu.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\plus4\digiblaster.c"
 			>
 		</File>
@@ -491,10 +495,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\plus4\plus4cart.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\plus4\plus4cpu.c"
 			>
 		</File>
 		<File

@@ -1246,9 +1246,15 @@ static char *msvc9_ct_part1 = "\t\t\t<Tool\r\n"
 
 static char *msvc9_aid = "\t\t\t\tAdditionalIncludeDirectories=\"..\\msvc,..\\,..\\..\\..\\";
 
+static char *msvc9_aid_sdl = "\t\t\t\tAdditionalIncludeDirectories=\".\\,..\\,..\\..\\..\\";
+
 static char *msvc9_aid_cc = "\t\t\t\tAdditionalIncludeDirectories=\"..\\msvc\"\r\n";
 
+static char *msvc9_aid_cc_sdl = "\t\t\t\tAdditionalIncludeDirectories=\".\\,..\\\"\r\n";
+
 static char *msvc9_aid_sid = "\t\t\t\tAdditionalIncludeDirectories=\"..\\msvc,..\\,..\\..\\..\\,..\\..\\..\\resid\"\r\n";
+
+static char *msvc9_aid_sid_sdl = "\t\t\t\tAdditionalIncludeDirectories=\".\\,..\\,..\\..\\..\\,..\\..\\..\\resid\"\r\n";
 
 static char *msvc9_predef = "\t\t\t\tPreprocessorDefinitions=\"WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,";
 
@@ -1476,6 +1482,8 @@ static void generate_msvc9_sln(int sdl)
     int i, j, k;
     int index;
     int exc = 0;
+    int max_i = (sdl) ? 2 : 4;
+    char **type_name = (sdl) ? msvc_type_sdl : msvc_type_name;
 
     for (i = 0; project_info[i].name; i++) {
         fprintf(mainfile, msvc9_main_project_start, project_info[i].name, project_info[i].name, i);
@@ -1490,18 +1498,18 @@ static void generate_msvc9_sln(int sdl)
         fprintf(mainfile, msvc9_main_project_end);
     }
     fprintf(mainfile, msvc9_main_global_start);
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < max_i; i++) {
         for (k = 0; k < 3; k++) {
-            fprintf(mainfile, msvc9_main_confs, msvc_type_name[i], msvc_platform[k], msvc_type_name[i], msvc_platform[k]);
+            fprintf(mainfile, msvc9_main_confs, type_name[i], msvc_platform[k], type_name[i], msvc_platform[k]);
         }
     }
     fprintf(mainfile, msvc9_global_mid);
     for (j = 0; project_info[j].name; j++) {
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < max_i; i++) {
             for (k = 0; k < 3; k++) {
                 exc = test_win32_exception(project_info[j].name);
-                fprintf(mainfile, msvc9_global_confs1, j, msvc_type_name[i], msvc_platform[k], msvc_type_name[i], (exc) ? "Win32" : msvc_platform[k]);
-                fprintf(mainfile, msvc9_global_confs2, j, msvc_type_name[i], msvc_platform[k], msvc_type_name[i], (exc) ? "Win32" : msvc_platform[k]);
+                fprintf(mainfile, msvc9_global_confs1, j, type_name[i], msvc_platform[k], type_name[i], (exc) ? "Win32" : msvc_platform[k]);
+                fprintf(mainfile, msvc9_global_confs2, j, type_name[i], msvc_platform[k], type_name[i], (exc) ? "Win32" : msvc_platform[k]);
             }
         }
     }
@@ -1512,7 +1520,11 @@ static int open_msvc9_main_project(int sdl)
 {
     pi_init();
 
-    mainfile = fopen("../vs9/vice.sln", "wb");
+    if (sdl) {
+        mainfile = fopen("../../sdl/win32-msvc9/vice.sln", "wb");
+    } else {
+        mainfile = fopen("../vs9/vice.sln", "wb");
+    }
 
     if (!mainfile) {
         printf("Cannot open 'vice.sln' for output\n");
@@ -1539,18 +1551,34 @@ static int output_msvc9_file(char *fname, int filelist, int sdl)
     FILE *outfile = NULL;
     int i = 0;
     int j, k;
+    int max_i = (sdl) ? 2 : 4;
     char *temp_string;
+    char *rfname;
+    char **type_name = (sdl) ? msvc_type_sdl : msvc_type_name;
+    char **type = (sdl) ? msvc_type_sdl : msvc_type;
+    char *libs;
+
+    if (!strcmp(fname, "arch_native") || !strcmp(fname, "arch_sdl")) {
+        rfname = "arch";
+    } else {
+        rfname = fname;
+    }
 
     if (filelist) {
         i = pi_insert_name(cp_name);
         if (cp_dep_names[0]) {
             pi_insert_deps(cp_dep_names, i);
         }
-        filename = malloc(strlen(fname) + sizeof("../vs9/.vcproj"));
-        sprintf(filename, "../vs9/%s.vcproj", fname);
+        if (sdl) {
+            filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc9/.vcproj"));
+            sprintf(filename, "../../sdl/win32-msvc9/%s.vcproj", rfname);
+        } else {
+            filename = malloc(strlen(rfname) + sizeof("../vs9/.vcproj"));
+            sprintf(filename, "../vs9/%s.vcproj", rfname);
+        }
     } else {
-        filename = malloc(strlen(fname) + sizeof(".vcproj"));
-        sprintf(filename, "%s.vcproj", fname);
+        filename = malloc(strlen(rfname) + sizeof(".vcproj"));
+        sprintf(filename, "%s.vcproj", rfname);
     }
 
     outfile = fopen(filename, "wb");
@@ -1561,15 +1589,15 @@ static int output_msvc9_file(char *fname, int filelist, int sdl)
 
     if (!retval) {
         fprintf(outfile, msvc9_project_start, cp_name, i);
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < max_i; i++) {
             for (k = 0; k < 3; k++) {
-                fprintf(outfile, msvc9_config_part1, msvc_type_name[i], msvc_platform[k]);
+                fprintf(outfile, msvc9_config_part1, type_name[i], msvc_platform[k]);
                 if (cp_type != CP_TYPE_LIBRARY) {
                     fprintf(outfile, msvc9_output_dir_app);
                 } else {
-                    fprintf(outfile, msvc9_output_dir_lib, cp_name, msvc_platform[k], msvc_type[i]);
+                    fprintf(outfile, msvc9_output_dir_lib, cp_name, msvc_platform[k], type[i]);
                 }
-                fprintf(outfile, msvc9_config_part2, cp_name, msvc_platform[k], msvc_type[i], (cp_type == CP_TYPE_LIBRARY) ? 4 : 1);
+                fprintf(outfile, msvc9_config_part2, cp_name, msvc_platform[k], type[i], (cp_type == CP_TYPE_LIBRARY) ? 4 : 1);
                 if (cp_type == CP_TYPE_CONSOLE) {
                     fprintf(outfile, msvc9_charset);
                 }
@@ -1612,12 +1640,24 @@ static int output_msvc9_file(char *fname, int filelist, int sdl)
                 fprintf(outfile, msvc9_ct_part1, temp_string);
                 if (cp_cc_source_names[0]) {
                     if (cp_source_names[0]) {
-                        fprintf(outfile, msvc9_aid_sid);
+                        if (sdl) {
+                            fprintf(outfile, msvc9_aid_sid_sdl);
+                        } else {
+                            fprintf(outfile, msvc9_aid_sid);
+                        }
                     } else {
-                        fprintf(outfile, msvc9_aid_cc);
+                        if (sdl) {
+                            fprintf(outfile, msvc9_aid_cc_sdl);
+                        } else {
+                            fprintf(outfile, msvc9_aid_cc);
+                        }
                     }
                 } else {
-                    fprintf(outfile, msvc9_aid);
+                    if (sdl) {
+                        fprintf(outfile, msvc9_aid_sdl);
+                    } else {
+                        fprintf(outfile, msvc9_aid);
+                    }
                     if (cp_include_dirs[0]) {
                         for (j = 0; cp_include_dirs[j]; j++) {
                             fprintf(outfile, ",..\\..\\..\\%s", cp_include_dirs[j]);
@@ -1634,11 +1674,11 @@ static int output_msvc9_file(char *fname, int filelist, int sdl)
                 if (i & 1) {
                     fprintf(outfile, msvc9_string_pooling);
                 }
-                fprintf(outfile, msvc9_rtl, (!(i & 1)));
+                fprintf(outfile, msvc9_rtl, (!(i & 1)) + (sdl * 2));
                 if (i & 1) {
                     fprintf(outfile, msvc9_efll);
                 }
-                fprintf(outfile, msvc9_ct_part2, cp_name, msvc_platform[k], msvc_type[i], cp_name, cp_name, msvc_platform[k], msvc_type[i], cp_name, msvc_platform[k], msvc_type[i], cp_name, msvc_platform[k], msvc_type[i]);
+                fprintf(outfile, msvc9_ct_part2, cp_name, msvc_platform[k], type[i], cp_name, cp_name, msvc_platform[k], type[i], cp_name, msvc_platform[k], type[i], cp_name, msvc_platform[k], type[i]);
                 if (!(i & 1)) {
                     fprintf(outfile, msvc9_dif);
                 }
@@ -1657,12 +1697,25 @@ static int output_msvc9_file(char *fname, int filelist, int sdl)
                 }
                 fprintf(outfile, msvc9_plet);
                 if (cp_type != CP_TYPE_LIBRARY) {
-                    fprintf(outfile, msvc9_linker_tool, (cp_type == CP_TYPE_GUI) ? msvc_libs_gui[i >> 1] : msvc_libs_console, cp_name, (!(i &1)) + 1, (i & 1) ? "" : msvc9_gdi, cp_name, (cp_type == CP_TYPE_GUI) ? 2 : 1);
+                    if (sdl) {
+                        if (cp_type == CP_TYPE_CONSOLE) {
+                            libs = msvc_libs_console_sdl;
+                        } else {
+                            libs = msvc_libs_gui_sdl;
+                        }
+                    } else {
+                        if (cp_type == CP_TYPE_CONSOLE) {
+                            libs = msvc_libs_console;
+                        } else {
+                            libs = msvc_libs_gui[i >> 1];
+                        }
+                    }
+                    fprintf(outfile, msvc9_linker_tool, libs, cp_name, (!(i & 1)) + 1, (i & 1) ? "" : msvc9_gdi, cp_name, (cp_type == CP_TYPE_GUI) ? 2 : 1);
                     if (k) {
                         fprintf(outfile, msvc9_target_machine, (k == 1) ? 5 : 17);
                     }
                 } else {
-                    fprintf(outfile, msvc9_lib_tool, cp_name, msvc_platform[k], msvc_type[i]);
+                    fprintf(outfile, msvc9_lib_tool, cp_name, msvc_platform[k], type[i]);
                 }
                 fprintf(outfile, msvc9_config_part6, (cp_type == CP_TYPE_LIBRARY) ? "" : msvc9_manifest_tool, (cp_type == CP_TYPE_LIBRARY) ? "" : msvc9_app_ver_tool);
             }
@@ -1685,9 +1738,9 @@ static int output_msvc9_file(char *fname, int filelist, int sdl)
         }
         if (cp_res_source_name && !sdl) {
             fprintf(outfile, msvc9_res_file, cp_res_source_name);
-            for (i = 0; i < 4; i++) {
+            for (i = 0; i < max_i; i++) {
                 for (k = 0; k < 3; k++) {
-                    fprintf(outfile, msvc9_res_conf, msvc_type_name[i], msvc_platform[k]);
+                    fprintf(outfile, msvc9_res_conf, type_name[i], msvc_platform[k]);
                     for (j = 0; cp_res_deps[j]; j++) {
                         fprintf(outfile, "..\\%s ", cp_res_deps[j]);
                         if (cp_res_deps[j + 1]) {
@@ -1704,18 +1757,18 @@ static int output_msvc9_file(char *fname, int filelist, int sdl)
                 }
             }
             fprintf(outfile, msvc9_res_file_end, cp_res_output_name);
-            for (i = 0; i < 4; i++) {
+            for (i = 0; i < max_i; i++) {
                 for (k = 0; k < 3; k++) {
-                    fprintf(outfile, msvc9_res_file_conf, msvc_type_name[i], msvc_platform[k]);
+                    fprintf(outfile, msvc9_res_file_conf, type_name[i], msvc_platform[k]);
                 }
             }
             fprintf(outfile, msvc_file_end);
         }
         if (cp_custom_message) {
             fprintf(outfile, msvc9_custom_file, cp_custom_source);
-            for (i = 0; i < 4; i++) {
+            for (i = 0; i < max_i; i++) {
                 for (k = 0; k < 3; k++) {
-                    fprintf(outfile, msvc9_custom_file_conf, msvc_type_name[i], msvc_platform[k], cp_custom_message, cp_custom_command);
+                    fprintf(outfile, msvc9_custom_file_conf, type_name[i], msvc_platform[k], cp_custom_message, cp_custom_command);
                     for (j = 0; cp_custom_deps[j]; j++) {
                         fprintf(outfile, "%s;", cp_custom_deps[j]);
                     }
@@ -1727,9 +1780,9 @@ static int output_msvc9_file(char *fname, int filelist, int sdl)
         }
         if (!strcmp(cp_name, "base")) {
             fprintf(outfile, msvc9_winid_file);
-            for (i = 0; i < 4; i++) {
+            for (i = 0; i < max_i; i++) {
                 for (k = 0; k < 3; k++) {
-                    fprintf(outfile, msvc9_winid_conf, msvc_type_name[i], msvc_platform[k], msvc_winid_copy[k], msvc_winid_copy[k]);
+                    fprintf(outfile, msvc9_winid_conf, type_name[i], msvc_platform[k], msvc_winid_copy[k], msvc_winid_copy[k]);
                 }
             }
             fprintf(outfile, msvc_file_end);
@@ -1737,9 +1790,13 @@ static int output_msvc9_file(char *fname, int filelist, int sdl)
         if (cp_cc_source_path) {
             for (j = 0; cp_cc_source_names[j]; j++) {
                 fprintf(outfile, msvc9_cc_file, cp_cc_source_path, cp_cc_source_names[j]);
-                for (i = 0; i < 4; i++) {
+                for (i = 0; i < max_i; i++) {
                     for (k = 0; k < 3; k++) {
-                        fprintf(outfile, msvc9_cc_conf, msvc_type_name[i], msvc_platform[k], msvc_flags[i & 1], (cp_source_names[0]) ? msvc_cc_inc_sid : msvc_cc_inc, msvc_cc_extra[i], cp_name, cp_name, msvc_platform[k], msvc_type[i], cp_name, cp_name, msvc_platform[k], msvc_type[i], cp_name, msvc_platform[k], msvc_type[i], cp_name, msvc_platform[k], msvc_type[i]);
+                        if (sdl) {
+                            fprintf(outfile, msvc9_cc_conf, type_name[i], msvc_platform[k], msvc_flags_sdl[i & 1], (cp_source_names[0]) ? msvc_cc_inc_sid_sdl : msvc_cc_inc_sdl, msvc_cc_extra[i], cp_name, cp_name, msvc_platform[k], type[i], cp_name, cp_name, msvc_platform[k], type[i], cp_name, msvc_platform[k], type[i], cp_name, msvc_platform[k], type[i]);
+                        } else {
+                            fprintf(outfile, msvc9_cc_conf, type_name[i], msvc_platform[k], msvc_flags[i & 1], (cp_source_names[0]) ? msvc_cc_inc_sid : msvc_cc_inc, msvc_cc_extra[i], cp_name, cp_name, msvc_platform[k], type[i], cp_name, cp_name, msvc_platform[k], type[i], cp_name, msvc_platform[k], type[i], cp_name, msvc_platform[k], type[i]);
+                        }
                     }
                 }
                 fprintf(outfile, msvc_file_end);
@@ -4785,6 +4842,25 @@ int main(int argc, char *argv[])
 #if MKMSVC_DEBUG
                                 printf("Output done\n");
 #endif
+                            }
+                        }
+                        if (sdl) {
+                            if (project_names_sdl[0] && !error) {
+                                for (i = 0; project_names_sdl[i] && !error; i++) {
+                                    error = read_template_file(project_names_sdl[i], sdl);
+                                    if (!error) {
+                                        error = output_msvc9_file(project_names_sdl[i], 1, sdl);
+                                    }
+                                }
+                            }
+                        } else {
+                            if (project_names_native[0] && !error) {
+                                for (i = 0; project_names_native[i] && !error; i++) {
+                                    error = read_template_file(project_names_native[i], sdl);
+                                    if (!error) {
+                                        error = output_msvc9_file(project_names_native[i], 1, sdl);
+                                    }
+                                }
                             }
                         }
                         close_msvc9_main_project(sdl);

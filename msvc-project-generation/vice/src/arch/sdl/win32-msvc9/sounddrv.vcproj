@@ -486,10 +486,6 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\sounddrv\soundsdl.c"
-			>
-		</File>
-		<File
 			RelativePath="..\..\..\sounddrv\soundvoc.c"
 			>
 		</File>
@@ -499,6 +495,10 @@
 		</File>
 		<File
 			RelativePath="..\..\..\sounddrv\soundwmm.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\sounddrv\soundsdl.c"
 			>
 		</File>
 	</Files>
