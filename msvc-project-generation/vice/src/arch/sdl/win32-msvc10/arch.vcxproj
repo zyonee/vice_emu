@@ -1,0 +1,383 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Itanium">
+      <Configuration>Debug</Configuration>
+      <Platform>Itanium</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Itanium">
+      <Configuration>Release</Configuration>
+      <Platform>Itanium</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC94C}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\libs\arch\Win32Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\libs\arch\Win32Debug\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">.\libs\arch\ItaniumDebug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">.\libs\arch\ItaniumDebug\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\libs\arch\x64Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\libs\arch\x64Debug\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\libs\arch\Win32Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\libs\arch\Win32Release\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">.\libs\arch\ItaniumRelease\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">.\libs\arch\ItaniumRelease\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\libs\arch\x64Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\libs\arch\x64Release\</IntDir>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\;..\;..\..\..\;..\..\..\arch\win32\msvc\wpcap;..\..\..\c64;..\..\..\c64\cart;..\..\..\c64dtv;..\..\..\c128;..\..\..\cbm2;..\..\..\drive;..\..\..\imagecontents;..\..\..\lib\libffmpeg;..\..\..\lib\p64;..\..\..\monitor;..\..\..\pet;..\..\..\platform;..\..\..\plus4;..\..\..\raster;..\..\..\rs232drv;..\..\..\sid;..\..\..\userport;..\..\..\vdrive;..\..\..\vic20;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderOutputFile>.\libs\arch\Win32Debug\arch.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\libs\arch\Win32Debug\</AssemblerListingLocation>
+      <ObjectFileName>.\libs\arch\Win32Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\libs\arch\Win32Debug\</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>.\libs\arch\Win32Debug\arch.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">
+    <Midl>
+      <TargetEnvironment>Itanium</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\;..\;..\..\..\;..\..\..\arch\win32\msvc\wpcap;..\..\..\c64;..\..\..\c64\cart;..\..\..\c64dtv;..\..\..\c128;..\..\..\cbm2;..\..\..\drive;..\..\..\imagecontents;..\..\..\lib\libffmpeg;..\..\..\lib\p64;..\..\..\monitor;..\..\..\pet;..\..\..\platform;..\..\..\plus4;..\..\..\raster;..\..\..\rs232drv;..\..\..\sid;..\..\..\userport;..\..\..\vdrive;..\..\..\vic20;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderOutputFile>.\libs\arch\ItaniumDebug\arch.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\libs\arch\ItaniumDebug\</AssemblerListingLocation>
+      <ObjectFileName>.\libs\arch\ItaniumDebug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\libs\arch\ItaniumDebug\</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>.\libs\arch\ItaniumDebug\arch.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\;..\;..\..\..\;..\..\..\arch\win32\msvc\wpcap;..\..\..\c64;..\..\..\c64\cart;..\..\..\c64dtv;..\..\..\c128;..\..\..\cbm2;..\..\..\drive;..\..\..\imagecontents;..\..\..\lib\libffmpeg;..\..\..\lib\p64;..\..\..\monitor;..\..\..\pet;..\..\..\platform;..\..\..\plus4;..\..\..\raster;..\..\..\rs232drv;..\..\..\sid;..\..\..\userport;..\..\..\vdrive;..\..\..\vic20;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderOutputFile>.\libs\arch\x64Debug\arch.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\libs\arch\x64Debug\</AssemblerListingLocation>
+      <ObjectFileName>.\libs\arch\x64Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\libs\arch\x64Debug\</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>.\libs\arch\x64Debug\arch.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>.\;..\;..\..\..\;..\..\..\arch\win32\msvc\wpcap;..\..\..\c64;..\..\..\c64\cart;..\..\..\c64dtv;..\..\..\c128;..\..\..\cbm2;..\..\..\drive;..\..\..\imagecontents;..\..\..\lib\libffmpeg;..\..\..\lib\p64;..\..\..\monitor;..\..\..\pet;..\..\..\platform;..\..\..\plus4;..\..\..\raster;..\..\..\rs232drv;..\..\..\sid;..\..\..\userport;..\..\..\vdrive;..\..\..\vic20;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderOutputFile>.\libs\arch\Win32Release\arch.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\libs\arch\Win32Release\</AssemblerListingLocation>
+      <ObjectFileName>.\libs\arch\Win32Release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\libs\arch\Win32Release\</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>.\libs\arch\Win32Release\arch.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">
+    <Midl>
+      <TargetEnvironment>Itanium</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>.\;..\;..\..\..\;..\..\..\arch\win32\msvc\wpcap;..\..\..\c64;..\..\..\c64\cart;..\..\..\c64dtv;..\..\..\c128;..\..\..\cbm2;..\..\..\drive;..\..\..\imagecontents;..\..\..\lib\libffmpeg;..\..\..\lib\p64;..\..\..\monitor;..\..\..\pet;..\..\..\platform;..\..\..\plus4;..\..\..\raster;..\..\..\rs232drv;..\..\..\sid;..\..\..\userport;..\..\..\vdrive;..\..\..\vic20;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderOutputFile>.\libs\arch\ItaniumRelease\arch.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\libs\arch\ItaniumRelease\</AssemblerListingLocation>
+      <ObjectFileName>.\libs\arch\ItaniumRelease\</ObjectFileName>
+      <ProgramDataBaseFileName>.\libs\arch\ItaniumRelease\</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>.\libs\arch\ItaniumRelease\arch.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>.\;..\;..\..\..\;..\..\..\arch\win32\msvc\wpcap;..\..\..\c64;..\..\..\c64\cart;..\..\..\c64dtv;..\..\..\c128;..\..\..\cbm2;..\..\..\drive;..\..\..\imagecontents;..\..\..\lib\libffmpeg;..\..\..\lib\p64;..\..\..\monitor;..\..\..\pet;..\..\..\platform;..\..\..\plus4;..\..\..\raster;..\..\..\rs232drv;..\..\..\sid;..\..\..\userport;..\..\..\vdrive;..\..\..\vic20;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderOutputFile>.\libs\arch\x64Release\arch.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\libs\arch\x64Release\</AssemblerListingLocation>
+      <ObjectFileName>.\libs\arch\x64Release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\libs\arch\x64Release\</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>.\libs\arch\x64Release\arch.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\archdep.c" />
+    <ClCompile Include="..\blockdev.c" />
+    <ClCompile Include="..\catweaselmkiii.c" />
+    <ClCompile Include="..\console.c" />
+    <ClCompile Include="..\dynlib.c" />
+    <ClCompile Include="..\fullscreen.c" />
+    <ClCompile Include="..\hardsid.c" />
+    <ClCompile Include="..\joy.c" />
+    <ClCompile Include="..\kbd.c" />
+    <ClCompile Include="..\lightpendrv.c" />
+    <ClCompile Include="..\menu_c128hw.c" />
+    <ClCompile Include="..\menu_c64_common_expansions.c" />
+    <ClCompile Include="..\menu_c64_expansions.c" />
+    <ClCompile Include="..\menu_c64cart.c" />
+    <ClCompile Include="..\menu_c64dtvhw.c" />
+    <ClCompile Include="..\menu_c64hw.c" />
+    <ClCompile Include="..\menu_c64model.c" />
+    <ClCompile Include="..\menu_cbm2cart.c" />
+    <ClCompile Include="..\menu_cbm2hw.c" />
+    <ClCompile Include="..\menu_common.c" />
+    <ClCompile Include="..\menu_debug.c" />
+    <ClCompile Include="..\menu_drive.c" />
+    <ClCompile Include="..\menu_drive_rom.c" />
+    <ClCompile Include="..\menu_ffmpeg.c" />
+    <ClCompile Include="..\menu_help.c" />
+    <ClCompile Include="..\menu_joystick.c" />
+    <ClCompile Include="..\menu_lightpen.c" />
+    <ClCompile Include="..\menu_midi.c" />
+    <ClCompile Include="..\menu_mouse.c" />
+    <ClCompile Include="..\menu_network.c" />
+    <ClCompile Include="..\menu_petcart.c" />
+    <ClCompile Include="..\menu_pethw.c" />
+    <ClCompile Include="..\menu_plus4cart.c" />
+    <ClCompile Include="..\menu_plus4hw.c" />
+    <ClCompile Include="..\menu_printer.c" />
+    <ClCompile Include="..\menu_ram.c" />
+    <ClCompile Include="..\menu_reset.c" />
+    <ClCompile Include="..\menu_rom.c" />
+    <ClCompile Include="..\menu_rs232.c" />
+    <ClCompile Include="..\menu_scpu64hw.c" />
+    <ClCompile Include="..\menu_screenshot.c" />
+    <ClCompile Include="..\menu_settings.c" />
+    <ClCompile Include="..\menu_sid.c" />
+    <ClCompile Include="..\menu_snapshot.c" />
+    <ClCompile Include="..\menu_sound.c" />
+    <ClCompile Include="..\menu_speed.c" />
+    <ClCompile Include="..\menu_tape.c" />
+    <ClCompile Include="..\menu_tfe.c" />
+    <ClCompile Include="..\menu_vic20cart.c" />
+    <ClCompile Include="..\menu_vic20hw.c" />
+    <ClCompile Include="..\menu_video.c" />
+    <ClCompile Include="..\mousedrv.c" />
+    <ClCompile Include="..\rawnetarch.c" />
+    <ClCompile Include="..\rs232.c" />
+    <ClCompile Include="..\rs232dev.c" />
+    <ClCompile Include="..\rs232net.c" />
+    <ClCompile Include="..\sdlmain.c" />
+    <ClCompile Include="..\signals.c" />
+    <ClCompile Include="..\ui.c" />
+    <ClCompile Include="..\uicmdline.c" />
+    <ClCompile Include="..\uifilereq.c" />
+    <ClCompile Include="..\uihotkey.c" />
+    <ClCompile Include="..\uimenu.c" />
+    <ClCompile Include="..\uimon.c" />
+    <ClCompile Include="..\uimsgbox.c" />
+    <ClCompile Include="..\uipause.c" />
+    <ClCompile Include="..\uipoll.c" />
+    <ClCompile Include="..\uistatusbar.c" />
+    <ClCompile Include="..\video.c" />
+    <ClCompile Include="..\vkbd.c" />
+    <ClCompile Include="..\vsidui.c" />
+    <ClCompile Include="..\vsyncarch.c" />
+    <ClCompile Include="..\x128_ui.c" />
+    <ClCompile Include="..\x64_ui.c" />
+    <ClCompile Include="..\x64dtv_ui.c" />
+    <ClCompile Include="..\x64sc_ui.c" />
+    <ClCompile Include="..\xcbm2_ui.c" />
+    <ClCompile Include="..\xpet_ui.c" />
+    <ClCompile Include="..\xplus4_ui.c" />
+    <ClCompile Include="..\xscpu64_ui.c" />
+    <ClCompile Include="..\xvic_ui.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="base.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc901}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="geninfocontrib.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc919}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="gentranslate.vcxproj">
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc91a}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
