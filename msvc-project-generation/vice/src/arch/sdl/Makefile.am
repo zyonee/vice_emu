@@ -15,6 +15,7 @@ SUBDIRS = \
         win32-msvc71 \
 	win32-msvc8 \
 	win32-msvc9 \
+	win32-msvc10 \
 	win64-msvc \
 	win32-watcom \
 	winmips-msvc
