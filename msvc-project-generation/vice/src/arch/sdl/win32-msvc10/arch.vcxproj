@@ -1,25 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Itanium">
-      <Configuration>Debug</Configuration>
-      <Platform>Itanium</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Itanium">
+      <Configuration>Debug</Configuration>
+      <Platform>Itanium</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Itanium">
-      <Configuration>Release</Configuration>
-      <Platform>Itanium</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Itanium">
+      <Configuration>Release</Configuration>
+      <Platform>Itanium</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -27,26 +27,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC94C}</ProjectGuid>
+    <ProjectGuid>{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC913}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
@@ -54,22 +42,30 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
@@ -77,7 +73,11 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
@@ -96,21 +96,21 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">.\libs\arch\ItaniumRelease\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\libs\arch\x64Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\libs\arch\x64Release\</IntDir>
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
@@ -281,99 +281,99 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\archdep.c" />
-    <ClCompile Include="..\blockdev.c" />
-    <ClCompile Include="..\catweaselmkiii.c" />
-    <ClCompile Include="..\console.c" />
-    <ClCompile Include="..\dynlib.c" />
-    <ClCompile Include="..\fullscreen.c" />
-    <ClCompile Include="..\hardsid.c" />
-    <ClCompile Include="..\joy.c" />
-    <ClCompile Include="..\kbd.c" />
-    <ClCompile Include="..\lightpendrv.c" />
-    <ClCompile Include="..\menu_c128hw.c" />
-    <ClCompile Include="..\menu_c64_common_expansions.c" />
-    <ClCompile Include="..\menu_c64_expansions.c" />
-    <ClCompile Include="..\menu_c64cart.c" />
-    <ClCompile Include="..\menu_c64dtvhw.c" />
-    <ClCompile Include="..\menu_c64hw.c" />
-    <ClCompile Include="..\menu_c64model.c" />
-    <ClCompile Include="..\menu_cbm2cart.c" />
-    <ClCompile Include="..\menu_cbm2hw.c" />
-    <ClCompile Include="..\menu_common.c" />
-    <ClCompile Include="..\menu_debug.c" />
-    <ClCompile Include="..\menu_drive.c" />
-    <ClCompile Include="..\menu_drive_rom.c" />
-    <ClCompile Include="..\menu_ffmpeg.c" />
-    <ClCompile Include="..\menu_help.c" />
-    <ClCompile Include="..\menu_joystick.c" />
-    <ClCompile Include="..\menu_lightpen.c" />
-    <ClCompile Include="..\menu_midi.c" />
-    <ClCompile Include="..\menu_mouse.c" />
-    <ClCompile Include="..\menu_network.c" />
-    <ClCompile Include="..\menu_petcart.c" />
-    <ClCompile Include="..\menu_pethw.c" />
-    <ClCompile Include="..\menu_plus4cart.c" />
-    <ClCompile Include="..\menu_plus4hw.c" />
-    <ClCompile Include="..\menu_printer.c" />
-    <ClCompile Include="..\menu_ram.c" />
-    <ClCompile Include="..\menu_reset.c" />
-    <ClCompile Include="..\menu_rom.c" />
-    <ClCompile Include="..\menu_rs232.c" />
-    <ClCompile Include="..\menu_scpu64hw.c" />
-    <ClCompile Include="..\menu_screenshot.c" />
-    <ClCompile Include="..\menu_settings.c" />
-    <ClCompile Include="..\menu_sid.c" />
-    <ClCompile Include="..\menu_snapshot.c" />
-    <ClCompile Include="..\menu_sound.c" />
-    <ClCompile Include="..\menu_speed.c" />
-    <ClCompile Include="..\menu_tape.c" />
-    <ClCompile Include="..\menu_tfe.c" />
-    <ClCompile Include="..\menu_vic20cart.c" />
-    <ClCompile Include="..\menu_vic20hw.c" />
-    <ClCompile Include="..\menu_video.c" />
-    <ClCompile Include="..\mousedrv.c" />
-    <ClCompile Include="..\rawnetarch.c" />
-    <ClCompile Include="..\rs232.c" />
-    <ClCompile Include="..\rs232dev.c" />
-    <ClCompile Include="..\rs232net.c" />
-    <ClCompile Include="..\sdlmain.c" />
-    <ClCompile Include="..\signals.c" />
-    <ClCompile Include="..\ui.c" />
-    <ClCompile Include="..\uicmdline.c" />
-    <ClCompile Include="..\uifilereq.c" />
-    <ClCompile Include="..\uihotkey.c" />
-    <ClCompile Include="..\uimenu.c" />
-    <ClCompile Include="..\uimon.c" />
-    <ClCompile Include="..\uimsgbox.c" />
-    <ClCompile Include="..\uipause.c" />
-    <ClCompile Include="..\uipoll.c" />
-    <ClCompile Include="..\uistatusbar.c" />
-    <ClCompile Include="..\video.c" />
-    <ClCompile Include="..\vkbd.c" />
-    <ClCompile Include="..\vsidui.c" />
-    <ClCompile Include="..\vsyncarch.c" />
-    <ClCompile Include="..\x128_ui.c" />
-    <ClCompile Include="..\x64_ui.c" />
-    <ClCompile Include="..\x64dtv_ui.c" />
-    <ClCompile Include="..\x64sc_ui.c" />
-    <ClCompile Include="..\xcbm2_ui.c" />
-    <ClCompile Include="..\xpet_ui.c" />
-    <ClCompile Include="..\xplus4_ui.c" />
-    <ClCompile Include="..\xscpu64_ui.c" />
-    <ClCompile Include="..\xvic_ui.c" />
+    <ClCompile Include="..\..\..\arch\sdl\archdep.c" />
+    <ClCompile Include="..\..\..\arch\sdl\blockdev.c" />
+    <ClCompile Include="..\..\..\arch\sdl\catweaselmkiii.c" />
+    <ClCompile Include="..\..\..\arch\sdl\console.c" />
+    <ClCompile Include="..\..\..\arch\sdl\dynlib.c" />
+    <ClCompile Include="..\..\..\arch\sdl\fullscreen.c" />
+    <ClCompile Include="..\..\..\arch\sdl\hardsid.c" />
+    <ClCompile Include="..\..\..\arch\sdl\joy.c" />
+    <ClCompile Include="..\..\..\arch\sdl\kbd.c" />
+    <ClCompile Include="..\..\..\arch\sdl\lightpendrv.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_c128hw.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_c64_common_expansions.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_c64_expansions.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_c64cart.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_c64dtvhw.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_c64hw.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_c64model.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_cbm2cart.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_cbm2hw.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_common.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_debug.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_drive.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_drive_rom.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_ffmpeg.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_help.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_joystick.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_lightpen.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_midi.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_mouse.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_network.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_petcart.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_pethw.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_plus4cart.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_plus4hw.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_printer.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_ram.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_reset.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_rom.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_rs232.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_scpu64hw.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_screenshot.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_settings.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_sid.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_snapshot.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_sound.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_speed.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_tape.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_tfe.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_vic20cart.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_vic20hw.c" />
+    <ClCompile Include="..\..\..\arch\sdl\menu_video.c" />
+    <ClCompile Include="..\..\..\arch\sdl\mousedrv.c" />
+    <ClCompile Include="..\..\..\arch\sdl\rawnetarch.c" />
+    <ClCompile Include="..\..\..\arch\sdl\rs232.c" />
+    <ClCompile Include="..\..\..\arch\sdl\rs232dev.c" />
+    <ClCompile Include="..\..\..\arch\sdl\rs232net.c" />
+    <ClCompile Include="..\..\..\arch\sdl\sdlmain.c" />
+    <ClCompile Include="..\..\..\arch\sdl\signals.c" />
+    <ClCompile Include="..\..\..\arch\sdl\ui.c" />
+    <ClCompile Include="..\..\..\arch\sdl\uicmdline.c" />
+    <ClCompile Include="..\..\..\arch\sdl\uifilereq.c" />
+    <ClCompile Include="..\..\..\arch\sdl\uihotkey.c" />
+    <ClCompile Include="..\..\..\arch\sdl\uimenu.c" />
+    <ClCompile Include="..\..\..\arch\sdl\uimon.c" />
+    <ClCompile Include="..\..\..\arch\sdl\uimsgbox.c" />
+    <ClCompile Include="..\..\..\arch\sdl\uipause.c" />
+    <ClCompile Include="..\..\..\arch\sdl\uipoll.c" />
+    <ClCompile Include="..\..\..\arch\sdl\uistatusbar.c" />
+    <ClCompile Include="..\..\..\arch\sdl\video.c" />
+    <ClCompile Include="..\..\..\arch\sdl\vkbd.c" />
+    <ClCompile Include="..\..\..\arch\sdl\vsidui.c" />
+    <ClCompile Include="..\..\..\arch\sdl\vsyncarch.c" />
+    <ClCompile Include="..\..\..\arch\sdl\x128_ui.c" />
+    <ClCompile Include="..\..\..\arch\sdl\x64_ui.c" />
+    <ClCompile Include="..\..\..\arch\sdl\x64dtv_ui.c" />
+    <ClCompile Include="..\..\..\arch\sdl\x64sc_ui.c" />
+    <ClCompile Include="..\..\..\arch\sdl\xcbm2_ui.c" />
+    <ClCompile Include="..\..\..\arch\sdl\xpet_ui.c" />
+    <ClCompile Include="..\..\..\arch\sdl\xplus4_ui.c" />
+    <ClCompile Include="..\..\..\arch\sdl\xscpu64_ui.c" />
+    <ClCompile Include="..\..\..\arch\sdl\xvic_ui.c" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="base.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc901}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc90f}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="geninfocontrib.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc919}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc910}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="gentranslate.vcxproj">
-      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc91a}</Project>
+      <Project>{8bc9ceb8-8b4a-11d0-8d12-00a0c91bc911}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
