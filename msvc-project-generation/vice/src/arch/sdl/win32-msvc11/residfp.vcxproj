@@ -5,10 +5,6 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|Itanium">
-      <Configuration>Debug</Configuration>
-      <Platform>Itanium</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
@@ -16,10 +12,6 @@
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Itanium">
-      <Configuration>Release</Configuration>
-      <Platform>Itanium</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -33,26 +25,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -62,14 +50,6 @@
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
   </ImportGroup>
@@ -86,31 +66,21 @@
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\libs\residfp\Win32Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\libs\residfp\Win32Debug\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">.\libs\residfp\ItaniumDebug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">.\libs\residfp\ItaniumDebug\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\libs\residfp\x64Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\libs\residfp\x64Debug\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\libs\residfp\Win32Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\libs\residfp\Win32Release\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">.\libs\residfp\ItaniumRelease\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">.\libs\residfp\ItaniumRelease\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\libs\residfp\x64Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\libs\residfp\x64Release\</IntDir>
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
@@ -137,34 +107,6 @@
     </ResourceCompile>
     <Lib>
       <OutputFile>.\libs\residfp\Win32Debug\residfp.lib</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-    </Lib>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">
-    <Midl>
-      <TargetEnvironment>Itanium</TargetEnvironment>
-    </Midl>
-    <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\;..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;_DEBUG;PACKAGE="resid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\libs\residfp\ItaniumDebug\residfp.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\libs\residfp\ItaniumDebug\</AssemblerListingLocation>
-      <ObjectFileName>.\libs\residfp\ItaniumDebug\</ObjectFileName>
-      <ProgramDataBaseFileName>.\libs\residfp\ItaniumDebug\</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>OldStyle</DebugInformationFormat>
-      <CompileAs>Default</CompileAs>
-    </ClCompile>
-    <ResourceCompile>
-      <Culture>0x0409</Culture>
-    </ResourceCompile>
-    <Lib>
-      <OutputFile>.\libs\residfp\ItaniumDebug\residfp.lib</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
   </ItemDefinitionGroup>
@@ -222,35 +164,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">
-    <Midl>
-      <TargetEnvironment>Itanium</TargetEnvironment>
-    </Midl>
-    <ClCompile>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>.\;..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;IDE_COMPILE;DONT_USE_UNISTD_H;NDEBUG;PACKAGE="resid";VERSION="0.7";SIZEOF_INT=4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>.\libs\residfp\ItaniumRelease\residfp.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\libs\residfp\ItaniumRelease\</AssemblerListingLocation>
-      <ObjectFileName>.\libs\residfp\ItaniumRelease\</ObjectFileName>
-      <ProgramDataBaseFileName>.\libs\residfp\ItaniumRelease\</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <CompileAs>Default</CompileAs>
-    </ClCompile>
-    <ResourceCompile>
-      <Culture>0x0409</Culture>
-    </ResourceCompile>
-    <Lib>
-      <OutputFile>.\libs\residfp\ItaniumRelease\residfp.lib</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-    </Lib>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
       <TargetEnvironment>X64</TargetEnvironment>
@@ -285,18 +198,12 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Debug\residfp.pch" /Fo"libs\residfp\Win32Debug/" /Fd"libs\residfp\Win32Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">libs\residfp\Win32Debug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumDebug\residfp.pch" /Fo"libs\residfp\ItaniumDebug/" /Fd"libs\residfp\ItaniumDebug/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">libs\residfp\ItaniumDebug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Debug\residfp.pch" /Fo"libs\residfp\x64Debug/" /Fd"libs\residfp\x64Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libs\residfp\x64Debug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Release\residfp.pch" /Fo"libs\residfp\Win32Release/" /Fd"libs\residfp\Win32Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">libs\residfp\Win32Release\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumRelease\residfp.pch" /Fo"libs\residfp\ItaniumRelease/" /Fd"libs\residfp\ItaniumRelease/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">libs\residfp\ItaniumRelease\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Release\residfp.pch" /Fo"libs\residfp\x64Release/" /Fd"libs\residfp\x64Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libs\residfp\x64Release\%(Filename).obj;%(Outputs)</Outputs>
@@ -305,18 +212,12 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Debug\residfp.pch" /Fo"libs\residfp\Win32Debug/" /Fd"libs\residfp\Win32Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">libs\residfp\Win32Debug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumDebug\residfp.pch" /Fo"libs\residfp\ItaniumDebug/" /Fd"libs\residfp\ItaniumDebug/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">libs\residfp\ItaniumDebug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Debug\residfp.pch" /Fo"libs\residfp\x64Debug/" /Fd"libs\residfp\x64Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libs\residfp\x64Debug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Release\residfp.pch" /Fo"libs\residfp\Win32Release/" /Fd"libs\residfp\Win32Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">libs\residfp\Win32Release\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumRelease\residfp.pch" /Fo"libs\residfp\ItaniumRelease/" /Fd"libs\residfp\ItaniumRelease/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">libs\residfp\ItaniumRelease\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Release\residfp.pch" /Fo"libs\residfp\x64Release/" /Fd"libs\residfp\x64Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libs\residfp\x64Release\%(Filename).obj;%(Outputs)</Outputs>
@@ -325,18 +226,12 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Debug\residfp.pch" /Fo"libs\residfp\Win32Debug/" /Fd"libs\residfp\Win32Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">libs\residfp\Win32Debug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumDebug\residfp.pch" /Fo"libs\residfp\ItaniumDebug/" /Fd"libs\residfp\ItaniumDebug/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">libs\residfp\ItaniumDebug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Debug\residfp.pch" /Fo"libs\residfp\x64Debug/" /Fd"libs\residfp\x64Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libs\residfp\x64Debug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Release\residfp.pch" /Fo"libs\residfp\Win32Release/" /Fd"libs\residfp\Win32Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">libs\residfp\Win32Release\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumRelease\residfp.pch" /Fo"libs\residfp\ItaniumRelease/" /Fd"libs\residfp\ItaniumRelease/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">libs\residfp\ItaniumRelease\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Release\residfp.pch" /Fo"libs\residfp\x64Release/" /Fd"libs\residfp\x64Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libs\residfp\x64Release\%(Filename).obj;%(Outputs)</Outputs>
@@ -345,18 +240,12 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Debug\residfp.pch" /Fo"libs\residfp\Win32Debug/" /Fd"libs\residfp\Win32Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">libs\residfp\Win32Debug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumDebug\residfp.pch" /Fo"libs\residfp\ItaniumDebug/" /Fd"libs\residfp\ItaniumDebug/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">libs\residfp\ItaniumDebug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Debug\residfp.pch" /Fo"libs\residfp\x64Debug/" /Fd"libs\residfp\x64Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libs\residfp\x64Debug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Release\residfp.pch" /Fo"libs\residfp\Win32Release/" /Fd"libs\residfp\Win32Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">libs\residfp\Win32Release\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumRelease\residfp.pch" /Fo"libs\residfp\ItaniumRelease/" /Fd"libs\residfp\ItaniumRelease/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">libs\residfp\ItaniumRelease\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Release\residfp.pch" /Fo"libs\residfp\x64Release/" /Fd"libs\residfp\x64Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libs\residfp\x64Release\%(Filename).obj;%(Outputs)</Outputs>
@@ -365,18 +254,12 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Debug\residfp.pch" /Fo"libs\residfp\Win32Debug/" /Fd"libs\residfp\Win32Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">libs\residfp\Win32Debug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumDebug\residfp.pch" /Fo"libs\residfp\ItaniumDebug/" /Fd"libs\residfp\ItaniumDebug/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">libs\residfp\ItaniumDebug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Debug\residfp.pch" /Fo"libs\residfp\x64Debug/" /Fd"libs\residfp\x64Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libs\residfp\x64Debug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Release\residfp.pch" /Fo"libs\residfp\Win32Release/" /Fd"libs\residfp\Win32Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">libs\residfp\Win32Release\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumRelease\residfp.pch" /Fo"libs\residfp\ItaniumRelease/" /Fd"libs\residfp\ItaniumRelease/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">libs\residfp\ItaniumRelease\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Release\residfp.pch" /Fo"libs\residfp\x64Release/" /Fd"libs\residfp\x64Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libs\residfp\x64Release\%(Filename).obj;%(Outputs)</Outputs>
@@ -385,18 +268,12 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Debug\residfp.pch" /Fo"libs\residfp\Win32Debug/" /Fd"libs\residfp\Win32Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">libs\residfp\Win32Debug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumDebug\residfp.pch" /Fo"libs\residfp\ItaniumDebug/" /Fd"libs\residfp\ItaniumDebug/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">libs\residfp\ItaniumDebug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Debug\residfp.pch" /Fo"libs\residfp\x64Debug/" /Fd"libs\residfp\x64Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libs\residfp\x64Debug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Release\residfp.pch" /Fo"libs\residfp\Win32Release/" /Fd"libs\residfp\Win32Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">libs\residfp\Win32Release\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumRelease\residfp.pch" /Fo"libs\residfp\ItaniumRelease/" /Fd"libs\residfp\ItaniumRelease/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">libs\residfp\ItaniumRelease\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Release\residfp.pch" /Fo"libs\residfp\x64Release/" /Fd"libs\residfp\x64Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libs\residfp\x64Release\%(Filename).obj;%(Outputs)</Outputs>
@@ -405,18 +282,12 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Debug\residfp.pch" /Fo"libs\residfp\Win32Debug/" /Fd"libs\residfp\Win32Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">libs\residfp\Win32Debug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumDebug\residfp.pch" /Fo"libs\residfp\ItaniumDebug/" /Fd"libs\residfp\ItaniumDebug/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">libs\residfp\ItaniumDebug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Debug\residfp.pch" /Fo"libs\residfp\x64Debug/" /Fd"libs\residfp\x64Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libs\residfp\x64Debug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Release\residfp.pch" /Fo"libs\residfp\Win32Release/" /Fd"libs\residfp\Win32Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">libs\residfp\Win32Release\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumRelease\residfp.pch" /Fo"libs\residfp\ItaniumRelease/" /Fd"libs\residfp\ItaniumRelease/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">libs\residfp\ItaniumRelease\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Release\residfp.pch" /Fo"libs\residfp\x64Release/" /Fd"libs\residfp\x64Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libs\residfp\x64Release\%(Filename).obj;%(Outputs)</Outputs>
@@ -425,18 +296,12 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Debug\residfp.pch" /Fo"libs\residfp\Win32Debug/" /Fd"libs\residfp\Win32Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">libs\residfp\Win32Debug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumDebug\residfp.pch" /Fo"libs\residfp\ItaniumDebug/" /Fd"libs\residfp\ItaniumDebug/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">libs\residfp\ItaniumDebug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Debug\residfp.pch" /Fo"libs\residfp\x64Debug/" /Fd"libs\residfp\x64Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libs\residfp\x64Debug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Release\residfp.pch" /Fo"libs\residfp\Win32Release/" /Fd"libs\residfp\Win32Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">libs\residfp\Win32Release\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumRelease\residfp.pch" /Fo"libs\residfp\ItaniumRelease/" /Fd"libs\residfp\ItaniumRelease/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">libs\residfp\ItaniumRelease\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Release\residfp.pch" /Fo"libs\residfp\x64Release/" /Fd"libs\residfp\x64Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libs\residfp\x64Release\%(Filename).obj;%(Outputs)</Outputs>
@@ -445,18 +310,12 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Debug\residfp.pch" /Fo"libs\residfp\Win32Debug/" /Fd"libs\residfp\Win32Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">libs\residfp\Win32Debug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumDebug\residfp.pch" /Fo"libs\residfp\ItaniumDebug/" /Fd"libs\residfp\ItaniumDebug/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">libs\residfp\ItaniumDebug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Debug\residfp.pch" /Fo"libs\residfp\x64Debug/" /Fd"libs\residfp\x64Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libs\residfp\x64Debug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Release\residfp.pch" /Fo"libs\residfp\Win32Release/" /Fd"libs\residfp\Win32Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">libs\residfp\Win32Release\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumRelease\residfp.pch" /Fo"libs\residfp\ItaniumRelease/" /Fd"libs\residfp\ItaniumRelease/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">libs\residfp\ItaniumRelease\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Release\residfp.pch" /Fo"libs\residfp\x64Release/" /Fd"libs\residfp\x64Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libs\residfp\x64Release\%(Filename).obj;%(Outputs)</Outputs>
@@ -465,18 +324,12 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Debug\residfp.pch" /Fo"libs\residfp\Win32Debug/" /Fd"libs\residfp\Win32Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">libs\residfp\Win32Debug\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumDebug\residfp.pch" /Fo"libs\residfp\ItaniumDebug/" /Fd"libs\residfp\ItaniumDebug/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">libs\residfp\ItaniumDebug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl /nologo /MDd /W3 /EHsc /Z7 /Od /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Debug\residfp.pch" /Fo"libs\residfp\x64Debug/" /Fd"libs\residfp\x64Debug/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libs\residfp\x64Debug\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\Win32Release\residfp.pch" /Fo"libs\residfp\Win32Release/" /Fd"libs\residfp\Win32Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">libs\residfp\Win32Release\%(Filename).obj;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\ItaniumRelease\residfp.pch" /Fo"libs\residfp\ItaniumRelease/" /Fd"libs\residfp\ItaniumRelease/" /FD /TP /c "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">libs\residfp\ItaniumRelease\%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl /nologo /MD /W3 /EHsc /I "./" /I "../" /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /D PACKAGE=\"resid\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\residfp\x64Release\residfp.pch" /Fo"libs\residfp\x64Release/" /Fd"libs\residfp\x64Release/" /FD /TP /c "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libs\residfp\x64Release\%(Filename).obj;%(Outputs)</Outputs>
