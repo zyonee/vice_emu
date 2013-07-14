@@ -3693,7 +3693,6 @@ AC_OUTPUT([Makefile
            src/arch/sdl/win32-msvc10/Makefile
            src/arch/sdl/win32-msvc11/Makefile
            src/arch/sdl/win32-watcom/Makefile
-           src/arch/sdl/win64-msvc/Makefile
            src/arch/sdl/winmips-msvc/Makefile
            src/arch/unix/Makefile
            src/arch/unix/gp2x/Makefile
