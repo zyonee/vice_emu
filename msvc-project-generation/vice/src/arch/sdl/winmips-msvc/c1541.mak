@@ -33,18 +33,18 @@ INTDIR=.\libs\c1541\Release
 OutDir=.\..\..\..\..\data
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\c1541.exe"
+ALL : "$(OUTDIR)\c1541.exe" 
 
 !ELSE 
 
-ALL : "platform - Win32 Release" "p64 - Win32 Release" "serial - Win32 Release" "fileio - Win32 Release" "imagecontents - Win32 Release" "tape - Win32 Release" "diskimage - Win32 Release" "vdrive - Win32 Release" "base - Win32 Release" "arch - Win32 Release" "$(OUTDIR)\c1541.exe"
+ALL : "arch - Win32 Release" "base - Win32 Release" "diskimage - Win32 Release" "fileio - Win32 Release" "imagecontents - Win32 Release" "p64 - Win32 Release" "platform - Win32 Release" "serial - Win32 Release" "tape - Win32 Release" "vdrive - Win32 Release" "$(OUTDIR)\c1541.exe" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
-CLEAN :"arch - Win32 ReleaseCLEAN" "base - Win32 ReleaseCLEAN" "vdrive - Win32 ReleaseCLEAN" "diskimage - Win32 ReleaseCLEAN" "tape - Win32 ReleaseCLEAN" "imagecontents - Win32 ReleaseCLEAN" "fileio - Win32 ReleaseCLEAN" "serial - Win32 ReleaseCLEAN" "p64 - Win32 ReleaseCLEAN" "platform - Win32 ReleaseCLEAN" 
+!IF "$(RECURSE)" == "1"
+CLEAN :"vdrive - Win32 ReleaseCLEAN" "tape - Win32 ReleaseCLEAN" "serial - Win32 ReleaseCLEAN" "platform - Win32 ReleaseCLEAN" "p64 - Win32 ReleaseCLEAN" "imagecontents - Win32 ReleaseCLEAN" "fileio - Win32 ReleaseCLEAN" "diskimage - Win32 ReleaseCLEAN" "base - Win32 ReleaseCLEAN" "arch - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
@@ -61,7 +61,6 @@ CLEAN :
 	-@erase "$(INTDIR)\rawfile.obj"
 	-@erase "$(INTDIR)\resources.obj"
 	-@erase "$(INTDIR)\util.obj"
-	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(INTDIR)\zfile.obj"
 	-@erase "$(INTDIR)\zipcode.obj"
 	-@erase "$(OUTDIR)\c1541.exe"
@@ -73,7 +72,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\\" /I "..\..\..\\" /I "..\..\..\platform" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\lib\p64" /I "..\..\..\imagecontents" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"$(INTDIR)\c1541.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\imagecontents "/I "..\..\..\lib\p64 "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_CONSOLE" /D "_MBCS" /D "NDEBUG" /Fp"$(INTDIR)\c1541.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -109,9 +108,9 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\c1541.bsc" 
 BSC32_SBRS= \
-	
+
 LINK32=link.exe
-LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib comdlg32.lib shell32.lib wsock32.lib version.lib SDLmain.lib SDL.lib /nologo /subsystem:console /incremental:no /pdb:"$(OUTDIR)\c1541.pdb" /machine:MIPS /out:"$(OUTDIR)\c1541.exe" 
+LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib comctl32.lib winmm.lib ole32.lib oleaut32.lib uuid.lib wsock32.lib version.lib SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /incremental:no /pdb:"$(OUTDIR)\c1541.pdb" /machine:MIPS /out:"$(OUTDIR)\c1541.exe" 
 LINK32_OBJS= \
 	"$(INTDIR)\c1541.obj" \
 	"$(INTDIR)\cbmdos.obj" \
@@ -128,16 +127,16 @@ LINK32_OBJS= \
 	"$(INTDIR)\util.obj" \
 	"$(INTDIR)\zfile.obj" \
 	"$(INTDIR)\zipcode.obj" \
-	".\libs\arch\Release\arch.lib" \
-	".\libs\base\Release\base.lib" \
-	".\libs\vdrive\Release\vdrive.lib" \
-	".\libs\diskimage\Release\diskimage.lib" \
-	".\libs\tape\Release\tape.lib" \
-	".\libs\imagecontents\Release\imagecontents.lib" \
-	".\libs\fileio\Release\fileio.lib" \
-	".\libs\serial\Release\serial.lib" \
-	".\libs\p64\Release\p64.lib" \
-	".\libs\platform\Release\platform.lib"
+	".\libsarch\Release\arch.lib" \
+	".\libsbase\Release\base.lib" \
+	".\libsdiskimage\Release\diskimage.lib" \
+	".\libsfileio\Release\fileio.lib" \
+	".\libsimagecontents\Release\imagecontents.lib" \
+	".\libsp64\Release\p64.lib" \
+	".\libsplatform\Release\platform.lib" \
+	".\libsserial\Release\serial.lib" \
+	".\libstape\Release\tape.lib" \
+	".\libsvdrive\Release\vdrive.lib" \
 
 
 "$(OUTDIR)\c1541.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
@@ -153,18 +152,18 @@ INTDIR=.\libs\c1541\Debug
 OutDir=.\..\..\..\..\data
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\c1541.exe"
+ALL : "$(OUTDIR)\c1541.exe" 
 
 !ELSE 
 
-ALL : "platform - Win32 Debug" "p64 - Win32 Debug" "serial - Win32 Debug" "fileio - Win32 Debug" "imagecontents - Win32 Debug" "tape - Win32 Debug" "diskimage - Win32 Debug" "vdrive - Win32 Debug" "base - Win32 Debug" "arch - Win32 Debug" "$(OUTDIR)\c1541.exe"
+ALL : "arch - Win32 Debug" "base - Win32 Debug" "diskimage - Win32 Debug" "fileio - Win32 Debug" "imagecontents - Win32 Debug" "p64 - Win32 Debug" "platform - Win32 Debug" "serial - Win32 Debug" "tape - Win32 Debug" "vdrive - Win32 Debug" "$(OUTDIR)\c1541.exe" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
-CLEAN :"arch - Win32 DebugCLEAN" "base - Win32 DebugCLEAN" "vdrive - Win32 DebugCLEAN" "diskimage - Win32 DebugCLEAN" "tape - Win32 DebugCLEAN" "imagecontents - Win32 DebugCLEAN" "fileio - Win32 DebugCLEAN" "serial - Win32 DebugCLEAN" "p64 - Win32 DebugCLEAN" "platform - Win32 DebugCLEAN" 
+!IF "$(RECURSE)" == "1"
+CLEAN :"vdrive - Win32 DebugCLEAN" "tape - Win32 DebugCLEAN" "serial - Win32 DebugCLEAN" "platform - Win32 DebugCLEAN" "p64 - Win32 DebugCLEAN" "imagecontents - Win32 DebugCLEAN" "fileio - Win32 DebugCLEAN" "diskimage - Win32 DebugCLEAN" "base - Win32 DebugCLEAN" "arch - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
@@ -181,7 +180,6 @@ CLEAN :
 	-@erase "$(INTDIR)\rawfile.obj"
 	-@erase "$(INTDIR)\resources.obj"
 	-@erase "$(INTDIR)\util.obj"
-	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(INTDIR)\zfile.obj"
 	-@erase "$(INTDIR)\zipcode.obj"
 	-@erase "$(OUTDIR)\c1541.exe"
@@ -195,7 +193,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\\" /I "..\..\..\\" /I "..\..\..\platform" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\lib\p64" /I "..\..\..\imagecontents" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"$(INTDIR)\c1541.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\imagecontents "/I "..\..\..\lib\p64 "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_CONSOLE" /D "_MBCS" /D "_DEBUG" /Fp"$(INTDIR)\c1541.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -231,9 +229,9 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\c1541.bsc" 
 BSC32_SBRS= \
-	
+
 LINK32=link.exe
-LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib comdlg32.lib shell32.lib wsock32.lib version.lib SDLmain.lib SDL.lib /nologo /subsystem:console /incremental:yes /pdb:"$(OUTDIR)\c1541.pdb" /debug /machine:MIPS /nodefaultlib:"msvcrt.lib" /out:"$(OUTDIR)\c1541.exe" /pdbtype:sept 
+LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib comctl32.lib winmm.lib ole32.lib oleaut32.lib uuid.lib wsock32.lib version.lib SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /incremental:yes /pdb:"$(OUTDIR)\c1541.pdb" /debug /machine:MIPS /nodefaultlib:"msvcrt.lib" /out:"$(OUTDIR)\c1541.exe" /pdbtype:sept
 LINK32_OBJS= \
 	"$(INTDIR)\c1541.obj" \
 	"$(INTDIR)\cbmdos.obj" \
@@ -250,16 +248,17 @@ LINK32_OBJS= \
 	"$(INTDIR)\util.obj" \
 	"$(INTDIR)\zfile.obj" \
 	"$(INTDIR)\zipcode.obj" \
-	".\libs\arch\Debug\arch.lib" \
-	".\libs\base\Debug\base.lib" \
-	".\libs\vdrive\Debug\vdrive.lib" \
-	".\libs\diskimage\Debug\diskimage.lib" \
-	".\libs\tape\Debug\tape.lib" \
-	".\libs\imagecontents\Debug\imagecontents.lib" \
-	".\libs\fileio\Debug\fileio.lib" \
-	".\libs\serial\Debug\serial.lib" \
-	".\libs\p64\Debug\p64.lib" \
-	".\libs\platform\Debug\platform.lib"
+	".\libsarch\Debug\arch.lib" \
+	".\libsbase\Debug\base.lib" \
+	".\libsdiskimage\Debug\diskimage.lib" \
+	".\libsfileio\Debug\fileio.lib" \
+	".\libsimagecontents\Debug\imagecontents.lib" \
+	".\libsp64\Debug\p64.lib" \
+	".\libsplatform\Debug\platform.lib" \
+	".\libsserial\Debug\serial.lib" \
+	".\libstape\Debug\tape.lib" \
+	".\libsvdrive\Debug\vdrive.lib" \
+
 
 "$(OUTDIR)\c1541.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
@@ -325,32 +324,6 @@ LINK32_OBJS= \
 
 !IF  "$(CFG)" == "c1541 - Win32 Release"
 
-"vdrive - Win32 Release" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\vdrive.mak" CFG="vdrive - Win32 Release" 
-   cd "."
-
-"vdrive - Win32 ReleaseCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\vdrive.mak" CFG="vdrive - Win32 Release" RECURSE=1 CLEAN 
-   cd "."
-
-!ELSEIF  "$(CFG)" == "c1541 - Win32 Debug"
-
-"vdrive - Win32 Debug" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\vdrive.mak" CFG="vdrive - Win32 Debug" 
-   cd "."
-
-"vdrive - Win32 DebugCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\vdrive.mak" CFG="vdrive - Win32 Debug" RECURSE=1 CLEAN 
-   cd "."
-
-!ENDIF 
-
-!IF  "$(CFG)" == "c1541 - Win32 Release"
-
 "diskimage - Win32 Release" : 
    cd "."
    $(MAKE) /$(MAKEFLAGS) /F ".\diskimage.mak" CFG="diskimage - Win32 Release" 
@@ -371,58 +344,6 @@ LINK32_OBJS= \
 "diskimage - Win32 DebugCLEAN" : 
    cd "."
    $(MAKE) /$(MAKEFLAGS) /F ".\diskimage.mak" CFG="diskimage - Win32 Debug" RECURSE=1 CLEAN 
-   cd "."
-
-!ENDIF 
-
-!IF  "$(CFG)" == "c1541 - Win32 Release"
-
-"tape - Win32 Release" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\tape.mak" CFG="tape - Win32 Release" 
-   cd "."
-
-"tape - Win32 ReleaseCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\tape.mak" CFG="tape - Win32 Release" RECURSE=1 CLEAN 
-   cd "."
-
-!ELSEIF  "$(CFG)" == "c1541 - Win32 Debug"
-
-"tape - Win32 Debug" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\tape.mak" CFG="tape - Win32 Debug" 
-   cd "."
-
-"tape - Win32 DebugCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\tape.mak" CFG="tape - Win32 Debug" RECURSE=1 CLEAN 
-   cd "."
-
-!ENDIF 
-
-!IF  "$(CFG)" == "c1541 - Win32 Release"
-
-"imagecontents - Win32 Release" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\imagecontents.mak" CFG="imagecontents - Win32 Release" 
-   cd "."
-
-"imagecontents - Win32 ReleaseCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\imagecontents.mak" CFG="imagecontents - Win32 Release" RECURSE=1 CLEAN 
-   cd "."
-
-!ELSEIF  "$(CFG)" == "c1541 - Win32 Debug"
-
-"imagecontents - Win32 Debug" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\imagecontents.mak" CFG="imagecontents - Win32 Debug" 
-   cd "."
-
-"imagecontents - Win32 DebugCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\imagecontents.mak" CFG="imagecontents - Win32 Debug" RECURSE=1 CLEAN 
    cd "."
 
 !ENDIF 
@@ -455,26 +376,26 @@ LINK32_OBJS= \
 
 !IF  "$(CFG)" == "c1541 - Win32 Release"
 
-"serial - Win32 Release" : 
+"imagecontents - Win32 Release" : 
    cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\serial.mak" CFG="serial - Win32 Release" 
+   $(MAKE) /$(MAKEFLAGS) /F ".\imagecontents.mak" CFG="imagecontents - Win32 Release" 
    cd "."
 
-"serial - Win32 ReleaseCLEAN" : 
+"imagecontents - Win32 ReleaseCLEAN" : 
    cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\serial.mak" CFG="serial - Win32 Release" RECURSE=1 CLEAN 
+   $(MAKE) /$(MAKEFLAGS) /F ".\imagecontents.mak" CFG="imagecontents - Win32 Release" RECURSE=1 CLEAN 
    cd "."
 
 !ELSEIF  "$(CFG)" == "c1541 - Win32 Debug"
 
-"serial - Win32 Debug" : 
+"imagecontents - Win32 Debug" : 
    cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\serial.mak" CFG="serial - Win32 Debug" 
+   $(MAKE) /$(MAKEFLAGS) /F ".\imagecontents.mak" CFG="imagecontents - Win32 Debug" 
    cd "."
 
-"serial - Win32 DebugCLEAN" : 
+"imagecontents - Win32 DebugCLEAN" : 
    cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\serial.mak" CFG="serial - Win32 Debug" RECURSE=1 CLEAN 
+   $(MAKE) /$(MAKEFLAGS) /F ".\imagecontents.mak" CFG="imagecontents - Win32 Debug" RECURSE=1 CLEAN 
    cd "."
 
 !ENDIF 
@@ -531,90 +452,153 @@ LINK32_OBJS= \
 
 !ENDIF 
 
+!IF  "$(CFG)" == "c1541 - Win32 Release"
+
+"serial - Win32 Release" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\serial.mak" CFG="serial - Win32 Release" 
+   cd "."
+
+"serial - Win32 ReleaseCLEAN" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\serial.mak" CFG="serial - Win32 Release" RECURSE=1 CLEAN 
+   cd "."
+
+!ELSEIF  "$(CFG)" == "c1541 - Win32 Debug"
+
+"serial - Win32 Debug" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\serial.mak" CFG="serial - Win32 Debug" 
+   cd "."
+
+"serial - Win32 DebugCLEAN" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\serial.mak" CFG="serial - Win32 Debug" RECURSE=1 CLEAN 
+   cd "."
+
+!ENDIF 
+
+!IF  "$(CFG)" == "c1541 - Win32 Release"
+
+"tape - Win32 Release" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\tape.mak" CFG="tape - Win32 Release" 
+   cd "."
+
+"tape - Win32 ReleaseCLEAN" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\tape.mak" CFG="tape - Win32 Release" RECURSE=1 CLEAN 
+   cd "."
+
+!ELSEIF  "$(CFG)" == "c1541 - Win32 Debug"
+
+"tape - Win32 Debug" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\tape.mak" CFG="tape - Win32 Debug" 
+   cd "."
+
+"tape - Win32 DebugCLEAN" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\tape.mak" CFG="tape - Win32 Debug" RECURSE=1 CLEAN 
+   cd "."
+
+!ENDIF 
+
+!IF  "$(CFG)" == "c1541 - Win32 Release"
+
+"vdrive - Win32 Release" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\vdrive.mak" CFG="vdrive - Win32 Release" 
+   cd "."
+
+"vdrive - Win32 ReleaseCLEAN" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\vdrive.mak" CFG="vdrive - Win32 Release" RECURSE=1 CLEAN 
+   cd "."
+
+!ELSEIF  "$(CFG)" == "c1541 - Win32 Debug"
+
+"vdrive - Win32 Debug" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\vdrive.mak" CFG="vdrive - Win32 Debug" 
+   cd "."
+
+"vdrive - Win32 DebugCLEAN" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\vdrive.mak" CFG="vdrive - Win32 Debug" RECURSE=1 CLEAN 
+   cd "."
+
+!ENDIF 
 
 SOURCE=..\..\..\c1541.c
 
 "$(INTDIR)\c1541.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
 SOURCE=..\..\..\cbmdos.c
 
 "$(INTDIR)\cbmdos.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\cbmimage.c
 
 "$(INTDIR)\cbmimage.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
 SOURCE=..\..\..\charset.c
 
 "$(INTDIR)\charset.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\findpath.c
 
 "$(INTDIR)\findpath.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
 SOURCE=..\..\..\gcr.c
 
 "$(INTDIR)\gcr.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\info.c
 
 "$(INTDIR)\info.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
 SOURCE=..\..\..\ioutil.c
 
 "$(INTDIR)\ioutil.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\lib.c
 
 "$(INTDIR)\lib.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
 SOURCE=..\..\..\log.c
 
 "$(INTDIR)\log.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\rawfile.c
 
 "$(INTDIR)\rawfile.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
 SOURCE=..\..\..\resources.c
 
 "$(INTDIR)\resources.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\util.c
 
 "$(INTDIR)\util.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
 SOURCE=..\..\..\zfile.c
 
 "$(INTDIR)\zfile.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\zipcode.c
 

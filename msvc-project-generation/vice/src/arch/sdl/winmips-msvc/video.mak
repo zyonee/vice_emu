@@ -33,53 +33,52 @@ INTDIR=.\libs\video\Release
 OutDir=.\libs\video\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\video.lib"
+ALL : "$(OUTDIR)\video.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\video.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\video.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\render1x1.obj"
-	-@erase "$(INTDIR)\render1x1ntsc.obj"
-	-@erase "$(INTDIR)\render1x1pal.obj"
-	-@erase "$(INTDIR)\render1x2.obj"
-	-@erase "$(INTDIR)\render1x2crt.obj"
-	-@erase "$(INTDIR)\render2x2.obj"
-	-@erase "$(INTDIR)\render2x2crt.obj"
-	-@erase "$(INTDIR)\render2x2ntsc.obj"
-	-@erase "$(INTDIR)\render2x2pal.obj"
-	-@erase "$(INTDIR)\render2x4.obj"
-	-@erase "$(INTDIR)\render2x4crt.obj"
-	-@erase "$(INTDIR)\renderscale2x.obj"
-	-@erase "$(INTDIR)\renderyuv.obj"
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\video-canvas.obj"
-	-@erase "$(INTDIR)\video-cmdline-options.obj"
-	-@erase "$(INTDIR)\video-color.obj"
-	-@erase "$(INTDIR)\video-render-1x2.obj"
-	-@erase "$(INTDIR)\video-render-2x2.obj"
-	-@erase "$(INTDIR)\video-render-crt.obj"
-	-@erase "$(INTDIR)\video-render-pal.obj"
-	-@erase "$(INTDIR)\video-render.obj"
-	-@erase "$(INTDIR)\video-resources.obj"
-	-@erase "$(INTDIR)\video-sound.obj"
-	-@erase "$(INTDIR)\video-viewport.obj"
+	-@erase "$(INTDIR)\video\render1x1.obj"
+	-@erase "$(INTDIR)\video\render1x1ntsc.obj"
+	-@erase "$(INTDIR)\video\render1x1pal.obj"
+	-@erase "$(INTDIR)\video\render1x2.obj"
+	-@erase "$(INTDIR)\video\render1x2crt.obj"
+	-@erase "$(INTDIR)\video\render2x2.obj"
+	-@erase "$(INTDIR)\video\render2x2crt.obj"
+	-@erase "$(INTDIR)\video\render2x2ntsc.obj"
+	-@erase "$(INTDIR)\video\render2x2pal.obj"
+	-@erase "$(INTDIR)\video\render2x4.obj"
+	-@erase "$(INTDIR)\video\render2x4crt.obj"
+	-@erase "$(INTDIR)\video\renderscale2x.obj"
+	-@erase "$(INTDIR)\video\renderyuv.obj"
+	-@erase "$(INTDIR)\video\video-canvas.obj"
+	-@erase "$(INTDIR)\video\video-cmdline-options.obj"
+	-@erase "$(INTDIR)\video\video-color.obj"
+	-@erase "$(INTDIR)\video\video-render-1x2.obj"
+	-@erase "$(INTDIR)\video\video-render-2x2.obj"
+	-@erase "$(INTDIR)\video\video-render-crt.obj"
+	-@erase "$(INTDIR)\video\video-render-pal.obj"
+	-@erase "$(INTDIR)\video\video-render.obj"
+	-@erase "$(INTDIR)\video\video-resources.obj"
+	-@erase "$(INTDIR)\video\video-sound.obj"
+	-@erase "$(INTDIR)\video\video-viewport.obj"
 	-@erase "$(OUTDIR)\video.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\raster" /I "..\..\..\video" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\video.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64 "/I "..\..\..\raster "/I "..\..\..\video "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\video.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -115,42 +114,43 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\video.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\video.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\render1x1.obj" \
-	"$(INTDIR)\render1x1ntsc.obj" \
-	"$(INTDIR)\render1x1pal.obj" \
-	"$(INTDIR)\render1x2.obj" \
-	"$(INTDIR)\render1x2crt.obj" \
-	"$(INTDIR)\render2x2.obj" \
-	"$(INTDIR)\render2x2crt.obj" \
-	"$(INTDIR)\render2x2ntsc.obj" \
-	"$(INTDIR)\render2x2pal.obj" \
-	"$(INTDIR)\render2x4.obj" \
-	"$(INTDIR)\render2x4crt.obj" \
-	"$(INTDIR)\renderscale2x.obj" \
-	"$(INTDIR)\renderyuv.obj" \
-	"$(INTDIR)\video-canvas.obj" \
-	"$(INTDIR)\video-cmdline-options.obj" \
-	"$(INTDIR)\video-color.obj" \
-	"$(INTDIR)\video-render-1x2.obj" \
-	"$(INTDIR)\video-render-2x2.obj" \
-	"$(INTDIR)\video-render-pal.obj" \
-	"$(INTDIR)\video-render.obj" \
-	"$(INTDIR)\video-render-crt.obj" \
-	"$(INTDIR)\video-resources.obj" \
-	"$(INTDIR)\video-sound.obj" \
-	"$(INTDIR)\video-viewport.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\video\render1x1.obj" \
+	"$(INTDIR)\video\render1x1ntsc.obj" \
+	"$(INTDIR)\video\render1x1pal.obj" \
+	"$(INTDIR)\video\render1x2.obj" \
+	"$(INTDIR)\video\render1x2crt.obj" \
+	"$(INTDIR)\video\render2x2.obj" \
+	"$(INTDIR)\video\render2x2crt.obj" \
+	"$(INTDIR)\video\render2x2ntsc.obj" \
+	"$(INTDIR)\video\render2x2pal.obj" \
+	"$(INTDIR)\video\render2x4.obj" \
+	"$(INTDIR)\video\render2x4crt.obj" \
+	"$(INTDIR)\video\renderscale2x.obj" \
+	"$(INTDIR)\video\renderyuv.obj" \
+	"$(INTDIR)\video\video-canvas.obj" \
+	"$(INTDIR)\video\video-cmdline-options.obj" \
+	"$(INTDIR)\video\video-color.obj" \
+	"$(INTDIR)\video\video-render-1x2.obj" \
+	"$(INTDIR)\video\video-render-2x2.obj" \
+	"$(INTDIR)\video\video-render-crt.obj" \
+	"$(INTDIR)\video\video-render-pal.obj" \
+	"$(INTDIR)\video\video-render.obj" \
+	"$(INTDIR)\video\video-resources.obj" \
+	"$(INTDIR)\video\video-sound.obj" \
+	"$(INTDIR)\video\video-viewport.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\video.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "video - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\video\Debug
 INTDIR=.\libs\video\Debug
@@ -158,53 +158,52 @@ INTDIR=.\libs\video\Debug
 OutDir=.\libs\video\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\video.lib"
+ALL : "$(OUTDIR)\video.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\video.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\video.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\render1x1.obj"
-	-@erase "$(INTDIR)\render1x1ntsc.obj"
-	-@erase "$(INTDIR)\render1x1pal.obj"
-	-@erase "$(INTDIR)\render1x2.obj"
-	-@erase "$(INTDIR)\render1x2crt.obj"
-	-@erase "$(INTDIR)\render2x2.obj"
-	-@erase "$(INTDIR)\render2x2crt.obj"
-	-@erase "$(INTDIR)\render2x2ntsc.obj"
-	-@erase "$(INTDIR)\render2x2pal.obj"
-	-@erase "$(INTDIR)\render2x4.obj"
-	-@erase "$(INTDIR)\render2x4crt.obj"
-	-@erase "$(INTDIR)\renderscale2x.obj"
-	-@erase "$(INTDIR)\renderyuv.obj"
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\video-canvas.obj"
-	-@erase "$(INTDIR)\video-cmdline-options.obj"
-	-@erase "$(INTDIR)\video-color.obj"
-	-@erase "$(INTDIR)\video-render-1x2.obj"
-	-@erase "$(INTDIR)\video-render-2x2.obj"
-	-@erase "$(INTDIR)\video-render-crt.obj"
-	-@erase "$(INTDIR)\video-render-pal.obj"
-	-@erase "$(INTDIR)\video-render.obj"
-	-@erase "$(INTDIR)\video-resources.obj"
-	-@erase "$(INTDIR)\video-sound.obj"
-	-@erase "$(INTDIR)\video-viewport.obj"
+	-@erase "$(INTDIR)\video\render1x1.obj"
+	-@erase "$(INTDIR)\video\render1x1ntsc.obj"
+	-@erase "$(INTDIR)\video\render1x1pal.obj"
+	-@erase "$(INTDIR)\video\render1x2.obj"
+	-@erase "$(INTDIR)\video\render1x2crt.obj"
+	-@erase "$(INTDIR)\video\render2x2.obj"
+	-@erase "$(INTDIR)\video\render2x2crt.obj"
+	-@erase "$(INTDIR)\video\render2x2ntsc.obj"
+	-@erase "$(INTDIR)\video\render2x2pal.obj"
+	-@erase "$(INTDIR)\video\render2x4.obj"
+	-@erase "$(INTDIR)\video\render2x4crt.obj"
+	-@erase "$(INTDIR)\video\renderscale2x.obj"
+	-@erase "$(INTDIR)\video\renderyuv.obj"
+	-@erase "$(INTDIR)\video\video-canvas.obj"
+	-@erase "$(INTDIR)\video\video-cmdline-options.obj"
+	-@erase "$(INTDIR)\video\video-color.obj"
+	-@erase "$(INTDIR)\video\video-render-1x2.obj"
+	-@erase "$(INTDIR)\video\video-render-2x2.obj"
+	-@erase "$(INTDIR)\video\video-render-crt.obj"
+	-@erase "$(INTDIR)\video\video-render-pal.obj"
+	-@erase "$(INTDIR)\video\video-render.obj"
+	-@erase "$(INTDIR)\video\video-resources.obj"
+	-@erase "$(INTDIR)\video\video-sound.obj"
+	-@erase "$(INTDIR)\video\video-viewport.obj"
 	-@erase "$(OUTDIR)\video.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\raster" /I "..\..\..\video" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\video.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64 "/I "..\..\..\raster "/I "..\..\..\video "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\video.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -240,37 +239,38 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\video.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\video.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\render1x1.obj" \
-	"$(INTDIR)\render1x1ntsc.obj" \
-	"$(INTDIR)\render1x1pal.obj" \
-	"$(INTDIR)\render1x2.obj" \
-	"$(INTDIR)\render1x2crt.obj" \
-	"$(INTDIR)\render2x2.obj" \
-	"$(INTDIR)\render2x2crt.obj" \
-	"$(INTDIR)\render2x2ntsc.obj" \
-	"$(INTDIR)\render2x2pal.obj" \
-	"$(INTDIR)\render2x4.obj" \
-	"$(INTDIR)\render2x4crt.obj" \
-	"$(INTDIR)\renderscale2x.obj" \
-	"$(INTDIR)\renderyuv.obj" \
-	"$(INTDIR)\video-canvas.obj" \
-	"$(INTDIR)\video-cmdline-options.obj" \
-	"$(INTDIR)\video-color.obj" \
-	"$(INTDIR)\video-render-1x2.obj" \
-	"$(INTDIR)\video-render-2x2.obj" \
-	"$(INTDIR)\video-render-pal.obj" \
-	"$(INTDIR)\video-render.obj" \
-	"$(INTDIR)\video-render-crt.obj" \
-	"$(INTDIR)\video-resources.obj" \
-	"$(INTDIR)\video-sound.obj" \
-	"$(INTDIR)\video-viewport.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\video\render1x1.obj" \
+	"$(INTDIR)\video\render1x1ntsc.obj" \
+	"$(INTDIR)\video\render1x1pal.obj" \
+	"$(INTDIR)\video\render1x2.obj" \
+	"$(INTDIR)\video\render1x2crt.obj" \
+	"$(INTDIR)\video\render2x2.obj" \
+	"$(INTDIR)\video\render2x2crt.obj" \
+	"$(INTDIR)\video\render2x2ntsc.obj" \
+	"$(INTDIR)\video\render2x2pal.obj" \
+	"$(INTDIR)\video\render2x4.obj" \
+	"$(INTDIR)\video\render2x4crt.obj" \
+	"$(INTDIR)\video\renderscale2x.obj" \
+	"$(INTDIR)\video\renderyuv.obj" \
+	"$(INTDIR)\video\video-canvas.obj" \
+	"$(INTDIR)\video\video-cmdline-options.obj" \
+	"$(INTDIR)\video\video-color.obj" \
+	"$(INTDIR)\video\video-render-1x2.obj" \
+	"$(INTDIR)\video\video-render-2x2.obj" \
+	"$(INTDIR)\video\video-render-crt.obj" \
+	"$(INTDIR)\video\video-render-pal.obj" \
+	"$(INTDIR)\video\video-render.obj" \
+	"$(INTDIR)\video\video-resources.obj" \
+	"$(INTDIR)\video\video-sound.obj" \
+	"$(INTDIR)\video\video-viewport.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\video.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -306,147 +306,124 @@ LIB32_OBJS= \
 
 !ENDIF 
 
-SOURCE="..\..\..\video\render1x1.c"
+SOURCE=..\..\..\video\render1x1.c
 
-"$(INTDIR)\render1x1.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\render1x1.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\render1x1ntsc.c
 
-SOURCE="..\..\..\video\render1x1ntsc.c"
-
-"$(INTDIR)\render1x1ntsc.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\render1x1ntsc.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\render1x1pal.c
 
-SOURCE="..\..\..\video\render1x1pal.c"
-
-"$(INTDIR)\render1x1pal.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\render1x1pal.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\render1x2.c
 
-SOURCE="..\..\..\video\render1x2.c"
-
-"$(INTDIR)\render1x2.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\render1x2.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\render1x2crt.c
 
-SOURCE="..\..\..\video\render1x2crt.c"
-
-"$(INTDIR)\render1x2crt.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\render1x2crt.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\render2x2.c
 
-SOURCE="..\..\..\video\render2x2.c"
-
-"$(INTDIR)\render2x2.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\render2x2.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\render2x2crt.c
 
-SOURCE="..\..\..\video\render2x2crt.c"
-
-"$(INTDIR)\render2x2crt.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\render2x2crt.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\render2x2ntsc.c
 
-SOURCE="..\..\..\video\render2x2ntsc.c"
-
-"$(INTDIR)\render2x2ntsc.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\render2x2ntsc.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\render2x2pal.c
 
-SOURCE="..\..\..\video\render2x2pal.c"
-
-"$(INTDIR)\render2x2pal.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\render2x2pal.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\render2x4.c
 
-SOURCE="..\..\..\video\render2x4.c"
-
-"$(INTDIR)\render2x4.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\render2x4.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\render2x4crt.c
 
-SOURCE="..\..\..\video\render2x4crt.c"
-
-"$(INTDIR)\render2x4crt.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\render2x4crt.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\renderscale2x.c
 
-SOURCE="..\..\..\video\renderscale2x.c"
-
-"$(INTDIR)\renderscale2x.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\renderscale2x.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\renderyuv.c
 
-SOURCE="..\..\..\video\renderyuv.c"
-
-"$(INTDIR)\renderyuv.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\renderyuv.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\video-canvas.c
 
-SOURCE="..\..\..\video\video-canvas.c"
-
-"$(INTDIR)\video-canvas.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\video-canvas.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\video-cmdline-options.c
 
-SOURCE="..\..\..\video\video-cmdline-options.c"
-
-"$(INTDIR)\video-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\video-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\video-color.c
 
-SOURCE="..\..\..\video\video-color.c"
-
-"$(INTDIR)\video-color.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\video-color.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\video-render-1x2.c
 
-SOURCE="..\..\..\video\video-render-1x2.c"
-
-"$(INTDIR)\video-render-1x2.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\video-render-1x2.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\video-render-2x2.c
 
-SOURCE="..\..\..\video\video-render-2x2.c"
-
-"$(INTDIR)\video-render-2x2.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\video-render-2x2.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\video-render-crt.c
 
-SOURCE="..\..\..\video\video-render-crt.c"
-
-"$(INTDIR)\video-render-crt.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\video-render-crt.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\video-render-pal.c
 
-SOURCE="..\..\..\video\video-render-pal.c"
-
-"$(INTDIR)\video-render-pal.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\video-render-pal.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\video-render.c
 
-SOURCE="..\..\..\video\video-render.c"
-
-"$(INTDIR)\video-render.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\video-render.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\video-resources.c
 
-SOURCE="..\..\..\video\video-resources.c"
-
-"$(INTDIR)\video-resources.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\video-resources.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\video-sound.c
 
-SOURCE="..\..\..\video\video-sound.c"
-
-"$(INTDIR)\video-sound.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\video-sound.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\video\video-viewport.c
 
-SOURCE="..\..\..\video\video-viewport.c"
-
-"$(INTDIR)\video-viewport.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\video\video-viewport.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

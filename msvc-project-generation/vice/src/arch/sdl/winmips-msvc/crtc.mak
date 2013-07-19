@@ -33,25 +33,23 @@ INTDIR=.\libs\crtc\Release
 OutDir=.\libs\crtc\Release
 # End Custom Macros
 
-ALL : "$(OUTDIR)\crtc.lib"
-
+ALL : "$(OUTDIR)\crtc.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\crtc-cmdline-options.obj"
-	-@erase "$(INTDIR)\crtc-color.obj"
-	-@erase "$(INTDIR)\crtc-draw.obj"
-	-@erase "$(INTDIR)\crtc-mem.obj"
-	-@erase "$(INTDIR)\crtc-resources.obj"
-	-@erase "$(INTDIR)\crtc-snapshot.obj"
-	-@erase "$(INTDIR)\crtc.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\crtc\crtc-cmdline-options.obj"
+	-@erase "$(INTDIR)\crtc\crtc-color.obj"
+	-@erase "$(INTDIR)\crtc\crtc-draw.obj"
+	-@erase "$(INTDIR)\crtc\crtc-mem.obj"
+	-@erase "$(INTDIR)\crtc\crtc-resources.obj"
+	-@erase "$(INTDIR)\crtc\crtc-snapshot.obj"
+	-@erase "$(INTDIR)\crtc\crtc.obj"
 	-@erase "$(OUTDIR)\crtc.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\raster" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\crtc.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\raster "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\crtc.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -87,24 +85,25 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\crtc.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\crtc.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\crtc-cmdline-options.obj" \
-	"$(INTDIR)\crtc-color.obj" \
-	"$(INTDIR)\crtc-draw.obj" \
-	"$(INTDIR)\crtc-mem.obj" \
-	"$(INTDIR)\crtc-resources.obj" \
-	"$(INTDIR)\crtc-snapshot.obj" \
-	"$(INTDIR)\crtc.obj"
+	"$(INTDIR)\crtc\crtc-cmdline-options.obj" \
+	"$(INTDIR)\crtc\crtc-color.obj" \
+	"$(INTDIR)\crtc\crtc-draw.obj" \
+	"$(INTDIR)\crtc\crtc-mem.obj" \
+	"$(INTDIR)\crtc\crtc-resources.obj" \
+	"$(INTDIR)\crtc\crtc-snapshot.obj" \
+	"$(INTDIR)\crtc\crtc.obj" \
 
-"$(OUTDIR)\crtc.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "crtc - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\crtc\Debug
 INTDIR=.\libs\crtc\Debug
@@ -112,25 +111,23 @@ INTDIR=.\libs\crtc\Debug
 OutDir=.\libs\crtc\Debug
 # End Custom Macros
 
-ALL : "$(OUTDIR)\crtc.lib"
-
+ALL : "$(OUTDIR)\crtc.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\crtc-cmdline-options.obj"
-	-@erase "$(INTDIR)\crtc-color.obj"
-	-@erase "$(INTDIR)\crtc-draw.obj"
-	-@erase "$(INTDIR)\crtc-mem.obj"
-	-@erase "$(INTDIR)\crtc-resources.obj"
-	-@erase "$(INTDIR)\crtc-snapshot.obj"
-	-@erase "$(INTDIR)\crtc.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\crtc\crtc-cmdline-options.obj"
+	-@erase "$(INTDIR)\crtc\crtc-color.obj"
+	-@erase "$(INTDIR)\crtc\crtc-draw.obj"
+	-@erase "$(INTDIR)\crtc\crtc-mem.obj"
+	-@erase "$(INTDIR)\crtc\crtc-resources.obj"
+	-@erase "$(INTDIR)\crtc\crtc-snapshot.obj"
+	-@erase "$(INTDIR)\crtc\crtc.obj"
 	-@erase "$(OUTDIR)\crtc.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\raster" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\crtc.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\raster "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\crtc.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -166,19 +163,20 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\crtc.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\crtc.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\crtc-cmdline-options.obj" \
-	"$(INTDIR)\crtc-color.obj" \
-	"$(INTDIR)\crtc-draw.obj" \
-	"$(INTDIR)\crtc-mem.obj" \
-	"$(INTDIR)\crtc-resources.obj" \
-	"$(INTDIR)\crtc-snapshot.obj" \
-	"$(INTDIR)\crtc.obj"
+	"$(INTDIR)\crtc\crtc-cmdline-options.obj" \
+	"$(INTDIR)\crtc\crtc-color.obj" \
+	"$(INTDIR)\crtc\crtc-draw.obj" \
+	"$(INTDIR)\crtc\crtc-mem.obj" \
+	"$(INTDIR)\crtc\crtc-resources.obj" \
+	"$(INTDIR)\crtc\crtc-snapshot.obj" \
+	"$(INTDIR)\crtc\crtc.obj" \
 
-"$(OUTDIR)\crtc.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -187,45 +185,40 @@ LIB32_OBJS= \
 
 
 !IF "$(CFG)" == "crtc - Win32 Release" || "$(CFG)" == "crtc - Win32 Debug"
-SOURCE="..\..\..\crtc\crtc-cmdline-options.c"
 
-"$(INTDIR)\crtc-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
+SOURCE=..\..\..\crtc\crtc-cmdline-options.c
+
+"$(INTDIR)\crtc\crtc-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\crtc\crtc-color.c
 
-SOURCE="..\..\..\crtc\crtc-color.c"
-
-"$(INTDIR)\crtc-color.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\crtc\crtc-color.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\crtc\crtc-draw.c
 
-SOURCE="..\..\..\crtc\crtc-draw.c"
-
-"$(INTDIR)\crtc-draw.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\crtc\crtc-draw.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\crtc\crtc-mem.c
 
-SOURCE="..\..\..\crtc\crtc-mem.c"
-
-"$(INTDIR)\crtc-mem.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\crtc\crtc-mem.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\crtc\crtc-resources.c
 
-SOURCE="..\..\..\crtc\crtc-resources.c"
-
-"$(INTDIR)\crtc-resources.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\crtc\crtc-resources.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\crtc\crtc-snapshot.c
 
-SOURCE="..\..\..\crtc\crtc-snapshot.c"
-
-"$(INTDIR)\crtc-snapshot.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\crtc\crtc-snapshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\crtc\crtc.c
 
-"$(INTDIR)\crtc.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\crtc\crtc.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

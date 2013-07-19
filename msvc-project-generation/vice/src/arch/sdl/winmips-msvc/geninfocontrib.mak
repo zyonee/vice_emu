@@ -33,12 +33,10 @@ INTDIR=.\libs\geninfocontrib\Release
 OutDir=.\..\..\..\..\data
 # End Custom Macros
 
-ALL : "$(OUTDIR)\geninfocontrib.exe" "..\..\..\infocontrib.h"
-
+ALL : "$(OUTDIR)\geninfocontrib.exe" "..\..\..\infocontrib.h" 
 
 CLEAN :
-	-@erase "$(INTDIR)\geninfocontrib.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\arch\win32\utils\geninfocontrib.obj"
 	-@erase "$(OUTDIR)\geninfocontrib.exe"
 	-@erase "..\..\..\infocontrib.h"
 
@@ -49,7 +47,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /D "NDEBUG" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_CONSOLE" /D "_MBCS" /D "_CRT_SECURE_NO_DEPRECATE" /Fp"$(INTDIR)\geninfocontrib.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_CONSOLE" /D "_MBCS" /D "NDEBUG" /Fp"$(INTDIR)\geninfocontrib.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -85,11 +83,12 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\geninfocontrib.bsc" 
 BSC32_SBRS= \
-	
+
 LINK32=link.exe
-LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib   kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib   /nologo /subsystem:console /incremental:no /pdb:"$(OUTDIR)\geninfocontrib.pdb" /machine:MIPS /out:"$(OUTDIR)\geninfocontrib.exe" 
+LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib comctl32.lib winmm.lib ole32.lib oleaut32.lib uuid.lib wsock32.lib version.lib SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /incremental:no /pdb:"$(OUTDIR)\geninfocontrib.pdb" /machine:MIPS /out:"$(OUTDIR)\geninfocontrib.exe" 
 LINK32_OBJS= \
-	"$(INTDIR)\geninfocontrib.obj"
+	"$(INTDIR)\arch\win32\utils\geninfocontrib.obj" \
+
 
 "$(OUTDIR)\geninfocontrib.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
@@ -104,9 +103,9 @@ SOURCE="$(InputPath)"
 	@echo off 
 	..\..\..\..\data\geninfocontrib ..\..\..\..\doc\vice.texi ..\..\..\infocontrib.h ..\..\..\infocontrib.sed
 << 
-	
 
-!ELSEIF  "$(CFG)" == "geninfocontrib - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "..\..\..\..\data\geninfocontrib.exe - Win32 Debug"
 
 OUTDIR=.\..\..\..\..\data
 INTDIR=.\libs\geninfocontrib\Debug
@@ -114,13 +113,10 @@ INTDIR=.\libs\geninfocontrib\Debug
 OutDir=.\..\..\..\..\data
 # End Custom Macros
 
-ALL : "$(OUTDIR)\geninfocontrib.exe" "..\..\..\infocontrib.h"
-
+ALL : "$(OUTDIR)\geninfocontrib.exe" "..\..\..\infocontrib.h" 
 
 CLEAN :
-	-@erase "$(INTDIR)\geninfocontrib.obj"
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\vc60.pdb"
+	-@erase "$(INTDIR)\arch\win32\utils\geninfocontrib.obj"
 	-@erase "$(OUTDIR)\geninfocontrib.exe"
 	-@erase "$(OUTDIR)\geninfocontrib.ilk"
 	-@erase "$(OUTDIR)\geninfocontrib.pdb"
@@ -133,7 +129,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /D "_CRT_SECURE_NO_DEPRECATE" /Fp"$(INTDIR)\geninfocontrib.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /GZ /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_CONSOLE" /D "_MBCS" /D "_DEBUG" /Fp"$(INTDIR)\geninfocontrib.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -169,11 +165,12 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\geninfocontrib.bsc" 
 BSC32_SBRS= \
-	
+
 LINK32=link.exe
-LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib   kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib   /nologo /subsystem:console /incremental:yes /pdb:"$(OUTDIR)\geninfocontrib.pdb" /debug /machine:MIPS /out:"$(OUTDIR)\geninfocontrib.exe" /pdbtype:sept 
+LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib comctl32.lib winmm.lib ole32.lib oleaut32.lib uuid.lib wsock32.lib version.lib SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /incremental:yes /pdb:"$(OUTDIR)\geninfocontrib.pdb" /debug /machine:MIPS /nodefaultlib:"msvcrt.lib" /out:"$(OUTDIR)\geninfocontrib.exe" /pdbtype:sept
 LINK32_OBJS= \
-	"$(INTDIR)\geninfocontrib.obj"
+	"$(INTDIR)\arch\win32\utils\geninfocontrib.obj" \
+
 
 "$(OUTDIR)\geninfocontrib.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
@@ -188,15 +185,16 @@ SOURCE="$(InputPath)"
 	@echo off 
 	..\..\..\..\data\geninfocontrib ..\..\..\..\doc\vice.texi ..\..\..\infocontrib.h ..\..\..\infocontrib.sed
 << 
-	
+
 
 !ENDIF 
 
 
 !IF "$(CFG)" == "geninfocontrib - Win32 Release" || "$(CFG)" == "geninfocontrib - Win32 Debug"
-SOURCE=..\..\win32\utils\geninfocontrib.c
 
-"$(INTDIR)\geninfocontrib.obj" : $(SOURCE) "$(INTDIR)"
+SOURCE=..\..\..\arch\win32\utils\geninfocontrib.c
+
+"$(INTDIR)\arch\win32\utils\geninfocontrib.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

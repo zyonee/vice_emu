@@ -33,30 +33,29 @@ INTDIR=.\libs\c64dtvstubs\Release
 OutDir=.\libs\c64dtvstubs\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\c64dtvstubs.lib"
+ALL : "$(OUTDIR)\c64dtvstubs.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\c64dtvstubs.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\c64dtvstubs.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\c64dtvcart.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\c64dtv\c64dtvcart.obj"
 	-@erase "$(OUTDIR)\c64dtvstubs.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\vicii" /I "..\..\..\c64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\c64dtvstubs.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64 "/I "..\..\..\drive "/I "..\..\..\sid "/I "..\..\..\tape "/I "..\..\..\vicii "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\c64dtvstubs.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -92,19 +91,20 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\c64dtvstubs.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\c64dtvstubs.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\c64dtvcart.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\c64dtv\c64dtvcart.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\c64dtvstubs.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "c64dtvstubs - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\c64dtvstubs\Debug
 INTDIR=.\libs\c64dtvstubs\Debug
@@ -112,30 +112,29 @@ INTDIR=.\libs\c64dtvstubs\Debug
 OutDir=.\libs\c64dtvstubs\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\c64dtvstubs.lib"
+ALL : "$(OUTDIR)\c64dtvstubs.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\c64dtvstubs.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\c64dtvstubs.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\c64dtvcart.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\c64dtv\c64dtvcart.obj"
 	-@erase "$(OUTDIR)\c64dtvstubs.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\vicii" /I "..\..\..\c64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\c64dtvstubs.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64 "/I "..\..\..\drive "/I "..\..\..\sid "/I "..\..\..\tape "/I "..\..\..\vicii "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\c64dtvstubs.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -171,14 +170,15 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\c64dtvstubs.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\c64dtvstubs.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\c64dtvcart.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\c64dtv\c64dtvcart.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\c64dtvstubs.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -214,9 +214,9 @@ LIB32_OBJS= \
 
 !ENDIF 
 
-SOURCE="..\..\..\c64dtv\c64dtvcart.c"
+SOURCE=..\..\..\c64dtv\c64dtvcart.c
 
-"$(INTDIR)\c64dtvcart.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64dtv\c64dtvcart.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

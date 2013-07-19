@@ -33,12 +33,10 @@ INTDIR=.\libs\gentranslate\Release
 OutDir=.\..\..\..\..\data
 # End Custom Macros
 
-ALL : "$(OUTDIR)\gentranslate.exe"
-
+ALL : "$(OUTDIR)\gentranslate.exe" 
 
 CLEAN :
-	-@erase "$(INTDIR)\gentranslate.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\arch\win32\utils\gentranslate.obj"
 	-@erase "$(OUTDIR)\gentranslate.exe"
 
 "$(OUTDIR)" :
@@ -48,7 +46,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /D "NDEBUG" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_CONSOLE" /D "_MBCS" /D "_CRT_SECURE_NO_DEPRECATE" /Fp"$(INTDIR)\gentranslate.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_CONSOLE" /D "_MBCS" /D "NDEBUG" /Fp"$(INTDIR)\gentranslate.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -84,11 +82,12 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\gentranslate.bsc" 
 BSC32_SBRS= \
-	
+
 LINK32=link.exe
-LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib   kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib   /nologo /subsystem:console /incremental:no /pdb:"$(OUTDIR)\gentranslate.pdb" /machine:MIPS /out:"$(OUTDIR)\gentranslate.exe" 
+LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib comctl32.lib winmm.lib ole32.lib oleaut32.lib uuid.lib wsock32.lib version.lib SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /incremental:no /pdb:"$(OUTDIR)\gentranslate.pdb" /machine:MIPS /out:"$(OUTDIR)\gentranslate.exe" 
 LINK32_OBJS= \
-	"$(INTDIR)\gentranslate.obj"
+	"$(INTDIR)\arch\win32\utils\gentranslate.obj" \
+
 
 "$(OUTDIR)\gentranslate.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
@@ -103,13 +102,10 @@ INTDIR=.\libs\gentranslate\Debug
 OutDir=.\..\..\..\..\data
 # End Custom Macros
 
-ALL : "$(OUTDIR)\gentranslate.exe"
-
+ALL : "$(OUTDIR)\gentranslate.exe" 
 
 CLEAN :
-	-@erase "$(INTDIR)\gentranslate.obj"
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\vc60.pdb"
+	-@erase "$(INTDIR)\arch\win32\utils\gentranslate.obj"
 	-@erase "$(OUTDIR)\gentranslate.exe"
 	-@erase "$(OUTDIR)\gentranslate.ilk"
 	-@erase "$(OUTDIR)\gentranslate.pdb"
@@ -121,7 +117,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /Gm /GX /ZI /Od /D "_DEBUG" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_CONSOLE" /D "_MBCS" /D "_CRT_SECURE_NO_DEPRECATE" /Fp"$(INTDIR)\gentranslate.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /GZ /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_CONSOLE" /D "_MBCS" /D "_DEBUG" /Fp"$(INTDIR)\gentranslate.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -157,11 +153,12 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\gentranslate.bsc" 
 BSC32_SBRS= \
-	
+
 LINK32=link.exe
-LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib   kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib   /nologo /subsystem:console /incremental:yes /pdb:"$(OUTDIR)\gentranslate.pdb" /debug /machine:MIPS /out:"$(OUTDIR)\gentranslate.exe" /pdbtype:sept 
+LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib comctl32.lib winmm.lib ole32.lib oleaut32.lib uuid.lib wsock32.lib version.lib SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /incremental:yes /pdb:"$(OUTDIR)\gentranslate.pdb" /debug /machine:MIPS /nodefaultlib:"msvcrt.lib" /out:"$(OUTDIR)\gentranslate.exe" /pdbtype:sept
 LINK32_OBJS= \
-	"$(INTDIR)\gentranslate.obj"
+	"$(INTDIR)\arch\win32\utils\gentranslate.obj" \
+
 
 "$(OUTDIR)\gentranslate.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
@@ -172,9 +169,10 @@ LINK32_OBJS= \
 
 
 !IF "$(CFG)" == "gentranslate - Win32 Release" || "$(CFG)" == "gentranslate - Win32 Debug"
-SOURCE=..\..\win32\utils\gentranslate.c
 
-"$(INTDIR)\gentranslate.obj" : $(SOURCE) "$(INTDIR)"
+SOURCE=..\..\..\arch\win32\utils\gentranslate.c
+
+"$(INTDIR)\arch\win32\utils\gentranslate.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

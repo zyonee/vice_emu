@@ -33,30 +33,17 @@ INTDIR=.\libs\p64\Release
 OutDir=.\libs\p64\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+ALL : "$(OUTDIR)\p64.lib" 
 
-ALL : "$(OUTDIR)\p64.lib"
-
-!ELSE 
-
-ALL : "base - Win32 Release" "$(OUTDIR)\p64.lib"
-
-!ENDIF 
-
-!IF "$(RECURSE)" == "1" 
-CLEAN :"base - Win32 ReleaseCLEAN" 
-!ELSE 
 CLEAN :
-!ENDIF 
-	-@erase "$(INTDIR)\p64.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\lib\p64\p64.obj"
 	-@erase "$(OUTDIR)\p64.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\rtc" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\p64.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\imagecontents "/I "..\..\..\monitor "/I "..\..\..\rs232drv "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\p64.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -92,19 +79,19 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\p64.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\p64.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\p64.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\lib\p64\p64.obj" \
 
-"$(OUTDIR)\p64.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "p64 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\p64\Debug
 INTDIR=.\libs\p64\Debug
@@ -112,30 +99,17 @@ INTDIR=.\libs\p64\Debug
 OutDir=.\libs\p64\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+ALL : "$(OUTDIR)\p64.lib" 
 
-ALL : "$(OUTDIR)\p64.lib"
-
-!ELSE 
-
-ALL : "base - Win32 Debug" "$(OUTDIR)\p64.lib"
-
-!ENDIF 
-
-!IF "$(RECURSE)" == "1" 
-CLEAN :"base - Win32 DebugCLEAN" 
-!ELSE 
 CLEAN :
-!ENDIF 
-	-@erase "$(INTDIR)\p64.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\lib\p64\p64.obj"
 	-@erase "$(OUTDIR)\p64.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\rtc" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\p64.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\imagecontents "/I "..\..\..\monitor "/I "..\..\..\rs232drv "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\p64.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -171,14 +145,14 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\p64.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\p64.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\p64.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\lib\p64\p64.obj" \
 
-"$(OUTDIR)\p64.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -188,37 +162,12 @@ LIB32_OBJS= \
 
 !IF "$(CFG)" == "p64 - Win32 Release" || "$(CFG)" == "p64 - Win32 Debug"
 
-!IF  "$(CFG)" == "p64 - Win32 Release"
+SOURCE=..\..\..\lib\p64\p64.c
 
-"base - Win32 Release" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Release" 
-   cd "."
-
-"base - Win32 ReleaseCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Release" RECURSE=1 CLEAN 
-   cd "."
-
-!ELSEIF  "$(CFG)" == "p64 - Win32 Debug"
-
-"base - Win32 Debug" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Debug" 
-   cd "."
-
-"base - Win32 DebugCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Debug" RECURSE=1 CLEAN 
-   cd "."
-
-!ENDIF 
-
-SOURCE="..\..\..\lib\p64\p64.c"
-
-"$(INTDIR)\p64.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\lib\p64\p64.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
 
 !ENDIF 
+

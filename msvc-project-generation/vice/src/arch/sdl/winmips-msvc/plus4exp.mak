@@ -33,32 +33,31 @@ INTDIR=.\libs\plus4exp\Release
 OutDir=.\libs\plus4exp\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\plus4exp.lib"
+ALL : "$(OUTDIR)\plus4exp.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\plus4exp.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\plus4exp.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\iec-plus4exp.obj"
-	-@erase "$(INTDIR)\plus4exp-cmdline-options.obj"
-	-@erase "$(INTDIR)\plus4exp-resources.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\drive\iec\plus4exp\iec-plus4exp.obj"
+	-@erase "$(INTDIR)\drive\iec\plus4exp\plus4exp-cmdline-options.obj"
+	-@erase "$(INTDIR)\drive\iec\plus4exp\plus4exp-resources.obj"
 	-@erase "$(OUTDIR)\plus4exp.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\plus4exp.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\lib\p64 "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\plus4exp.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -94,21 +93,22 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\plus4exp.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\plus4exp.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\iec-plus4exp.obj" \
-	"$(INTDIR)\plus4exp-cmdline-options.obj" \
-	"$(INTDIR)\plus4exp-resources.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\drive\iec\plus4exp\iec-plus4exp.obj" \
+	"$(INTDIR)\drive\iec\plus4exp\plus4exp-cmdline-options.obj" \
+	"$(INTDIR)\drive\iec\plus4exp\plus4exp-resources.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\plus4exp.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "plus4exp - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\plus4exp\Debug
 INTDIR=.\libs\plus4exp\Debug
@@ -116,32 +116,31 @@ INTDIR=.\libs\plus4exp\Debug
 OutDir=.\libs\plus4exp\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\plus4exp.lib"
+ALL : "$(OUTDIR)\plus4exp.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\plus4exp.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\plus4exp.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\iec-plus4exp.obj"
-	-@erase "$(INTDIR)\plus4exp-cmdline-options.obj"
-	-@erase "$(INTDIR)\plus4exp-resources.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\drive\iec\plus4exp\iec-plus4exp.obj"
+	-@erase "$(INTDIR)\drive\iec\plus4exp\plus4exp-cmdline-options.obj"
+	-@erase "$(INTDIR)\drive\iec\plus4exp\plus4exp-resources.obj"
 	-@erase "$(OUTDIR)\plus4exp.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\plus4exp.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\lib\p64 "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\plus4exp.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -177,16 +176,17 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\plus4exp.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\plus4exp.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\iec-plus4exp.obj" \
-	"$(INTDIR)\plus4exp-cmdline-options.obj" \
-	"$(INTDIR)\plus4exp-resources.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\drive\iec\plus4exp\iec-plus4exp.obj" \
+	"$(INTDIR)\drive\iec\plus4exp\plus4exp-cmdline-options.obj" \
+	"$(INTDIR)\drive\iec\plus4exp\plus4exp-resources.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\plus4exp.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -222,21 +222,19 @@ LIB32_OBJS= \
 
 !ENDIF 
 
-SOURCE="..\..\..\drive\iec\plus4exp\iec-plus4exp.c"
+SOURCE=..\..\..\drive\iec\plus4exp\iec-plus4exp.c
 
-"$(INTDIR)\iec-plus4exp.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\plus4exp\iec-plus4exp.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\drive\iec\plus4exp\plus4exp-cmdline-options.c
 
-SOURCE="..\..\..\drive\iec\plus4exp\plus4exp-cmdline-options.c"
-
-"$(INTDIR)\plus4exp-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\plus4exp\plus4exp-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\drive\iec\plus4exp\plus4exp-resources.c
 
-SOURCE="..\..\..\drive\iec\plus4exp\plus4exp-resources.c"
-
-"$(INTDIR)\plus4exp-resources.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\plus4exp\plus4exp-resources.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

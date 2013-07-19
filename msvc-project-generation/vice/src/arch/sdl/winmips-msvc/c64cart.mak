@@ -33,90 +33,89 @@ INTDIR=.\libs\c64cart\Release
 OutDir=.\libs\c64cart\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\c64cart.lib"
+ALL : "$(OUTDIR)\c64cart.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\c64cart.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\c64cart.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\actionreplay.obj"
-	-@erase "$(INTDIR)\actionreplay2.obj"
-	-@erase "$(INTDIR)\actionreplay3.obj"
-	-@erase "$(INTDIR)\actionreplay4.obj"
-	-@erase "$(INTDIR)\atomicpower.obj"
-	-@erase "$(INTDIR)\c64-generic.obj"
-	-@erase "$(INTDIR)\c64-midi.obj"
-	-@erase "$(INTDIR)\c64tpi.obj"
-	-@erase "$(INTDIR)\capture.obj"
-	-@erase "$(INTDIR)\comal80.obj"
-	-@erase "$(INTDIR)\delaep256.obj"
-	-@erase "$(INTDIR)\delaep64.obj"
-	-@erase "$(INTDIR)\delaep7x8.obj"
-	-@erase "$(INTDIR)\diashowmaker.obj"
-	-@erase "$(INTDIR)\dinamic.obj"
-	-@erase "$(INTDIR)\dqbb.obj"
-	-@erase "$(INTDIR)\easyflash.obj"
-	-@erase "$(INTDIR)\epyxfastload.obj"
-	-@erase "$(INTDIR)\exos.obj"
-	-@erase "$(INTDIR)\expert.obj"
-	-@erase "$(INTDIR)\final.obj"
-	-@erase "$(INTDIR)\final3.obj"
-	-@erase "$(INTDIR)\finalplus.obj"
-	-@erase "$(INTDIR)\formel64.obj"
-	-@erase "$(INTDIR)\freezeframe.obj"
-	-@erase "$(INTDIR)\freezemachine.obj"
-	-@erase "$(INTDIR)\funplay.obj"
-	-@erase "$(INTDIR)\gamekiller.obj"
-	-@erase "$(INTDIR)\gs.obj"
-	-@erase "$(INTDIR)\ide64.obj"
-	-@erase "$(INTDIR)\isepic.obj"
-	-@erase "$(INTDIR)\kcs.obj"
-	-@erase "$(INTDIR)\kingsoft.obj"
-	-@erase "$(INTDIR)\mach5.obj"
-	-@erase "$(INTDIR)\magicdesk.obj"
-	-@erase "$(INTDIR)\magicformel.obj"
-	-@erase "$(INTDIR)\magicvoice.obj"
-	-@erase "$(INTDIR)\mikroass.obj"
-	-@erase "$(INTDIR)\mmc64.obj"
-	-@erase "$(INTDIR)\mmcreplay.obj"
-	-@erase "$(INTDIR)\ocean.obj"
-	-@erase "$(INTDIR)\pagefox.obj"
-	-@erase "$(INTDIR)\prophet64.obj"
-	-@erase "$(INTDIR)\ramcart.obj"
-	-@erase "$(INTDIR)\retroreplay.obj"
-	-@erase "$(INTDIR)\reu.obj"
-	-@erase "$(INTDIR)\rexep256.obj"
-	-@erase "$(INTDIR)\rexutility.obj"
-	-@erase "$(INTDIR)\ross.obj"
-	-@erase "$(INTDIR)\silverrock128.obj"
-	-@erase "$(INTDIR)\simonsbasic.obj"
-	-@erase "$(INTDIR)\snapshot64.obj"
-	-@erase "$(INTDIR)\stardos.obj"
-	-@erase "$(INTDIR)\stb.obj"
-	-@erase "$(INTDIR)\superexplode5.obj"
-	-@erase "$(INTDIR)\supergames.obj"
-	-@erase "$(INTDIR)\supersnapshot.obj"
-	-@erase "$(INTDIR)\supersnapshot4.obj"
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\warpspeed.obj"
-	-@erase "$(INTDIR)\westermann.obj"
-	-@erase "$(INTDIR)\zaxxon.obj"
+	-@erase "$(INTDIR)\c64\cart\actionreplay.obj"
+	-@erase "$(INTDIR)\c64\cart\actionreplay2.obj"
+	-@erase "$(INTDIR)\c64\cart\actionreplay3.obj"
+	-@erase "$(INTDIR)\c64\cart\actionreplay4.obj"
+	-@erase "$(INTDIR)\c64\cart\atomicpower.obj"
+	-@erase "$(INTDIR)\c64\cart\c64-generic.obj"
+	-@erase "$(INTDIR)\c64\cart\c64-midi.obj"
+	-@erase "$(INTDIR)\c64\cart\c64tpi.obj"
+	-@erase "$(INTDIR)\c64\cart\capture.obj"
+	-@erase "$(INTDIR)\c64\cart\comal80.obj"
+	-@erase "$(INTDIR)\c64\cart\delaep256.obj"
+	-@erase "$(INTDIR)\c64\cart\delaep64.obj"
+	-@erase "$(INTDIR)\c64\cart\delaep7x8.obj"
+	-@erase "$(INTDIR)\c64\cart\diashowmaker.obj"
+	-@erase "$(INTDIR)\c64\cart\dinamic.obj"
+	-@erase "$(INTDIR)\c64\cart\dqbb.obj"
+	-@erase "$(INTDIR)\c64\cart\easyflash.obj"
+	-@erase "$(INTDIR)\c64\cart\epyxfastload.obj"
+	-@erase "$(INTDIR)\c64\cart\exos.obj"
+	-@erase "$(INTDIR)\c64\cart\expert.obj"
+	-@erase "$(INTDIR)\c64\cart\final.obj"
+	-@erase "$(INTDIR)\c64\cart\final3.obj"
+	-@erase "$(INTDIR)\c64\cart\finalplus.obj"
+	-@erase "$(INTDIR)\c64\cart\formel64.obj"
+	-@erase "$(INTDIR)\c64\cart\freezeframe.obj"
+	-@erase "$(INTDIR)\c64\cart\freezemachine.obj"
+	-@erase "$(INTDIR)\c64\cart\funplay.obj"
+	-@erase "$(INTDIR)\c64\cart\gamekiller.obj"
+	-@erase "$(INTDIR)\c64\cart\gs.obj"
+	-@erase "$(INTDIR)\c64\cart\ide64.obj"
+	-@erase "$(INTDIR)\c64\cart\isepic.obj"
+	-@erase "$(INTDIR)\c64\cart\kcs.obj"
+	-@erase "$(INTDIR)\c64\cart\kingsoft.obj"
+	-@erase "$(INTDIR)\c64\cart\mach5.obj"
+	-@erase "$(INTDIR)\c64\cart\magicdesk.obj"
+	-@erase "$(INTDIR)\c64\cart\magicformel.obj"
+	-@erase "$(INTDIR)\c64\cart\magicvoice.obj"
+	-@erase "$(INTDIR)\c64\cart\mikroass.obj"
+	-@erase "$(INTDIR)\c64\cart\mmc64.obj"
+	-@erase "$(INTDIR)\c64\cart\mmcreplay.obj"
+	-@erase "$(INTDIR)\c64\cart\ocean.obj"
+	-@erase "$(INTDIR)\c64\cart\pagefox.obj"
+	-@erase "$(INTDIR)\c64\cart\prophet64.obj"
+	-@erase "$(INTDIR)\c64\cart\ramcart.obj"
+	-@erase "$(INTDIR)\c64\cart\retroreplay.obj"
+	-@erase "$(INTDIR)\c64\cart\reu.obj"
+	-@erase "$(INTDIR)\c64\cart\rexep256.obj"
+	-@erase "$(INTDIR)\c64\cart\rexutility.obj"
+	-@erase "$(INTDIR)\c64\cart\ross.obj"
+	-@erase "$(INTDIR)\c64\cart\silverrock128.obj"
+	-@erase "$(INTDIR)\c64\cart\simonsbasic.obj"
+	-@erase "$(INTDIR)\c64\cart\snapshot64.obj"
+	-@erase "$(INTDIR)\c64\cart\stardos.obj"
+	-@erase "$(INTDIR)\c64\cart\stb.obj"
+	-@erase "$(INTDIR)\c64\cart\superexplode5.obj"
+	-@erase "$(INTDIR)\c64\cart\supergames.obj"
+	-@erase "$(INTDIR)\c64\cart\supersnapshot.obj"
+	-@erase "$(INTDIR)\c64\cart\supersnapshot4.obj"
+	-@erase "$(INTDIR)\c64\cart\warpspeed.obj"
+	-@erase "$(INTDIR)\c64\cart\westermann.obj"
+	-@erase "$(INTDIR)\c64\cart\zaxxon.obj"
 	-@erase "$(OUTDIR)\c64cart.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\rtc" /I "..\..\..\vicii" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\sid" /I "..\..\..\monitor" /I "..\..\..\core" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\c64cart.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64 "/I "..\..\..\core "/I "..\..\..\drive "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\rtc "/I "..\..\..\sid "/I "..\..\..\vicii "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\c64cart.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -152,79 +151,80 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\c64cart.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\c64cart.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\actionreplay.obj" \
-	"$(INTDIR)\actionreplay2.obj" \
-	"$(INTDIR)\actionreplay3.obj" \
-	"$(INTDIR)\actionreplay4.obj" \
-	"$(INTDIR)\atomicpower.obj" \
-	"$(INTDIR)\c64-generic.obj" \
-	"$(INTDIR)\c64-midi.obj" \
-	"$(INTDIR)\c64tpi.obj" \
-	"$(INTDIR)\capture.obj" \
-	"$(INTDIR)\comal80.obj" \
-	"$(INTDIR)\delaep256.obj" \
-	"$(INTDIR)\delaep64.obj" \
-	"$(INTDIR)\delaep7x8.obj" \
-	"$(INTDIR)\diashowmaker.obj" \
-	"$(INTDIR)\dinamic.obj" \
-	"$(INTDIR)\dqbb.obj" \
-	"$(INTDIR)\easyflash.obj" \
-	"$(INTDIR)\epyxfastload.obj" \
-	"$(INTDIR)\exos.obj" \
-	"$(INTDIR)\expert.obj" \
-	"$(INTDIR)\final.obj" \
-	"$(INTDIR)\final3.obj" \
-	"$(INTDIR)\finalplus.obj" \
-	"$(INTDIR)\formel64.obj" \
-	"$(INTDIR)\freezeframe.obj" \
-	"$(INTDIR)\freezemachine.obj" \
-	"$(INTDIR)\funplay.obj" \
-	"$(INTDIR)\gamekiller.obj" \
-	"$(INTDIR)\gs.obj" \
-	"$(INTDIR)\ide64.obj" \
-	"$(INTDIR)\isepic.obj" \
-	"$(INTDIR)\kcs.obj" \
-	"$(INTDIR)\kingsoft.obj" \
-	"$(INTDIR)\mach5.obj" \
-	"$(INTDIR)\magicdesk.obj" \
-	"$(INTDIR)\magicformel.obj" \
-	"$(INTDIR)\magicvoice.obj" \
-	"$(INTDIR)\mmc64.obj" \
-	"$(INTDIR)\mmcreplay.obj" \
-	"$(INTDIR)\mikroass.obj" \
-	"$(INTDIR)\ocean.obj" \
-	"$(INTDIR)\pagefox.obj" \
-	"$(INTDIR)\prophet64.obj" \
-	"$(INTDIR)\ramcart.obj" \
-	"$(INTDIR)\retroreplay.obj" \
-	"$(INTDIR)\reu.obj" \
-	"$(INTDIR)\rexep256.obj" \
-	"$(INTDIR)\rexutility.obj" \
-	"$(INTDIR)\ross.obj" \
-	"$(INTDIR)\silverrock128.obj" \
-	"$(INTDIR)\simonsbasic.obj" \
-	"$(INTDIR)\snapshot64.obj" \
-	"$(INTDIR)\stardos.obj" \
-	"$(INTDIR)\stb.obj" \
-	"$(INTDIR)\superexplode5.obj" \
-	"$(INTDIR)\supergames.obj" \
-	"$(INTDIR)\supersnapshot.obj" \
-	"$(INTDIR)\supersnapshot4.obj" \
-	"$(INTDIR)\warpspeed.obj" \
-	"$(INTDIR)\westermann.obj" \
-	"$(INTDIR)\zaxxon.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\c64\cart\actionreplay.obj" \
+	"$(INTDIR)\c64\cart\actionreplay2.obj" \
+	"$(INTDIR)\c64\cart\actionreplay3.obj" \
+	"$(INTDIR)\c64\cart\actionreplay4.obj" \
+	"$(INTDIR)\c64\cart\atomicpower.obj" \
+	"$(INTDIR)\c64\cart\c64-generic.obj" \
+	"$(INTDIR)\c64\cart\c64-midi.obj" \
+	"$(INTDIR)\c64\cart\c64tpi.obj" \
+	"$(INTDIR)\c64\cart\capture.obj" \
+	"$(INTDIR)\c64\cart\comal80.obj" \
+	"$(INTDIR)\c64\cart\delaep256.obj" \
+	"$(INTDIR)\c64\cart\delaep64.obj" \
+	"$(INTDIR)\c64\cart\delaep7x8.obj" \
+	"$(INTDIR)\c64\cart\diashowmaker.obj" \
+	"$(INTDIR)\c64\cart\dinamic.obj" \
+	"$(INTDIR)\c64\cart\dqbb.obj" \
+	"$(INTDIR)\c64\cart\easyflash.obj" \
+	"$(INTDIR)\c64\cart\epyxfastload.obj" \
+	"$(INTDIR)\c64\cart\exos.obj" \
+	"$(INTDIR)\c64\cart\expert.obj" \
+	"$(INTDIR)\c64\cart\final.obj" \
+	"$(INTDIR)\c64\cart\final3.obj" \
+	"$(INTDIR)\c64\cart\finalplus.obj" \
+	"$(INTDIR)\c64\cart\formel64.obj" \
+	"$(INTDIR)\c64\cart\freezeframe.obj" \
+	"$(INTDIR)\c64\cart\freezemachine.obj" \
+	"$(INTDIR)\c64\cart\funplay.obj" \
+	"$(INTDIR)\c64\cart\gamekiller.obj" \
+	"$(INTDIR)\c64\cart\gs.obj" \
+	"$(INTDIR)\c64\cart\ide64.obj" \
+	"$(INTDIR)\c64\cart\isepic.obj" \
+	"$(INTDIR)\c64\cart\kcs.obj" \
+	"$(INTDIR)\c64\cart\kingsoft.obj" \
+	"$(INTDIR)\c64\cart\mach5.obj" \
+	"$(INTDIR)\c64\cart\magicdesk.obj" \
+	"$(INTDIR)\c64\cart\magicformel.obj" \
+	"$(INTDIR)\c64\cart\magicvoice.obj" \
+	"$(INTDIR)\c64\cart\mikroass.obj" \
+	"$(INTDIR)\c64\cart\mmc64.obj" \
+	"$(INTDIR)\c64\cart\mmcreplay.obj" \
+	"$(INTDIR)\c64\cart\ocean.obj" \
+	"$(INTDIR)\c64\cart\pagefox.obj" \
+	"$(INTDIR)\c64\cart\prophet64.obj" \
+	"$(INTDIR)\c64\cart\ramcart.obj" \
+	"$(INTDIR)\c64\cart\retroreplay.obj" \
+	"$(INTDIR)\c64\cart\reu.obj" \
+	"$(INTDIR)\c64\cart\rexep256.obj" \
+	"$(INTDIR)\c64\cart\rexutility.obj" \
+	"$(INTDIR)\c64\cart\ross.obj" \
+	"$(INTDIR)\c64\cart\silverrock128.obj" \
+	"$(INTDIR)\c64\cart\simonsbasic.obj" \
+	"$(INTDIR)\c64\cart\snapshot64.obj" \
+	"$(INTDIR)\c64\cart\stardos.obj" \
+	"$(INTDIR)\c64\cart\stb.obj" \
+	"$(INTDIR)\c64\cart\superexplode5.obj" \
+	"$(INTDIR)\c64\cart\supergames.obj" \
+	"$(INTDIR)\c64\cart\supersnapshot.obj" \
+	"$(INTDIR)\c64\cart\supersnapshot4.obj" \
+	"$(INTDIR)\c64\cart\warpspeed.obj" \
+	"$(INTDIR)\c64\cart\westermann.obj" \
+	"$(INTDIR)\c64\cart\zaxxon.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\c64cart.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "c64cart - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\c64cart\Debug
 INTDIR=.\libs\c64cart\Debug
@@ -232,90 +232,89 @@ INTDIR=.\libs\c64cart\Debug
 OutDir=.\libs\c64cart\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\c64cart.lib"
+ALL : "$(OUTDIR)\c64cart.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\c64cart.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\c64cart.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\actionreplay.obj"
-	-@erase "$(INTDIR)\actionreplay2.obj"
-	-@erase "$(INTDIR)\actionreplay3.obj"
-	-@erase "$(INTDIR)\actionreplay4.obj"
-	-@erase "$(INTDIR)\atomicpower.obj"
-	-@erase "$(INTDIR)\c64-generic.obj"
-	-@erase "$(INTDIR)\c64-midi.obj"
-	-@erase "$(INTDIR)\c64tpi.obj"
-	-@erase "$(INTDIR)\capture.obj"
-	-@erase "$(INTDIR)\comal80.obj"
-	-@erase "$(INTDIR)\delaep256.obj"
-	-@erase "$(INTDIR)\delaep64.obj"
-	-@erase "$(INTDIR)\delaep7x8.obj"
-	-@erase "$(INTDIR)\diashowmaker.obj"
-	-@erase "$(INTDIR)\dinamic.obj"
-	-@erase "$(INTDIR)\dqbb.obj"
-	-@erase "$(INTDIR)\easyflash.obj"
-	-@erase "$(INTDIR)\epyxfastload.obj"
-	-@erase "$(INTDIR)\exos.obj"
-	-@erase "$(INTDIR)\expert.obj"
-	-@erase "$(INTDIR)\final.obj"
-	-@erase "$(INTDIR)\final3.obj"
-	-@erase "$(INTDIR)\finalplus.obj"
-	-@erase "$(INTDIR)\formel64.obj"
-	-@erase "$(INTDIR)\freezeframe.obj"
-	-@erase "$(INTDIR)\freezemachine.obj"
-	-@erase "$(INTDIR)\funplay.obj"
-	-@erase "$(INTDIR)\gamekiller.obj"
-	-@erase "$(INTDIR)\gs.obj"
-	-@erase "$(INTDIR)\ide64.obj"
-	-@erase "$(INTDIR)\isepic.obj"
-	-@erase "$(INTDIR)\kcs.obj"
-	-@erase "$(INTDIR)\kingsoft.obj"
-	-@erase "$(INTDIR)\mach5.obj"
-	-@erase "$(INTDIR)\magicdesk.obj"
-	-@erase "$(INTDIR)\magicformel.obj"
-	-@erase "$(INTDIR)\magicvoice.obj"
-	-@erase "$(INTDIR)\mikroass.obj"
-	-@erase "$(INTDIR)\mmc64.obj"
-	-@erase "$(INTDIR)\mmcreplay.obj"
-	-@erase "$(INTDIR)\ocean.obj"
-	-@erase "$(INTDIR)\pagefox.obj"
-	-@erase "$(INTDIR)\prophet64.obj"
-	-@erase "$(INTDIR)\ramcart.obj"
-	-@erase "$(INTDIR)\retroreplay.obj"
-	-@erase "$(INTDIR)\reu.obj"
-	-@erase "$(INTDIR)\rexep256.obj"
-	-@erase "$(INTDIR)\rexutility.obj"
-	-@erase "$(INTDIR)\ross.obj"
-	-@erase "$(INTDIR)\silverrock128.obj"
-	-@erase "$(INTDIR)\simonsbasic.obj"
-	-@erase "$(INTDIR)\snapshot64.obj"
-	-@erase "$(INTDIR)\stardos.obj"
-	-@erase "$(INTDIR)\stb.obj"
-	-@erase "$(INTDIR)\superexplode5.obj"
-	-@erase "$(INTDIR)\supergames.obj"
-	-@erase "$(INTDIR)\supersnapshot.obj"
-	-@erase "$(INTDIR)\supersnapshot4.obj"
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\warpspeed.obj"
-	-@erase "$(INTDIR)\westermann.obj"
-	-@erase "$(INTDIR)\zaxxon.obj"
+	-@erase "$(INTDIR)\c64\cart\actionreplay.obj"
+	-@erase "$(INTDIR)\c64\cart\actionreplay2.obj"
+	-@erase "$(INTDIR)\c64\cart\actionreplay3.obj"
+	-@erase "$(INTDIR)\c64\cart\actionreplay4.obj"
+	-@erase "$(INTDIR)\c64\cart\atomicpower.obj"
+	-@erase "$(INTDIR)\c64\cart\c64-generic.obj"
+	-@erase "$(INTDIR)\c64\cart\c64-midi.obj"
+	-@erase "$(INTDIR)\c64\cart\c64tpi.obj"
+	-@erase "$(INTDIR)\c64\cart\capture.obj"
+	-@erase "$(INTDIR)\c64\cart\comal80.obj"
+	-@erase "$(INTDIR)\c64\cart\delaep256.obj"
+	-@erase "$(INTDIR)\c64\cart\delaep64.obj"
+	-@erase "$(INTDIR)\c64\cart\delaep7x8.obj"
+	-@erase "$(INTDIR)\c64\cart\diashowmaker.obj"
+	-@erase "$(INTDIR)\c64\cart\dinamic.obj"
+	-@erase "$(INTDIR)\c64\cart\dqbb.obj"
+	-@erase "$(INTDIR)\c64\cart\easyflash.obj"
+	-@erase "$(INTDIR)\c64\cart\epyxfastload.obj"
+	-@erase "$(INTDIR)\c64\cart\exos.obj"
+	-@erase "$(INTDIR)\c64\cart\expert.obj"
+	-@erase "$(INTDIR)\c64\cart\final.obj"
+	-@erase "$(INTDIR)\c64\cart\final3.obj"
+	-@erase "$(INTDIR)\c64\cart\finalplus.obj"
+	-@erase "$(INTDIR)\c64\cart\formel64.obj"
+	-@erase "$(INTDIR)\c64\cart\freezeframe.obj"
+	-@erase "$(INTDIR)\c64\cart\freezemachine.obj"
+	-@erase "$(INTDIR)\c64\cart\funplay.obj"
+	-@erase "$(INTDIR)\c64\cart\gamekiller.obj"
+	-@erase "$(INTDIR)\c64\cart\gs.obj"
+	-@erase "$(INTDIR)\c64\cart\ide64.obj"
+	-@erase "$(INTDIR)\c64\cart\isepic.obj"
+	-@erase "$(INTDIR)\c64\cart\kcs.obj"
+	-@erase "$(INTDIR)\c64\cart\kingsoft.obj"
+	-@erase "$(INTDIR)\c64\cart\mach5.obj"
+	-@erase "$(INTDIR)\c64\cart\magicdesk.obj"
+	-@erase "$(INTDIR)\c64\cart\magicformel.obj"
+	-@erase "$(INTDIR)\c64\cart\magicvoice.obj"
+	-@erase "$(INTDIR)\c64\cart\mikroass.obj"
+	-@erase "$(INTDIR)\c64\cart\mmc64.obj"
+	-@erase "$(INTDIR)\c64\cart\mmcreplay.obj"
+	-@erase "$(INTDIR)\c64\cart\ocean.obj"
+	-@erase "$(INTDIR)\c64\cart\pagefox.obj"
+	-@erase "$(INTDIR)\c64\cart\prophet64.obj"
+	-@erase "$(INTDIR)\c64\cart\ramcart.obj"
+	-@erase "$(INTDIR)\c64\cart\retroreplay.obj"
+	-@erase "$(INTDIR)\c64\cart\reu.obj"
+	-@erase "$(INTDIR)\c64\cart\rexep256.obj"
+	-@erase "$(INTDIR)\c64\cart\rexutility.obj"
+	-@erase "$(INTDIR)\c64\cart\ross.obj"
+	-@erase "$(INTDIR)\c64\cart\silverrock128.obj"
+	-@erase "$(INTDIR)\c64\cart\simonsbasic.obj"
+	-@erase "$(INTDIR)\c64\cart\snapshot64.obj"
+	-@erase "$(INTDIR)\c64\cart\stardos.obj"
+	-@erase "$(INTDIR)\c64\cart\stb.obj"
+	-@erase "$(INTDIR)\c64\cart\superexplode5.obj"
+	-@erase "$(INTDIR)\c64\cart\supergames.obj"
+	-@erase "$(INTDIR)\c64\cart\supersnapshot.obj"
+	-@erase "$(INTDIR)\c64\cart\supersnapshot4.obj"
+	-@erase "$(INTDIR)\c64\cart\warpspeed.obj"
+	-@erase "$(INTDIR)\c64\cart\westermann.obj"
+	-@erase "$(INTDIR)\c64\cart\zaxxon.obj"
 	-@erase "$(OUTDIR)\c64cart.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\rtc" /I "..\..\..\vicii" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\sid" /I "..\..\..\monitor" /I "..\..\..\core" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\c64cart.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64 "/I "..\..\..\core "/I "..\..\..\drive "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\rtc "/I "..\..\..\sid "/I "..\..\..\vicii "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\c64cart.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -351,74 +350,75 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\c64cart.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\c64cart.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\actionreplay.obj" \
-	"$(INTDIR)\actionreplay2.obj" \
-	"$(INTDIR)\actionreplay3.obj" \
-	"$(INTDIR)\actionreplay4.obj" \
-	"$(INTDIR)\atomicpower.obj" \
-	"$(INTDIR)\c64-generic.obj" \
-	"$(INTDIR)\c64-midi.obj" \
-	"$(INTDIR)\c64tpi.obj" \
-	"$(INTDIR)\capture.obj" \
-	"$(INTDIR)\comal80.obj" \
-	"$(INTDIR)\delaep256.obj" \
-	"$(INTDIR)\delaep64.obj" \
-	"$(INTDIR)\delaep7x8.obj" \
-	"$(INTDIR)\diashowmaker.obj" \
-	"$(INTDIR)\dinamic.obj" \
-	"$(INTDIR)\dqbb.obj" \
-	"$(INTDIR)\easyflash.obj" \
-	"$(INTDIR)\epyxfastload.obj" \
-	"$(INTDIR)\exos.obj" \
-	"$(INTDIR)\expert.obj" \
-	"$(INTDIR)\final.obj" \
-	"$(INTDIR)\final3.obj" \
-	"$(INTDIR)\finalplus.obj" \
-	"$(INTDIR)\formel64.obj" \
-	"$(INTDIR)\freezeframe.obj" \
-	"$(INTDIR)\freezemachine.obj" \
-	"$(INTDIR)\funplay.obj" \
-	"$(INTDIR)\gamekiller.obj" \
-	"$(INTDIR)\gs.obj" \
-	"$(INTDIR)\ide64.obj" \
-	"$(INTDIR)\isepic.obj" \
-	"$(INTDIR)\kcs.obj" \
-	"$(INTDIR)\kingsoft.obj" \
-	"$(INTDIR)\mach5.obj" \
-	"$(INTDIR)\magicdesk.obj" \
-	"$(INTDIR)\magicformel.obj" \
-	"$(INTDIR)\magicvoice.obj" \
-	"$(INTDIR)\mmc64.obj" \
-	"$(INTDIR)\mmcreplay.obj" \
-	"$(INTDIR)\mikroass.obj" \
-	"$(INTDIR)\ocean.obj" \
-	"$(INTDIR)\pagefox.obj" \
-	"$(INTDIR)\prophet64.obj" \
-	"$(INTDIR)\ramcart.obj" \
-	"$(INTDIR)\retroreplay.obj" \
-	"$(INTDIR)\reu.obj" \
-	"$(INTDIR)\rexep256.obj" \
-	"$(INTDIR)\rexutility.obj" \
-	"$(INTDIR)\ross.obj" \
-	"$(INTDIR)\silverrock128.obj" \
-	"$(INTDIR)\simonsbasic.obj" \
-	"$(INTDIR)\snapshot64.obj" \
-	"$(INTDIR)\stardos.obj" \
-	"$(INTDIR)\stb.obj" \
-	"$(INTDIR)\superexplode5.obj" \
-	"$(INTDIR)\supergames.obj" \
-	"$(INTDIR)\supersnapshot.obj" \
-	"$(INTDIR)\supersnapshot4.obj" \
-	"$(INTDIR)\warpspeed.obj" \
-	"$(INTDIR)\westermann.obj" \
-	"$(INTDIR)\zaxxon.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\c64\cart\actionreplay.obj" \
+	"$(INTDIR)\c64\cart\actionreplay2.obj" \
+	"$(INTDIR)\c64\cart\actionreplay3.obj" \
+	"$(INTDIR)\c64\cart\actionreplay4.obj" \
+	"$(INTDIR)\c64\cart\atomicpower.obj" \
+	"$(INTDIR)\c64\cart\c64-generic.obj" \
+	"$(INTDIR)\c64\cart\c64-midi.obj" \
+	"$(INTDIR)\c64\cart\c64tpi.obj" \
+	"$(INTDIR)\c64\cart\capture.obj" \
+	"$(INTDIR)\c64\cart\comal80.obj" \
+	"$(INTDIR)\c64\cart\delaep256.obj" \
+	"$(INTDIR)\c64\cart\delaep64.obj" \
+	"$(INTDIR)\c64\cart\delaep7x8.obj" \
+	"$(INTDIR)\c64\cart\diashowmaker.obj" \
+	"$(INTDIR)\c64\cart\dinamic.obj" \
+	"$(INTDIR)\c64\cart\dqbb.obj" \
+	"$(INTDIR)\c64\cart\easyflash.obj" \
+	"$(INTDIR)\c64\cart\epyxfastload.obj" \
+	"$(INTDIR)\c64\cart\exos.obj" \
+	"$(INTDIR)\c64\cart\expert.obj" \
+	"$(INTDIR)\c64\cart\final.obj" \
+	"$(INTDIR)\c64\cart\final3.obj" \
+	"$(INTDIR)\c64\cart\finalplus.obj" \
+	"$(INTDIR)\c64\cart\formel64.obj" \
+	"$(INTDIR)\c64\cart\freezeframe.obj" \
+	"$(INTDIR)\c64\cart\freezemachine.obj" \
+	"$(INTDIR)\c64\cart\funplay.obj" \
+	"$(INTDIR)\c64\cart\gamekiller.obj" \
+	"$(INTDIR)\c64\cart\gs.obj" \
+	"$(INTDIR)\c64\cart\ide64.obj" \
+	"$(INTDIR)\c64\cart\isepic.obj" \
+	"$(INTDIR)\c64\cart\kcs.obj" \
+	"$(INTDIR)\c64\cart\kingsoft.obj" \
+	"$(INTDIR)\c64\cart\mach5.obj" \
+	"$(INTDIR)\c64\cart\magicdesk.obj" \
+	"$(INTDIR)\c64\cart\magicformel.obj" \
+	"$(INTDIR)\c64\cart\magicvoice.obj" \
+	"$(INTDIR)\c64\cart\mikroass.obj" \
+	"$(INTDIR)\c64\cart\mmc64.obj" \
+	"$(INTDIR)\c64\cart\mmcreplay.obj" \
+	"$(INTDIR)\c64\cart\ocean.obj" \
+	"$(INTDIR)\c64\cart\pagefox.obj" \
+	"$(INTDIR)\c64\cart\prophet64.obj" \
+	"$(INTDIR)\c64\cart\ramcart.obj" \
+	"$(INTDIR)\c64\cart\retroreplay.obj" \
+	"$(INTDIR)\c64\cart\reu.obj" \
+	"$(INTDIR)\c64\cart\rexep256.obj" \
+	"$(INTDIR)\c64\cart\rexutility.obj" \
+	"$(INTDIR)\c64\cart\ross.obj" \
+	"$(INTDIR)\c64\cart\silverrock128.obj" \
+	"$(INTDIR)\c64\cart\simonsbasic.obj" \
+	"$(INTDIR)\c64\cart\snapshot64.obj" \
+	"$(INTDIR)\c64\cart\stardos.obj" \
+	"$(INTDIR)\c64\cart\stb.obj" \
+	"$(INTDIR)\c64\cart\superexplode5.obj" \
+	"$(INTDIR)\c64\cart\supergames.obj" \
+	"$(INTDIR)\c64\cart\supersnapshot.obj" \
+	"$(INTDIR)\c64\cart\supersnapshot4.obj" \
+	"$(INTDIR)\c64\cart\warpspeed.obj" \
+	"$(INTDIR)\c64\cart\westermann.obj" \
+	"$(INTDIR)\c64\cart\zaxxon.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\c64cart.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -454,369 +454,309 @@ LIB32_OBJS= \
 
 !ENDIF 
 
-SOURCE="..\..\..\c64\cart\actionreplay.c"
+SOURCE=..\..\..\c64\cart\actionreplay.c
 
-"$(INTDIR)\actionreplay.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\actionreplay.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\actionreplay2.c
 
-SOURCE="..\..\..\c64\cart\actionreplay2.c"
-
-"$(INTDIR)\actionreplay2.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\actionreplay2.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\actionreplay3.c
 
-SOURCE="..\..\..\c64\cart\actionreplay3.c"
-
-"$(INTDIR)\actionreplay3.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\actionreplay3.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\actionreplay4.c
 
-SOURCE="..\..\..\c64\cart\actionreplay4.c"
-
-"$(INTDIR)\actionreplay4.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\actionreplay4.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\atomicpower.c
 
-SOURCE="..\..\..\c64\cart\atomicpower.c"
-
-"$(INTDIR)\atomicpower.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\atomicpower.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\c64-generic.c
 
-SOURCE="..\..\..\c64\cart\c64-generic.c"
-
-"$(INTDIR)\c64-generic.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\c64-generic.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\c64-midi.c
 
-SOURCE="..\..\..\c64\cart\c64-midi.c"
-
-"$(INTDIR)\c64-midi.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\c64-midi.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\cart\c64tpi.c
 
-"$(INTDIR)\c64tpi.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\c64tpi.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\capture.c
 
-SOURCE="..\..\..\c64\cart\capture.c"
-
-"$(INTDIR)\capture.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\capture.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\comal80.c
 
-SOURCE="..\..\..\c64\cart\comal80.c"
-
-"$(INTDIR)\comal80.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\comal80.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\delaep256.c
 
-SOURCE="..\..\..\c64\cart\delaep256.c"
-
-"$(INTDIR)\delaep256.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\delaep256.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\delaep64.c
 
-SOURCE="..\..\..\c64\cart\delaep64.c"
-
-"$(INTDIR)\delaep64.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\delaep64.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\delaep7x8.c
 
-SOURCE="..\..\..\c64\cart\delaep7x8.c"
-
-"$(INTDIR)\delaep7x8.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\delaep7x8.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\diashowmaker.c
 
-SOURCE="..\..\..\c64\cart\diashowmaker.c"
-
-"$(INTDIR)\diashowmaker.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\diashowmaker.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\dinamic.c
 
-SOURCE="..\..\..\c64\cart\dinamic.c"
-
-"$(INTDIR)\dinamic.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\dinamic.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\cart\dqbb.c
 
-"$(INTDIR)\dqbb.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\dqbb.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\easyflash.c
 
-SOURCE="..\..\..\c64\cart\easyflash.c"
-
-"$(INTDIR)\easyflash.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\easyflash.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\epyxfastload.c
 
-SOURCE="..\..\..\c64\cart\epyxfastload.c"
-
-"$(INTDIR)\epyxfastload.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\epyxfastload.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\exos.c
 
-SOURCE="..\..\..\c64\cart\exos.c"
-
-"$(INTDIR)\exos.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\exos.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\expert.c
 
-SOURCE="..\..\..\c64\cart\expert.c"
-
-"$(INTDIR)\expert.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\expert.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\final.c
 
-SOURCE="..\..\..\c64\cart\final.c"
-
-"$(INTDIR)\final.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\final.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\final3.c
 
-SOURCE="..\..\..\c64\cart\final3.c"
-
-"$(INTDIR)\final3.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\final3.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\finalplus.c
 
-SOURCE="..\..\..\c64\cart\finalplus.c"
-
-"$(INTDIR)\finalplus.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\finalplus.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\formel64.c
 
-SOURCE="..\..\..\c64\cart\formel64.c"
-
-"$(INTDIR)\formel64.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\formel64.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\freezeframe.c
 
-SOURCE="..\..\..\c64\cart\freezeframe.c"
-
-"$(INTDIR)\freezeframe.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\freezeframe.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\freezemachine.c
 
-SOURCE="..\..\..\c64\cart\freezemachine.c"
-
-"$(INTDIR)\freezemachine.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\freezemachine.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\funplay.c
 
-SOURCE="..\..\..\c64\cart\funplay.c"
-
-"$(INTDIR)\funplay.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\funplay.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\gamekiller.c
 
-SOURCE="..\..\..\c64\cart\gamekiller.c"
-
-"$(INTDIR)\gamekiller.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\gamekiller.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\gs.c
 
-SOURCE="..\..\..\c64\cart\gs.c"
-
-"$(INTDIR)\gs.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\gs.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\ide64.c
 
-SOURCE="..\..\..\c64\cart\ide64.c"
-
-"$(INTDIR)\ide64.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\ide64.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\cart\isepic.c
 
-"$(INTDIR)\isepic.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\isepic.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\kcs.c
 
-SOURCE="..\..\..\c64\cart\kcs.c"
-
-"$(INTDIR)\kcs.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\kcs.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\kingsoft.c
 
-SOURCE="..\..\..\c64\cart\kingsoft.c"
-
-"$(INTDIR)\kingsoft.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\kingsoft.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\mach5.c
 
-SOURCE="..\..\..\c64\cart\mach5.c"
-
-"$(INTDIR)\mach5.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\mach5.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\magicdesk.c
 
-SOURCE="..\..\..\c64\cart\magicdesk.c"
-
-"$(INTDIR)\magicdesk.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\magicdesk.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\magicformel.c
 
-SOURCE="..\..\..\c64\cart\magicformel.c"
-
-"$(INTDIR)\magicformel.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\magicformel.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\magicvoice.c
 
-SOURCE="..\..\..\c64\cart\magicvoice.c"
-
-"$(INTDIR)\magicvoice.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\magicvoice.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\mikroass.c
 
-SOURCE="..\..\..\c64\cart\mikroass.c"
-
-"$(INTDIR)\mikroass.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\mikroass.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\cart\mmc64.c
 
-"$(INTDIR)\mmc64.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\mmc64.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\mmcreplay.c
 
-SOURCE="..\..\..\c64\cart\mmcreplay.c"
-
-"$(INTDIR)\mmcreplay.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\mmcreplay.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\ocean.c
 
-SOURCE="..\..\..\c64\cart\ocean.c"
-
-"$(INTDIR)\ocean.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\ocean.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\pagefox.c
 
-SOURCE="..\..\..\c64\cart\pagefox.c"
-
-"$(INTDIR)\pagefox.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\pagefox.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\prophet64.c
 
-SOURCE="..\..\..\c64\cart\prophet64.c"
-
-"$(INTDIR)\prophet64.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\prophet64.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\cart\ramcart.c
 
-"$(INTDIR)\ramcart.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\ramcart.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\retroreplay.c
 
-SOURCE="..\..\..\c64\cart\retroreplay.c"
-
-"$(INTDIR)\retroreplay.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\retroreplay.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\cart\reu.c
 
-"$(INTDIR)\reu.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\reu.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\rexep256.c
 
-SOURCE="..\..\..\c64\cart\rexep256.c"
-
-"$(INTDIR)\rexep256.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\rexep256.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\rexutility.c
 
-SOURCE="..\..\..\c64\cart\rexutility.c"
-
-"$(INTDIR)\rexutility.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\rexutility.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\ross.c
 
-SOURCE="..\..\..\c64\cart\ross.c"
-
-"$(INTDIR)\ross.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\ross.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\cart\silverrock128.c
 
-"$(INTDIR)\silverrock128.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\silverrock128.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\cart\simonsbasic.c
 
-"$(INTDIR)\simonsbasic.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\simonsbasic.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\cart\snapshot64.c
 
-"$(INTDIR)\snapshot64.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\snapshot64.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\stardos.c
 
-SOURCE="..\..\..\c64\cart\stardos.c"
-
-"$(INTDIR)\stardos.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\stardos.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\stb.c
 
-SOURCE="..\..\..\c64\cart\stb.c"
-
-"$(INTDIR)\stb.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\stb.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\superexplode5.c
 
-SOURCE="..\..\..\c64\cart\superexplode5.c"
-
-"$(INTDIR)\superexplode5.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\superexplode5.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\supergames.c
 
-SOURCE="..\..\..\c64\cart\supergames.c"
-
-"$(INTDIR)\supergames.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\supergames.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\supersnapshot.c
 
-SOURCE="..\..\..\c64\cart\supersnapshot.c"
-
-"$(INTDIR)\supersnapshot.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\supersnapshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\supersnapshot4.c
 
-SOURCE="..\..\..\c64\cart\supersnapshot4.c"
-
-"$(INTDIR)\supersnapshot4.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\supersnapshot4.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\warpspeed.c
 
-SOURCE="..\..\..\c64\cart\warpspeed.c"
-
-"$(INTDIR)\warpspeed.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\warpspeed.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\westermann.c
 
-SOURCE="..\..\..\c64\cart\westermann.c"
-
-"$(INTDIR)\westermann.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\westermann.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\c64\cart\zaxxon.c
 
-SOURCE="..\..\..\c64\cart\zaxxon.c"
-
-"$(INTDIR)\zaxxon.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\zaxxon.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

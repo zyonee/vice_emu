@@ -33,35 +33,22 @@ INTDIR=.\libs\rtc\Release
 OutDir=.\libs\rtc\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+ALL : "$(OUTDIR)\rtc.lib" 
 
-ALL : "$(OUTDIR)\rtc.lib"
-
-!ELSE 
-
-ALL : "base - Win32 Release" "$(OUTDIR)\rtc.lib"
-
-!ENDIF 
-
-!IF "$(RECURSE)" == "1" 
-CLEAN :"base - Win32 ReleaseCLEAN" 
-!ELSE 
 CLEAN :
-!ENDIF 
-	-@erase "$(INTDIR)\bq4830y.obj"
-	-@erase "$(INTDIR)\ds12c887.obj"
-	-@erase "$(INTDIR)\ds1202_1302.obj"
-	-@erase "$(INTDIR)\ds1216e.obj"
-	-@erase "$(INTDIR)\rtc.obj"
-	-@erase "$(INTDIR)\rtc-58321a.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\rtc\bq4830y.obj"
+	-@erase "$(INTDIR)\rtc\ds1202_1302.obj"
+	-@erase "$(INTDIR)\rtc\ds1216e.obj"
+	-@erase "$(INTDIR)\rtc\ds12c887.obj"
+	-@erase "$(INTDIR)\rtc\rtc.obj"
+	-@erase "$(INTDIR)\rtc\rtc-58321a.obj"
 	-@erase "$(OUTDIR)\rtc.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\raster" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\rtc.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\imagecontents "/I "..\..\..\monitor "/I "..\..\..\rs232drv "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\rtc.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -97,24 +84,24 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\rtc.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\rtc.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\bq4830y.obj" \
-	"$(INTDIR)\ds12c887.obj" \
-	"$(INTDIR)\ds1202_1302.obj" \
-	"$(INTDIR)\ds1216e.obj" \
-	"$(INTDIR)\rtc.obj" \
-	"$(INTDIR)\rtc-58321a.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\rtc\bq4830y.obj" \
+	"$(INTDIR)\rtc\ds1202_1302.obj" \
+	"$(INTDIR)\rtc\ds1216e.obj" \
+	"$(INTDIR)\rtc\ds12c887.obj" \
+	"$(INTDIR)\rtc\rtc.obj" \
+	"$(INTDIR)\rtc\rtc-58321a.obj" \
 
-"$(OUTDIR)\rtc.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "rtc - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\rtc\Debug
 INTDIR=.\libs\rtc\Debug
@@ -122,35 +109,22 @@ INTDIR=.\libs\rtc\Debug
 OutDir=.\libs\rtc\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+ALL : "$(OUTDIR)\rtc.lib" 
 
-ALL : "$(OUTDIR)\rtc.lib"
-
-!ELSE 
-
-ALL : "base - Win32 Debug" "$(OUTDIR)\rtc.lib"
-
-!ENDIF 
-
-!IF "$(RECURSE)" == "1" 
-CLEAN :"base - Win32 DebugCLEAN" 
-!ELSE 
 CLEAN :
-!ENDIF 
-	-@erase "$(INTDIR)\bq4830y.obj"
-	-@erase "$(INTDIR)\ds12c887.obj"
-	-@erase "$(INTDIR)\ds1202_1302.obj"
-	-@erase "$(INTDIR)\ds1216e.obj"
-	-@erase "$(INTDIR)\rtc.obj"
-	-@erase "$(INTDIR)\rtc-58321a.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\rtc\bq4830y.obj"
+	-@erase "$(INTDIR)\rtc\ds1202_1302.obj"
+	-@erase "$(INTDIR)\rtc\ds1216e.obj"
+	-@erase "$(INTDIR)\rtc\ds12c887.obj"
+	-@erase "$(INTDIR)\rtc\rtc.obj"
+	-@erase "$(INTDIR)\rtc\rtc-58321a.obj"
 	-@erase "$(OUTDIR)\rtc.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\raster" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\rtc.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\imagecontents "/I "..\..\..\monitor "/I "..\..\..\rs232drv "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\rtc.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -186,19 +160,19 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\rtc.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\rtc.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\bq4830y.obj" \
-	"$(INTDIR)\ds12c887.obj" \
-	"$(INTDIR)\ds1202_1302.obj" \
-	"$(INTDIR)\ds1216e.obj" \
-	"$(INTDIR)\rtc.obj" \
-	"$(INTDIR)\rtc-58321a.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\rtc\bq4830y.obj" \
+	"$(INTDIR)\rtc\ds1202_1302.obj" \
+	"$(INTDIR)\rtc\ds1216e.obj" \
+	"$(INTDIR)\rtc\ds12c887.obj" \
+	"$(INTDIR)\rtc\rtc.obj" \
+	"$(INTDIR)\rtc\rtc-58321a.obj" \
 
-"$(OUTDIR)\rtc.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -208,65 +182,34 @@ LIB32_OBJS= \
 
 !IF "$(CFG)" == "rtc - Win32 Release" || "$(CFG)" == "rtc - Win32 Debug"
 
-!IF  "$(CFG)" == "rtc - Win32 Release"
+SOURCE=..\..\..\rtc\bq4830y.c
 
-"base - Win32 Release" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Release" 
-   cd "."
-
-"base - Win32 ReleaseCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Release" RECURSE=1 CLEAN 
-   cd "."
-
-!ELSEIF  "$(CFG)" == "rtc - Win32 Debug"
-
-"base - Win32 Debug" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Debug" 
-   cd "."
-
-"base - Win32 DebugCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Debug" RECURSE=1 CLEAN 
-   cd "."
-
-!ENDIF 
-
-SOURCE="..\..\..\rtc\bq4830y.c"
-
-"$(INTDIR)\bq4830y.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\rtc\bq4830y.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\rtc\ds1202_1302.c
 
-SOURCE="..\..\..\rtc\ds12c887.c"
-
-"$(INTDIR)\ds12c887.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\rtc\ds1202_1302.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\rtc\ds1216e.c
 
-SOURCE="..\..\..\rtc\ds1202_1302.c"
-
-"$(INTDIR)\ds1202_1302.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\rtc\ds1216e.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\rtc\ds12c887.c
 
-SOURCE="..\..\..\rtc\ds1216e.c"
-
-"$(INTDIR)\ds1216e.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\rtc\ds12c887.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\rtc\rtc.c
 
-SOURCE="..\..\..\rtc\rtc.c"
-
-"$(INTDIR)\rtc.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\rtc\rtc.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\rtc\rtc-58321a.c
 
-SOURCE="..\..\..\rtc\rtc-58321a.c"
-
-"$(INTDIR)\rtc-58321a.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\rtc\rtc-58321a.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

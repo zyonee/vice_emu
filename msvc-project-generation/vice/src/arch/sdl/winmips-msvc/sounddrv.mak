@@ -33,27 +33,27 @@ INTDIR=.\libs\sounddrv\Release
 OutDir=.\libs\sounddrv\Release
 # End Custom Macros
 
-ALL : "$(OUTDIR)\sounddrv.lib"
-
+ALL : "$(OUTDIR)\sounddrv.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\soundaiff.obj"
-	-@erase "$(INTDIR)\sounddummy.obj"
-	-@erase "$(INTDIR)\sounddump.obj"
-	-@erase "$(INTDIR)\soundfs.obj"
-	-@erase "$(INTDIR)\soundiff.obj"
-	-@erase "$(INTDIR)\soundmovie.obj"
-	-@erase "$(INTDIR)\soundvoc.obj"
-	-@erase "$(INTDIR)\soundwav.obj"
-	-@erase "$(INTDIR)\soundwmm.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\sounddrv\soundaiff.obj"
+	-@erase "$(INTDIR)\sounddrv\sounddummy.obj"
+	-@erase "$(INTDIR)\sounddrv\sounddump.obj"
+	-@erase "$(INTDIR)\sounddrv\sounddx.obj"
+	-@erase "$(INTDIR)\sounddrv\soundfs.obj"
+	-@erase "$(INTDIR)\sounddrv\soundiff.obj"
+	-@erase "$(INTDIR)\sounddrv\soundmovie.obj"
+	-@erase "$(INTDIR)\sounddrv\soundvoc.obj"
+	-@erase "$(INTDIR)\sounddrv\soundwav.obj"
+	-@erase "$(INTDIR)\sounddrv\soundwmm.obj"
+	-@erase "$(INTDIR)\sounddrv\soundsdl.obj"
 	-@erase "$(OUTDIR)\sounddrv.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\sounddrv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\sounddrv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -89,26 +89,29 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\sounddrv.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\sounddrv.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\soundaiff.obj" \
-	"$(INTDIR)\sounddummy.obj" \
-	"$(INTDIR)\sounddump.obj" \
-	"$(INTDIR)\soundfs.obj" \
-	"$(INTDIR)\soundiff.obj" \
-	"$(INTDIR)\soundmovie.obj" \
-	"$(INTDIR)\soundvoc.obj" \
-	"$(INTDIR)\soundwav.obj" \
-	"$(INTDIR)\soundwmm.obj"
+	"$(INTDIR)\sounddrv\soundaiff.obj" \
+	"$(INTDIR)\sounddrv\sounddummy.obj" \
+	"$(INTDIR)\sounddrv\sounddump.obj" \
+	"$(INTDIR)\sounddrv\sounddx.obj" \
+	"$(INTDIR)\sounddrv\soundfs.obj" \
+	"$(INTDIR)\sounddrv\soundiff.obj" \
+	"$(INTDIR)\sounddrv\soundmovie.obj" \
+	"$(INTDIR)\sounddrv\soundvoc.obj" \
+	"$(INTDIR)\sounddrv\soundwav.obj" \
+	"$(INTDIR)\sounddrv\soundwmm.obj" \
+	"$(INTDIR)\sounddrv\soundsdl.obj" \
 
-"$(OUTDIR)\sounddrv.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "sounddrv - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\sounddrv\Debug
 INTDIR=.\libs\sounddrv\Debug
@@ -116,27 +119,27 @@ INTDIR=.\libs\sounddrv\Debug
 OutDir=.\libs\sounddrv\Debug
 # End Custom Macros
 
-ALL : "$(OUTDIR)\sounddrv.lib"
-
+ALL : "$(OUTDIR)\sounddrv.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\soundaiff.obj"
-	-@erase "$(INTDIR)\sounddummy.obj"
-	-@erase "$(INTDIR)\sounddump.obj"
-	-@erase "$(INTDIR)\soundfs.obj"
-	-@erase "$(INTDIR)\soundiff.obj"
-	-@erase "$(INTDIR)\soundmovie.obj"
-	-@erase "$(INTDIR)\soundvoc.obj"
-	-@erase "$(INTDIR)\soundwav.obj"
-	-@erase "$(INTDIR)\soundwmm.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\sounddrv\soundaiff.obj"
+	-@erase "$(INTDIR)\sounddrv\sounddummy.obj"
+	-@erase "$(INTDIR)\sounddrv\sounddump.obj"
+	-@erase "$(INTDIR)\sounddrv\sounddx.obj"
+	-@erase "$(INTDIR)\sounddrv\soundfs.obj"
+	-@erase "$(INTDIR)\sounddrv\soundiff.obj"
+	-@erase "$(INTDIR)\sounddrv\soundmovie.obj"
+	-@erase "$(INTDIR)\sounddrv\soundvoc.obj"
+	-@erase "$(INTDIR)\sounddrv\soundwav.obj"
+	-@erase "$(INTDIR)\sounddrv\soundwmm.obj"
+	-@erase "$(INTDIR)\sounddrv\soundsdl.obj"
 	-@erase "$(OUTDIR)\sounddrv.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\sounddrv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\sounddrv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -172,21 +175,24 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\sounddrv.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\sounddrv.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\soundaiff.obj" \
-	"$(INTDIR)\sounddummy.obj" \
-	"$(INTDIR)\sounddump.obj" \
-	"$(INTDIR)\soundfs.obj" \
-	"$(INTDIR)\soundiff.obj" \
-	"$(INTDIR)\soundmovie.obj" \
-	"$(INTDIR)\soundvoc.obj" \
-	"$(INTDIR)\soundwav.obj" \
-	"$(INTDIR)\soundwmm.obj"
+	"$(INTDIR)\sounddrv\soundaiff.obj" \
+	"$(INTDIR)\sounddrv\sounddummy.obj" \
+	"$(INTDIR)\sounddrv\sounddump.obj" \
+	"$(INTDIR)\sounddrv\sounddx.obj" \
+	"$(INTDIR)\sounddrv\soundfs.obj" \
+	"$(INTDIR)\sounddrv\soundiff.obj" \
+	"$(INTDIR)\sounddrv\soundmovie.obj" \
+	"$(INTDIR)\sounddrv\soundvoc.obj" \
+	"$(INTDIR)\sounddrv\soundwav.obj" \
+	"$(INTDIR)\sounddrv\soundwmm.obj" \
+	"$(INTDIR)\sounddrv\soundsdl.obj" \
 
-"$(OUTDIR)\sounddrv.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -195,57 +201,60 @@ LIB32_OBJS= \
 
 
 !IF "$(CFG)" == "sounddrv - Win32 Release" || "$(CFG)" == "sounddrv - Win32 Debug"
+
 SOURCE=..\..\..\sounddrv\soundaiff.c
 
-"$(INTDIR)\soundaiff.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\sounddrv\soundaiff.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\sounddrv\sounddummy.c
 
-"$(INTDIR)\sounddummy.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\sounddrv\sounddummy.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\sounddrv\sounddump.c
 
-"$(INTDIR)\sounddump.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\sounddrv\sounddump.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\sounddrv\sounddx.c
+
+"$(INTDIR)\sounddrv\sounddx.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 SOURCE=..\..\..\sounddrv\soundfs.c
 
-"$(INTDIR)\soundfs.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\sounddrv\soundfs.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\sounddrv\soundiff.c
 
-"$(INTDIR)\soundiff.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\sounddrv\soundiff.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\sounddrv\soundmovie.c
 
-"$(INTDIR)\soundmovie.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\sounddrv\soundmovie.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\sounddrv\soundvoc.c
 
-"$(INTDIR)\soundvoc.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\sounddrv\soundvoc.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\sounddrv\soundwav.c
 
-"$(INTDIR)\soundwav.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\sounddrv\soundwav.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\sounddrv\soundwmm.c
 
-"$(INTDIR)\soundwmm.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\sounddrv\soundwmm.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+SOURCE=..\..\..\sounddrv\soundaiff.c
+
+"$(INTDIR)\sounddrv\soundsdl.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

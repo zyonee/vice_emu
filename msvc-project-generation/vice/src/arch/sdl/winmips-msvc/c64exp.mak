@@ -33,35 +33,34 @@ INTDIR=.\libs\c64exp\Release
 OutDir=.\libs\c64exp\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\c64exp.lib"
+ALL : "$(OUTDIR)\c64exp.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\c64exp.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\c64exp.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\c64exp-cmdline-options.obj"
-	-@erase "$(INTDIR)\c64exp-resources.obj"
-	-@erase "$(INTDIR)\dolphindos3.obj"
-	-@erase "$(INTDIR)\iec-c64exp.obj"
-	-@erase "$(INTDIR)\profdos.obj"
-	-@erase "$(INTDIR)\supercard.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\drive\iec\c64exp\c64exp-cmdline-options.obj"
+	-@erase "$(INTDIR)\drive\iec\c64exp\c64exp-resources.obj"
+	-@erase "$(INTDIR)\drive\iec\c64exp\dolphindos3.obj"
+	-@erase "$(INTDIR)\drive\iec\c64exp\iec-c64exp.obj"
+	-@erase "$(INTDIR)\drive\iec\c64exp\profdos.obj"
+	-@erase "$(INTDIR)\drive\iec\c64exp\supercard.obj"
 	-@erase "$(OUTDIR)\c64exp.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\core" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\c64exp.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\lib\p64 "/I "..\..\..\core "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\c64exp.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -97,24 +96,25 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\c64exp.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\c64exp.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\c64exp-cmdline-options.obj" \
-	"$(INTDIR)\c64exp-resources.obj" \
-	"$(INTDIR)\dolphindos3.obj" \
-	"$(INTDIR)\iec-c64exp.obj" \
-	"$(INTDIR)\profdos.obj" \
-	"$(INTDIR)\supercard.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\drive\iec\c64exp\c64exp-cmdline-options.obj" \
+	"$(INTDIR)\drive\iec\c64exp\c64exp-resources.obj" \
+	"$(INTDIR)\drive\iec\c64exp\dolphindos3.obj" \
+	"$(INTDIR)\drive\iec\c64exp\iec-c64exp.obj" \
+	"$(INTDIR)\drive\iec\c64exp\profdos.obj" \
+	"$(INTDIR)\drive\iec\c64exp\supercard.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\c64exp.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "c64exp - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\c64exp\Debug
 INTDIR=.\libs\c64exp\Debug
@@ -122,35 +122,34 @@ INTDIR=.\libs\c64exp\Debug
 OutDir=.\libs\c64exp\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\c64exp.lib"
+ALL : "$(OUTDIR)\c64exp.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\c64exp.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\c64exp.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\c64exp-cmdline-options.obj"
-	-@erase "$(INTDIR)\c64exp-resources.obj"
-	-@erase "$(INTDIR)\dolphindos3.obj"
-	-@erase "$(INTDIR)\iec-c64exp.obj"
-	-@erase "$(INTDIR)\profdos.obj"
-	-@erase "$(INTDIR)\supercard.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\drive\iec\c64exp\c64exp-cmdline-options.obj"
+	-@erase "$(INTDIR)\drive\iec\c64exp\c64exp-resources.obj"
+	-@erase "$(INTDIR)\drive\iec\c64exp\dolphindos3.obj"
+	-@erase "$(INTDIR)\drive\iec\c64exp\iec-c64exp.obj"
+	-@erase "$(INTDIR)\drive\iec\c64exp\profdos.obj"
+	-@erase "$(INTDIR)\drive\iec\c64exp\supercard.obj"
 	-@erase "$(OUTDIR)\c64exp.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\core" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\c64exp.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\lib\p64 "/I "..\..\..\core "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\c64exp.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -186,19 +185,20 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\c64exp.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\c64exp.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\c64exp-cmdline-options.obj" \
-	"$(INTDIR)\c64exp-resources.obj" \
-	"$(INTDIR)\dolphindos3.obj" \
-	"$(INTDIR)\iec-c64exp.obj" \
-	"$(INTDIR)\profdos.obj" \
-	"$(INTDIR)\supercard.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\drive\iec\c64exp\c64exp-cmdline-options.obj" \
+	"$(INTDIR)\drive\iec\c64exp\c64exp-resources.obj" \
+	"$(INTDIR)\drive\iec\c64exp\dolphindos3.obj" \
+	"$(INTDIR)\drive\iec\c64exp\iec-c64exp.obj" \
+	"$(INTDIR)\drive\iec\c64exp\profdos.obj" \
+	"$(INTDIR)\drive\iec\c64exp\supercard.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\c64exp.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -234,39 +234,34 @@ LIB32_OBJS= \
 
 !ENDIF 
 
-SOURCE="..\..\..\drive\iec\c64exp\c64exp-cmdline-options.c"
+SOURCE=..\..\..\drive\iec\c64exp\c64exp-cmdline-options.c
 
-"$(INTDIR)\c64exp-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\c64exp\c64exp-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\drive\iec\c64exp\c64exp-resources.c
 
-SOURCE="..\..\..\drive\iec\c64exp\c64exp-resources.c"
-
-"$(INTDIR)\c64exp-resources.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\c64exp\c64exp-resources.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\drive\iec\c64exp\dolphindos3.c
 
-"$(INTDIR)\dolphindos3.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\c64exp\dolphindos3.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\drive\iec\c64exp\iec-c64exp.c
 
-SOURCE="..\..\..\drive\iec\c64exp\iec-c64exp.c"
-
-"$(INTDIR)\iec-c64exp.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\c64exp\iec-c64exp.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\drive\iec\c64exp\profdos.c
 
-"$(INTDIR)\profdos.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\c64exp\profdos.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\drive\iec\c64exp\supercard.c
 
-"$(INTDIR)\supercard.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\c64exp\supercard.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

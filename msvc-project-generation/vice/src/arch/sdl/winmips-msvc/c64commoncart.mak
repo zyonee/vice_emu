@@ -33,35 +33,35 @@ INTDIR=.\libs\c64commoncart\Release
 OutDir=.\libs\c64commoncart\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\c64commoncart.lib"
+ALL : "$(OUTDIR)\c64commoncart.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\c64commoncart.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\c64commoncart.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\c64acia1.obj"
-	-@erase "$(INTDIR)\digimax.obj"
-	-@erase "$(INTDIR)\ds12c887rtc.obj"
-	-@erase "$(INTDIR)\georam.obj"
-	-@erase "$(INTDIR)\sfx_soundexpander.obj"
-	-@erase "$(INTDIR)\sfx_soundsampler.obj"
-	-@erase "$(INTDIR)\tfe.obj"
+	-@erase "$(INTDIR)\c64\cart\c64acia1.obj"
+	-@erase "$(INTDIR)\c64\cart\digimax.obj"
+	-@erase "$(INTDIR)\c64\cart\ds12c887rtc.obj"
+	-@erase "$(INTDIR)\c64\cart\georam.obj"
+	-@erase "$(INTDIR)\c64\cart\sfx_soundexpander.obj"
+	-@erase "$(INTDIR)\c64\cart\sfx_soundsampler.obj"
+	-@erase "$(INTDIR)\c64\cart\tfe.obj"
 	-@erase "$(OUTDIR)\c64commoncart.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\rtc" /I "..\..\..\vicii" /I "..\..\..\drive" /I "..\..\..\sid" /I "..\..\..\monitor" /I "..\..\..\core" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\c64commoncart.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64 "/I "..\..\..\core "/I "..\..\..\drive "/I "..\..\..\monitor "/I "..\..\..\rtc "/I "..\..\..\sid "/I "..\..\..\vicii "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\c64commoncart.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -97,25 +97,26 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\c64commoncart.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\c64commoncart.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\c64acia1.obj" \
-	"$(INTDIR)\digimax.obj" \
-	"$(INTDIR)\ds12c887rtc.obj" \
-	"$(INTDIR)\georam.obj" \
-	"$(INTDIR)\sfx_soundexpander.obj" \
-	"$(INTDIR)\sfx_soundsampler.obj" \
-	"$(INTDIR)\tfe.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\c64\cart\c64acia1.obj" \
+	"$(INTDIR)\c64\cart\digimax.obj" \
+	"$(INTDIR)\c64\cart\ds12c887rtc.obj" \
+	"$(INTDIR)\c64\cart\georam.obj" \
+	"$(INTDIR)\c64\cart\sfx_soundexpander.obj" \
+	"$(INTDIR)\c64\cart\sfx_soundsampler.obj" \
+	"$(INTDIR)\c64\cart\tfe.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\c64commoncart.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "c64commoncart - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\c64commoncart\Debug
 INTDIR=.\libs\c64commoncart\Debug
@@ -123,35 +124,35 @@ INTDIR=.\libs\c64commoncart\Debug
 OutDir=.\libs\c64commoncart\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\c64commoncart.lib"
+ALL : "$(OUTDIR)\c64commoncart.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\c64commoncart.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\c64commoncart.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\c64acia1.obj"
-	-@erase "$(INTDIR)\digimax.obj"
-	-@erase "$(INTDIR)\ds12c887rtc.obj"
-	-@erase "$(INTDIR)\georam.obj"
-	-@erase "$(INTDIR)\sfx_soundexpander.obj"
-	-@erase "$(INTDIR)\sfx_soundsampler.obj"
-	-@erase "$(INTDIR)\tfe.obj"
+	-@erase "$(INTDIR)\c64\cart\c64acia1.obj"
+	-@erase "$(INTDIR)\c64\cart\digimax.obj"
+	-@erase "$(INTDIR)\c64\cart\ds12c887rtc.obj"
+	-@erase "$(INTDIR)\c64\cart\georam.obj"
+	-@erase "$(INTDIR)\c64\cart\sfx_soundexpander.obj"
+	-@erase "$(INTDIR)\c64\cart\sfx_soundsampler.obj"
+	-@erase "$(INTDIR)\c64\cart\tfe.obj"
 	-@erase "$(OUTDIR)\c64commoncart.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\rtc" /I "..\..\..\vicii" /I "..\..\..\drive" /I "..\..\..\sid" /I "..\..\..\monitor" /I "..\..\..\core" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\c64commoncart.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64 "/I "..\..\..\core "/I "..\..\..\drive "/I "..\..\..\monitor "/I "..\..\..\rtc "/I "..\..\..\sid "/I "..\..\..\vicii "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\c64commoncart.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -187,20 +188,21 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\c64commoncart.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\c64commoncart.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\c64acia1.obj" \
-	"$(INTDIR)\digimax.obj" \
-	"$(INTDIR)\ds12c887rtc.obj" \
-	"$(INTDIR)\georam.obj" \
-	"$(INTDIR)\sfx_soundexpander.obj" \
-	"$(INTDIR)\sfx_soundsampler.obj" \
-	"$(INTDIR)\tfe.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\c64\cart\c64acia1.obj" \
+	"$(INTDIR)\c64\cart\digimax.obj" \
+	"$(INTDIR)\c64\cart\ds12c887rtc.obj" \
+	"$(INTDIR)\c64\cart\georam.obj" \
+	"$(INTDIR)\c64\cart\sfx_soundexpander.obj" \
+	"$(INTDIR)\c64\cart\sfx_soundsampler.obj" \
+	"$(INTDIR)\c64\cart\tfe.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\c64commoncart.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -238,44 +240,39 @@ LIB32_OBJS= \
 
 SOURCE=..\..\..\c64\cart\c64acia1.c
 
-"$(INTDIR)\c64acia1.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\c64acia1.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\cart\digimax.c
 
-"$(INTDIR)\digimax.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\digimax.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\cart\ds12c887rtc.c
 
-"$(INTDIR)\ds12c887rtc.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\ds12c887rtc.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\cart\georam.c
 
-"$(INTDIR)\georam.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\georam.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\cart\sfx_soundexpander.c
 
-"$(INTDIR)\sfx_soundexpander.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\sfx_soundexpander.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\cart\sfx_soundsampler.c
 
-"$(INTDIR)\sfx_soundsampler.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\sfx_soundsampler.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\cart\tfe.c
 
-"$(INTDIR)\tfe.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\cart\tfe.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
+
 
 
 !ENDIF 

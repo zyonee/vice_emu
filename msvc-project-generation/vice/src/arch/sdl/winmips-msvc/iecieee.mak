@@ -33,31 +33,30 @@ INTDIR=.\libs\iecieee\Release
 OutDir=.\libs\iecieee\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\iecieee.lib"
+ALL : "$(OUTDIR)\iecieee.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\iecieee.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\iecieee.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\iecieee.obj"
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\via2d.obj"
+	-@erase "$(INTDIR)\drive\iecieee\iecieee.obj"
+	-@erase "$(INTDIR)\drive\iecieee\via2d.obj"
 	-@erase "$(OUTDIR)\iecieee.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\iecieee.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\lib\p64 "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\iecieee.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -93,20 +92,21 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\iecieee.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\iecieee.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\iecieee.obj" \
-	"$(INTDIR)\via2d.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\drive\iecieee\iecieee.obj" \
+	"$(INTDIR)\drive\iecieee\via2d.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\iecieee.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "iecieee - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\iecieee\Debug
 INTDIR=.\libs\iecieee\Debug
@@ -114,31 +114,30 @@ INTDIR=.\libs\iecieee\Debug
 OutDir=.\libs\iecieee\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\iecieee.lib"
+ALL : "$(OUTDIR)\iecieee.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\iecieee.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\iecieee.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\iecieee.obj"
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\via2d.obj"
+	-@erase "$(INTDIR)\drive\iecieee\iecieee.obj"
+	-@erase "$(INTDIR)\drive\iecieee\via2d.obj"
 	-@erase "$(OUTDIR)\iecieee.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\iecieee.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\lib\p64 "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\iecieee.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -174,15 +173,16 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\iecieee.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\iecieee.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\iecieee.obj" \
-	"$(INTDIR)\via2d.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\drive\iecieee\iecieee.obj" \
+	"$(INTDIR)\drive\iecieee\via2d.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\iecieee.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -220,13 +220,12 @@ LIB32_OBJS= \
 
 SOURCE=..\..\..\drive\iecieee\iecieee.c
 
-"$(INTDIR)\iecieee.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iecieee\iecieee.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\drive\iecieee\via2d.c
 
-"$(INTDIR)\via2d.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iecieee\via2d.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

@@ -33,37 +33,36 @@ INTDIR=.\libs\fsdevice\Release
 OutDir=.\libs\fsdevice\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\fsdevice.lib"
+ALL : "$(OUTDIR)\fsdevice.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\fsdevice.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\fsdevice.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\fsdevice-close.obj"
-	-@erase "$(INTDIR)\fsdevice-cmdline-options.obj"
-	-@erase "$(INTDIR)\fsdevice-flush.obj"
-	-@erase "$(INTDIR)\fsdevice-open.obj"
-	-@erase "$(INTDIR)\fsdevice-read.obj"
-	-@erase "$(INTDIR)\fsdevice-resources.obj"
-	-@erase "$(INTDIR)\fsdevice-write.obj"
-	-@erase "$(INTDIR)\fsdevice.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\fsdevice\fsdevice-close.obj"
+	-@erase "$(INTDIR)\fsdevice\fsdevice-cmdline-options.obj"
+	-@erase "$(INTDIR)\fsdevice\fsdevice-flush.obj"
+	-@erase "$(INTDIR)\fsdevice\fsdevice-open.obj"
+	-@erase "$(INTDIR)\fsdevice\fsdevice-read.obj"
+	-@erase "$(INTDIR)\fsdevice\fsdevice-resources.obj"
+	-@erase "$(INTDIR)\fsdevice\fsdevice-write.obj"
+	-@erase "$(INTDIR)\fsdevice\fsdevice.obj"
 	-@erase "$(OUTDIR)\fsdevice.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\fsdevice" /I "..\..\..\vdrive" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\fsdevice.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\fsdevice "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\fsdevice.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -99,26 +98,27 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\fsdevice.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\fsdevice.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\fsdevice-close.obj" \
-	"$(INTDIR)\fsdevice-cmdline-options.obj" \
-	"$(INTDIR)\fsdevice-flush.obj" \
-	"$(INTDIR)\fsdevice-open.obj" \
-	"$(INTDIR)\fsdevice-read.obj" \
-	"$(INTDIR)\fsdevice-resources.obj" \
-	"$(INTDIR)\fsdevice-write.obj" \
-	"$(INTDIR)\fsdevice.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\fsdevice\fsdevice-close.obj" \
+	"$(INTDIR)\fsdevice\fsdevice-cmdline-options.obj" \
+	"$(INTDIR)\fsdevice\fsdevice-flush.obj" \
+	"$(INTDIR)\fsdevice\fsdevice-open.obj" \
+	"$(INTDIR)\fsdevice\fsdevice-read.obj" \
+	"$(INTDIR)\fsdevice\fsdevice-resources.obj" \
+	"$(INTDIR)\fsdevice\fsdevice-write.obj" \
+	"$(INTDIR)\fsdevice\fsdevice.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\fsdevice.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "fsdevice - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\fsdevice\Debug
 INTDIR=.\libs\fsdevice\Debug
@@ -126,37 +126,36 @@ INTDIR=.\libs\fsdevice\Debug
 OutDir=.\libs\fsdevice\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\fsdevice.lib"
+ALL : "$(OUTDIR)\fsdevice.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\fsdevice.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\fsdevice.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\fsdevice-close.obj"
-	-@erase "$(INTDIR)\fsdevice-cmdline-options.obj"
-	-@erase "$(INTDIR)\fsdevice-flush.obj"
-	-@erase "$(INTDIR)\fsdevice-open.obj"
-	-@erase "$(INTDIR)\fsdevice-read.obj"
-	-@erase "$(INTDIR)\fsdevice-resources.obj"
-	-@erase "$(INTDIR)\fsdevice-write.obj"
-	-@erase "$(INTDIR)\fsdevice.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\fsdevice\fsdevice-close.obj"
+	-@erase "$(INTDIR)\fsdevice\fsdevice-cmdline-options.obj"
+	-@erase "$(INTDIR)\fsdevice\fsdevice-flush.obj"
+	-@erase "$(INTDIR)\fsdevice\fsdevice-open.obj"
+	-@erase "$(INTDIR)\fsdevice\fsdevice-read.obj"
+	-@erase "$(INTDIR)\fsdevice\fsdevice-resources.obj"
+	-@erase "$(INTDIR)\fsdevice\fsdevice-write.obj"
+	-@erase "$(INTDIR)\fsdevice\fsdevice.obj"
 	-@erase "$(OUTDIR)\fsdevice.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\fsdevice" /I "..\..\..\vdrive" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\fsdevice.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\fsdevice "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\fsdevice.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -192,21 +191,22 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\fsdevice.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\fsdevice.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\fsdevice-close.obj" \
-	"$(INTDIR)\fsdevice-cmdline-options.obj" \
-	"$(INTDIR)\fsdevice-flush.obj" \
-	"$(INTDIR)\fsdevice-open.obj" \
-	"$(INTDIR)\fsdevice-read.obj" \
-	"$(INTDIR)\fsdevice-resources.obj" \
-	"$(INTDIR)\fsdevice-write.obj" \
-	"$(INTDIR)\fsdevice.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\fsdevice\fsdevice-close.obj" \
+	"$(INTDIR)\fsdevice\fsdevice-cmdline-options.obj" \
+	"$(INTDIR)\fsdevice\fsdevice-flush.obj" \
+	"$(INTDIR)\fsdevice\fsdevice-open.obj" \
+	"$(INTDIR)\fsdevice\fsdevice-read.obj" \
+	"$(INTDIR)\fsdevice\fsdevice-resources.obj" \
+	"$(INTDIR)\fsdevice\fsdevice-write.obj" \
+	"$(INTDIR)\fsdevice\fsdevice.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\fsdevice.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -242,51 +242,44 @@ LIB32_OBJS= \
 
 !ENDIF 
 
-SOURCE="..\..\..\fsdevice\fsdevice-close.c"
+SOURCE=..\..\..\fsdevice\fsdevice-close.c
 
-"$(INTDIR)\fsdevice-close.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\fsdevice\fsdevice-close.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\fsdevice\fsdevice-cmdline-options.c
 
-SOURCE="..\..\..\fsdevice\fsdevice-cmdline-options.c"
-
-"$(INTDIR)\fsdevice-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\fsdevice\fsdevice-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\fsdevice\fsdevice-flush.c
 
-SOURCE="..\..\..\fsdevice\fsdevice-flush.c"
-
-"$(INTDIR)\fsdevice-flush.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\fsdevice\fsdevice-flush.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\fsdevice\fsdevice-open.c
 
-SOURCE="..\..\..\fsdevice\fsdevice-open.c"
-
-"$(INTDIR)\fsdevice-open.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\fsdevice\fsdevice-open.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\fsdevice\fsdevice-read.c
 
-SOURCE="..\..\..\fsdevice\fsdevice-read.c"
-
-"$(INTDIR)\fsdevice-read.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\fsdevice\fsdevice-read.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\fsdevice\fsdevice-resources.c
 
-SOURCE="..\..\..\fsdevice\fsdevice-resources.c"
-
-"$(INTDIR)\fsdevice-resources.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\fsdevice\fsdevice-resources.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\fsdevice\fsdevice-write.c
 
-SOURCE="..\..\..\fsdevice\fsdevice-write.c"
-
-"$(INTDIR)\fsdevice-write.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\fsdevice\fsdevice-write.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\fsdevice\fsdevice.c
 
-SOURCE="..\..\..\fsdevice\fsdevice.c"
-
-"$(INTDIR)\fsdevice.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\fsdevice\fsdevice.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

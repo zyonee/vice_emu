@@ -33,108 +33,109 @@ INTDIR=.\libs\arch\Release
 OutDir=.\libs\arch\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\arch.lib"
+ALL : "$(OUTDIR)\arch.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "gentranslate - Win32 Release" "geninfocontrib - Win32 Release" "$(OUTDIR)\arch.lib"
+ALL : "base - Win32 Release" "geninfocontrib - Win32 Release" "gentranslate - Win32 Release" "$(OUTDIR)\arch.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
-CLEAN :"geninfocontrib - Win32 ReleaseCLEAN" "gentranslate - Win32 ReleaseCLEAN" "base - Win32 ReleaseCLEAN" 
+!IF "$(RECURSE)" == "1"
+CLEAN :"gentranslate - Win32 ReleaseCLEAN" "geninfocontrib - Win32 ReleaseCLEAN" "base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\archdep.obj"
-	-@erase "$(INTDIR)\blockdev.obj"
-	-@erase "$(INTDIR)\catweaselmkiii.obj"
-	-@erase "$(INTDIR)\console.obj"
-	-@erase "$(INTDIR)\dynlib.obj"
-	-@erase "$(INTDIR)\fullscreen.obj"
-	-@erase "$(INTDIR)\hardsid.obj"
-	-@erase "$(INTDIR)\joy.obj"
-	-@erase "$(INTDIR)\kbd.obj"
-	-@erase "$(INTDIR)\lightpendrv.obj"
-	-@erase "$(INTDIR)\menu_c128hw.obj"
-	-@erase "$(INTDIR)\menu_c64_common_expansions.obj"
-	-@erase "$(INTDIR)\menu_c64_expansions.obj"
-	-@erase "$(INTDIR)\menu_c64cart.obj"
-	-@erase "$(INTDIR)\menu_c64dtvhw.obj"
-	-@erase "$(INTDIR)\menu_c64hw.obj"
-	-@erase "$(INTDIR)\menu_c64model.obj"
-	-@erase "$(INTDIR)\menu_cbm2cart.obj"
-	-@erase "$(INTDIR)\menu_cbm2hw.obj"
-	-@erase "$(INTDIR)\menu_common.obj"
-	-@erase "$(INTDIR)\menu_debug.obj"
-	-@erase "$(INTDIR)\menu_drive.obj"
-	-@erase "$(INTDIR)\menu_drive_rom.obj"
-	-@erase "$(INTDIR)\menu_ffmpeg.obj"
-	-@erase "$(INTDIR)\menu_help.obj"
-	-@erase "$(INTDIR)\menu_joystick.obj"
-	-@erase "$(INTDIR)\menu_lightpen.obj"
-	-@erase "$(INTDIR)\menu_midi.obj"
-	-@erase "$(INTDIR)\menu_mouse.obj"
-	-@erase "$(INTDIR)\menu_network.obj"
-	-@erase "$(INTDIR)\menu_petcart.obj"
-	-@erase "$(INTDIR)\menu_pethw.obj"
-	-@erase "$(INTDIR)\menu_plus4cart.obj"
-	-@erase "$(INTDIR)\menu_plus4hw.obj"
-	-@erase "$(INTDIR)\menu_printer.obj"
-	-@erase "$(INTDIR)\menu_ram.obj"
-	-@erase "$(INTDIR)\menu_reset.obj"
-	-@erase "$(INTDIR)\menu_rom.obj"
-	-@erase "$(INTDIR)\menu_rs232.obj"
-	-@erase "$(INTDIR)\menu_scpu64hw.obj"
-	-@erase "$(INTDIR)\menu_screenshot.obj"
-	-@erase "$(INTDIR)\menu_settings.obj"
-	-@erase "$(INTDIR)\menu_sid.obj"
-	-@erase "$(INTDIR)\menu_snapshot.obj"
-	-@erase "$(INTDIR)\menu_sound.obj"
-	-@erase "$(INTDIR)\menu_speed.obj"
-	-@erase "$(INTDIR)\menu_tape.obj"
-	-@erase "$(INTDIR)\menu_vic20cart.obj"
-	-@erase "$(INTDIR)\menu_vic20hw.obj"
-	-@erase "$(INTDIR)\menu_video.obj"
-	-@erase "$(INTDIR)\mousedrv.obj"
-	-@erase "$(INTDIR)\rs232.obj"
-	-@erase "$(INTDIR)\rs232dev.obj"
-	-@erase "$(INTDIR)\rs232net.obj"
-	-@erase "$(INTDIR)\sdlmain.obj"
-	-@erase "$(INTDIR)\signals.obj"
-	-@erase "$(INTDIR)\ui.obj"
-	-@erase "$(INTDIR)\uicmdline.obj"
-	-@erase "$(INTDIR)\uifilereq.obj"
-	-@erase "$(INTDIR)\uihotkey.obj"
-	-@erase "$(INTDIR)\uimenu.obj"
-	-@erase "$(INTDIR)\uimon.obj"
-	-@erase "$(INTDIR)\uimsgbox.obj"
-	-@erase "$(INTDIR)\uipause.obj"
-	-@erase "$(INTDIR)\uipoll.obj"
-	-@erase "$(INTDIR)\uistatusbar.obj"
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\video.obj"
-	-@erase "$(INTDIR)\vkbd.obj"
-	-@erase "$(INTDIR)\vsidui.obj"
-	-@erase "$(INTDIR)\vsyncarch.obj"
-	-@erase "$(INTDIR)\x128_ui.obj"
-	-@erase "$(INTDIR)\x64_ui.obj"
-	-@erase "$(INTDIR)\x64dtv_ui.obj"
-	-@erase "$(INTDIR)\x64sc_ui.obj"
-	-@erase "$(INTDIR)\xcbm2_ui.obj"
-	-@erase "$(INTDIR)\xpet_ui.obj"
-	-@erase "$(INTDIR)\xplus4_ui.obj"
-	-@erase "$(INTDIR)\xscpu64_ui.obj"
-	-@erase "$(INTDIR)\xvic_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\archdep.obj"
+	-@erase "$(INTDIR)\arch\sdl\blockdev.obj"
+	-@erase "$(INTDIR)\arch\sdl\catweaselmkiii.obj"
+	-@erase "$(INTDIR)\arch\sdl\console.obj"
+	-@erase "$(INTDIR)\arch\sdl\dynlib.obj"
+	-@erase "$(INTDIR)\arch\sdl\fullscreen.obj"
+	-@erase "$(INTDIR)\arch\sdl\hardsid.obj"
+	-@erase "$(INTDIR)\arch\sdl\joy.obj"
+	-@erase "$(INTDIR)\arch\sdl\kbd.obj"
+	-@erase "$(INTDIR)\arch\sdl\lightpendrv.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_c128hw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_c64_common_expansions.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_c64_expansions.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_c64cart.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_c64dtvhw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_c64hw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_c64model.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_cbm2cart.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_cbm2hw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_common.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_debug.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_drive.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_drive_rom.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_ffmpeg.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_help.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_joystick.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_lightpen.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_midi.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_mouse.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_network.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_petcart.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_pethw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_plus4cart.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_plus4hw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_printer.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_ram.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_reset.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_rom.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_rs232.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_scpu64hw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_screenshot.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_settings.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_sid.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_snapshot.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_sound.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_speed.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_tape.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_tfe.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_vic20cart.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_vic20hw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_video.obj"
+	-@erase "$(INTDIR)\arch\sdl\mousedrv.obj"
+	-@erase "$(INTDIR)\arch\sdl\rawnetarch.obj"
+	-@erase "$(INTDIR)\arch\sdl\rs232.obj"
+	-@erase "$(INTDIR)\arch\sdl\rs232dev.obj"
+	-@erase "$(INTDIR)\arch\sdl\rs232net.obj"
+	-@erase "$(INTDIR)\arch\sdl\sdlmain.obj"
+	-@erase "$(INTDIR)\arch\sdl\signals.obj"
+	-@erase "$(INTDIR)\arch\sdl\ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\uicmdline.obj"
+	-@erase "$(INTDIR)\arch\sdl\uifilereq.obj"
+	-@erase "$(INTDIR)\arch\sdl\uihotkey.obj"
+	-@erase "$(INTDIR)\arch\sdl\uimenu.obj"
+	-@erase "$(INTDIR)\arch\sdl\uimon.obj"
+	-@erase "$(INTDIR)\arch\sdl\uimsgbox.obj"
+	-@erase "$(INTDIR)\arch\sdl\uipause.obj"
+	-@erase "$(INTDIR)\arch\sdl\uipoll.obj"
+	-@erase "$(INTDIR)\arch\sdl\uistatusbar.obj"
+	-@erase "$(INTDIR)\arch\sdl\video.obj"
+	-@erase "$(INTDIR)\arch\sdl\vkbd.obj"
+	-@erase "$(INTDIR)\arch\sdl\vsidui.obj"
+	-@erase "$(INTDIR)\arch\sdl\vsyncarch.obj"
+	-@erase "$(INTDIR)\arch\sdl\x128_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\x64_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\x64dtv_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\x64sc_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\xcbm2_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\xpet_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\xplus4_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\xscpu64_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\xvic_ui.obj"
 	-@erase "$(OUTDIR)\arch.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\platform" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\userport" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\c64dtv" /I "..\..\..\c128" /I "..\..\..\vic20" /I "..\..\..\pet" /I "..\..\..\cbm2" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\lib\libffmpeg" /I "..\..\..\plus4" /I "..\..\..\rs232drv" /I "..\..\..\sid" /I "..\..\..\imagecontents" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\arch.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\arch\win32\msvc\wpcap "/I "..\..\..\c64 "/I "..\..\..\c64\cart "/I "..\..\..\c64dtv "/I "..\..\..\c128 "/I "..\..\..\cbm2 "/I "..\..\..\drive "/I "..\..\..\imagecontents "/I "..\..\..\lib\libffmpeg "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\pet "/I "..\..\..\platform "/I "..\..\..\plus4 "/I "..\..\..\raster "/I "..\..\..\rs232drv "/I "..\..\..\sid "/I "..\..\..\userport "/I "..\..\..\vdrive "/I "..\..\..\vic20 "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\arch.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -170,97 +171,100 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\arch.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\arch.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\archdep.obj" \
-	"$(INTDIR)\blockdev.obj" \
-	"$(INTDIR)\catweaselmkiii.obj" \
-	"$(INTDIR)\console.obj" \
-	"$(INTDIR)\dynlib.obj" \
-	"$(INTDIR)\fullscreen.obj" \
-	"$(INTDIR)\hardsid.obj" \
-	"$(INTDIR)\joy.obj" \
-	"$(INTDIR)\kbd.obj" \
-	"$(INTDIR)\lightpendrv.obj" \
-	"$(INTDIR)\menu_c128hw.obj" \
-	"$(INTDIR)\menu_c64_common_expansions.obj" \
-	"$(INTDIR)\menu_c64_expansions.obj" \
-	"$(INTDIR)\menu_c64cart.obj" \
-	"$(INTDIR)\menu_c64dtvhw.obj" \
-	"$(INTDIR)\menu_c64hw.obj" \
-	"$(INTDIR)\menu_c64model.obj" \
-	"$(INTDIR)\menu_cbm2cart.obj" \
-	"$(INTDIR)\menu_cbm2hw.obj" \
-	"$(INTDIR)\menu_common.obj" \
-	"$(INTDIR)\menu_debug.obj" \
-	"$(INTDIR)\menu_drive.obj" \
-	"$(INTDIR)\menu_drive_rom.obj" \
-	"$(INTDIR)\menu_ffmpeg.obj" \
-	"$(INTDIR)\menu_help.obj" \
-	"$(INTDIR)\menu_joystick.obj" \
-	"$(INTDIR)\menu_lightpen.obj" \
-	"$(INTDIR)\menu_midi.obj" \
-	"$(INTDIR)\menu_mouse.obj" \
-	"$(INTDIR)\menu_network.obj" \
-	"$(INTDIR)\menu_petcart.obj" \
-	"$(INTDIR)\menu_pethw.obj" \
-	"$(INTDIR)\menu_plus4cart.obj" \
-	"$(INTDIR)\menu_plus4hw.obj" \
-	"$(INTDIR)\menu_printer.obj" \
-	"$(INTDIR)\menu_ram.obj" \
-	"$(INTDIR)\menu_reset.obj" \
-	"$(INTDIR)\menu_rom.obj" \
-	"$(INTDIR)\menu_rs232.obj" \
-	"$(INTDIR)\menu_scpu64hw.obj" \
-	"$(INTDIR)\menu_screenshot.obj" \
-	"$(INTDIR)\menu_settings.obj" \
-	"$(INTDIR)\menu_sid.obj" \
-	"$(INTDIR)\menu_snapshot.obj" \
-	"$(INTDIR)\menu_sound.obj" \
-	"$(INTDIR)\menu_speed.obj" \
-	"$(INTDIR)\menu_tape.obj" \
-	"$(INTDIR)\menu_vic20cart.obj" \
-	"$(INTDIR)\menu_vic20hw.obj" \
-	"$(INTDIR)\menu_video.obj" \
-	"$(INTDIR)\mousedrv.obj" \
-	"$(INTDIR)\rs232.obj" \
-	"$(INTDIR)\rs232dev.obj" \
-	"$(INTDIR)\rs232net.obj" \
-	"$(INTDIR)\sdlmain.obj" \
-	"$(INTDIR)\signals.obj" \
-	"$(INTDIR)\ui.obj" \
-	"$(INTDIR)\uicmdline.obj" \
-	"$(INTDIR)\uifilereq.obj" \
-	"$(INTDIR)\uihotkey.obj" \
-	"$(INTDIR)\uimenu.obj" \
-	"$(INTDIR)\uimon.obj" \
-	"$(INTDIR)\uimsgbox.obj" \
-	"$(INTDIR)\uipause.obj" \
-	"$(INTDIR)\uipoll.obj" \
-	"$(INTDIR)\uistatusbar.obj" \
-	"$(INTDIR)\video.obj" \
-	"$(INTDIR)\vkbd.obj" \
-	"$(INTDIR)\vsidui.obj" \
-	"$(INTDIR)\vsyncarch.obj" \
-	"$(INTDIR)\x128_ui.obj" \
-	"$(INTDIR)\x64_ui.obj" \
-	"$(INTDIR)\x64dtv_ui.obj" \
-	"$(INTDIR)\x64sc_ui.obj" \
-	"$(INTDIR)\xcbm2_ui.obj" \
-	"$(INTDIR)\xpet_ui.obj" \
-	"$(INTDIR)\xplus4_ui.obj" \
-	"$(INTDIR)\xscpu64_ui.obj" \
-	"$(INTDIR)\xvic_ui.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\arch\sdl\archdep.obj" \
+	"$(INTDIR)\arch\sdl\blockdev.obj" \
+	"$(INTDIR)\arch\sdl\catweaselmkiii.obj" \
+	"$(INTDIR)\arch\sdl\console.obj" \
+	"$(INTDIR)\arch\sdl\dynlib.obj" \
+	"$(INTDIR)\arch\sdl\fullscreen.obj" \
+	"$(INTDIR)\arch\sdl\hardsid.obj" \
+	"$(INTDIR)\arch\sdl\joy.obj" \
+	"$(INTDIR)\arch\sdl\kbd.obj" \
+	"$(INTDIR)\arch\sdl\lightpendrv.obj" \
+	"$(INTDIR)\arch\sdl\menu_c128hw.obj" \
+	"$(INTDIR)\arch\sdl\menu_c64_common_expansions.obj" \
+	"$(INTDIR)\arch\sdl\menu_c64_expansions.obj" \
+	"$(INTDIR)\arch\sdl\menu_c64cart.obj" \
+	"$(INTDIR)\arch\sdl\menu_c64dtvhw.obj" \
+	"$(INTDIR)\arch\sdl\menu_c64hw.obj" \
+	"$(INTDIR)\arch\sdl\menu_c64model.obj" \
+	"$(INTDIR)\arch\sdl\menu_cbm2cart.obj" \
+	"$(INTDIR)\arch\sdl\menu_cbm2hw.obj" \
+	"$(INTDIR)\arch\sdl\menu_common.obj" \
+	"$(INTDIR)\arch\sdl\menu_debug.obj" \
+	"$(INTDIR)\arch\sdl\menu_drive.obj" \
+	"$(INTDIR)\arch\sdl\menu_drive_rom.obj" \
+	"$(INTDIR)\arch\sdl\menu_ffmpeg.obj" \
+	"$(INTDIR)\arch\sdl\menu_help.obj" \
+	"$(INTDIR)\arch\sdl\menu_joystick.obj" \
+	"$(INTDIR)\arch\sdl\menu_lightpen.obj" \
+	"$(INTDIR)\arch\sdl\menu_midi.obj" \
+	"$(INTDIR)\arch\sdl\menu_mouse.obj" \
+	"$(INTDIR)\arch\sdl\menu_network.obj" \
+	"$(INTDIR)\arch\sdl\menu_petcart.obj" \
+	"$(INTDIR)\arch\sdl\menu_pethw.obj" \
+	"$(INTDIR)\arch\sdl\menu_plus4cart.obj" \
+	"$(INTDIR)\arch\sdl\menu_plus4hw.obj" \
+	"$(INTDIR)\arch\sdl\menu_printer.obj" \
+	"$(INTDIR)\arch\sdl\menu_ram.obj" \
+	"$(INTDIR)\arch\sdl\menu_reset.obj" \
+	"$(INTDIR)\arch\sdl\menu_rom.obj" \
+	"$(INTDIR)\arch\sdl\menu_rs232.obj" \
+	"$(INTDIR)\arch\sdl\menu_scpu64hw.obj" \
+	"$(INTDIR)\arch\sdl\menu_screenshot.obj" \
+	"$(INTDIR)\arch\sdl\menu_settings.obj" \
+	"$(INTDIR)\arch\sdl\menu_sid.obj" \
+	"$(INTDIR)\arch\sdl\menu_snapshot.obj" \
+	"$(INTDIR)\arch\sdl\menu_sound.obj" \
+	"$(INTDIR)\arch\sdl\menu_speed.obj" \
+	"$(INTDIR)\arch\sdl\menu_tape.obj" \
+	"$(INTDIR)\arch\sdl\menu_tfe.obj" \
+	"$(INTDIR)\arch\sdl\menu_vic20cart.obj" \
+	"$(INTDIR)\arch\sdl\menu_vic20hw.obj" \
+	"$(INTDIR)\arch\sdl\menu_video.obj" \
+	"$(INTDIR)\arch\sdl\mousedrv.obj" \
+	"$(INTDIR)\arch\sdl\rawnetarch.obj" \
+	"$(INTDIR)\arch\sdl\rs232.obj" \
+	"$(INTDIR)\arch\sdl\rs232dev.obj" \
+	"$(INTDIR)\arch\sdl\rs232net.obj" \
+	"$(INTDIR)\arch\sdl\sdlmain.obj" \
+	"$(INTDIR)\arch\sdl\signals.obj" \
+	"$(INTDIR)\arch\sdl\ui.obj" \
+	"$(INTDIR)\arch\sdl\uicmdline.obj" \
+	"$(INTDIR)\arch\sdl\uifilereq.obj" \
+	"$(INTDIR)\arch\sdl\uihotkey.obj" \
+	"$(INTDIR)\arch\sdl\uimenu.obj" \
+	"$(INTDIR)\arch\sdl\uimon.obj" \
+	"$(INTDIR)\arch\sdl\uimsgbox.obj" \
+	"$(INTDIR)\arch\sdl\uipause.obj" \
+	"$(INTDIR)\arch\sdl\uipoll.obj" \
+	"$(INTDIR)\arch\sdl\uistatusbar.obj" \
+	"$(INTDIR)\arch\sdl\video.obj" \
+	"$(INTDIR)\arch\sdl\vkbd.obj" \
+	"$(INTDIR)\arch\sdl\vsidui.obj" \
+	"$(INTDIR)\arch\sdl\vsyncarch.obj" \
+	"$(INTDIR)\arch\sdl\x128_ui.obj" \
+	"$(INTDIR)\arch\sdl\x64_ui.obj" \
+	"$(INTDIR)\arch\sdl\x64dtv_ui.obj" \
+	"$(INTDIR)\arch\sdl\x64sc_ui.obj" \
+	"$(INTDIR)\arch\sdl\xcbm2_ui.obj" \
+	"$(INTDIR)\arch\sdl\xpet_ui.obj" \
+	"$(INTDIR)\arch\sdl\xplus4_ui.obj" \
+	"$(INTDIR)\arch\sdl\xscpu64_ui.obj" \
+	"$(INTDIR)\arch\sdl\xvic_ui.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\arch.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "arch - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\arch\Debug
 INTDIR=.\libs\arch\Debug
@@ -268,108 +272,109 @@ INTDIR=.\libs\arch\Debug
 OutDir=.\libs\arch\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\arch.lib"
+ALL : "$(OUTDIR)\arch.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "gentranslate - Win32 Debug" "geninfocontrib - Win32 Debug" "$(OUTDIR)\arch.lib"
+ALL : "base - Win32 Debug" "geninfocontrib - Win32 Debug" "gentranslate - Win32 Debug" "$(OUTDIR)\arch.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
-CLEAN :"geninfocontrib - Win32 DebugCLEAN" "gentranslate - Win32 DebugCLEAN" "base - Win32 DebugCLEAN" 
+!IF "$(RECURSE)" == "1"
+CLEAN :"gentranslate - Win32 DebugCLEAN" "geninfocontrib - Win32 DebugCLEAN" "base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\archdep.obj"
-	-@erase "$(INTDIR)\blockdev.obj"
-	-@erase "$(INTDIR)\catweaselmkiii.obj"
-	-@erase "$(INTDIR)\console.obj"
-	-@erase "$(INTDIR)\dynlib.obj"
-	-@erase "$(INTDIR)\fullscreen.obj"
-	-@erase "$(INTDIR)\hardsid.obj"
-	-@erase "$(INTDIR)\joy.obj"
-	-@erase "$(INTDIR)\kbd.obj"
-	-@erase "$(INTDIR)\lightpendrv.obj"
-	-@erase "$(INTDIR)\menu_c128hw.obj"
-	-@erase "$(INTDIR)\menu_c64_common_expansions.obj"
-	-@erase "$(INTDIR)\menu_c64_expansions.obj"
-	-@erase "$(INTDIR)\menu_c64cart.obj"
-	-@erase "$(INTDIR)\menu_c64dtvhw.obj"
-	-@erase "$(INTDIR)\menu_c64hw.obj"
-	-@erase "$(INTDIR)\menu_c64model.obj"
-	-@erase "$(INTDIR)\menu_cbm2cart.obj"
-	-@erase "$(INTDIR)\menu_cbm2hw.obj"
-	-@erase "$(INTDIR)\menu_common.obj"
-	-@erase "$(INTDIR)\menu_debug.obj"
-	-@erase "$(INTDIR)\menu_drive.obj"
-	-@erase "$(INTDIR)\menu_drive_rom.obj"
-	-@erase "$(INTDIR)\menu_ffmpeg.obj"
-	-@erase "$(INTDIR)\menu_help.obj"
-	-@erase "$(INTDIR)\menu_joystick.obj"
-	-@erase "$(INTDIR)\menu_lightpen.obj"
-	-@erase "$(INTDIR)\menu_midi.obj"
-	-@erase "$(INTDIR)\menu_mouse.obj"
-	-@erase "$(INTDIR)\menu_network.obj"
-	-@erase "$(INTDIR)\menu_petcart.obj"
-	-@erase "$(INTDIR)\menu_pethw.obj"
-	-@erase "$(INTDIR)\menu_plus4cart.obj"
-	-@erase "$(INTDIR)\menu_plus4hw.obj"
-	-@erase "$(INTDIR)\menu_printer.obj"
-	-@erase "$(INTDIR)\menu_ram.obj"
-	-@erase "$(INTDIR)\menu_reset.obj"
-	-@erase "$(INTDIR)\menu_rom.obj"
-	-@erase "$(INTDIR)\menu_rs232.obj"
-	-@erase "$(INTDIR)\menu_scpu64hw.obj"
-	-@erase "$(INTDIR)\menu_screenshot.obj"
-	-@erase "$(INTDIR)\menu_settings.obj"
-	-@erase "$(INTDIR)\menu_sid.obj"
-	-@erase "$(INTDIR)\menu_snapshot.obj"
-	-@erase "$(INTDIR)\menu_sound.obj"
-	-@erase "$(INTDIR)\menu_speed.obj"
-	-@erase "$(INTDIR)\menu_tape.obj"
-	-@erase "$(INTDIR)\menu_vic20cart.obj"
-	-@erase "$(INTDIR)\menu_vic20hw.obj"
-	-@erase "$(INTDIR)\menu_video.obj"
-	-@erase "$(INTDIR)\mousedrv.obj"
-	-@erase "$(INTDIR)\rs232.obj"
-	-@erase "$(INTDIR)\rs232dev.obj"
-	-@erase "$(INTDIR)\rs232net.obj"
-	-@erase "$(INTDIR)\sdlmain.obj"
-	-@erase "$(INTDIR)\signals.obj"
-	-@erase "$(INTDIR)\ui.obj"
-	-@erase "$(INTDIR)\uicmdline.obj"
-	-@erase "$(INTDIR)\uifilereq.obj"
-	-@erase "$(INTDIR)\uihotkey.obj"
-	-@erase "$(INTDIR)\uimenu.obj"
-	-@erase "$(INTDIR)\uimon.obj"
-	-@erase "$(INTDIR)\uimsgbox.obj"
-	-@erase "$(INTDIR)\uipause.obj"
-	-@erase "$(INTDIR)\uipoll.obj"
-	-@erase "$(INTDIR)\uistatusbar.obj"
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\video.obj"
-	-@erase "$(INTDIR)\vkbd.obj"
-	-@erase "$(INTDIR)\vsidui.obj"
-	-@erase "$(INTDIR)\vsyncarch.obj"
-	-@erase "$(INTDIR)\x128_ui.obj"
-	-@erase "$(INTDIR)\x64_ui.obj"
-	-@erase "$(INTDIR)\x64dtv_ui.obj"
-	-@erase "$(INTDIR)\x64sc_ui.obj"
-	-@erase "$(INTDIR)\xcbm2_ui.obj"
-	-@erase "$(INTDIR)\xpet_ui.obj"
-	-@erase "$(INTDIR)\xplus4_ui.obj"
-	-@erase "$(INTDIR)\xscpu64_ui.obj"
-	-@erase "$(INTDIR)\xvic_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\archdep.obj"
+	-@erase "$(INTDIR)\arch\sdl\blockdev.obj"
+	-@erase "$(INTDIR)\arch\sdl\catweaselmkiii.obj"
+	-@erase "$(INTDIR)\arch\sdl\console.obj"
+	-@erase "$(INTDIR)\arch\sdl\dynlib.obj"
+	-@erase "$(INTDIR)\arch\sdl\fullscreen.obj"
+	-@erase "$(INTDIR)\arch\sdl\hardsid.obj"
+	-@erase "$(INTDIR)\arch\sdl\joy.obj"
+	-@erase "$(INTDIR)\arch\sdl\kbd.obj"
+	-@erase "$(INTDIR)\arch\sdl\lightpendrv.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_c128hw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_c64_common_expansions.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_c64_expansions.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_c64cart.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_c64dtvhw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_c64hw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_c64model.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_cbm2cart.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_cbm2hw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_common.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_debug.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_drive.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_drive_rom.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_ffmpeg.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_help.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_joystick.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_lightpen.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_midi.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_mouse.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_network.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_petcart.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_pethw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_plus4cart.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_plus4hw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_printer.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_ram.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_reset.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_rom.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_rs232.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_scpu64hw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_screenshot.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_settings.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_sid.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_snapshot.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_sound.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_speed.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_tape.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_tfe.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_vic20cart.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_vic20hw.obj"
+	-@erase "$(INTDIR)\arch\sdl\menu_video.obj"
+	-@erase "$(INTDIR)\arch\sdl\mousedrv.obj"
+	-@erase "$(INTDIR)\arch\sdl\rawnetarch.obj"
+	-@erase "$(INTDIR)\arch\sdl\rs232.obj"
+	-@erase "$(INTDIR)\arch\sdl\rs232dev.obj"
+	-@erase "$(INTDIR)\arch\sdl\rs232net.obj"
+	-@erase "$(INTDIR)\arch\sdl\sdlmain.obj"
+	-@erase "$(INTDIR)\arch\sdl\signals.obj"
+	-@erase "$(INTDIR)\arch\sdl\ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\uicmdline.obj"
+	-@erase "$(INTDIR)\arch\sdl\uifilereq.obj"
+	-@erase "$(INTDIR)\arch\sdl\uihotkey.obj"
+	-@erase "$(INTDIR)\arch\sdl\uimenu.obj"
+	-@erase "$(INTDIR)\arch\sdl\uimon.obj"
+	-@erase "$(INTDIR)\arch\sdl\uimsgbox.obj"
+	-@erase "$(INTDIR)\arch\sdl\uipause.obj"
+	-@erase "$(INTDIR)\arch\sdl\uipoll.obj"
+	-@erase "$(INTDIR)\arch\sdl\uistatusbar.obj"
+	-@erase "$(INTDIR)\arch\sdl\video.obj"
+	-@erase "$(INTDIR)\arch\sdl\vkbd.obj"
+	-@erase "$(INTDIR)\arch\sdl\vsidui.obj"
+	-@erase "$(INTDIR)\arch\sdl\vsyncarch.obj"
+	-@erase "$(INTDIR)\arch\sdl\x128_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\x64_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\x64dtv_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\x64sc_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\xcbm2_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\xpet_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\xplus4_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\xscpu64_ui.obj"
+	-@erase "$(INTDIR)\arch\sdl\xvic_ui.obj"
 	-@erase "$(OUTDIR)\arch.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\platform" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\userport" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\c64dtv" /I "..\..\..\c128" /I "..\..\..\vic20" /I "..\..\..\pet" /I "..\..\..\cbm2" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\lib\libffmpeg" /I "..\..\..\plus4" /I "..\..\..\rs232drv" /I "..\..\..\sid" /I "..\..\..\imagecontents" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\arch.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\arch\win32\msvc\wpcap "/I "..\..\..\c64 "/I "..\..\..\c64\cart "/I "..\..\..\c64dtv "/I "..\..\..\c128 "/I "..\..\..\cbm2 "/I "..\..\..\drive "/I "..\..\..\imagecontents "/I "..\..\..\lib\libffmpeg "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\pet "/I "..\..\..\platform "/I "..\..\..\plus4 "/I "..\..\..\raster "/I "..\..\..\rs232drv "/I "..\..\..\sid "/I "..\..\..\userport "/I "..\..\..\vdrive "/I "..\..\..\vic20 "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\arch.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -405,92 +410,95 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\arch.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\arch.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\archdep.obj" \
-	"$(INTDIR)\blockdev.obj" \
-	"$(INTDIR)\catweaselmkiii.obj" \
-	"$(INTDIR)\console.obj" \
-	"$(INTDIR)\dynlib.obj" \
-	"$(INTDIR)\fullscreen.obj" \
-	"$(INTDIR)\hardsid.obj" \
-	"$(INTDIR)\joy.obj" \
-	"$(INTDIR)\kbd.obj" \
-	"$(INTDIR)\lightpendrv.obj" \
-	"$(INTDIR)\menu_c128hw.obj" \
-	"$(INTDIR)\menu_c64_common_expansions.obj" \
-	"$(INTDIR)\menu_c64_expansions.obj" \
-	"$(INTDIR)\menu_c64cart.obj" \
-	"$(INTDIR)\menu_c64dtvhw.obj" \
-	"$(INTDIR)\menu_c64hw.obj" \
-	"$(INTDIR)\menu_c64model.obj" \
-	"$(INTDIR)\menu_cbm2cart.obj" \
-	"$(INTDIR)\menu_cbm2hw.obj" \
-	"$(INTDIR)\menu_common.obj" \
-	"$(INTDIR)\menu_debug.obj" \
-	"$(INTDIR)\menu_drive.obj" \
-	"$(INTDIR)\menu_drive_rom.obj" \
-	"$(INTDIR)\menu_ffmpeg.obj" \
-	"$(INTDIR)\menu_help.obj" \
-	"$(INTDIR)\menu_joystick.obj" \
-	"$(INTDIR)\menu_lightpen.obj" \
-	"$(INTDIR)\menu_midi.obj" \
-	"$(INTDIR)\menu_mouse.obj" \
-	"$(INTDIR)\menu_network.obj" \
-	"$(INTDIR)\menu_petcart.obj" \
-	"$(INTDIR)\menu_pethw.obj" \
-	"$(INTDIR)\menu_plus4cart.obj" \
-	"$(INTDIR)\menu_plus4hw.obj" \
-	"$(INTDIR)\menu_printer.obj" \
-	"$(INTDIR)\menu_ram.obj" \
-	"$(INTDIR)\menu_reset.obj" \
-	"$(INTDIR)\menu_rom.obj" \
-	"$(INTDIR)\menu_rs232.obj" \
-	"$(INTDIR)\menu_scpu64hw.obj" \
-	"$(INTDIR)\menu_screenshot.obj" \
-	"$(INTDIR)\menu_settings.obj" \
-	"$(INTDIR)\menu_sid.obj" \
-	"$(INTDIR)\menu_snapshot.obj" \
-	"$(INTDIR)\menu_sound.obj" \
-	"$(INTDIR)\menu_speed.obj" \
-	"$(INTDIR)\menu_tape.obj" \
-	"$(INTDIR)\menu_vic20cart.obj" \
-	"$(INTDIR)\menu_vic20hw.obj" \
-	"$(INTDIR)\menu_video.obj" \
-	"$(INTDIR)\mousedrv.obj" \
-	"$(INTDIR)\rs232.obj" \
-	"$(INTDIR)\rs232dev.obj" \
-	"$(INTDIR)\rs232net.obj" \
-	"$(INTDIR)\sdlmain.obj" \
-	"$(INTDIR)\signals.obj" \
-	"$(INTDIR)\ui.obj" \
-	"$(INTDIR)\uicmdline.obj" \
-	"$(INTDIR)\uifilereq.obj" \
-	"$(INTDIR)\uihotkey.obj" \
-	"$(INTDIR)\uimenu.obj" \
-	"$(INTDIR)\uimon.obj" \
-	"$(INTDIR)\uimsgbox.obj" \
-	"$(INTDIR)\uipause.obj" \
-	"$(INTDIR)\uipoll.obj" \
-	"$(INTDIR)\uistatusbar.obj" \
-	"$(INTDIR)\video.obj" \
-	"$(INTDIR)\vkbd.obj" \
-	"$(INTDIR)\vsidui.obj" \
-	"$(INTDIR)\vsyncarch.obj" \
-	"$(INTDIR)\x128_ui.obj" \
-	"$(INTDIR)\x64_ui.obj" \
-	"$(INTDIR)\x64dtv_ui.obj" \
-	"$(INTDIR)\x64sc_ui.obj" \
-	"$(INTDIR)\xcbm2_ui.obj" \
-	"$(INTDIR)\xpet_ui.obj" \
-	"$(INTDIR)\xplus4_ui.obj" \
-	"$(INTDIR)\xscpu64_ui.obj" \
-	"$(INTDIR)\xvic_ui.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\arch\sdl\archdep.obj" \
+	"$(INTDIR)\arch\sdl\blockdev.obj" \
+	"$(INTDIR)\arch\sdl\catweaselmkiii.obj" \
+	"$(INTDIR)\arch\sdl\console.obj" \
+	"$(INTDIR)\arch\sdl\dynlib.obj" \
+	"$(INTDIR)\arch\sdl\fullscreen.obj" \
+	"$(INTDIR)\arch\sdl\hardsid.obj" \
+	"$(INTDIR)\arch\sdl\joy.obj" \
+	"$(INTDIR)\arch\sdl\kbd.obj" \
+	"$(INTDIR)\arch\sdl\lightpendrv.obj" \
+	"$(INTDIR)\arch\sdl\menu_c128hw.obj" \
+	"$(INTDIR)\arch\sdl\menu_c64_common_expansions.obj" \
+	"$(INTDIR)\arch\sdl\menu_c64_expansions.obj" \
+	"$(INTDIR)\arch\sdl\menu_c64cart.obj" \
+	"$(INTDIR)\arch\sdl\menu_c64dtvhw.obj" \
+	"$(INTDIR)\arch\sdl\menu_c64hw.obj" \
+	"$(INTDIR)\arch\sdl\menu_c64model.obj" \
+	"$(INTDIR)\arch\sdl\menu_cbm2cart.obj" \
+	"$(INTDIR)\arch\sdl\menu_cbm2hw.obj" \
+	"$(INTDIR)\arch\sdl\menu_common.obj" \
+	"$(INTDIR)\arch\sdl\menu_debug.obj" \
+	"$(INTDIR)\arch\sdl\menu_drive.obj" \
+	"$(INTDIR)\arch\sdl\menu_drive_rom.obj" \
+	"$(INTDIR)\arch\sdl\menu_ffmpeg.obj" \
+	"$(INTDIR)\arch\sdl\menu_help.obj" \
+	"$(INTDIR)\arch\sdl\menu_joystick.obj" \
+	"$(INTDIR)\arch\sdl\menu_lightpen.obj" \
+	"$(INTDIR)\arch\sdl\menu_midi.obj" \
+	"$(INTDIR)\arch\sdl\menu_mouse.obj" \
+	"$(INTDIR)\arch\sdl\menu_network.obj" \
+	"$(INTDIR)\arch\sdl\menu_petcart.obj" \
+	"$(INTDIR)\arch\sdl\menu_pethw.obj" \
+	"$(INTDIR)\arch\sdl\menu_plus4cart.obj" \
+	"$(INTDIR)\arch\sdl\menu_plus4hw.obj" \
+	"$(INTDIR)\arch\sdl\menu_printer.obj" \
+	"$(INTDIR)\arch\sdl\menu_ram.obj" \
+	"$(INTDIR)\arch\sdl\menu_reset.obj" \
+	"$(INTDIR)\arch\sdl\menu_rom.obj" \
+	"$(INTDIR)\arch\sdl\menu_rs232.obj" \
+	"$(INTDIR)\arch\sdl\menu_scpu64hw.obj" \
+	"$(INTDIR)\arch\sdl\menu_screenshot.obj" \
+	"$(INTDIR)\arch\sdl\menu_settings.obj" \
+	"$(INTDIR)\arch\sdl\menu_sid.obj" \
+	"$(INTDIR)\arch\sdl\menu_snapshot.obj" \
+	"$(INTDIR)\arch\sdl\menu_sound.obj" \
+	"$(INTDIR)\arch\sdl\menu_speed.obj" \
+	"$(INTDIR)\arch\sdl\menu_tape.obj" \
+	"$(INTDIR)\arch\sdl\menu_tfe.obj" \
+	"$(INTDIR)\arch\sdl\menu_vic20cart.obj" \
+	"$(INTDIR)\arch\sdl\menu_vic20hw.obj" \
+	"$(INTDIR)\arch\sdl\menu_video.obj" \
+	"$(INTDIR)\arch\sdl\mousedrv.obj" \
+	"$(INTDIR)\arch\sdl\rawnetarch.obj" \
+	"$(INTDIR)\arch\sdl\rs232.obj" \
+	"$(INTDIR)\arch\sdl\rs232dev.obj" \
+	"$(INTDIR)\arch\sdl\rs232net.obj" \
+	"$(INTDIR)\arch\sdl\sdlmain.obj" \
+	"$(INTDIR)\arch\sdl\signals.obj" \
+	"$(INTDIR)\arch\sdl\ui.obj" \
+	"$(INTDIR)\arch\sdl\uicmdline.obj" \
+	"$(INTDIR)\arch\sdl\uifilereq.obj" \
+	"$(INTDIR)\arch\sdl\uihotkey.obj" \
+	"$(INTDIR)\arch\sdl\uimenu.obj" \
+	"$(INTDIR)\arch\sdl\uimon.obj" \
+	"$(INTDIR)\arch\sdl\uimsgbox.obj" \
+	"$(INTDIR)\arch\sdl\uipause.obj" \
+	"$(INTDIR)\arch\sdl\uipoll.obj" \
+	"$(INTDIR)\arch\sdl\uistatusbar.obj" \
+	"$(INTDIR)\arch\sdl\video.obj" \
+	"$(INTDIR)\arch\sdl\vkbd.obj" \
+	"$(INTDIR)\arch\sdl\vsidui.obj" \
+	"$(INTDIR)\arch\sdl\vsyncarch.obj" \
+	"$(INTDIR)\arch\sdl\x128_ui.obj" \
+	"$(INTDIR)\arch\sdl\x64_ui.obj" \
+	"$(INTDIR)\arch\sdl\x64dtv_ui.obj" \
+	"$(INTDIR)\arch\sdl\x64sc_ui.obj" \
+	"$(INTDIR)\arch\sdl\xcbm2_ui.obj" \
+	"$(INTDIR)\arch\sdl\xpet_ui.obj" \
+	"$(INTDIR)\arch\sdl\xplus4_ui.obj" \
+	"$(INTDIR)\arch\sdl\xscpu64_ui.obj" \
+	"$(INTDIR)\arch\sdl\xvic_ui.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\arch.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -499,6 +507,32 @@ LIB32_OBJS= \
 
 
 !IF "$(CFG)" == "arch - Win32 Release" || "$(CFG)" == "arch - Win32 Debug"
+
+!IF  "$(CFG)" == "arch - Win32 Release"
+
+"base - Win32 Release" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Release" 
+   cd "."
+
+"base - Win32 ReleaseCLEAN" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Release" RECURSE=1 CLEAN 
+   cd "."
+
+!ELSEIF  "$(CFG)" == "arch - Win32 Debug"
+
+"base - Win32 Debug" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Debug" 
+   cd "."
+
+"base - Win32 DebugCLEAN" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Debug" RECURSE=1 CLEAN 
+   cd "."
+
+!ENDIF 
 
 !IF  "$(CFG)" == "arch - Win32 Release"
 
@@ -552,503 +586,409 @@ LIB32_OBJS= \
 
 !ENDIF 
 
-!IF  "$(CFG)" == "arch - Win32 Release"
+SOURCE=..\..\..\arch\sdl\archdep.c
 
-"base - Win32 Release" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Release" 
-   cd "."
-
-"base - Win32 ReleaseCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Release" RECURSE=1 CLEAN 
-   cd "."
-
-!ELSEIF  "$(CFG)" == "arch - Win32 Debug"
-
-"base - Win32 Debug" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Debug" 
-   cd "."
+"$(INTDIR)\arch\sdl\archdep.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-"base - Win32 DebugCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Debug" RECURSE=1 CLEAN 
-   cd "."
+SOURCE=..\..\..\arch\sdl\blockdev.c
 
-!ENDIF 
+"$(INTDIR)\arch\sdl\blockdev.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-SOURCE=..\archdep.c
+SOURCE=..\..\..\arch\sdl\catweaselmkiii.c
 
-"$(INTDIR)\archdep.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\catweaselmkiii.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\console.c
 
-SOURCE=..\blockdev.c
-
-"$(INTDIR)\blockdev.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\console.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\catweaselmkiii.c
+SOURCE=..\..\..\arch\sdl\dynlib.c
 
-"$(INTDIR)\catweaselmkiii.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\dynlib.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\fullscreen.c
 
-SOURCE=..\console.c
-
-"$(INTDIR)\console.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\fullscreen.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\hardsid.c
 
-SOURCE=..\dynlib.c
-
-"$(INTDIR)\dynlib.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\hardsid.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\fullscreen.c
+SOURCE=..\..\..\arch\sdl\joy.c
 
-"$(INTDIR)\fullscreen.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\joy.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\kbd.c
 
-SOURCE=..\hardsid.c
-
-"$(INTDIR)\hardsid.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\kbd.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\joy.c
+SOURCE=..\..\..\arch\sdl\lightpendrv.c
 
-"$(INTDIR)\joy.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\lightpendrv.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_c128hw.c
 
-SOURCE=..\kbd.c
-
-"$(INTDIR)\kbd.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_c128hw.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_c64_common_expansions.c
 
-SOURCE=..\lightpendrv.c
-
-"$(INTDIR)\lightpendrv.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_c64_common_expansions.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_c128hw.c
+SOURCE=..\..\..\arch\sdl\menu_c64_expansions.c
 
-"$(INTDIR)\menu_c128hw.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_c64_expansions.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_c64cart.c
 
-SOURCE=..\menu_c64_common_expansions.c
-
-"$(INTDIR)\menu_c64_common_expansions.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_c64cart.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_c64_expansions.c
+SOURCE=..\..\..\arch\sdl\menu_c64dtvhw.c
 
-"$(INTDIR)\menu_c64_expansions.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_c64dtvhw.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_c64hw.c
 
-SOURCE=..\menu_c64cart.c
-
-"$(INTDIR)\menu_c64cart.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_c64hw.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_c64model.c
 
-SOURCE=..\menu_c64dtvhw.c
-
-"$(INTDIR)\menu_c64dtvhw.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_c64model.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_c64hw.c
+SOURCE=..\..\..\arch\sdl\menu_cbm2cart.c
 
-"$(INTDIR)\menu_c64hw.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_cbm2cart.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_cbm2hw.c
 
-SOURCE=..\menu_c64model.c
-
-"$(INTDIR)\menu_c64model.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_cbm2hw.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_cbm2cart.c
+SOURCE=..\..\..\arch\sdl\menu_common.c
 
-"$(INTDIR)\menu_cbm2cart.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_common.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_debug.c
 
-SOURCE=..\menu_cbm2hw.c
-
-"$(INTDIR)\menu_cbm2hw.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_debug.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_drive.c
 
-SOURCE=..\menu_common.c
-
-"$(INTDIR)\menu_common.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_drive.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_debug.c
+SOURCE=..\..\..\arch\sdl\menu_drive_rom.c
 
-"$(INTDIR)\menu_debug.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_drive_rom.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_ffmpeg.c
 
-SOURCE=..\menu_drive.c
-
-"$(INTDIR)\menu_drive.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_ffmpeg.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_drive_rom.c
+SOURCE=..\..\..\arch\sdl\menu_help.c
 
-"$(INTDIR)\menu_drive_rom.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_help.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_joystick.c
 
-SOURCE=..\menu_ffmpeg.c
-
-"$(INTDIR)\menu_ffmpeg.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_joystick.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_lightpen.c
 
-SOURCE=..\menu_help.c
-
-"$(INTDIR)\menu_help.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_lightpen.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_joystick.c
+SOURCE=..\..\..\arch\sdl\menu_midi.c
 
-"$(INTDIR)\menu_joystick.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_midi.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_mouse.c
 
-SOURCE=..\menu_lightpen.c
-
-"$(INTDIR)\menu_lightpen.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_mouse.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_midi.c
+SOURCE=..\..\..\arch\sdl\menu_network.c
 
-"$(INTDIR)\menu_midi.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_network.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_petcart.c
 
-SOURCE=..\menu_mouse.c
-
-"$(INTDIR)\menu_mouse.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_petcart.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_pethw.c
 
-SOURCE=..\menu_network.c
-
-"$(INTDIR)\menu_network.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_pethw.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_petcart.c
+SOURCE=..\..\..\arch\sdl\menu_plus4cart.c
 
-"$(INTDIR)\menu_petcart.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_plus4cart.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_plus4hw.c
 
-SOURCE=..\menu_pethw.c
-
-"$(INTDIR)\menu_pethw.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_plus4hw.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_printer.c
 
-SOURCE=..\menu_plus4cart.c
-
-"$(INTDIR)\menu_plus4cart.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_printer.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_plus4hw.c
+SOURCE=..\..\..\arch\sdl\menu_ram.c
 
-"$(INTDIR)\menu_plus4hw.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_ram.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_reset.c
 
-SOURCE=..\menu_printer.c
-
-"$(INTDIR)\menu_printer.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_reset.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_rom.c
 
-SOURCE=..\menu_ram.c
-
-"$(INTDIR)\menu_ram.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_rom.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_reset.c
+SOURCE=..\..\..\arch\sdl\menu_rs232.c
 
-"$(INTDIR)\menu_reset.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_rs232.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_scpu64hw.c
 
-SOURCE=..\menu_rom.c
-
-"$(INTDIR)\menu_rom.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_scpu64hw.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_rs232.c
+SOURCE=..\..\..\arch\sdl\menu_screenshot.c
 
-"$(INTDIR)\menu_rs232.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_screenshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_settings.c
 
-SOURCE=..\menu_scpu64hw.c
-
-"$(INTDIR)\menu_scpu64hw.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_settings.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_sid.c
 
-SOURCE=..\menu_screenshot.c
-
-"$(INTDIR)\menu_screenshot.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_sid.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_settings.c
+SOURCE=..\..\..\arch\sdl\menu_snapshot.c
 
-"$(INTDIR)\menu_settings.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_snapshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_sound.c
 
-SOURCE=..\menu_sid.c
-
-"$(INTDIR)\menu_sid.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_sound.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_snapshot.c
+SOURCE=..\..\..\arch\sdl\menu_speed.c
 
-"$(INTDIR)\menu_snapshot.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_speed.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_tape.c
 
-SOURCE=..\menu_sound.c
-
-"$(INTDIR)\menu_sound.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_tape.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_tfe.c
 
-SOURCE=..\menu_speed.c
-
-"$(INTDIR)\menu_speed.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_tfe.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_tape.c
+SOURCE=..\..\..\arch\sdl\menu_vic20cart.c
 
-"$(INTDIR)\menu_tape.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_vic20cart.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\menu_vic20hw.c
 
-SOURCE=..\menu_vic20cart.c
-
-"$(INTDIR)\menu_vic20cart.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_vic20hw.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\menu_vic20hw.c
+SOURCE=..\..\..\arch\sdl\menu_video.c
 
-"$(INTDIR)\menu_vic20hw.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\menu_video.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\mousedrv.c
 
-SOURCE=..\menu_video.c
-
-"$(INTDIR)\menu_video.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\mousedrv.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\rawnetarch.c
 
-SOURCE=..\mousedrv.c
-
-"$(INTDIR)\mousedrv.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\rawnetarch.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\rs232.c
+SOURCE=..\..\..\arch\sdl\rs232.c
 
-"$(INTDIR)\rs232.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\rs232.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\rs232dev.c
 
-SOURCE=..\rs232dev.c
-
-"$(INTDIR)\rs232dev.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\rs232dev.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\rs232net.c
 
-SOURCE=..\rs232net.c
-
-"$(INTDIR)\rs232net.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\rs232net.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\sdlmain.c
+SOURCE=..\..\..\arch\sdl\sdlmain.c
 
-"$(INTDIR)\sdlmain.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\sdlmain.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\signals.c
 
-SOURCE=..\signals.c
-
-"$(INTDIR)\signals.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\signals.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\ui.c
 
-SOURCE=..\ui.c
-
-"$(INTDIR)\ui.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\ui.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\uicmdline.c
+SOURCE=..\..\..\arch\sdl\uicmdline.c
 
-"$(INTDIR)\uicmdline.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\uicmdline.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\uifilereq.c
 
-SOURCE=..\uifilereq.c
-
-"$(INTDIR)\uifilereq.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\uifilereq.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\uihotkey.c
+SOURCE=..\..\..\arch\sdl\uihotkey.c
 
-"$(INTDIR)\uihotkey.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\uihotkey.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\uimenu.c
 
-SOURCE=..\uimenu.c
-
-"$(INTDIR)\uimenu.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\uimenu.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\uimon.c
 
-SOURCE=..\uimon.c
-
-"$(INTDIR)\uimon.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\uimon.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\uimsgbox.c
+SOURCE=..\..\..\arch\sdl\uimsgbox.c
 
-"$(INTDIR)\uimsgbox.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\uimsgbox.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\uipause.c
 
-SOURCE=..\uipause.c
-
-"$(INTDIR)\uipause.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\uipause.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\uipoll.c
+SOURCE=..\..\..\arch\sdl\uipoll.c
 
-"$(INTDIR)\uipoll.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\uipoll.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\uistatusbar.c
 
-SOURCE=..\uistatusbar.c
-
-"$(INTDIR)\uistatusbar.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\uistatusbar.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\video.c
 
-SOURCE=..\video.c
-
-"$(INTDIR)\video.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\video.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\vkbd.c
+SOURCE=..\..\..\arch\sdl\vkbd.c
 
-"$(INTDIR)\vkbd.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\vkbd.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\vsidui.c
 
-SOURCE=..\vsidui.c
-
-"$(INTDIR)\vsidui.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\vsidui.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\vsyncarch.c
+SOURCE=..\..\..\arch\sdl\vsyncarch.c
 
-"$(INTDIR)\vsyncarch.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\vsyncarch.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\x128_ui.c
 
-SOURCE=..\x128_ui.c
-
-"$(INTDIR)\x128_ui.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\x128_ui.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\x64_ui.c
 
-SOURCE=..\x64_ui.c
-
-"$(INTDIR)\x64_ui.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\x64_ui.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\x64dtv_ui.c
+SOURCE=..\..\..\arch\sdl\x64dtv_ui.c
 
-"$(INTDIR)\x64dtv_ui.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\x64dtv_ui.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\x64sc_ui.c
 
-SOURCE=..\x64sc_ui.c
-
-"$(INTDIR)\x64sc_ui.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\x64sc_ui.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\xcbm2_ui.c
 
-SOURCE=..\xcbm2_ui.c
-
-"$(INTDIR)\xcbm2_ui.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\xcbm2_ui.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\xpet_ui.c
+SOURCE=..\..\..\arch\sdl\xpet_ui.c
 
-"$(INTDIR)\xpet_ui.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\xpet_ui.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\xplus4_ui.c
 
-SOURCE=..\xplus4_ui.c
-
-"$(INTDIR)\xplus4_ui.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\xplus4_ui.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\arch\sdl\xscpu64_ui.c
 
-SOURCE=..\xscpu64_ui.c
-
-"$(INTDIR)\xscpu64_ui.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\xscpu64_ui.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
-SOURCE=..\xvic_ui.c
+SOURCE=..\..\..\arch\sdl\xvic_ui.c
 
-"$(INTDIR)\xvic_ui.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\arch\sdl\xvic_ui.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

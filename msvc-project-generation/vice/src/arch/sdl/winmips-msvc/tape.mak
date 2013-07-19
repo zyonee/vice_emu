@@ -33,24 +33,22 @@ INTDIR=.\libs\tape\Release
 OutDir=.\libs\tape\Release
 # End Custom Macros
 
-ALL : "$(OUTDIR)\tape.lib"
-
+ALL : "$(OUTDIR)\tape.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\t64.obj"
-	-@erase "$(INTDIR)\tap.obj"
-	-@erase "$(INTDIR)\tape-internal.obj"
-	-@erase "$(INTDIR)\tape-snapshot.obj"
-	-@erase "$(INTDIR)\tape.obj"
-	-@erase "$(INTDIR)\tapeimage.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\tape\t64.obj"
+	-@erase "$(INTDIR)\tape\tap.obj"
+	-@erase "$(INTDIR)\tape\tape-internal.obj"
+	-@erase "$(INTDIR)\tape\tape-snapshot.obj"
+	-@erase "$(INTDIR)\tape\tape.obj"
+	-@erase "$(INTDIR)\tape\tapeimage.obj"
 	-@erase "$(OUTDIR)\tape.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\tape" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\tape.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\tape "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\tape.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -86,23 +84,24 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\tape.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\tape.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\t64.obj" \
-	"$(INTDIR)\tap.obj" \
-	"$(INTDIR)\tape-internal.obj" \
-	"$(INTDIR)\tape-snapshot.obj" \
-	"$(INTDIR)\tape.obj" \
-	"$(INTDIR)\tapeimage.obj"
+	"$(INTDIR)\tape\t64.obj" \
+	"$(INTDIR)\tape\tap.obj" \
+	"$(INTDIR)\tape\tape-internal.obj" \
+	"$(INTDIR)\tape\tape-snapshot.obj" \
+	"$(INTDIR)\tape\tape.obj" \
+	"$(INTDIR)\tape\tapeimage.obj" \
 
-"$(OUTDIR)\tape.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "tape - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\tape\Debug
 INTDIR=.\libs\tape\Debug
@@ -110,24 +109,22 @@ INTDIR=.\libs\tape\Debug
 OutDir=.\libs\tape\Debug
 # End Custom Macros
 
-ALL : "$(OUTDIR)\tape.lib"
-
+ALL : "$(OUTDIR)\tape.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\t64.obj"
-	-@erase "$(INTDIR)\tap.obj"
-	-@erase "$(INTDIR)\tape-internal.obj"
-	-@erase "$(INTDIR)\tape-snapshot.obj"
-	-@erase "$(INTDIR)\tape.obj"
-	-@erase "$(INTDIR)\tapeimage.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\tape\t64.obj"
+	-@erase "$(INTDIR)\tape\tap.obj"
+	-@erase "$(INTDIR)\tape\tape-internal.obj"
+	-@erase "$(INTDIR)\tape\tape-snapshot.obj"
+	-@erase "$(INTDIR)\tape\tape.obj"
+	-@erase "$(INTDIR)\tape\tapeimage.obj"
 	-@erase "$(OUTDIR)\tape.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\tape" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\tape.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\tape "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\tape.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -163,18 +160,19 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\tape.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\tape.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\t64.obj" \
-	"$(INTDIR)\tap.obj" \
-	"$(INTDIR)\tape-internal.obj" \
-	"$(INTDIR)\tape-snapshot.obj" \
-	"$(INTDIR)\tape.obj" \
-	"$(INTDIR)\tapeimage.obj"
+	"$(INTDIR)\tape\t64.obj" \
+	"$(INTDIR)\tape\tap.obj" \
+	"$(INTDIR)\tape\tape-internal.obj" \
+	"$(INTDIR)\tape\tape-snapshot.obj" \
+	"$(INTDIR)\tape\tape.obj" \
+	"$(INTDIR)\tape\tapeimage.obj" \
 
-"$(OUTDIR)\tape.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -183,39 +181,35 @@ LIB32_OBJS= \
 
 
 !IF "$(CFG)" == "tape - Win32 Release" || "$(CFG)" == "tape - Win32 Debug"
-SOURCE="..\..\..\tape\t64.c"
 
-"$(INTDIR)\t64.obj" : $(SOURCE) "$(INTDIR)"
+SOURCE=..\..\..\tape\t64.c
+
+"$(INTDIR)\tape\t64.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\tape\tap.c
 
-SOURCE="..\..\..\tape\tap.c"
-
-"$(INTDIR)\tap.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\tape\tap.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\tape\tape-internal.c
 
-SOURCE="..\..\..\tape\tape-internal.c"
-
-"$(INTDIR)\tape-internal.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\tape\tape-internal.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\tape\tape-snapshot.c
 
-SOURCE="..\..\..\tape\tape-snapshot.c"
-
-"$(INTDIR)\tape-snapshot.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\tape\tape-snapshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\tape\tape.c
 
-SOURCE="..\..\..\tape\tape.c"
-
-"$(INTDIR)\tape.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\tape\tape.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\tape\tapeimage.c
 
-"$(INTDIR)\tapeimage.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\tape\tapeimage.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

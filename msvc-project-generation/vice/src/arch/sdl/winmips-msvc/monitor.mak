@@ -33,58 +33,57 @@ INTDIR=.\libs\monitor\Release
 OutDir=.\libs\monitor\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\monitor.lib"
+ALL : "$(OUTDIR)\monitor.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\monitor.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\monitor.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\asm6502.obj"
-	-@erase "$(INTDIR)\asm6502dtv.obj"
-	-@erase "$(INTDIR)\asm65816.obj"
-	-@erase "$(INTDIR)\asm6809.obj"
-	-@erase "$(INTDIR)\asmR65C02.obj"
-	-@erase "$(INTDIR)\asmz80.obj"
-	-@erase "$(INTDIR)\mon_assemble6502.obj"
-	-@erase "$(INTDIR)\mon_assemble65816.obj"
-	-@erase "$(INTDIR)\mon_assemble6809.obj"
-	-@erase "$(INTDIR)\mon_assembleR65C02.obj"
-	-@erase "$(INTDIR)\mon_assemblez80.obj"
-	-@erase "$(INTDIR)\mon_breakpoint.obj"
-	-@erase "$(INTDIR)\mon_command.obj"
-	-@erase "$(INTDIR)\mon_disassemble.obj"
-	-@erase "$(INTDIR)\mon_drive.obj"
-	-@erase "$(INTDIR)\mon_file.obj"
-	-@erase "$(INTDIR)\mon_lex.obj"
-	-@erase "$(INTDIR)\mon_memory.obj"
-	-@erase "$(INTDIR)\mon_parse.obj"
-	-@erase "$(INTDIR)\mon_register6502.obj"
-	-@erase "$(INTDIR)\mon_register6502dtv.obj"
-	-@erase "$(INTDIR)\mon_register65816.obj"
-	-@erase "$(INTDIR)\mon_register6809.obj"
-	-@erase "$(INTDIR)\mon_registerR65C02.obj"
-	-@erase "$(INTDIR)\mon_registerz80.obj"
-	-@erase "$(INTDIR)\mon_ui.obj"
-	-@erase "$(INTDIR)\mon_util.obj"
-	-@erase "$(INTDIR)\monitor.obj"
-	-@erase "$(INTDIR)\monitor_network.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\monitor\asm6502.obj"
+	-@erase "$(INTDIR)\monitor\asm6502dtv.obj"
+	-@erase "$(INTDIR)\monitor\asm65816.obj"
+	-@erase "$(INTDIR)\monitor\asm6809.obj"
+	-@erase "$(INTDIR)\monitor\asmR65C02.obj"
+	-@erase "$(INTDIR)\monitor\asmz80.obj"
+	-@erase "$(INTDIR)\monitor\mon_assemble6502.obj"
+	-@erase "$(INTDIR)\monitor\mon_assemble65816.obj"
+	-@erase "$(INTDIR)\monitor\mon_assemble6809.obj"
+	-@erase "$(INTDIR)\monitor\mon_assembleR65C02.obj"
+	-@erase "$(INTDIR)\monitor\mon_assemblez80.obj"
+	-@erase "$(INTDIR)\monitor\mon_breakpoint.obj"
+	-@erase "$(INTDIR)\monitor\mon_command.obj"
+	-@erase "$(INTDIR)\monitor\mon_disassemble.obj"
+	-@erase "$(INTDIR)\monitor\mon_drive.obj"
+	-@erase "$(INTDIR)\monitor\mon_file.obj"
+	-@erase "$(INTDIR)\monitor\mon_lex.obj"
+	-@erase "$(INTDIR)\monitor\mon_memory.obj"
+	-@erase "$(INTDIR)\monitor\mon_parse.obj"
+	-@erase "$(INTDIR)\monitor\mon_register6502.obj"
+	-@erase "$(INTDIR)\monitor\mon_register6502dtv.obj"
+	-@erase "$(INTDIR)\monitor\mon_register65816.obj"
+	-@erase "$(INTDIR)\monitor\mon_registerR65C02.obj"
+	-@erase "$(INTDIR)\monitor\mon_register6809.obj"
+	-@erase "$(INTDIR)\monitor\mon_registerz80.obj"
+	-@erase "$(INTDIR)\monitor\mon_ui.obj"
+	-@erase "$(INTDIR)\monitor\mon_util.obj"
+	-@erase "$(INTDIR)\monitor\monitor.obj"
+	-@erase "$(INTDIR)\monitor\monitor_network.obj"
 	-@erase "$(OUTDIR)\monitor.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\drive" /I "..\..\..\imagecontents" /D "NDEBUG" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /Fp"$(INTDIR)\monitor.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\imagecontents "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\monitor.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -120,47 +119,48 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\monitor.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\monitor.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\asm6502.obj" \
-	"$(INTDIR)\asm6502dtv.obj" \
-	"$(INTDIR)\asm65816.obj" \
-	"$(INTDIR)\asm6809.obj" \
-	"$(INTDIR)\asmR65C02.obj" \
-	"$(INTDIR)\asmz80.obj" \
-	"$(INTDIR)\mon_assemble6502.obj" \
-	"$(INTDIR)\mon_assemble65816.obj" \
-	"$(INTDIR)\mon_assemble6809.obj" \
-	"$(INTDIR)\mon_assembleR65C02.obj" \
-	"$(INTDIR)\mon_assemblez80.obj" \
-	"$(INTDIR)\mon_breakpoint.obj" \
-	"$(INTDIR)\mon_command.obj" \
-	"$(INTDIR)\mon_disassemble.obj" \
-	"$(INTDIR)\mon_drive.obj" \
-	"$(INTDIR)\mon_file.obj" \
-	"$(INTDIR)\mon_lex.obj" \
-	"$(INTDIR)\mon_memory.obj" \
-	"$(INTDIR)\mon_parse.obj" \
-	"$(INTDIR)\mon_register6502.obj" \
-	"$(INTDIR)\mon_register6502dtv.obj" \
-	"$(INTDIR)\mon_register65816.obj" \
-	"$(INTDIR)\mon_register6809.obj" \
-	"$(INTDIR)\mon_registerR65C02.obj" \
-	"$(INTDIR)\mon_registerz80.obj" \
-	"$(INTDIR)\mon_ui.obj" \
-	"$(INTDIR)\mon_util.obj" \
-	"$(INTDIR)\monitor.obj" \
-	"$(INTDIR)\monitor_network.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\monitor\asm6502.obj" \
+	"$(INTDIR)\monitor\asm6502dtv.obj" \
+	"$(INTDIR)\monitor\asm65816.obj" \
+	"$(INTDIR)\monitor\asm6809.obj" \
+	"$(INTDIR)\monitor\asmR65C02.obj" \
+	"$(INTDIR)\monitor\asmz80.obj" \
+	"$(INTDIR)\monitor\mon_assemble6502.obj" \
+	"$(INTDIR)\monitor\mon_assemble65816.obj" \
+	"$(INTDIR)\monitor\mon_assemble6809.obj" \
+	"$(INTDIR)\monitor\mon_assembleR65C02.obj" \
+	"$(INTDIR)\monitor\mon_assemblez80.obj" \
+	"$(INTDIR)\monitor\mon_breakpoint.obj" \
+	"$(INTDIR)\monitor\mon_command.obj" \
+	"$(INTDIR)\monitor\mon_disassemble.obj" \
+	"$(INTDIR)\monitor\mon_drive.obj" \
+	"$(INTDIR)\monitor\mon_file.obj" \
+	"$(INTDIR)\monitor\mon_lex.obj" \
+	"$(INTDIR)\monitor\mon_memory.obj" \
+	"$(INTDIR)\monitor\mon_parse.obj" \
+	"$(INTDIR)\monitor\mon_register6502.obj" \
+	"$(INTDIR)\monitor\mon_register6502dtv.obj" \
+	"$(INTDIR)\monitor\mon_register65816.obj" \
+	"$(INTDIR)\monitor\mon_registerR65C02.obj" \
+	"$(INTDIR)\monitor\mon_register6809.obj" \
+	"$(INTDIR)\monitor\mon_registerz80.obj" \
+	"$(INTDIR)\monitor\mon_ui.obj" \
+	"$(INTDIR)\monitor\mon_util.obj" \
+	"$(INTDIR)\monitor\monitor.obj" \
+	"$(INTDIR)\monitor\monitor_network.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\monitor.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "monitor - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\monitor\Debug
 INTDIR=.\libs\monitor\Debug
@@ -168,58 +168,57 @@ INTDIR=.\libs\monitor\Debug
 OutDir=.\libs\monitor\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\monitor.lib"
+ALL : "$(OUTDIR)\monitor.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\monitor.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\monitor.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\asm6502.obj"
-	-@erase "$(INTDIR)\asm6502dtv.obj"
-	-@erase "$(INTDIR)\asm65816.obj"
-	-@erase "$(INTDIR)\asm6809.obj"
-	-@erase "$(INTDIR)\asmR65C02.obj"
-	-@erase "$(INTDIR)\asmz80.obj"
-	-@erase "$(INTDIR)\mon_assemble6502.obj"
-	-@erase "$(INTDIR)\mon_assemble65816.obj"
-	-@erase "$(INTDIR)\mon_assemble6809.obj"
-	-@erase "$(INTDIR)\mon_assembleR65C02.obj"
-	-@erase "$(INTDIR)\mon_assemblez80.obj"
-	-@erase "$(INTDIR)\mon_breakpoint.obj"
-	-@erase "$(INTDIR)\mon_command.obj"
-	-@erase "$(INTDIR)\mon_disassemble.obj"
-	-@erase "$(INTDIR)\mon_drive.obj"
-	-@erase "$(INTDIR)\mon_file.obj"
-	-@erase "$(INTDIR)\mon_lex.obj"
-	-@erase "$(INTDIR)\mon_memory.obj"
-	-@erase "$(INTDIR)\mon_parse.obj"
-	-@erase "$(INTDIR)\mon_register6502.obj"
-	-@erase "$(INTDIR)\mon_register6502dtv.obj"
-	-@erase "$(INTDIR)\mon_register65816.obj"
-	-@erase "$(INTDIR)\mon_register6809.obj"
-	-@erase "$(INTDIR)\mon_registerR65C02.obj"
-	-@erase "$(INTDIR)\mon_registerz80.obj"
-	-@erase "$(INTDIR)\mon_ui.obj"
-	-@erase "$(INTDIR)\mon_util.obj"
-	-@erase "$(INTDIR)\monitor.obj"
-	-@erase "$(INTDIR)\monitor_network.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\monitor\asm6502.obj"
+	-@erase "$(INTDIR)\monitor\asm6502dtv.obj"
+	-@erase "$(INTDIR)\monitor\asm65816.obj"
+	-@erase "$(INTDIR)\monitor\asm6809.obj"
+	-@erase "$(INTDIR)\monitor\asmR65C02.obj"
+	-@erase "$(INTDIR)\monitor\asmz80.obj"
+	-@erase "$(INTDIR)\monitor\mon_assemble6502.obj"
+	-@erase "$(INTDIR)\monitor\mon_assemble65816.obj"
+	-@erase "$(INTDIR)\monitor\mon_assemble6809.obj"
+	-@erase "$(INTDIR)\monitor\mon_assembleR65C02.obj"
+	-@erase "$(INTDIR)\monitor\mon_assemblez80.obj"
+	-@erase "$(INTDIR)\monitor\mon_breakpoint.obj"
+	-@erase "$(INTDIR)\monitor\mon_command.obj"
+	-@erase "$(INTDIR)\monitor\mon_disassemble.obj"
+	-@erase "$(INTDIR)\monitor\mon_drive.obj"
+	-@erase "$(INTDIR)\monitor\mon_file.obj"
+	-@erase "$(INTDIR)\monitor\mon_lex.obj"
+	-@erase "$(INTDIR)\monitor\mon_memory.obj"
+	-@erase "$(INTDIR)\monitor\mon_parse.obj"
+	-@erase "$(INTDIR)\monitor\mon_register6502.obj"
+	-@erase "$(INTDIR)\monitor\mon_register6502dtv.obj"
+	-@erase "$(INTDIR)\monitor\mon_register65816.obj"
+	-@erase "$(INTDIR)\monitor\mon_registerR65C02.obj"
+	-@erase "$(INTDIR)\monitor\mon_register6809.obj"
+	-@erase "$(INTDIR)\monitor\mon_registerz80.obj"
+	-@erase "$(INTDIR)\monitor\mon_ui.obj"
+	-@erase "$(INTDIR)\monitor\mon_util.obj"
+	-@erase "$(INTDIR)\monitor\monitor.obj"
+	-@erase "$(INTDIR)\monitor\monitor_network.obj"
 	-@erase "$(OUTDIR)\monitor.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\drive" /I "..\..\..\imagecontents" /D "_DEBUG" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /Fp"$(INTDIR)\monitor.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\imagecontents "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\monitor.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -255,42 +254,43 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\monitor.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\monitor.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\asm6502.obj" \
-	"$(INTDIR)\asm6502dtv.obj" \
-	"$(INTDIR)\asm65816.obj" \
-	"$(INTDIR)\asm6809.obj" \
-	"$(INTDIR)\asmR65C02.obj" \
-	"$(INTDIR)\asmz80.obj" \
-	"$(INTDIR)\mon_assemble6502.obj" \
-	"$(INTDIR)\mon_assemble65816.obj" \
-	"$(INTDIR)\mon_assemble6809.obj" \
-	"$(INTDIR)\mon_assembleR65C02.obj" \
-	"$(INTDIR)\mon_assemblez80.obj" \
-	"$(INTDIR)\mon_breakpoint.obj" \
-	"$(INTDIR)\mon_command.obj" \
-	"$(INTDIR)\mon_disassemble.obj" \
-	"$(INTDIR)\mon_drive.obj" \
-	"$(INTDIR)\mon_file.obj" \
-	"$(INTDIR)\mon_lex.obj" \
-	"$(INTDIR)\mon_memory.obj" \
-	"$(INTDIR)\mon_parse.obj" \
-	"$(INTDIR)\mon_register6502.obj" \
-	"$(INTDIR)\mon_register6502dtv.obj" \
-	"$(INTDIR)\mon_register65816.obj" \
-	"$(INTDIR)\mon_register6809.obj" \
-	"$(INTDIR)\mon_registerR65C02.obj" \
-	"$(INTDIR)\mon_registerz80.obj" \
-	"$(INTDIR)\mon_ui.obj" \
-	"$(INTDIR)\mon_util.obj" \
-	"$(INTDIR)\monitor.obj" \
-	"$(INTDIR)\monitor_network.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\monitor\asm6502.obj" \
+	"$(INTDIR)\monitor\asm6502dtv.obj" \
+	"$(INTDIR)\monitor\asm65816.obj" \
+	"$(INTDIR)\monitor\asm6809.obj" \
+	"$(INTDIR)\monitor\asmR65C02.obj" \
+	"$(INTDIR)\monitor\asmz80.obj" \
+	"$(INTDIR)\monitor\mon_assemble6502.obj" \
+	"$(INTDIR)\monitor\mon_assemble65816.obj" \
+	"$(INTDIR)\monitor\mon_assemble6809.obj" \
+	"$(INTDIR)\monitor\mon_assembleR65C02.obj" \
+	"$(INTDIR)\monitor\mon_assemblez80.obj" \
+	"$(INTDIR)\monitor\mon_breakpoint.obj" \
+	"$(INTDIR)\monitor\mon_command.obj" \
+	"$(INTDIR)\monitor\mon_disassemble.obj" \
+	"$(INTDIR)\monitor\mon_drive.obj" \
+	"$(INTDIR)\monitor\mon_file.obj" \
+	"$(INTDIR)\monitor\mon_lex.obj" \
+	"$(INTDIR)\monitor\mon_memory.obj" \
+	"$(INTDIR)\monitor\mon_parse.obj" \
+	"$(INTDIR)\monitor\mon_register6502.obj" \
+	"$(INTDIR)\monitor\mon_register6502dtv.obj" \
+	"$(INTDIR)\monitor\mon_register65816.obj" \
+	"$(INTDIR)\monitor\mon_registerR65C02.obj" \
+	"$(INTDIR)\monitor\mon_register6809.obj" \
+	"$(INTDIR)\monitor\mon_registerz80.obj" \
+	"$(INTDIR)\monitor\mon_ui.obj" \
+	"$(INTDIR)\monitor\mon_util.obj" \
+	"$(INTDIR)\monitor\monitor.obj" \
+	"$(INTDIR)\monitor\monitor_network.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\monitor.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -328,193 +328,147 @@ LIB32_OBJS= \
 
 SOURCE=..\..\..\monitor\asm6502.c
 
-"$(INTDIR)\asm6502.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\asm6502.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\asm6502dtv.c
 
-"$(INTDIR)\asm6502dtv.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\asm6502dtv.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\asm65816.c
 
-"$(INTDIR)\asm65816.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\asm65816.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\asm6809.c
 
-"$(INTDIR)\asm6809.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\asm6809.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\asmR65C02.c
 
-"$(INTDIR)\asmR65C02.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\asmR65C02.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\asmz80.c
 
-"$(INTDIR)\asmz80.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\asmz80.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_assemble6502.c
 
-"$(INTDIR)\mon_assemble6502.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_assemble6502.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_assemble65816.c
 
-"$(INTDIR)\mon_assemble65816.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_assemble65816.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_assemble6809.c
 
-"$(INTDIR)\mon_assemble6809.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_assemble6809.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_assembleR65C02.c
 
-"$(INTDIR)\mon_assembleR65C02.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_assembleR65C02.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_assemblez80.c
 
-"$(INTDIR)\mon_assemblez80.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_assemblez80.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_breakpoint.c
 
-"$(INTDIR)\mon_breakpoint.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_breakpoint.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_command.c
 
-"$(INTDIR)\mon_command.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_command.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_disassemble.c
 
-"$(INTDIR)\mon_disassemble.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_disassemble.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_drive.c
 
-"$(INTDIR)\mon_drive.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_drive.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_file.c
 
-"$(INTDIR)\mon_file.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_file.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_lex.c
 
-"$(INTDIR)\mon_lex.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_lex.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_memory.c
 
-"$(INTDIR)\mon_memory.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_memory.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_parse.c
 
-!IF  "$(CFG)" == "monitor - Win32 Release"
-
-CPP_SWITCHES=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\monitor" /I "..\..\..\drive" /I "..\..\..\imagecontents" /D "NDEBUG" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D YYMALLOC=malloc /D YYFREE=free /Fp"$(INTDIR)\monitor.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
-
-"$(INTDIR)\mon_parse.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) @<<
-  $(CPP_SWITCHES) $(SOURCE)
-<<
-
-
-!ELSEIF  "$(CFG)" == "monitor - Win32 Debug"
-
-CPP_SWITCHES=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\monitor" /I "..\..\..\drive" /I "..\..\..\imagecontents" /D "_DEBUG" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D YYMALLOC=malloc /D YYFREE=free /Fp"$(INTDIR)\monitor.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
-
-"$(INTDIR)\mon_parse.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) @<<
-  $(CPP_SWITCHES) $(SOURCE)
-<<
-
-
-!ENDIF 
+"$(INTDIR)\monitor\mon_parse.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 SOURCE=..\..\..\monitor\mon_register6502.c
 
-"$(INTDIR)\mon_register6502.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_register6502.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_register6502dtv.c
 
-"$(INTDIR)\mon_register6502dtv.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_register6502dtv.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_register65816.c
 
-"$(INTDIR)\mon_register6502.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_register65816.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\..\monitor\mon_register6809.c
-
-"$(INTDIR)\mon_register6809.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_registerR65C02.c
 
-"$(INTDIR)\mon_registerR65C02.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_registerR65C02.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\monitor\mon_register6809.c
+
+"$(INTDIR)\monitor\mon_register6809.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 SOURCE=..\..\..\monitor\mon_registerz80.c
 
-"$(INTDIR)\mon_registerz80.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_registerz80.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_ui.c
 
-"$(INTDIR)\mon_ui.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_ui.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\mon_util.c
 
-"$(INTDIR)\mon_util.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\mon_util.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\monitor.c
 
-"$(INTDIR)\monitor.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\monitor.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\monitor\monitor_network.c
 
-"$(INTDIR)\monitor_network.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\monitor\monitor_network.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

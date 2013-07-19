@@ -33,56 +33,55 @@ INTDIR=.\libs\vsidlib\Release
 OutDir=.\libs\vsidlib\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\vsidlib.lib"
+ALL : "$(OUTDIR)\vsidlib.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\vsidlib.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\vsidlib.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\c64-cmdline-options.obj"
-	-@erase "$(INTDIR)\c64export.obj"
-	-@erase "$(INTDIR)\c64gluelogic.obj"
-	-@erase "$(INTDIR)\c64io.obj"
-	-@erase "$(INTDIR)\c64keyboard.obj"
-	-@erase "$(INTDIR)\c64meminit.obj"
-	-@erase "$(INTDIR)\c64memlimit.obj"
-	-@erase "$(INTDIR)\c64memrom.obj"
-	-@erase "$(INTDIR)\c64memsnapshot.obj"
-	-@erase "$(INTDIR)\c64model.obj"
-	-@erase "$(INTDIR)\c64pla.obj"
-	-@erase "$(INTDIR)\c64rom.obj"
-	-@erase "$(INTDIR)\c64romset.obj"
-	-@erase "$(INTDIR)\c64rsuser.obj"
-	-@erase "$(INTDIR)\c64sound.obj"
-	-@erase "$(INTDIR)\c64video.obj"
-	-@erase "$(INTDIR)\patchrom.obj"
-	-@erase "$(INTDIR)\psid.obj"
-	-@erase "$(INTDIR)\reloc65.obj"
-	-@erase "$(INTDIR)\vsid.obj"
-	-@erase "$(INTDIR)\vsid-resources.obj"
-	-@erase "$(INTDIR)\vsid-snapshot.obj"
-	-@erase "$(INTDIR)\vsidcia1.obj"
-	-@erase "$(INTDIR)\vsidcia2.obj"
-	-@erase "$(INTDIR)\vsidcpu.obj"
-	-@erase "$(INTDIR)\vsidmem.obj"
-	-@erase "$(INTDIR)\vsidstubs.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\c64\c64-cmdline-options.obj"
+	-@erase "$(INTDIR)\c64\c64export.obj"
+	-@erase "$(INTDIR)\c64\c64gluelogic.obj"
+	-@erase "$(INTDIR)\c64\c64io.obj"
+	-@erase "$(INTDIR)\c64\c64keyboard.obj"
+	-@erase "$(INTDIR)\c64\c64meminit.obj"
+	-@erase "$(INTDIR)\c64\c64memlimit.obj"
+	-@erase "$(INTDIR)\c64\c64memrom.obj"
+	-@erase "$(INTDIR)\c64\c64memsnapshot.obj"
+	-@erase "$(INTDIR)\c64\c64model.obj"
+	-@erase "$(INTDIR)\c64\c64pla.obj"
+	-@erase "$(INTDIR)\c64\c64rom.obj"
+	-@erase "$(INTDIR)\c64\c64romset.obj"
+	-@erase "$(INTDIR)\c64\c64rsuser.obj"
+	-@erase "$(INTDIR)\c64\c64sound.obj"
+	-@erase "$(INTDIR)\c64\c64video.obj"
+	-@erase "$(INTDIR)\c64\patchrom.obj"
+	-@erase "$(INTDIR)\c64\psid.obj"
+	-@erase "$(INTDIR)\c64\reloc65.obj"
+	-@erase "$(INTDIR)\c64\vsid-resources.obj"
+	-@erase "$(INTDIR)\c64\vsid-snapshot.obj"
+	-@erase "$(INTDIR)\c64\vsid.obj"
+	-@erase "$(INTDIR)\c64\vsidcia1.obj"
+	-@erase "$(INTDIR)\c64\vsidcia2.obj"
+	-@erase "$(INTDIR)\c64\vsidmem.obj"
+	-@erase "$(INTDIR)\c64\vsidstubs.obj"
+	-@erase "$(INTDIR)\c64\vsidcpu.obj"
 	-@erase "$(OUTDIR)\vsidlib.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\userport" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\rs232drv" /I "..\..\..\rtc" /I "..\..\..\video" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\vsidlib.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64\cart "/I "..\..\..\drive "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\raster "/I "..\..\..\rs232drv "/I "..\..\..\rtc "/I "..\..\..\sid "/I "..\..\..\tape "/I "..\..\..\userport "/I "..\..\..\vdrive "/I "..\..\..\vicii "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\vsidlib.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -118,45 +117,46 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\vsidlib.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\vsidlib.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\c64-cmdline-options.obj" \
-	"$(INTDIR)\c64export.obj" \
-	"$(INTDIR)\c64gluelogic.obj" \
-	"$(INTDIR)\c64io.obj" \
-	"$(INTDIR)\c64keyboard.obj" \
-	"$(INTDIR)\c64meminit.obj" \
-	"$(INTDIR)\c64memlimit.obj" \
-	"$(INTDIR)\c64memrom.obj" \
-	"$(INTDIR)\c64memsnapshot.obj" \
-	"$(INTDIR)\c64model.obj" \
-	"$(INTDIR)\c64pla.obj" \
-	"$(INTDIR)\c64rom.obj" \
-	"$(INTDIR)\c64romset.obj" \
-	"$(INTDIR)\c64rsuser.obj" \
-	"$(INTDIR)\c64sound.obj" \
-	"$(INTDIR)\c64video.obj" \
-	"$(INTDIR)\patchrom.obj" \
-	"$(INTDIR)\psid.obj" \
-	"$(INTDIR)\reloc65.obj" \
-	"$(INTDIR)\vsid.obj" \
-	"$(INTDIR)\vsid-resources.obj" \
-	"$(INTDIR)\vsid-snapshot.obj" \
-	"$(INTDIR)\vsidcia1.obj" \
-	"$(INTDIR)\vsidcia2.obj" \
-	"$(INTDIR)\vsidcpu.obj" \
-	"$(INTDIR)\vsidmem.obj" \
-	"$(INTDIR)\vsidstubs.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\c64\c64-cmdline-options.obj" \
+	"$(INTDIR)\c64\c64export.obj" \
+	"$(INTDIR)\c64\c64gluelogic.obj" \
+	"$(INTDIR)\c64\c64io.obj" \
+	"$(INTDIR)\c64\c64keyboard.obj" \
+	"$(INTDIR)\c64\c64meminit.obj" \
+	"$(INTDIR)\c64\c64memlimit.obj" \
+	"$(INTDIR)\c64\c64memrom.obj" \
+	"$(INTDIR)\c64\c64memsnapshot.obj" \
+	"$(INTDIR)\c64\c64model.obj" \
+	"$(INTDIR)\c64\c64pla.obj" \
+	"$(INTDIR)\c64\c64rom.obj" \
+	"$(INTDIR)\c64\c64romset.obj" \
+	"$(INTDIR)\c64\c64rsuser.obj" \
+	"$(INTDIR)\c64\c64sound.obj" \
+	"$(INTDIR)\c64\c64video.obj" \
+	"$(INTDIR)\c64\patchrom.obj" \
+	"$(INTDIR)\c64\psid.obj" \
+	"$(INTDIR)\c64\reloc65.obj" \
+	"$(INTDIR)\c64\vsid-resources.obj" \
+	"$(INTDIR)\c64\vsid-snapshot.obj" \
+	"$(INTDIR)\c64\vsid.obj" \
+	"$(INTDIR)\c64\vsidcia1.obj" \
+	"$(INTDIR)\c64\vsidcia2.obj" \
+	"$(INTDIR)\c64\vsidmem.obj" \
+	"$(INTDIR)\c64\vsidstubs.obj" \
+	"$(INTDIR)\c64\vsidcpu.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\vsidlib.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "vsidlib - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\vsidlib\Debug
 INTDIR=.\libs\vsidlib\Debug
@@ -164,56 +164,55 @@ INTDIR=.\libs\vsidlib\Debug
 OutDir=.\libs\vsidlib\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\vsidlib.lib"
+ALL : "$(OUTDIR)\vsidlib.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\vsidlib.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\vsidlib.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\c64-cmdline-options.obj"
-	-@erase "$(INTDIR)\c64export.obj"
-	-@erase "$(INTDIR)\c64gluelogic.obj"
-	-@erase "$(INTDIR)\c64io.obj"
-	-@erase "$(INTDIR)\c64keyboard.obj"
-	-@erase "$(INTDIR)\c64meminit.obj"
-	-@erase "$(INTDIR)\c64memlimit.obj"
-	-@erase "$(INTDIR)\c64memrom.obj"
-	-@erase "$(INTDIR)\c64memsnapshot.obj"
-	-@erase "$(INTDIR)\c64model.obj"
-	-@erase "$(INTDIR)\c64pla.obj"
-	-@erase "$(INTDIR)\c64rom.obj"
-	-@erase "$(INTDIR)\c64romset.obj"
-	-@erase "$(INTDIR)\c64rsuser.obj"
-	-@erase "$(INTDIR)\c64sound.obj"
-	-@erase "$(INTDIR)\c64video.obj"
-	-@erase "$(INTDIR)\patchrom.obj"
-	-@erase "$(INTDIR)\psid.obj"
-	-@erase "$(INTDIR)\reloc65.obj"
-	-@erase "$(INTDIR)\vsid.obj"
-	-@erase "$(INTDIR)\vsid-resources.obj"
-	-@erase "$(INTDIR)\vsid-snapshot.obj"
-	-@erase "$(INTDIR)\vsidcia1.obj"
-	-@erase "$(INTDIR)\vsidcia2.obj"
-	-@erase "$(INTDIR)\vsidcpu.obj"
-	-@erase "$(INTDIR)\vsidmem.obj"
-	-@erase "$(INTDIR)\vsidstubs.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\c64\c64-cmdline-options.obj"
+	-@erase "$(INTDIR)\c64\c64export.obj"
+	-@erase "$(INTDIR)\c64\c64gluelogic.obj"
+	-@erase "$(INTDIR)\c64\c64io.obj"
+	-@erase "$(INTDIR)\c64\c64keyboard.obj"
+	-@erase "$(INTDIR)\c64\c64meminit.obj"
+	-@erase "$(INTDIR)\c64\c64memlimit.obj"
+	-@erase "$(INTDIR)\c64\c64memrom.obj"
+	-@erase "$(INTDIR)\c64\c64memsnapshot.obj"
+	-@erase "$(INTDIR)\c64\c64model.obj"
+	-@erase "$(INTDIR)\c64\c64pla.obj"
+	-@erase "$(INTDIR)\c64\c64rom.obj"
+	-@erase "$(INTDIR)\c64\c64romset.obj"
+	-@erase "$(INTDIR)\c64\c64rsuser.obj"
+	-@erase "$(INTDIR)\c64\c64sound.obj"
+	-@erase "$(INTDIR)\c64\c64video.obj"
+	-@erase "$(INTDIR)\c64\patchrom.obj"
+	-@erase "$(INTDIR)\c64\psid.obj"
+	-@erase "$(INTDIR)\c64\reloc65.obj"
+	-@erase "$(INTDIR)\c64\vsid-resources.obj"
+	-@erase "$(INTDIR)\c64\vsid-snapshot.obj"
+	-@erase "$(INTDIR)\c64\vsid.obj"
+	-@erase "$(INTDIR)\c64\vsidcia1.obj"
+	-@erase "$(INTDIR)\c64\vsidcia2.obj"
+	-@erase "$(INTDIR)\c64\vsidmem.obj"
+	-@erase "$(INTDIR)\c64\vsidstubs.obj"
+	-@erase "$(INTDIR)\c64\vsidcpu.obj"
 	-@erase "$(OUTDIR)\vsidlib.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\userport" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\rs232drv" /I "..\..\..\rtc" /I "..\..\..\video" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\vsidlib.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64\cart "/I "..\..\..\drive "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\raster "/I "..\..\..\rs232drv "/I "..\..\..\rtc "/I "..\..\..\sid "/I "..\..\..\tape "/I "..\..\..\userport "/I "..\..\..\vdrive "/I "..\..\..\vicii "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\vsidlib.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -249,40 +248,41 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\vsidlib.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\vsidlib.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\c64-cmdline-options.obj" \
-	"$(INTDIR)\c64export.obj" \
-	"$(INTDIR)\c64gluelogic.obj" \
-	"$(INTDIR)\c64io.obj" \
-	"$(INTDIR)\c64keyboard.obj" \
-	"$(INTDIR)\c64meminit.obj" \
-	"$(INTDIR)\c64memlimit.obj" \
-	"$(INTDIR)\c64memrom.obj" \
-	"$(INTDIR)\c64memsnapshot.obj" \
-	"$(INTDIR)\c64model.obj" \
-	"$(INTDIR)\c64pla.obj" \
-	"$(INTDIR)\c64rom.obj" \
-	"$(INTDIR)\c64romset.obj" \
-	"$(INTDIR)\c64rsuser.obj" \
-	"$(INTDIR)\c64sound.obj" \
-	"$(INTDIR)\c64video.obj" \
-	"$(INTDIR)\patchrom.obj" \
-	"$(INTDIR)\psid.obj" \
-	"$(INTDIR)\reloc65.obj" \
-	"$(INTDIR)\vsid.obj" \
-	"$(INTDIR)\vsid-resources.obj" \
-	"$(INTDIR)\vsid-snapshot.obj" \
-	"$(INTDIR)\vsidcia1.obj" \
-	"$(INTDIR)\vsidcia2.obj" \
-	"$(INTDIR)\vsidcpu.obj" \
-	"$(INTDIR)\vsidmem.obj" \
-	"$(INTDIR)\vsidstubs.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\c64\c64-cmdline-options.obj" \
+	"$(INTDIR)\c64\c64export.obj" \
+	"$(INTDIR)\c64\c64gluelogic.obj" \
+	"$(INTDIR)\c64\c64io.obj" \
+	"$(INTDIR)\c64\c64keyboard.obj" \
+	"$(INTDIR)\c64\c64meminit.obj" \
+	"$(INTDIR)\c64\c64memlimit.obj" \
+	"$(INTDIR)\c64\c64memrom.obj" \
+	"$(INTDIR)\c64\c64memsnapshot.obj" \
+	"$(INTDIR)\c64\c64model.obj" \
+	"$(INTDIR)\c64\c64pla.obj" \
+	"$(INTDIR)\c64\c64rom.obj" \
+	"$(INTDIR)\c64\c64romset.obj" \
+	"$(INTDIR)\c64\c64rsuser.obj" \
+	"$(INTDIR)\c64\c64sound.obj" \
+	"$(INTDIR)\c64\c64video.obj" \
+	"$(INTDIR)\c64\patchrom.obj" \
+	"$(INTDIR)\c64\psid.obj" \
+	"$(INTDIR)\c64\reloc65.obj" \
+	"$(INTDIR)\c64\vsid-resources.obj" \
+	"$(INTDIR)\c64\vsid-snapshot.obj" \
+	"$(INTDIR)\c64\vsid.obj" \
+	"$(INTDIR)\c64\vsidcia1.obj" \
+	"$(INTDIR)\c64\vsidcia2.obj" \
+	"$(INTDIR)\c64\vsidmem.obj" \
+	"$(INTDIR)\c64\vsidstubs.obj" \
+	"$(INTDIR)\c64\vsidcpu.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\vsidlib.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -318,165 +318,160 @@ LIB32_OBJS= \
 
 !ENDIF 
 
-SOURCE="..\..\..\c64\c64-cmdline-options.c"
+SOURCE=..\..\..\c64\c64-cmdline-options.c
 
-"$(INTDIR)\c64-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64export.c
 
-"$(INTDIR)\c64export.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64export.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64gluelogic.c
 
-"$(INTDIR)\c64gluelogic.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64gluelogic.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64io.c
 
-"$(INTDIR)\c64io.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64io.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64keyboard.c
 
-"$(INTDIR)\c64keyboard.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64keyboard.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64meminit.c
 
-"$(INTDIR)\c64meminit.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64meminit.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64memlimit.c
 
-"$(INTDIR)\c64memlimit.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64memlimit.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64memrom.c
 
-"$(INTDIR)\c64memrom.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64memrom.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64memsnapshot.c
 
-"$(INTDIR)\c64memsnapshot.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64memsnapshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64model.c
 
-"$(INTDIR)\c64model.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64model.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64pla.c
 
-"$(INTDIR)\c64pla.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64pla.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64rom.c
 
-"$(INTDIR)\c64rom.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64rom.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64romset.c
 
-"$(INTDIR)\c64romset.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64romset.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64rsuser.c
 
-"$(INTDIR)\c64rsuser.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64rsuser.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64sound.c
 
-"$(INTDIR)\c64sound.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64sound.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64video.c
 
-"$(INTDIR)\c64video.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64video.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\patchrom.c
 
-"$(INTDIR)\patchrom.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\patchrom.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\psid.c
 
-"$(INTDIR)\psid.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\psid.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\reloc65.c
 
-"$(INTDIR)\reloc65.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\reloc65.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+SOURCE=..\..\..\c64\vsid-resources.c
+
+"$(INTDIR)\c64\vsid-resources.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+SOURCE=..\..\..\c64\vsid-snapshot.c
+
+"$(INTDIR)\c64\vsid-snapshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 SOURCE=..\..\..\c64\vsid.c
 
-"$(INTDIR)\vsid.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\vsid.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE="..\..\..\c64\vsid-resources.c"
-
-"$(INTDIR)\vsid-resources.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE="..\..\..\c64\vsid-snapshot.c"
-
-"$(INTDIR)\vsid-snapshot.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\vsidcia1.c
 
-"$(INTDIR)\vsidcia1.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\vsidcia1.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\vsidcia2.c
 
-"$(INTDIR)\vsidcia2.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\vsidcia2.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\..\c64\vsidcpu.c
-
-"$(INTDIR)\vsidcpu.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\vsidmem.c
 
-"$(INTDIR)\vsidmem.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\vsidmem.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\vsidstubs.c
 
-"$(INTDIR)\vsidstubs.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\vsidstubs.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+SOURCE=..\..\..\c64\vsidcpu.c
+
+!IF  "$(CFG)" == "vsidlib - Win32 Release"
+
+
+CPP_SWITCHES=/nologo /MD /W3 /GX /Ot /Oa /Ow /Oi /Op /Oy /Ob2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\rs232drv" /I "..\..\..\rtc" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\userport" /I "..\..\..\vdrive" /I "..\..\..\vicii" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\vsidlib.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+
+"$(INTDIR)\c64\vsidcpu.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) @<<
+  $(CPP_SWITCHES) $(SOURCE)
+<<
+
+!ELSEIF  "$(CFG)" == "vsidlib - Win32 Debug"
+
+
+CPP_SWITCHES=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\rs232drv" /I "..\..\..\rtc" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\userport" /I "..\..\..\vdrive" /I "..\..\..\vicii" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\vsidlib.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+
+"$(INTDIR)\c64\vsidcpu.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) @<<
+  $(CPP_SWITCHES) $(SOURCE)
+<<
+
+!ENDIF 
+
 
 
 !ENDIF 

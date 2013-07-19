@@ -33,23 +33,21 @@ INTDIR=.\libs\imagecontents\Release
 OutDir=.\libs\imagecontents\Release
 # End Custom Macros
 
-ALL : "$(OUTDIR)\imagecontents.lib"
-
+ALL : "$(OUTDIR)\imagecontents.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\diskcontents-block.obj"
-	-@erase "$(INTDIR)\diskcontents-iec.obj"
-	-@erase "$(INTDIR)\diskcontents.obj"
-	-@erase "$(INTDIR)\imagecontents.obj"
-	-@erase "$(INTDIR)\tapecontents.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\imagecontents\diskcontents-block.obj"
+	-@erase "$(INTDIR)\imagecontents\diskcontents-iec.obj"
+	-@erase "$(INTDIR)\imagecontents\diskcontents.obj"
+	-@erase "$(INTDIR)\imagecontents\imagecontents.obj"
+	-@erase "$(INTDIR)\imagecontents\tapecontents.obj"
 	-@erase "$(OUTDIR)\imagecontents.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\imagecontents.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\imagecontents.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -85,22 +83,23 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\imagecontents.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\imagecontents.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\diskcontents-block.obj" \
-	"$(INTDIR)\diskcontents-iec.obj" \
-	"$(INTDIR)\diskcontents.obj" \
-	"$(INTDIR)\imagecontents.obj" \
-	"$(INTDIR)\tapecontents.obj"
+	"$(INTDIR)\imagecontents\diskcontents-block.obj" \
+	"$(INTDIR)\imagecontents\diskcontents-iec.obj" \
+	"$(INTDIR)\imagecontents\diskcontents.obj" \
+	"$(INTDIR)\imagecontents\imagecontents.obj" \
+	"$(INTDIR)\imagecontents\tapecontents.obj" \
 
-"$(OUTDIR)\imagecontents.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "imagecontents - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\imagecontents\Debug
 INTDIR=.\libs\imagecontents\Debug
@@ -108,23 +107,21 @@ INTDIR=.\libs\imagecontents\Debug
 OutDir=.\libs\imagecontents\Debug
 # End Custom Macros
 
-ALL : "$(OUTDIR)\imagecontents.lib"
-
+ALL : "$(OUTDIR)\imagecontents.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\diskcontents-block.obj"
-	-@erase "$(INTDIR)\diskcontents-iec.obj"
-	-@erase "$(INTDIR)\diskcontents.obj"
-	-@erase "$(INTDIR)\imagecontents.obj"
-	-@erase "$(INTDIR)\tapecontents.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\imagecontents\diskcontents-block.obj"
+	-@erase "$(INTDIR)\imagecontents\diskcontents-iec.obj"
+	-@erase "$(INTDIR)\imagecontents\diskcontents.obj"
+	-@erase "$(INTDIR)\imagecontents\imagecontents.obj"
+	-@erase "$(INTDIR)\imagecontents\tapecontents.obj"
 	-@erase "$(OUTDIR)\imagecontents.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\imagecontents.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /GZ /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\imagecontents.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -160,17 +157,18 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\imagecontents.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\imagecontents.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\diskcontents-block.obj" \
-	"$(INTDIR)\diskcontents-iec.obj" \
-	"$(INTDIR)\diskcontents.obj" \
-	"$(INTDIR)\imagecontents.obj" \
-	"$(INTDIR)\tapecontents.obj"
+	"$(INTDIR)\imagecontents\diskcontents-block.obj" \
+	"$(INTDIR)\imagecontents\diskcontents-iec.obj" \
+	"$(INTDIR)\imagecontents\diskcontents.obj" \
+	"$(INTDIR)\imagecontents\imagecontents.obj" \
+	"$(INTDIR)\imagecontents\tapecontents.obj" \
 
-"$(OUTDIR)\imagecontents.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -179,33 +177,30 @@ LIB32_OBJS= \
 
 
 !IF "$(CFG)" == "imagecontents - Win32 Release" || "$(CFG)" == "imagecontents - Win32 Debug"
-SOURCE="..\..\..\imagecontents\diskcontents-block.c"
 
-"$(INTDIR)\diskcontents-block.obj" : $(SOURCE) "$(INTDIR)"
+SOURCE=..\..\..\imagecontents\diskcontents-block.c
+
+"$(INTDIR)\imagecontents\diskcontents-block.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\imagecontents\diskcontents-iec.c
 
-SOURCE="..\..\..\imagecontents\diskcontents-iec.c"
-
-"$(INTDIR)\diskcontents-iec.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\imagecontents\diskcontents-iec.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\imagecontents\diskcontents.c
 
-"$(INTDIR)\diskcontents.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\imagecontents\diskcontents.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\imagecontents\imagecontents.c
 
-"$(INTDIR)\imagecontents.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\imagecontents\imagecontents.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\imagecontents\tapecontents.c
 
-"$(INTDIR)\tapecontents.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\imagecontents\tapecontents.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

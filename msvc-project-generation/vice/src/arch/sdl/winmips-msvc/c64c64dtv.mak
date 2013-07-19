@@ -33,40 +33,39 @@ INTDIR=.\libs\c64c64dtv\Release
 OutDir=.\libs\c64c64dtv\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\c64c64dtv.lib"
+ALL : "$(OUTDIR)\c64c64dtv.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\c64c64dtv.lib"
+ALL : "base - Win32 Release" "rtc - Win32 Release" "$(OUTDIR)\c64c64dtv.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
-CLEAN :"base - Win32 ReleaseCLEAN" 
+!IF "$(RECURSE)" == "1"
+CLEAN :"rtc - Win32 ReleaseCLEAN" "base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\c64bus.obj"
-	-@erase "$(INTDIR)\c64drive.obj"
-	-@erase "$(INTDIR)\c64fastiec.obj"
-	-@erase "$(INTDIR)\c64keyboard.obj"
-	-@erase "$(INTDIR)\c64parallel.obj"
-	-@erase "$(INTDIR)\c64printer.obj"
-	-@erase "$(INTDIR)\c64rom.obj"
-	-@erase "$(INTDIR)\c64romset.obj"
-	-@erase "$(INTDIR)\c64rsuser.obj"
-	-@erase "$(INTDIR)\c64video.obj"
-	-@erase "$(INTDIR)\patchrom.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\c64\c64bus.obj"
+	-@erase "$(INTDIR)\c64\c64drive.obj"
+	-@erase "$(INTDIR)\c64\c64fastiec.obj"
+	-@erase "$(INTDIR)\c64\c64keyboard.obj"
+	-@erase "$(INTDIR)\c64\c64parallel.obj"
+	-@erase "$(INTDIR)\c64\c64printer.obj"
+	-@erase "$(INTDIR)\c64\c64rom.obj"
+	-@erase "$(INTDIR)\c64\c64romset.obj"
+	-@erase "$(INTDIR)\c64\c64rsuser.obj"
+	-@erase "$(INTDIR)\c64\c64video.obj"
+	-@erase "$(INTDIR)\c64\patchrom.obj"
 	-@erase "$(OUTDIR)\c64c64dtv.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\drive\iec\c64exp" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\rs232drv" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\c64c64dtv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\drive\iec\c64exp "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\raster "/I "..\..\..\rs232drv "/I "..\..\..\sid "/I "..\..\..\tape "/I "..\..\..\vicii "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\c64c64dtv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -102,29 +101,31 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\c64c64dtv.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\c64c64dtv.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\c64bus.obj" \
-	"$(INTDIR)\c64drive.obj" \
-	"$(INTDIR)\c64fastiec.obj" \
-	"$(INTDIR)\c64keyboard.obj" \
-	"$(INTDIR)\c64parallel.obj" \
-	"$(INTDIR)\c64printer.obj" \
-	"$(INTDIR)\c64rom.obj" \
-	"$(INTDIR)\c64romset.obj" \
-	"$(INTDIR)\c64rsuser.obj" \
-	"$(INTDIR)\c64video.obj" \
-	"$(INTDIR)\patchrom.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\c64\c64bus.obj" \
+	"$(INTDIR)\c64\c64drive.obj" \
+	"$(INTDIR)\c64\c64fastiec.obj" \
+	"$(INTDIR)\c64\c64keyboard.obj" \
+	"$(INTDIR)\c64\c64parallel.obj" \
+	"$(INTDIR)\c64\c64printer.obj" \
+	"$(INTDIR)\c64\c64rom.obj" \
+	"$(INTDIR)\c64\c64romset.obj" \
+	"$(INTDIR)\c64\c64rsuser.obj" \
+	"$(INTDIR)\c64\c64video.obj" \
+	"$(INTDIR)\c64\patchrom.obj" \
+	".\libsbase\Release\base.lib" \
+	".\libsrtc\Release\rtc.lib" \
 
-"$(OUTDIR)\c64c64dtv.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "c64c64dtv - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\c64c64dtv\Debug
 INTDIR=.\libs\c64c64dtv\Debug
@@ -132,40 +133,39 @@ INTDIR=.\libs\c64c64dtv\Debug
 OutDir=.\libs\c64c64dtv\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\c64c64dtv.lib"
+ALL : "$(OUTDIR)\c64c64dtv.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\c64c64dtv.lib"
+ALL : "base - Win32 Debug" "rtc - Win32 Debug" "$(OUTDIR)\c64c64dtv.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
-CLEAN :"base - Win32 DebugCLEAN" 
+!IF "$(RECURSE)" == "1"
+CLEAN :"rtc - Win32 DebugCLEAN" "base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\c64bus.obj"
-	-@erase "$(INTDIR)\c64drive.obj"
-	-@erase "$(INTDIR)\c64fastiec.obj"
-	-@erase "$(INTDIR)\c64keyboard.obj"
-	-@erase "$(INTDIR)\c64parallel.obj"
-	-@erase "$(INTDIR)\c64printer.obj"
-	-@erase "$(INTDIR)\c64rom.obj"
-	-@erase "$(INTDIR)\c64romset.obj"
-	-@erase "$(INTDIR)\c64rsuser.obj"
-	-@erase "$(INTDIR)\c64video.obj"
-	-@erase "$(INTDIR)\patchrom.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\c64\c64bus.obj"
+	-@erase "$(INTDIR)\c64\c64drive.obj"
+	-@erase "$(INTDIR)\c64\c64fastiec.obj"
+	-@erase "$(INTDIR)\c64\c64keyboard.obj"
+	-@erase "$(INTDIR)\c64\c64parallel.obj"
+	-@erase "$(INTDIR)\c64\c64printer.obj"
+	-@erase "$(INTDIR)\c64\c64rom.obj"
+	-@erase "$(INTDIR)\c64\c64romset.obj"
+	-@erase "$(INTDIR)\c64\c64rsuser.obj"
+	-@erase "$(INTDIR)\c64\c64video.obj"
+	-@erase "$(INTDIR)\c64\patchrom.obj"
 	-@erase "$(OUTDIR)\c64c64dtv.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\drive\iec\c64exp" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\rs232drv" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\c64c64dtv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\drive\iec\c64exp "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\raster "/I "..\..\..\rs232drv "/I "..\..\..\sid "/I "..\..\..\tape "/I "..\..\..\vicii "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\c64c64dtv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -201,24 +201,26 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\c64c64dtv.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\c64c64dtv.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\c64bus.obj" \
-	"$(INTDIR)\c64drive.obj" \
-	"$(INTDIR)\c64fastiec.obj" \
-	"$(INTDIR)\c64keyboard.obj" \
-	"$(INTDIR)\c64parallel.obj" \
-	"$(INTDIR)\c64printer.obj" \
-	"$(INTDIR)\c64rom.obj" \
-	"$(INTDIR)\c64romset.obj" \
-	"$(INTDIR)\c64rsuser.obj" \
-	"$(INTDIR)\c64video.obj" \
-	"$(INTDIR)\patchrom.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\c64\c64bus.obj" \
+	"$(INTDIR)\c64\c64drive.obj" \
+	"$(INTDIR)\c64\c64fastiec.obj" \
+	"$(INTDIR)\c64\c64keyboard.obj" \
+	"$(INTDIR)\c64\c64parallel.obj" \
+	"$(INTDIR)\c64\c64printer.obj" \
+	"$(INTDIR)\c64\c64rom.obj" \
+	"$(INTDIR)\c64\c64romset.obj" \
+	"$(INTDIR)\c64\c64rsuser.obj" \
+	"$(INTDIR)\c64\c64video.obj" \
+	"$(INTDIR)\c64\patchrom.obj" \
+	".\libsbase\Debug\base.lib" \
+	".\libsrtc\Debug\rtc.lib" \
 
-"$(OUTDIR)\c64c64dtv.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -254,69 +256,85 @@ LIB32_OBJS= \
 
 !ENDIF 
 
+!IF  "$(CFG)" == "c64c64dtv - Win32 Release"
+
+"rtc - Win32 Release" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\rtc.mak" CFG="rtc - Win32 Release" 
+   cd "."
+
+"rtc - Win32 ReleaseCLEAN" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\rtc.mak" CFG="rtc - Win32 Release" RECURSE=1 CLEAN 
+   cd "."
+
+!ELSEIF  "$(CFG)" == "c64c64dtv - Win32 Debug"
+
+"rtc - Win32 Debug" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\rtc.mak" CFG="rtc - Win32 Debug" 
+   cd "."
+
+"rtc - Win32 DebugCLEAN" : 
+   cd "."
+   $(MAKE) /$(MAKEFLAGS) /F ".\rtc.mak" CFG="rtc - Win32 Debug" RECURSE=1 CLEAN 
+   cd "."
+
+!ENDIF 
+
 SOURCE=..\..\..\c64\c64bus.c
 
-"$(INTDIR)\c64bus.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64bus.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64drive.c
 
-"$(INTDIR)\c64drive.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64drive.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64fastiec.c
 
-"$(INTDIR)\c64fastiec.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64fastiec.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64keyboard.c
 
-"$(INTDIR)\c64keyboard.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64keyboard.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64parallel.c
 
-"$(INTDIR)\c64parallel.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64parallel.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64printer.c
 
-"$(INTDIR)\c64printer.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64printer.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64rom.c
 
-"$(INTDIR)\c64rom.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64rom.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64romset.c
 
-"$(INTDIR)\c64romset.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64romset.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64rsuser.c
 
-"$(INTDIR)\c64rsuser.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64rsuser.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\c64video.c
 
-"$(INTDIR)\c64video.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\c64video.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\c64\patchrom.c
 
-"$(INTDIR)\patchrom.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\c64\patchrom.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

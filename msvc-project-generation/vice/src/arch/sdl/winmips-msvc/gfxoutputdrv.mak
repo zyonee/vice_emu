@@ -33,37 +33,38 @@ INTDIR=.\libs\gfxoutputdrv\Release
 OutDir=.\libs\gfxoutputdrv\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\gfxoutputdrv.lib"
+ALL : "$(OUTDIR)\gfxoutputdrv.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\gfxoutputdrv.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\gfxoutputdrv.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\bmpdrv.obj"
-	-@erase "$(INTDIR)\doodledrv.obj"
-	-@erase "$(INTDIR)\gfxoutput.obj"
-	-@erase "$(INTDIR)\iffdrv.obj"
-	-@erase "$(INTDIR)\koaladrv.obj"
-	-@erase "$(INTDIR)\nativedrv.obj"
-	-@erase "$(INTDIR)\pcxdrv.obj"
-	-@erase "$(INTDIR)\ppmdrv.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\gfxoutputdrv\bmpdrv.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\doodledrv.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\ffmpegdrv.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\ffmpeglib.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\gfxoutput.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\iffdrv.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\koaladrv.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\nativedrv.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\pcxdrv.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\ppmdrv.obj"
 	-@erase "$(OUTDIR)\gfxoutputdrv.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\lib\libffmpeg" /I "..\..\win32\msvc" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\gfxoutputdrv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\lib\libffmpeg "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\gfxoutputdrv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -99,26 +100,29 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\gfxoutputdrv.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\gfxoutputdrv.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\bmpdrv.obj" \
-	"$(INTDIR)\doodledrv.obj" \
-	"$(INTDIR)\gfxoutput.obj" \
-	"$(INTDIR)\iffdrv.obj" \
-	"$(INTDIR)\koaladrv.obj" \
-	"$(INTDIR)\nativedrv.obj" \
-	"$(INTDIR)\pcxdrv.obj" \
-	"$(INTDIR)\ppmdrv.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\gfxoutputdrv\bmpdrv.obj" \
+	"$(INTDIR)\gfxoutputdrv\doodledrv.obj" \
+	"$(INTDIR)\gfxoutputdrv\ffmpegdrv.obj" \
+	"$(INTDIR)\gfxoutputdrv\ffmpeglib.obj" \
+	"$(INTDIR)\gfxoutputdrv\gfxoutput.obj" \
+	"$(INTDIR)\gfxoutputdrv\iffdrv.obj" \
+	"$(INTDIR)\gfxoutputdrv\koaladrv.obj" \
+	"$(INTDIR)\gfxoutputdrv\nativedrv.obj" \
+	"$(INTDIR)\gfxoutputdrv\pcxdrv.obj" \
+	"$(INTDIR)\gfxoutputdrv\ppmdrv.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\gfxoutputdrv.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "gfxoutputdrv - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\gfxoutputdrv\Debug
 INTDIR=.\libs\gfxoutputdrv\Debug
@@ -126,37 +130,38 @@ INTDIR=.\libs\gfxoutputdrv\Debug
 OutDir=.\libs\gfxoutputdrv\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\gfxoutputdrv.lib"
+ALL : "$(OUTDIR)\gfxoutputdrv.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\gfxoutputdrv.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\gfxoutputdrv.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\bmpdrv.obj"
-	-@erase "$(INTDIR)\doodledrv.obj"
-	-@erase "$(INTDIR)\gfxoutput.obj"
-	-@erase "$(INTDIR)\iffdrv.obj"
-	-@erase "$(INTDIR)\koaladrv.obj"
-	-@erase "$(INTDIR)\nativedrv.obj"
-	-@erase "$(INTDIR)\pcxdrv.obj"
-	-@erase "$(INTDIR)\ppmdrv.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\gfxoutputdrv\bmpdrv.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\doodledrv.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\ffmpegdrv.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\ffmpeglib.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\gfxoutput.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\iffdrv.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\koaladrv.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\nativedrv.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\pcxdrv.obj"
+	-@erase "$(INTDIR)\gfxoutputdrv\ppmdrv.obj"
 	-@erase "$(OUTDIR)\gfxoutputdrv.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\lib\libffmpeg" /I "..\..\win32\msvc" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\gfxoutputdrv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\lib\libffmpeg "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\gfxoutputdrv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -192,21 +197,24 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\gfxoutputdrv.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\gfxoutputdrv.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\bmpdrv.obj" \
-	"$(INTDIR)\doodledrv.obj" \
-	"$(INTDIR)\gfxoutput.obj" \
-	"$(INTDIR)\iffdrv.obj" \
-	"$(INTDIR)\koaladrv.obj" \
-	"$(INTDIR)\nativedrv.obj" \
-	"$(INTDIR)\pcxdrv.obj" \
-	"$(INTDIR)\ppmdrv.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\gfxoutputdrv\bmpdrv.obj" \
+	"$(INTDIR)\gfxoutputdrv\doodledrv.obj" \
+	"$(INTDIR)\gfxoutputdrv\ffmpegdrv.obj" \
+	"$(INTDIR)\gfxoutputdrv\ffmpeglib.obj" \
+	"$(INTDIR)\gfxoutputdrv\gfxoutput.obj" \
+	"$(INTDIR)\gfxoutputdrv\iffdrv.obj" \
+	"$(INTDIR)\gfxoutputdrv\koaladrv.obj" \
+	"$(INTDIR)\gfxoutputdrv\nativedrv.obj" \
+	"$(INTDIR)\gfxoutputdrv\pcxdrv.obj" \
+	"$(INTDIR)\gfxoutputdrv\ppmdrv.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\gfxoutputdrv.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -244,49 +252,52 @@ LIB32_OBJS= \
 
 SOURCE=..\..\..\gfxoutputdrv\bmpdrv.c
 
-"$(INTDIR)\bmpdrv.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gfxoutputdrv\bmpdrv.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\gfxoutputdrv\doodledrv.c
 
-"$(INTDIR)\doodledrv.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gfxoutputdrv\doodledrv.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\gfxoutputdrv\ffmpegdrv.c
+
+"$(INTDIR)\gfxoutputdrv\ffmpegdrv.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+SOURCE=..\..\..\gfxoutputdrv\ffmpeglib.c
+
+"$(INTDIR)\gfxoutputdrv\ffmpeglib.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 SOURCE=..\..\..\gfxoutputdrv\gfxoutput.c
 
-"$(INTDIR)\gfxoutput.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gfxoutputdrv\gfxoutput.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\gfxoutputdrv\iffdrv.c
 
-"$(INTDIR)\iffdrv.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gfxoutputdrv\iffdrv.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\gfxoutputdrv\koaladrv.c
 
-"$(INTDIR)\koaladrv.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gfxoutputdrv\koaladrv.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\gfxoutputdrv\nativedrv.c
 
-"$(INTDIR)\nativedrv.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gfxoutputdrv\nativedrv.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\gfxoutputdrv\pcxdrv.c
 
-"$(INTDIR)\pcxdrv.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gfxoutputdrv\pcxdrv.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\gfxoutputdrv\ppmdrv.c
 
-"$(INTDIR)\ppmdrv.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gfxoutputdrv\ppmdrv.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

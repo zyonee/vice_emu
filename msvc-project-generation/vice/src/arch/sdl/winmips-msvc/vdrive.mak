@@ -33,26 +33,24 @@ INTDIR=.\libs\vdrive\Release
 OutDir=.\libs\vdrive\Release
 # End Custom Macros
 
-ALL : "$(OUTDIR)\vdrive.lib"
-
+ALL : "$(OUTDIR)\vdrive.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\vdrive-bam.obj"
-	-@erase "$(INTDIR)\vdrive-command.obj"
-	-@erase "$(INTDIR)\vdrive-dir.obj"
-	-@erase "$(INTDIR)\vdrive-iec.obj"
-	-@erase "$(INTDIR)\vdrive-internal.obj"
-	-@erase "$(INTDIR)\vdrive-rel.obj"
-	-@erase "$(INTDIR)\vdrive-snapshot.obj"
-	-@erase "$(INTDIR)\vdrive.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive-bam.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive-command.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive-dir.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive-iec.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive-internal.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive-rel.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive-snapshot.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive.obj"
 	-@erase "$(OUTDIR)\vdrive.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\vdrive.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\lib\p64 "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\vdrive.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -88,25 +86,26 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\vdrive.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\vdrive.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\vdrive-bam.obj" \
-	"$(INTDIR)\vdrive-command.obj" \
-	"$(INTDIR)\vdrive-dir.obj" \
-	"$(INTDIR)\vdrive-iec.obj" \
-	"$(INTDIR)\vdrive-internal.obj" \
-	"$(INTDIR)\vdrive-rel.obj" \
-	"$(INTDIR)\vdrive-snapshot.obj" \
-	"$(INTDIR)\vdrive.obj"
+	"$(INTDIR)\vdrive\vdrive-bam.obj" \
+	"$(INTDIR)\vdrive\vdrive-command.obj" \
+	"$(INTDIR)\vdrive\vdrive-dir.obj" \
+	"$(INTDIR)\vdrive\vdrive-iec.obj" \
+	"$(INTDIR)\vdrive\vdrive-internal.obj" \
+	"$(INTDIR)\vdrive\vdrive-rel.obj" \
+	"$(INTDIR)\vdrive\vdrive-snapshot.obj" \
+	"$(INTDIR)\vdrive\vdrive.obj" \
 
-"$(OUTDIR)\vdrive.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "vdrive - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\vdrive\Debug
 INTDIR=.\libs\vdrive\Debug
@@ -114,26 +113,24 @@ INTDIR=.\libs\vdrive\Debug
 OutDir=.\libs\vdrive\Debug
 # End Custom Macros
 
-ALL : "$(OUTDIR)\vdrive.lib"
-
+ALL : "$(OUTDIR)\vdrive.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\vdrive-bam.obj"
-	-@erase "$(INTDIR)\vdrive-command.obj"
-	-@erase "$(INTDIR)\vdrive-dir.obj"
-	-@erase "$(INTDIR)\vdrive-iec.obj"
-	-@erase "$(INTDIR)\vdrive-internal.obj"
-	-@erase "$(INTDIR)\vdrive-rel.obj"
-	-@erase "$(INTDIR)\vdrive-snapshot.obj"
-	-@erase "$(INTDIR)\vdrive.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive-bam.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive-command.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive-dir.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive-iec.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive-internal.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive-rel.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive-snapshot.obj"
+	-@erase "$(INTDIR)\vdrive\vdrive.obj"
 	-@erase "$(OUTDIR)\vdrive.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\vdrive.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\lib\p64 "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\vdrive.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -169,20 +166,21 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\vdrive.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\vdrive.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\vdrive-bam.obj" \
-	"$(INTDIR)\vdrive-command.obj" \
-	"$(INTDIR)\vdrive-dir.obj" \
-	"$(INTDIR)\vdrive-iec.obj" \
-	"$(INTDIR)\vdrive-internal.obj" \
-	"$(INTDIR)\vdrive-rel.obj" \
-	"$(INTDIR)\vdrive-snapshot.obj" \
-	"$(INTDIR)\vdrive.obj"
+	"$(INTDIR)\vdrive\vdrive-bam.obj" \
+	"$(INTDIR)\vdrive\vdrive-command.obj" \
+	"$(INTDIR)\vdrive\vdrive-dir.obj" \
+	"$(INTDIR)\vdrive\vdrive-iec.obj" \
+	"$(INTDIR)\vdrive\vdrive-internal.obj" \
+	"$(INTDIR)\vdrive\vdrive-rel.obj" \
+	"$(INTDIR)\vdrive\vdrive-snapshot.obj" \
+	"$(INTDIR)\vdrive\vdrive.obj" \
 
-"$(OUTDIR)\vdrive.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -191,51 +189,45 @@ LIB32_OBJS= \
 
 
 !IF "$(CFG)" == "vdrive - Win32 Release" || "$(CFG)" == "vdrive - Win32 Debug"
-SOURCE="..\..\..\vdrive\vdrive-bam.c"
 
-"$(INTDIR)\vdrive-bam.obj" : $(SOURCE) "$(INTDIR)"
+SOURCE=..\..\..\vdrive\vdrive-bam.c
+
+"$(INTDIR)\vdrive\vdrive-bam.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vdrive\vdrive-command.c
 
-SOURCE="..\..\..\vdrive\vdrive-command.c"
-
-"$(INTDIR)\vdrive-command.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vdrive\vdrive-command.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vdrive\vdrive-dir.c
 
-SOURCE="..\..\..\vdrive\vdrive-dir.c"
-
-"$(INTDIR)\vdrive-dir.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vdrive\vdrive-dir.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vdrive\vdrive-iec.c
 
-SOURCE="..\..\..\vdrive\vdrive-iec.c"
-
-"$(INTDIR)\vdrive-iec.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vdrive\vdrive-iec.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vdrive\vdrive-internal.c
 
-SOURCE="..\..\..\vdrive\vdrive-internal.c"
-
-"$(INTDIR)\vdrive-internal.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vdrive\vdrive-internal.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vdrive\vdrive-rel.c
 
-SOURCE="..\..\..\vdrive\vdrive-rel.c"
-
-"$(INTDIR)\vdrive-rel.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vdrive\vdrive-rel.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vdrive\vdrive-snapshot.c
 
-SOURCE="..\..\..\vdrive\vdrive-snapshot.c"
-
-"$(INTDIR)\vdrive-snapshot.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vdrive\vdrive-snapshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\vdrive\vdrive.c
 
-"$(INTDIR)\vdrive.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vdrive\vdrive.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

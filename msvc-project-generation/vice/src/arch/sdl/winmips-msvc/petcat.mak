@@ -33,18 +33,18 @@ INTDIR=.\libs\petcat\Release
 OutDir=.\..\..\..\..\data
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\petcat.exe"
+ALL : "$(OUTDIR)\petcat.exe" 
 
 !ELSE 
 
-ALL : "platform - Win32 Release" "fileio - Win32 Release" "base - Win32 Release" "arch - Win32 Release" "$(OUTDIR)\petcat.exe"
+ALL : "arch - Win32 Release" "base - Win32 Release" "fileio - Win32 Release" "platform - Win32 Release" "$(OUTDIR)\petcat.exe" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
-CLEAN :"arch - Win32 ReleaseCLEAN" "base - Win32 ReleaseCLEAN" "fileio - Win32 ReleaseCLEAN" "platform - Win32 ReleaseCLEAN" 
+!IF "$(RECURSE)" == "1"
+CLEAN :"platform - Win32 ReleaseCLEAN" "fileio - Win32 ReleaseCLEAN" "base - Win32 ReleaseCLEAN" "arch - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
@@ -57,7 +57,6 @@ CLEAN :
 	-@erase "$(INTDIR)\rawfile.obj"
 	-@erase "$(INTDIR)\resources.obj"
 	-@erase "$(INTDIR)\util.obj"
-	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(INTDIR)\zipcode.obj"
 	-@erase "$(OUTDIR)\petcat.exe"
 
@@ -68,7 +67,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\platform" /I "..\..\..\drive" /I "..\..\..\vdrive" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"$(INTDIR)\petcat.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_CONSOLE" /D "_MBCS" /D "NDEBUG" /Fp"$(INTDIR)\petcat.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -104,9 +103,9 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\petcat.bsc" 
 BSC32_SBRS= \
-	
+
 LINK32=link.exe
-LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib wsock32.lib version.lib SDLmain.lib SDL.lib /nologo /subsystem:console /incremental:no /pdb:"$(OUTDIR)\petcat.pdb" /machine:MIPS /out:"$(OUTDIR)\petcat.exe" 
+LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib comctl32.lib winmm.lib ole32.lib oleaut32.lib uuid.lib wsock32.lib version.lib SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /incremental:no /pdb:"$(OUTDIR)\petcat.pdb" /machine:MIPS /out:"$(OUTDIR)\petcat.exe" 
 LINK32_OBJS= \
 	"$(INTDIR)\charset.obj" \
 	"$(INTDIR)\findpath.obj" \
@@ -118,10 +117,11 @@ LINK32_OBJS= \
 	"$(INTDIR)\resources.obj" \
 	"$(INTDIR)\util.obj" \
 	"$(INTDIR)\zipcode.obj" \
-	".\libs\arch\Release\arch.lib" \
-	".\libs\base\Release\base.lib" \
-	".\libs\fileio\Release\fileio.lib" \
-	".\libs\platform\Release\platform.lib"
+	".\libsarch\Release\arch.lib" \
+	".\libsbase\Release\base.lib" \
+	".\libsfileio\Release\fileio.lib" \
+	".\libsplatform\Release\platform.lib" \
+
 
 "$(OUTDIR)\petcat.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
@@ -136,18 +136,18 @@ INTDIR=.\libs\petcat\Debug
 OutDir=.\..\..\..\..\data
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\petcat.exe"
+ALL : "$(OUTDIR)\petcat.exe" 
 
 !ELSE 
 
-ALL : "platform - Win32 Debug" "fileio - Win32 Debug" "base - Win32 Debug" "arch - Win32 Debug" "$(OUTDIR)\petcat.exe"
+ALL : "arch - Win32 Debug" "base - Win32 Debug" "fileio - Win32 Debug" "platform - Win32 Debug" "$(OUTDIR)\petcat.exe" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
-CLEAN :"arch - Win32 DebugCLEAN" "base - Win32 DebugCLEAN" "fileio - Win32 DebugCLEAN" "platform - Win32 DebugCLEAN" 
+!IF "$(RECURSE)" == "1"
+CLEAN :"platform - Win32 DebugCLEAN" "fileio - Win32 DebugCLEAN" "base - Win32 DebugCLEAN" "arch - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
@@ -160,7 +160,6 @@ CLEAN :
 	-@erase "$(INTDIR)\rawfile.obj"
 	-@erase "$(INTDIR)\resources.obj"
 	-@erase "$(INTDIR)\util.obj"
-	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(INTDIR)\zipcode.obj"
 	-@erase "$(OUTDIR)\petcat.exe"
 	-@erase "$(OUTDIR)\petcat.ilk"
@@ -173,7 +172,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\platform" /I "..\..\..\drive" /I "..\..\..\vdrive" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"$(INTDIR)\petcat.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_CONSOLE" /D "_MBCS" /D "_DEBUG" /Fp"$(INTDIR)\petcat.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -209,9 +208,9 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\petcat.bsc" 
 BSC32_SBRS= \
-	
+
 LINK32=link.exe
-LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib wsock32.lib version.lib SDLmain.lib SDL.lib /nologo /subsystem:console /incremental:yes /pdb:"$(OUTDIR)\petcat.pdb" /debug /machine:MIPS /nodefaultlib:"msvcrt.lib" /out:"$(OUTDIR)\petcat.exe" /pdbtype:sept 
+LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib comctl32.lib winmm.lib ole32.lib oleaut32.lib uuid.lib wsock32.lib version.lib SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /incremental:yes /pdb:"$(OUTDIR)\petcat.pdb" /debug /machine:MIPS /nodefaultlib:"msvcrt.lib" /out:"$(OUTDIR)\petcat.exe" /pdbtype:sept
 LINK32_OBJS= \
 	"$(INTDIR)\charset.obj" \
 	"$(INTDIR)\findpath.obj" \
@@ -223,10 +222,11 @@ LINK32_OBJS= \
 	"$(INTDIR)\resources.obj" \
 	"$(INTDIR)\util.obj" \
 	"$(INTDIR)\zipcode.obj" \
-	".\libs\arch\Debug\arch.lib" \
-	".\libs\base\Debug\base.lib" \
-	".\libs\fileio\Debug\fileio.lib" \
-	".\libs\platform\Debug\platform.lib"
+	".\libsarch\Debug\arch.lib" \
+	".\libsbase\Debug\base.lib" \
+	".\libsfileio\Debug\fileio.lib" \
+	".\libsplatform\Debug\platform.lib" \
+
 
 "$(OUTDIR)\petcat.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
@@ -347,54 +347,45 @@ SOURCE=..\..\..\charset.c
 "$(INTDIR)\charset.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
 SOURCE=..\..\..\findpath.c
 
 "$(INTDIR)\findpath.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\ioutil.c
 
 "$(INTDIR)\ioutil.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
 SOURCE=..\..\..\lib.c
 
 "$(INTDIR)\lib.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\log.c
 
 "$(INTDIR)\log.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
 SOURCE=..\..\..\petcat.c
 
 "$(INTDIR)\petcat.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\rawfile.c
 
 "$(INTDIR)\rawfile.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
 SOURCE=..\..\..\resources.c
 
 "$(INTDIR)\resources.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
 SOURCE=..\..\..\util.c
 
 "$(INTDIR)\util.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\zipcode.c
 

@@ -33,12 +33,10 @@ INTDIR=.\libs\cartconv\Release
 OutDir=.\..\..\..\..\data
 # End Custom Macros
 
-ALL : "$(OUTDIR)\cartconv.exe"
-
+ALL : "$(OUTDIR)\cartconv.exe" 
 
 CLEAN :
 	-@erase "$(INTDIR)\cartconv.obj"
-	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(OUTDIR)\cartconv.exe"
 
 "$(OUTDIR)" :
@@ -48,7 +46,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"$(INTDIR)\cartconv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_CONSOLE" /D "_MBCS" /D "NDEBUG" /Fp"$(INTDIR)\cartconv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -84,11 +82,12 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\cartconv.bsc" 
 BSC32_SBRS= \
-	
+
 LINK32=link.exe
-LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib wsock32.lib version.lib SDLmain.lib SDL.lib /nologo /subsystem:console /incremental:no /pdb:"$(OUTDIR)\cartconv.pdb" /machine:MIPS /out:"$(OUTDIR)\cartconv.exe" 
+LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib comctl32.lib winmm.lib ole32.lib oleaut32.lib uuid.lib wsock32.lib version.lib SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /incremental:no /pdb:"$(OUTDIR)\cartconv.pdb" /machine:MIPS /out:"$(OUTDIR)\cartconv.exe" 
 LINK32_OBJS= \
-	"$(INTDIR)\cartconv.obj"
+	"$(INTDIR)\cartconv.obj" \
+
 
 "$(OUTDIR)\cartconv.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
@@ -103,12 +102,10 @@ INTDIR=.\libs\cartconv\Debug
 OutDir=.\..\..\..\..\data
 # End Custom Macros
 
-ALL : "$(OUTDIR)\cartconv.exe"
-
+ALL : "$(OUTDIR)\cartconv.exe" 
 
 CLEAN :
 	-@erase "$(INTDIR)\cartconv.obj"
-	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(OUTDIR)\cartconv.exe"
 	-@erase "$(OUTDIR)\cartconv.ilk"
 	-@erase "$(OUTDIR)\cartconv.pdb"
@@ -120,7 +117,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"$(INTDIR)\cartconv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_CONSOLE" /D "_MBCS" /D "_DEBUG" /Fp"$(INTDIR)\cartconv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -156,11 +153,12 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\cartconv.bsc" 
 BSC32_SBRS= \
-	
+
 LINK32=link.exe
-LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib wsock32.lib version.lib SDLmain.lib SDL.lib /nologo /subsystem:console /incremental:yes /pdb:"$(OUTDIR)\cartconv.pdb" /debug /machine:MIPS /nodefaultlib:"msvcrt.lib" /out:"$(OUTDIR)\cartconv.exe" /pdbtype:sept 
+LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib comctl32.lib winmm.lib ole32.lib oleaut32.lib uuid.lib wsock32.lib version.lib SDLmain.lib SDL.lib opengl32.lib /nologo /subsystem:console /incremental:yes /pdb:"$(OUTDIR)\cartconv.pdb" /debug /machine:MIPS /nodefaultlib:"msvcrt.lib" /out:"$(OUTDIR)\cartconv.exe" /pdbtype:sept
 LINK32_OBJS= \
-	"$(INTDIR)\cartconv.obj"
+	"$(INTDIR)\cartconv.obj" \
+
 
 "$(OUTDIR)\cartconv.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
@@ -171,6 +169,7 @@ LINK32_OBJS= \
 
 
 !IF "$(CFG)" == "cartconv - Win32 Release" || "$(CFG)" == "cartconv - Win32 Debug"
+
 SOURCE=..\..\..\cartconv.c
 
 "$(INTDIR)\cartconv.obj" : $(SOURCE) "$(INTDIR)"

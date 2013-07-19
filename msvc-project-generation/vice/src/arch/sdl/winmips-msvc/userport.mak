@@ -33,33 +33,32 @@ INTDIR=.\libs\userport\Release
 OutDir=.\libs\userport\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\userport.lib"
+ALL : "$(OUTDIR)\userport.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\userport.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\userport.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\userport_dac.obj"
-	-@erase "$(INTDIR)\userport_digimax.obj"
-	-@erase "$(INTDIR)\userport_joystick.obj"
-	-@erase "$(INTDIR)\userport_rtc.obj"
+	-@erase "$(INTDIR)\userport\userport_dac.obj"
+	-@erase "$(INTDIR)\userport\userport_digimax.obj"
+	-@erase "$(INTDIR)\userport\userport_joystick.obj"
+	-@erase "$(INTDIR)\userport\userport_rtc.obj"
 	-@erase "$(OUTDIR)\userport.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64\cart" /I "..\..\..\rtc" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\userport.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64\cart "/I "..\..\..\rtc "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\userport.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -95,22 +94,23 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\userport.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\userport.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\userport_dac.obj" \
-	"$(INTDIR)\userport_digimax.obj" \
-	"$(INTDIR)\userport_joystick.obj" \
-	"$(INTDIR)\userport_rtc.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\userport\userport_dac.obj" \
+	"$(INTDIR)\userport\userport_digimax.obj" \
+	"$(INTDIR)\userport\userport_joystick.obj" \
+	"$(INTDIR)\userport\userport_rtc.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\userport.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "userport - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\userport\Debug
 INTDIR=.\libs\userport\Debug
@@ -118,33 +118,32 @@ INTDIR=.\libs\userport\Debug
 OutDir=.\libs\userport\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\userport.lib"
+ALL : "$(OUTDIR)\userport.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\userport.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\userport.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\userport_dac.obj"
-	-@erase "$(INTDIR)\userport_digimax.obj"
-	-@erase "$(INTDIR)\userport_joystick.obj"
-	-@erase "$(INTDIR)\userport_rtc.obj"
+	-@erase "$(INTDIR)\userport\userport_dac.obj"
+	-@erase "$(INTDIR)\userport\userport_digimax.obj"
+	-@erase "$(INTDIR)\userport\userport_joystick.obj"
+	-@erase "$(INTDIR)\userport\userport_rtc.obj"
 	-@erase "$(OUTDIR)\userport.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64\cart" /I "..\..\..\rtc" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\userport.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64\cart "/I "..\..\..\rtc "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\userport.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -180,17 +179,18 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\userport.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\userport.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\userport_dac.obj" \
-	"$(INTDIR)\userport_digimax.obj" \
-	"$(INTDIR)\userport_joystick.obj" \
-	"$(INTDIR)\userport_rtc.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\userport\userport_dac.obj" \
+	"$(INTDIR)\userport\userport_digimax.obj" \
+	"$(INTDIR)\userport\userport_joystick.obj" \
+	"$(INTDIR)\userport\userport_rtc.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\userport.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -226,27 +226,24 @@ LIB32_OBJS= \
 
 !ENDIF 
 
-SOURCE="..\..\..\userport\userport_dac.c"
+SOURCE=..\..\..\userport\userport_dac.c
 
-"$(INTDIR)\userport_dac.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\userport\userport_dac.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\userport\userport_digimax.c
 
-SOURCE="..\..\..\userport\userport_digimax.c"
-
-"$(INTDIR)\userport_digimax.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\userport\userport_digimax.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\userport\userport_joystick.c
 
-SOURCE="..\..\..\userport\userport_joystick.c"
-
-"$(INTDIR)\userport_joystick.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\userport\userport_joystick.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\userport\userport_rtc.c
 
-SOURCE="..\..\..\userport\userport_rtc.c"
-
-"$(INTDIR)\userport_rtc.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\userport\userport_rtc.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

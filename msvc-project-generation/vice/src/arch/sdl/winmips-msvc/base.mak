@@ -33,18 +33,18 @@ INTDIR=.\libs\base\Release
 OutDir=.\libs\base\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "..\..\..\translate_table.h" "$(OUTDIR)\base.lib"
+ALL : "..\..\..\translate_table.h" "$(OUTDIR)\base.lib" 
 
 !ELSE 
 
-ALL : "gentranslate - Win32 Release" "geninfocontrib - Win32 Release" "..\..\..\translate_table.h" "$(OUTDIR)\base.lib"
+ALL : "geninfocontrib - Win32 Release" "gentranslate - Win32 Release" "..\..\..\translate_table.h" "$(OUTDIR)\base.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
-CLEAN :"geninfocontrib - Win32 ReleaseCLEAN" "gentranslate - Win32 ReleaseCLEAN" 
+!IF "$(RECURSE)" == "1"
+CLEAN :"gentranslate - Win32 ReleaseCLEAN" "geninfocontrib - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
@@ -87,6 +87,7 @@ CLEAN :
 	-@erase "$(INTDIR)\palette.obj"
 	-@erase "$(INTDIR)\ram.obj"
 	-@erase "$(INTDIR)\rawfile.obj"
+	-@erase "$(INTDIR)\rawnet.obj"
 	-@erase "$(INTDIR)\resources.obj"
 	-@erase "$(INTDIR)\romset.obj"
 	-@erase "$(INTDIR)\screenshot.obj"
@@ -97,7 +98,6 @@ CLEAN :
 	-@erase "$(INTDIR)\translate.obj"
 	-@erase "$(INTDIR)\traps.obj"
 	-@erase "$(INTDIR)\util.obj"
-	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(INTDIR)\vsync.obj"
 	-@erase "$(INTDIR)\zfile.obj"
 	-@erase "$(INTDIR)\zipcode.obj"
@@ -108,7 +108,7 @@ CLEAN :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\platform" /I "..\..\..\vdrive" /I "..\..\..\userport" /I "..\..\..\rs232drv" /I "..\..\..\imagecontents" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\rtc" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\base.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\imagecontents "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\platform "/I "..\..\..\rs232drv "/I "..\..\..\rtc "/I "..\..\..\userport "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\base.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -144,7 +144,7 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\base.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\base.lib" 
 LIB32_OBJS= \
@@ -187,6 +187,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\palette.obj" \
 	"$(INTDIR)\ram.obj" \
 	"$(INTDIR)\rawfile.obj" \
+	"$(INTDIR)\rawnet.obj" \
 	"$(INTDIR)\resources.obj" \
 	"$(INTDIR)\romset.obj" \
 	"$(INTDIR)\screenshot.obj" \
@@ -199,14 +200,15 @@ LIB32_OBJS= \
 	"$(INTDIR)\util.obj" \
 	"$(INTDIR)\vsync.obj" \
 	"$(INTDIR)\zfile.obj" \
-	"$(INTDIR)\zipcode.obj"
+	"$(INTDIR)\zipcode.obj" \
 
-"$(OUTDIR)\base.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "base - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\base\Debug
 INTDIR=.\libs\base\Debug
@@ -214,18 +216,18 @@ INTDIR=.\libs\base\Debug
 OutDir=.\libs\base\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "..\..\..\translate.h" "$(OUTDIR)\base.lib"
+ALL : "..\..\..\translate_table.h" "$(OUTDIR)\base.lib" 
 
 !ELSE 
 
-ALL : "gentranslate - Win32 Debug" "geninfocontrib - Win32 Debug" "..\..\..\translate.h" "$(OUTDIR)\base.lib"
+ALL : "geninfocontrib - Win32 Debug" "gentranslate - Win32 Debug" "..\..\..\translate_table.h" "$(OUTDIR)\base.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
-CLEAN :"geninfocontrib - Win32 DebugCLEAN" "gentranslate - Win32 DebugCLEAN" 
+!IF "$(RECURSE)" == "1"
+CLEAN :"gentranslate - Win32 DebugCLEAN" "geninfocontrib - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
@@ -268,6 +270,7 @@ CLEAN :
 	-@erase "$(INTDIR)\palette.obj"
 	-@erase "$(INTDIR)\ram.obj"
 	-@erase "$(INTDIR)\rawfile.obj"
+	-@erase "$(INTDIR)\rawnet.obj"
 	-@erase "$(INTDIR)\resources.obj"
 	-@erase "$(INTDIR)\romset.obj"
 	-@erase "$(INTDIR)\screenshot.obj"
@@ -278,18 +281,17 @@ CLEAN :
 	-@erase "$(INTDIR)\translate.obj"
 	-@erase "$(INTDIR)\traps.obj"
 	-@erase "$(INTDIR)\util.obj"
-	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(INTDIR)\vsync.obj"
 	-@erase "$(INTDIR)\zfile.obj"
 	-@erase "$(INTDIR)\zipcode.obj"
 	-@erase "$(OUTDIR)\base.lib"
-	-@erase "..\..\..\translate.h"
+	-@erase "..\..\..\translate_table.h"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\platform" /I "..\..\..\vdrive" /I "..\..\..\userport" /I "..\..\..\rs232drv" /I "..\..\..\imagecontents" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\rtc" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\base.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\imagecontents "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\platform "/I "..\..\..\rs232drv "/I "..\..\..\rtc "/I "..\..\..\userport "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\base.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -325,7 +327,7 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\base.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\base.lib" 
 LIB32_OBJS= \
@@ -368,6 +370,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\palette.obj" \
 	"$(INTDIR)\ram.obj" \
 	"$(INTDIR)\rawfile.obj" \
+	"$(INTDIR)\rawnet.obj" \
 	"$(INTDIR)\resources.obj" \
 	"$(INTDIR)\romset.obj" \
 	"$(INTDIR)\screenshot.obj" \
@@ -380,9 +383,10 @@ LIB32_OBJS= \
 	"$(INTDIR)\util.obj" \
 	"$(INTDIR)\vsync.obj" \
 	"$(INTDIR)\zfile.obj" \
-	"$(INTDIR)\zipcode.obj"
+	"$(INTDIR)\zipcode.obj" \
 
-"$(OUTDIR)\base.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -444,346 +448,300 @@ LIB32_OBJS= \
 
 !ENDIF 
 
-SOURCE="..\..\..\alarm.c"
+SOURCE=..\..\..\alarm.c
 
 "$(INTDIR)\alarm.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\attach.c"
+SOURCE=..\..\..\attach.c
 
 "$(INTDIR)\attach.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\autostart-prg.c"
+SOURCE=..\..\..\autostart-prg.c
 
 "$(INTDIR)\autostart-prg.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\autostart.c"
+SOURCE=..\..\..\autostart.c
 
 "$(INTDIR)\autostart.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\cbmdos.c"
+SOURCE=..\..\..\cbmdos.c
 
 "$(INTDIR)\cbmdos.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\cbmimage.c"
+SOURCE=..\..\..\cbmimage.c
 
 "$(INTDIR)\cbmimage.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\charset.c"
+SOURCE=..\..\..\charset.c
 
 "$(INTDIR)\charset.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\clipboard.c"
+SOURCE=..\..\..\clipboard.c
 
 "$(INTDIR)\clipboard.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\clkguard.c"
+SOURCE=..\..\..\clkguard.c
 
 "$(INTDIR)\clkguard.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\cmdline.c"
+SOURCE=..\..\..\cmdline.c
 
 "$(INTDIR)\cmdline.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\color.c"
+SOURCE=..\..\..\color.c
 
 "$(INTDIR)\color.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\crc32.c"
+SOURCE=..\..\..\crc32.c
 
 "$(INTDIR)\crc32.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\datasette.c"
+SOURCE=..\..\..\datasette.c
 
 "$(INTDIR)\datasette.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\debug.c"
+SOURCE=..\..\..\debug.c
 
 "$(INTDIR)\debug.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\dma.c"
+SOURCE=..\..\..\dma.c
 
 "$(INTDIR)\dma.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\event.c"
+SOURCE=..\..\..\event.c
 
 "$(INTDIR)\event.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\findpath.c"
+SOURCE=..\..\..\findpath.c
 
 "$(INTDIR)\findpath.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\fliplist.c"
+SOURCE=..\..\..\fliplist.c
 
 "$(INTDIR)\fliplist.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\gcr.c"
+SOURCE=..\..\..\gcr.c
 
 "$(INTDIR)\gcr.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\info.c"
+SOURCE=..\..\..\info.c
 
 "$(INTDIR)\info.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\init.c"
+SOURCE=..\..\..\init.c
 
 "$(INTDIR)\init.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\initcmdline.c"
+SOURCE=..\..\..\initcmdline.c
 
 "$(INTDIR)\initcmdline.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\interrupt.c"
+SOURCE=..\..\..\interrupt.c
 
 "$(INTDIR)\interrupt.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\ioutil.c"
+SOURCE=..\..\..\ioutil.c
 
 "$(INTDIR)\ioutil.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\joystick.c"
+SOURCE=..\..\..\joystick.c
 
 "$(INTDIR)\joystick.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\kbdbuf.c"
+SOURCE=..\..\..\kbdbuf.c
 
 "$(INTDIR)\kbdbuf.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\keyboard.c"
+SOURCE=..\..\..\keyboard.c
 
 "$(INTDIR)\keyboard.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\lib.c"
+SOURCE=..\..\..\lib.c
 
 "$(INTDIR)\lib.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\lightpen.c"
+SOURCE=..\..\..\lightpen.c
 
 "$(INTDIR)\lightpen.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\log.c"
+SOURCE=..\..\..\log.c
 
 "$(INTDIR)\log.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\machine-bus.c"
+SOURCE=..\..\..\machine-bus.c
 
 "$(INTDIR)\machine-bus.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\machine.c"
+SOURCE=..\..\..\machine.c
 
 "$(INTDIR)\machine.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\midi.c"
+SOURCE=..\..\..\midi.c
 
 "$(INTDIR)\midi.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\mouse.c"
+SOURCE=..\..\..\mouse.c
 
 "$(INTDIR)\mouse.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\network.c"
+SOURCE=..\..\..\network.c
 
 "$(INTDIR)\network.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\opencbmlib.c"
+SOURCE=..\..\..\opencbmlib.c
 
 "$(INTDIR)\opencbmlib.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\palette.c"
+SOURCE=..\..\..\palette.c
 
 "$(INTDIR)\palette.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\ram.c"
+SOURCE=..\..\..\ram.c
 
 "$(INTDIR)\ram.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\rawfile.c"
+SOURCE=..\..\..\rawfile.c
 
 "$(INTDIR)\rawfile.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\rawnet.c
 
-SOURCE="..\..\..\resources.c"
+"$(INTDIR)\rawnet.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+SOURCE=..\..\..\resources.c
 
 "$(INTDIR)\resources.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\romset.c"
+SOURCE=..\..\..\romset.c
 
 "$(INTDIR)\romset.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\screenshot.c"
+SOURCE=..\..\..\screenshot.c
 
 "$(INTDIR)\screenshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\snapshot.c"
+SOURCE=..\..\..\snapshot.c
 
 "$(INTDIR)\snapshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\socket.c"
+SOURCE=..\..\..\socket.c
 
 "$(INTDIR)\socket.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\sound.c"
+SOURCE=..\..\..\sound.c
 
 "$(INTDIR)\sound.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\sysfile.c"
+SOURCE=..\..\..\sysfile.c
 
 "$(INTDIR)\sysfile.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-SOURCE="..\..\..\translate.c"
+SOURCE=..\..\..\translate.c
 
 "$(INTDIR)\translate.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\traps.c
 
-SOURCE="..\..\..\translate.txt"
+"$(INTDIR)\traps.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+SOURCE=..\..\..\util.c
+
+"$(INTDIR)\util.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+SOURCE=..\..\..\vsync.c
+
+"$(INTDIR)\vsync.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+SOURCE=..\..\..\zfile.c
+
+"$(INTDIR)\zfile.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+SOURCE=..\..\..\zipcode.c
+
+"$(INTDIR)\zipcode.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+SOURCE=..\..\..\..\..\..\translate.txt
 
 !IF  "$(CFG)" == "base - Win32 Release"
 
 InputDir=..\..\..
 InputPath="..\..\..\translate.txt"
-USERDEP__TRANS="..\..\..\translate.txt"	
+USERDEP__SRC="..\..\..\translate.txt"
 
-"..\..\..\translate_table.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)" $(USERDEP__TRANS)
+"..\..\..\translate_table.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)" $(USERDEP__SRC)
 	<<tempfile.bat 
 	@echo off 
 	..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h
 << 
-	
+
 
 !ELSEIF  "$(CFG)" == "base - Win32 Debug"
 
 InputDir=..\..\..
 InputPath="..\..\..\translate.txt"
-USERDEP__TRANS="..\..\..\translate.txt"	
+USERDEP__SRC="..\..\..\translate.txt"
 
-"..\..\..\translate.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)" $(USERDEP__TRANS)
+"..\..\..\translate_table.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)" $(USERDEP__SRC)
 	<<tempfile.bat 
 	@echo off 
 	..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h
 << 
-	
+
 
 !ENDIF 
-
-SOURCE="..\..\..\traps.c"
-
-"$(INTDIR)\traps.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE="..\..\..\util.c"
-
-"$(INTDIR)\util.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE="..\..\..\vsync.c"
-
-"$(INTDIR)\vsync.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE="..\..\..\zfile.c"
-
-"$(INTDIR)\zfile.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE="..\..\..\zipcode.c"
-
-"$(INTDIR)\zipcode.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
 

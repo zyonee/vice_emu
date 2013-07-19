@@ -33,42 +33,41 @@ INTDIR=.\libs\iec\Release
 OutDir=.\libs\iec\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\iec.lib"
+ALL : "$(OUTDIR)\iec.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\iec.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\iec.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\cia1571d.obj"
-	-@erase "$(INTDIR)\cia1581d.obj"
-	-@erase "$(INTDIR)\fdd.obj"
-	-@erase "$(INTDIR)\glue1571.obj"
-	-@erase "$(INTDIR)\iec-cmdline-options.obj"
-	-@erase "$(INTDIR)\iec-resources.obj"
-	-@erase "$(INTDIR)\iec.obj"
-	-@erase "$(INTDIR)\iecrom.obj"
-	-@erase "$(INTDIR)\memiec.obj"
-	-@erase "$(INTDIR)\pc8477.obj"
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\via1d1541.obj"
-	-@erase "$(INTDIR)\via4000.obj"
-	-@erase "$(INTDIR)\wd1770.obj"
+	-@erase "$(INTDIR)\drive\iec\cia1571d.obj"
+	-@erase "$(INTDIR)\drive\iec\cia1581d.obj"
+	-@erase "$(INTDIR)\drive\iec\fdd.obj"
+	-@erase "$(INTDIR)\drive\iec\glue1571.obj"
+	-@erase "$(INTDIR)\drive\iec\iec-cmdline-options.obj"
+	-@erase "$(INTDIR)\drive\iec\iec-resources.obj"
+	-@erase "$(INTDIR)\drive\iec\iec.obj"
+	-@erase "$(INTDIR)\drive\iec\iecrom.obj"
+	-@erase "$(INTDIR)\drive\iec\memiec.obj"
+	-@erase "$(INTDIR)\drive\iec\pc8477.obj"
+	-@erase "$(INTDIR)\drive\iec\via1d1541.obj"
+	-@erase "$(INTDIR)\drive\iec\via4000.obj"
+	-@erase "$(INTDIR)\drive\iec\wd1770.obj"
 	-@erase "$(OUTDIR)\iec.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\iec.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\lib\p64 "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\iec.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -104,31 +103,32 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\iec.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\iec.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\cia1571d.obj" \
-	"$(INTDIR)\cia1581d.obj" \
-	"$(INTDIR)\fdd.obj" \
-	"$(INTDIR)\glue1571.obj" \
-	"$(INTDIR)\iec-cmdline-options.obj" \
-	"$(INTDIR)\iec-resources.obj" \
-	"$(INTDIR)\iec.obj" \
-	"$(INTDIR)\iecrom.obj" \
-	"$(INTDIR)\memiec.obj" \
-	"$(INTDIR)\pc8477.obj" \
-	"$(INTDIR)\via1d1541.obj" \
-	"$(INTDIR)\via4000.obj" \
-	"$(INTDIR)\wd1770.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\drive\iec\cia1571d.obj" \
+	"$(INTDIR)\drive\iec\cia1581d.obj" \
+	"$(INTDIR)\drive\iec\fdd.obj" \
+	"$(INTDIR)\drive\iec\glue1571.obj" \
+	"$(INTDIR)\drive\iec\iec-cmdline-options.obj" \
+	"$(INTDIR)\drive\iec\iec-resources.obj" \
+	"$(INTDIR)\drive\iec\iec.obj" \
+	"$(INTDIR)\drive\iec\iecrom.obj" \
+	"$(INTDIR)\drive\iec\memiec.obj" \
+	"$(INTDIR)\drive\iec\pc8477.obj" \
+	"$(INTDIR)\drive\iec\via1d1541.obj" \
+	"$(INTDIR)\drive\iec\via4000.obj" \
+	"$(INTDIR)\drive\iec\wd1770.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\iec.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "iec - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\iec\Debug
 INTDIR=.\libs\iec\Debug
@@ -136,42 +136,41 @@ INTDIR=.\libs\iec\Debug
 OutDir=.\libs\iec\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\iec.lib"
+ALL : "$(OUTDIR)\iec.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\iec.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\iec.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\cia1571d.obj"
-	-@erase "$(INTDIR)\cia1581d.obj"
-	-@erase "$(INTDIR)\fdd.obj"
-	-@erase "$(INTDIR)\glue1571.obj"
-	-@erase "$(INTDIR)\iec-cmdline-options.obj"
-	-@erase "$(INTDIR)\iec-resources.obj"
-	-@erase "$(INTDIR)\iec.obj"
-	-@erase "$(INTDIR)\iecrom.obj"
-	-@erase "$(INTDIR)\memiec.obj"
-	-@erase "$(INTDIR)\pc8477.obj"
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\via1d1541.obj"
-	-@erase "$(INTDIR)\via4000.obj"
-	-@erase "$(INTDIR)\wd1770.obj"
+	-@erase "$(INTDIR)\drive\iec\cia1571d.obj"
+	-@erase "$(INTDIR)\drive\iec\cia1581d.obj"
+	-@erase "$(INTDIR)\drive\iec\fdd.obj"
+	-@erase "$(INTDIR)\drive\iec\glue1571.obj"
+	-@erase "$(INTDIR)\drive\iec\iec-cmdline-options.obj"
+	-@erase "$(INTDIR)\drive\iec\iec-resources.obj"
+	-@erase "$(INTDIR)\drive\iec\iec.obj"
+	-@erase "$(INTDIR)\drive\iec\iecrom.obj"
+	-@erase "$(INTDIR)\drive\iec\memiec.obj"
+	-@erase "$(INTDIR)\drive\iec\pc8477.obj"
+	-@erase "$(INTDIR)\drive\iec\via1d1541.obj"
+	-@erase "$(INTDIR)\drive\iec\via4000.obj"
+	-@erase "$(INTDIR)\drive\iec\wd1770.obj"
 	-@erase "$(OUTDIR)\iec.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\iec.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\lib\p64 "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\iec.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -207,26 +206,27 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\iec.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\iec.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\cia1571d.obj" \
-	"$(INTDIR)\cia1581d.obj" \
-	"$(INTDIR)\fdd.obj" \
-	"$(INTDIR)\glue1571.obj" \
-	"$(INTDIR)\iec-cmdline-options.obj" \
-	"$(INTDIR)\iec-resources.obj" \
-	"$(INTDIR)\iec.obj" \
-	"$(INTDIR)\iecrom.obj" \
-	"$(INTDIR)\memiec.obj" \
-	"$(INTDIR)\pc8477.obj" \
-	"$(INTDIR)\via1d1541.obj" \
-	"$(INTDIR)\via4000.obj" \
-	"$(INTDIR)\wd1770.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\drive\iec\cia1571d.obj" \
+	"$(INTDIR)\drive\iec\cia1581d.obj" \
+	"$(INTDIR)\drive\iec\fdd.obj" \
+	"$(INTDIR)\drive\iec\glue1571.obj" \
+	"$(INTDIR)\drive\iec\iec-cmdline-options.obj" \
+	"$(INTDIR)\drive\iec\iec-resources.obj" \
+	"$(INTDIR)\drive\iec\iec.obj" \
+	"$(INTDIR)\drive\iec\iecrom.obj" \
+	"$(INTDIR)\drive\iec\memiec.obj" \
+	"$(INTDIR)\drive\iec\pc8477.obj" \
+	"$(INTDIR)\drive\iec\via1d1541.obj" \
+	"$(INTDIR)\drive\iec\via4000.obj" \
+	"$(INTDIR)\drive\iec\wd1770.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\iec.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -264,79 +264,67 @@ LIB32_OBJS= \
 
 SOURCE=..\..\..\drive\iec\cia1571d.c
 
-"$(INTDIR)\cia1571d.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\cia1571d.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\drive\iec\cia1581d.c
 
-"$(INTDIR)\cia1581d.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\cia1581d.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\drive\iec\fdd.c
 
-"$(INTDIR)\fdd.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\fdd.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\drive\iec\glue1571.c
 
-"$(INTDIR)\glue1571.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\glue1571.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\drive\iec\iec-cmdline-options.c
 
-SOURCE="..\..\..\drive\iec\iec-cmdline-options.c"
-
-"$(INTDIR)\iec-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\iec-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\drive\iec\iec-resources.c
 
-SOURCE="..\..\..\drive\iec\iec-resources.c"
-
-"$(INTDIR)\iec-resources.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\iec-resources.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\drive\iec\iec.c
 
-"$(INTDIR)\iec.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\iec.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\drive\iec\iecrom.c
 
-"$(INTDIR)\iecrom.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\iecrom.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\drive\iec\memiec.c
 
-"$(INTDIR)\memiec.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\memiec.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\drive\iec\pc8477.c
 
-"$(INTDIR)\pc8477.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\pc8477.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\drive\iec\via1d1541.c
 
-"$(INTDIR)\via1d1541.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\via1d1541.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\drive\iec\via4000.c
 
-"$(INTDIR)\via4000.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\via4000.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\drive\iec\wd1770.c
 
-"$(INTDIR)\wd1770.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drive\iec\wd1770.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

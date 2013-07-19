@@ -1,12 +1,11 @@
 # Microsoft Developer Studio Generated NMAKE File, Based on sid.dsp
-
 !IF "$(CFG)" == ""
 CFG=sid - Win32 Release
 !MESSAGE No configuration specified. Defaulting to sid - Win32 Release.
 !ENDIF 
 
 !IF "$(CFG)" != "sid - Win32 Release" && "$(CFG)" != "sid - Win32 Debug"
-!MESSAGE Invalid configuration "$(CFG)" specified
+!MESSAGE Invalid configuration "$(CFG)" specified.
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
@@ -34,34 +33,33 @@ INTDIR=.\libs\sid\Release
 OutDir=.\libs\sid\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\sid.lib"
+ALL : "$(OUTDIR)\sid.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\sid.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\sid.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\fastsid.obj"
-	-@erase "$(INTDIR)\sid-cmdline-options.obj"
-	-@erase "$(INTDIR)\sid-resources.obj"
-	-@erase "$(INTDIR)\sid-snapshot.obj"
-	-@erase "$(INTDIR)\sid.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\sid\fastsid.obj"
+	-@erase "$(INTDIR)\sid\sid-cmdline-options.obj"
+	-@erase "$(INTDIR)\sid\sid-resources.obj"
+	-@erase "$(INTDIR)\sid\sid-snapshot.obj"
+	-@erase "$(INTDIR)\sid\sid.obj"
 	-@erase "$(OUTDIR)\sid.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\sid.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\sid.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -76,11 +74,6 @@ CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..
 .cxx{$(INTDIR)}.obj :
    $(CPP) @<<
    $(CPP_PROJ) $< 
-<<
-
-.cc{$(INTDIR)}.obj :
-   $(CPP) @<<
-   $(CPP_PROJ) $<
 <<
 
 .c{$(INTDIR)}.sbr :
@@ -98,32 +91,28 @@ CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..
    $(CPP_PROJ) $< 
 <<
 
-.cc{$(INTDIR)}.sbr :
-   $(CPP) @<<
-   $(CPP_PROJ) $<
-<<
-
 RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\sid.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\sid.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\fastsid.obj" \
-	"$(INTDIR)\sid-cmdline-options.obj" \
-	"$(INTDIR)\sid-resources.obj" \
-	"$(INTDIR)\sid-snapshot.obj" \
-	"$(INTDIR)\sid.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\sid\fastsid.obj" \
+	"$(INTDIR)\sid\sid-cmdline-options.obj" \
+	"$(INTDIR)\sid\sid-resources.obj" \
+	"$(INTDIR)\sid\sid-snapshot.obj" \
+	"$(INTDIR)\sid\sid.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\sid.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "sid - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\sid\Debug
 INTDIR=.\libs\sid\Debug
@@ -131,34 +120,33 @@ INTDIR=.\libs\sid\Debug
 OutDir=.\libs\sid\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\sid.lib"
+ALL : "$(OUTDIR)\sid.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\sid.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\sid.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\fastsid.obj"
-	-@erase "$(INTDIR)\sid-cmdline-options.obj"
-	-@erase "$(INTDIR)\sid-resources.obj"
-	-@erase "$(INTDIR)\sid-snapshot.obj"
-	-@erase "$(INTDIR)\sid.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\sid\fastsid.obj"
+	-@erase "$(INTDIR)\sid\sid-cmdline-options.obj"
+	-@erase "$(INTDIR)\sid\sid-resources.obj"
+	-@erase "$(INTDIR)\sid\sid-snapshot.obj"
+	-@erase "$(INTDIR)\sid\sid.obj"
 	-@erase "$(OUTDIR)\sid.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\sid.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\sid.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -173,11 +161,6 @@ CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\
 .cxx{$(INTDIR)}.obj :
    $(CPP) @<<
    $(CPP_PROJ) $< 
-<<
-
-.cc${$(INTDIR)}.obj :
-   $(CPP) @<<
-   $(CPP_PROJ) $<
 <<
 
 .c{$(INTDIR)}.sbr :
@@ -195,27 +178,23 @@ CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\
    $(CPP_PROJ) $< 
 <<
 
-.cc{$(INTDIR)}.sbr :
-   $(CPP) @<<
-   $(CPP_PROJ) $<
-<<
-
 RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\sid.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\sid.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\fastsid.obj" \
-	"$(INTDIR)\sid-cmdline-options.obj" \
-	"$(INTDIR)\sid-resources.obj" \
-	"$(INTDIR)\sid-snapshot.obj" \
-	"$(INTDIR)\sid.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\sid\fastsid.obj" \
+	"$(INTDIR)\sid\sid-cmdline-options.obj" \
+	"$(INTDIR)\sid\sid-resources.obj" \
+	"$(INTDIR)\sid\sid-snapshot.obj" \
+	"$(INTDIR)\sid\sid.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\sid.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -253,31 +232,30 @@ LIB32_OBJS= \
 
 SOURCE=..\..\..\sid\fastsid.c
 
-"$(INTDIR)\fastsid.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\sid\fastsid.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\sid\sid-cmdline-options.c
 
-SOURCE="..\..\..\sid\sid-cmdline-options.c"
-
-"$(INTDIR)\sid-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\sid\sid-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\sid\sid-resources.c
 
-SOURCE="..\..\..\sid\sid-resources.c"
-
-"$(INTDIR)\sid-resources.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\sid\sid-resources.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\sid\sid-snapshot.c
 
-SOURCE="..\..\..\sid\sid-snapshot.c"
-
-"$(INTDIR)\sid-snapshot.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\sid\sid-snapshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\sid\sid.c
 
-"$(INTDIR)\sid.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\sid\sid.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+
+
 !ENDIF 
+

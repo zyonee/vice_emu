@@ -33,20 +33,18 @@ INTDIR=.\libs\parallel\Release
 OutDir=.\libs\parallel\Release
 # End Custom Macros
 
-ALL : "$(OUTDIR)\parallel.lib"
-
+ALL : "$(OUTDIR)\parallel.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\parallel-trap.obj"
-	-@erase "$(INTDIR)\parallel.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\parallel\parallel-trap.obj"
+	-@erase "$(INTDIR)\parallel\parallel.obj"
 	-@erase "$(OUTDIR)\parallel.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\parallel.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\lib\p64 "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\parallel.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -82,19 +80,20 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\parallel.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\parallel.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\parallel-trap.obj" \
-	"$(INTDIR)\parallel.obj"
+	"$(INTDIR)\parallel\parallel-trap.obj" \
+	"$(INTDIR)\parallel\parallel.obj" \
 
-"$(OUTDIR)\parallel.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "parallel - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\parallel\Debug
 INTDIR=.\libs\parallel\Debug
@@ -102,20 +101,18 @@ INTDIR=.\libs\parallel\Debug
 OutDir=.\libs\parallel\Debug
 # End Custom Macros
 
-ALL : "$(OUTDIR)\parallel.lib"
-
+ALL : "$(OUTDIR)\parallel.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\parallel-trap.obj"
-	-@erase "$(INTDIR)\parallel.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\parallel\parallel-trap.obj"
+	-@erase "$(INTDIR)\parallel\parallel.obj"
 	-@erase "$(OUTDIR)\parallel.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\parallel.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\lib\p64 "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\parallel.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -151,14 +148,15 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\parallel.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\parallel.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\parallel-trap.obj" \
-	"$(INTDIR)\parallel.obj"
+	"$(INTDIR)\parallel\parallel-trap.obj" \
+	"$(INTDIR)\parallel\parallel.obj" \
 
-"$(OUTDIR)\parallel.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -167,15 +165,15 @@ LIB32_OBJS= \
 
 
 !IF "$(CFG)" == "parallel - Win32 Release" || "$(CFG)" == "parallel - Win32 Debug"
-SOURCE="..\..\..\parallel\parallel-trap.c"
 
-"$(INTDIR)\parallel-trap.obj" : $(SOURCE) "$(INTDIR)"
+SOURCE=..\..\..\parallel\parallel-trap.c
+
+"$(INTDIR)\parallel\parallel-trap.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\parallel\parallel.c
 
-SOURCE="..\..\..\parallel\parallel.c"
-
-"$(INTDIR)\parallel.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\parallel\parallel.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

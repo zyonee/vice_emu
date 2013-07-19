@@ -33,39 +33,38 @@ INTDIR=.\libs\serial\Release
 OutDir=.\libs\serial\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\serial.lib"
+ALL : "$(OUTDIR)\serial.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\serial.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\serial.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\fsdrive.obj"
-	-@erase "$(INTDIR)\realdevice.obj"
-	-@erase "$(INTDIR)\serial-device.obj"
-	-@erase "$(INTDIR)\serial-iec-bus.obj"
-	-@erase "$(INTDIR)\serial-iec-device.obj"
-	-@erase "$(INTDIR)\serial-iec-lib.obj"
-	-@erase "$(INTDIR)\serial-iec.obj"
-	-@erase "$(INTDIR)\serial-realdevice.obj"
-	-@erase "$(INTDIR)\serial-trap.obj"
-	-@erase "$(INTDIR)\serial.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\serial\fsdrive.obj"
+	-@erase "$(INTDIR)\serial\realdevice.obj"
+	-@erase "$(INTDIR)\serial\serial-device.obj"
+	-@erase "$(INTDIR)\serial\serial-iec-bus.obj"
+	-@erase "$(INTDIR)\serial\serial-iec-device.obj"
+	-@erase "$(INTDIR)\serial\serial-iec-lib.obj"
+	-@erase "$(INTDIR)\serial\serial-iec.obj"
+	-@erase "$(INTDIR)\serial\serial-realdevice.obj"
+	-@erase "$(INTDIR)\serial\serial-trap.obj"
+	-@erase "$(INTDIR)\serial\serial.obj"
 	-@erase "$(OUTDIR)\serial.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\drive" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\serial.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\serial.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -101,28 +100,29 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\serial.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\serial.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\fsdrive.obj" \
-	"$(INTDIR)\realdevice.obj" \
-	"$(INTDIR)\serial-device.obj" \
-	"$(INTDIR)\serial-iec-bus.obj" \
-	"$(INTDIR)\serial-iec-device.obj" \
-	"$(INTDIR)\serial-iec-lib.obj" \
-	"$(INTDIR)\serial-iec.obj" \
-	"$(INTDIR)\serial-realdevice.obj" \
-	"$(INTDIR)\serial-trap.obj" \
-	"$(INTDIR)\serial.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\serial\fsdrive.obj" \
+	"$(INTDIR)\serial\realdevice.obj" \
+	"$(INTDIR)\serial\serial-device.obj" \
+	"$(INTDIR)\serial\serial-iec-bus.obj" \
+	"$(INTDIR)\serial\serial-iec-device.obj" \
+	"$(INTDIR)\serial\serial-iec-lib.obj" \
+	"$(INTDIR)\serial\serial-iec.obj" \
+	"$(INTDIR)\serial\serial-realdevice.obj" \
+	"$(INTDIR)\serial\serial-trap.obj" \
+	"$(INTDIR)\serial\serial.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\serial.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "serial - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\serial\Debug
 INTDIR=.\libs\serial\Debug
@@ -130,39 +130,38 @@ INTDIR=.\libs\serial\Debug
 OutDir=.\libs\serial\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\serial.lib"
+ALL : "$(OUTDIR)\serial.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\serial.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\serial.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\fsdrive.obj"
-	-@erase "$(INTDIR)\realdevice.obj"
-	-@erase "$(INTDIR)\serial-device.obj"
-	-@erase "$(INTDIR)\serial-iec-bus.obj"
-	-@erase "$(INTDIR)\serial-iec-device.obj"
-	-@erase "$(INTDIR)\serial-iec-lib.obj"
-	-@erase "$(INTDIR)\serial-iec.obj"
-	-@erase "$(INTDIR)\serial-realdevice.obj"
-	-@erase "$(INTDIR)\serial-trap.obj"
-	-@erase "$(INTDIR)\serial.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\serial\fsdrive.obj"
+	-@erase "$(INTDIR)\serial\realdevice.obj"
+	-@erase "$(INTDIR)\serial\serial-device.obj"
+	-@erase "$(INTDIR)\serial\serial-iec-bus.obj"
+	-@erase "$(INTDIR)\serial\serial-iec-device.obj"
+	-@erase "$(INTDIR)\serial\serial-iec-lib.obj"
+	-@erase "$(INTDIR)\serial\serial-iec.obj"
+	-@erase "$(INTDIR)\serial\serial-realdevice.obj"
+	-@erase "$(INTDIR)\serial\serial-trap.obj"
+	-@erase "$(INTDIR)\serial\serial.obj"
 	-@erase "$(OUTDIR)\serial.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\drive" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\serial.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\serial.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -198,23 +197,24 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\serial.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\serial.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\fsdrive.obj" \
-	"$(INTDIR)\realdevice.obj" \
-	"$(INTDIR)\serial-device.obj" \
-	"$(INTDIR)\serial-iec-bus.obj" \
-	"$(INTDIR)\serial-iec-device.obj" \
-	"$(INTDIR)\serial-iec-lib.obj" \
-	"$(INTDIR)\serial-iec.obj" \
-	"$(INTDIR)\serial-realdevice.obj" \
-	"$(INTDIR)\serial-trap.obj" \
-	"$(INTDIR)\serial.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\serial\fsdrive.obj" \
+	"$(INTDIR)\serial\realdevice.obj" \
+	"$(INTDIR)\serial\serial-device.obj" \
+	"$(INTDIR)\serial\serial-iec-bus.obj" \
+	"$(INTDIR)\serial\serial-iec-device.obj" \
+	"$(INTDIR)\serial\serial-iec-lib.obj" \
+	"$(INTDIR)\serial\serial-iec.obj" \
+	"$(INTDIR)\serial\serial-realdevice.obj" \
+	"$(INTDIR)\serial\serial-trap.obj" \
+	"$(INTDIR)\serial\serial.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\serial.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -250,63 +250,54 @@ LIB32_OBJS= \
 
 !ENDIF 
 
-SOURCE="..\..\..\serial\fsdrive.c"
+SOURCE=..\..\..\serial\fsdrive.c
 
-"$(INTDIR)\fsdrive.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\serial\fsdrive.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\serial\realdevice.c
 
-SOURCE="..\..\..\serial\realdevice.c"
-
-"$(INTDIR)\realdevice.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\serial\realdevice.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\serial\serial-device.c
 
-SOURCE="..\..\..\serial\serial-device.c"
-
-"$(INTDIR)\serial-device.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\serial\serial-device.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\serial\serial-iec-bus.c
 
-SOURCE="..\..\..\serial\serial-iec-bus.c"
-
-"$(INTDIR)\serial-iec-bus.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\serial\serial-iec-bus.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\serial\serial-iec-device.c
 
-SOURCE="..\..\..\serial\serial-iec-device.c"
-
-"$(INTDIR)\serial-iec-device.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\serial\serial-iec-device.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\serial\serial-iec-lib.c
 
-SOURCE="..\..\..\serial\serial-iec-lib.c"
-
-"$(INTDIR)\serial-iec-lib.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\serial\serial-iec-lib.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\serial\serial-iec.c
 
-SOURCE="..\..\..\serial\serial-iec.c"
-
-"$(INTDIR)\serial-iec.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\serial\serial-iec.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\serial\serial-realdevice.c
 
-SOURCE="..\..\..\serial\serial-realdevice.c"
-
-"$(INTDIR)\serial-realdevice.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\serial\serial-realdevice.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\serial\serial-trap.c
 
-SOURCE="..\..\..\serial\serial-trap.c"
-
-"$(INTDIR)\serial-trap.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\serial\serial-trap.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\serial\serial.c
 
-SOURCE="..\..\..\serial\serial.c"
-
-"$(INTDIR)\serial.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\serial\serial.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

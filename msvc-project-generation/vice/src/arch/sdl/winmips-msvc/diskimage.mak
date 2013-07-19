@@ -33,28 +33,26 @@ INTDIR=.\libs\diskimage\Release
 OutDir=.\libs\diskimage\Release
 # End Custom Macros
 
-ALL : "$(OUTDIR)\diskimage.lib"
-
+ALL : "$(OUTDIR)\diskimage.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\diskimage.obj"
-	-@erase "$(INTDIR)\fsimage-check.obj"
-	-@erase "$(INTDIR)\fsimage-create.obj"
-	-@erase "$(INTDIR)\fsimage-dxx.obj"
-	-@erase "$(INTDIR)\fsimage-gcr.obj"
-	-@erase "$(INTDIR)\fsimage-p64.obj"
-	-@erase "$(INTDIR)\fsimage-probe.obj"
-	-@erase "$(INTDIR)\fsimage.obj"
-	-@erase "$(INTDIR)\rawimage.obj"
-	-@erase "$(INTDIR)\realimage.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\diskimage\diskimage.obj"
+	-@erase "$(INTDIR)\diskimage\fsimage-check.obj"
+	-@erase "$(INTDIR)\diskimage\fsimage-create.obj"
+	-@erase "$(INTDIR)\diskimage\fsimage-dxx.obj"
+	-@erase "$(INTDIR)\diskimage\fsimage-gcr.obj"
+	-@erase "$(INTDIR)\diskimage\fsimage-p64.obj"
+	-@erase "$(INTDIR)\diskimage\fsimage-probe.obj"
+	-@erase "$(INTDIR)\diskimage\fsimage.obj"
+	-@erase "$(INTDIR)\diskimage\rawimage.obj"
+	-@erase "$(INTDIR)\diskimage\realimage.obj"
 	-@erase "$(OUTDIR)\diskimage.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\diskimage" /I "..\..\..\lib\p64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\diskimage.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\diskimage "/I "..\..\..\lib\p64 "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\diskimage.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -90,27 +88,28 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\diskimage.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\diskimage.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\diskimage.obj" \
-	"$(INTDIR)\fsimage-check.obj" \
-	"$(INTDIR)\fsimage-create.obj" \
-	"$(INTDIR)\fsimage-dxx.obj" \
-	"$(INTDIR)\fsimage-gcr.obj" \
-	"$(INTDIR)\fsimage-p64.obj" \
-	"$(INTDIR)\fsimage-probe.obj" \
-	"$(INTDIR)\fsimage.obj" \
-	"$(INTDIR)\rawimage.obj" \
-	"$(INTDIR)\realimage.obj"
+	"$(INTDIR)\diskimage\diskimage.obj" \
+	"$(INTDIR)\diskimage\fsimage-check.obj" \
+	"$(INTDIR)\diskimage\fsimage-create.obj" \
+	"$(INTDIR)\diskimage\fsimage-dxx.obj" \
+	"$(INTDIR)\diskimage\fsimage-gcr.obj" \
+	"$(INTDIR)\diskimage\fsimage-p64.obj" \
+	"$(INTDIR)\diskimage\fsimage-probe.obj" \
+	"$(INTDIR)\diskimage\fsimage.obj" \
+	"$(INTDIR)\diskimage\rawimage.obj" \
+	"$(INTDIR)\diskimage\realimage.obj" \
 
-"$(OUTDIR)\diskimage.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "diskimage - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\diskimage\Debug
 INTDIR=.\libs\diskimage\Debug
@@ -118,28 +117,26 @@ INTDIR=.\libs\diskimage\Debug
 OutDir=.\libs\diskimage\Debug
 # End Custom Macros
 
-ALL : "$(OUTDIR)\diskimage.lib"
-
+ALL : "$(OUTDIR)\diskimage.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\diskimage.obj"
-	-@erase "$(INTDIR)\fsimage-check.obj"
-	-@erase "$(INTDIR)\fsimage-create.obj"
-	-@erase "$(INTDIR)\fsimage-dxx.obj"
-	-@erase "$(INTDIR)\fsimage-gcr.obj"
-	-@erase "$(INTDIR)\fsimage-p64.obj"
-	-@erase "$(INTDIR)\fsimage-probe.obj"
-	-@erase "$(INTDIR)\fsimage.obj"
-	-@erase "$(INTDIR)\rawimage.obj"
-	-@erase "$(INTDIR)\realimage.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\diskimage\diskimage.obj"
+	-@erase "$(INTDIR)\diskimage\fsimage-check.obj"
+	-@erase "$(INTDIR)\diskimage\fsimage-create.obj"
+	-@erase "$(INTDIR)\diskimage\fsimage-dxx.obj"
+	-@erase "$(INTDIR)\diskimage\fsimage-gcr.obj"
+	-@erase "$(INTDIR)\diskimage\fsimage-p64.obj"
+	-@erase "$(INTDIR)\diskimage\fsimage-probe.obj"
+	-@erase "$(INTDIR)\diskimage\fsimage.obj"
+	-@erase "$(INTDIR)\diskimage\rawimage.obj"
+	-@erase "$(INTDIR)\diskimage\realimage.obj"
 	-@erase "$(OUTDIR)\diskimage.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\diskimage" /I "..\..\..\lib\p64" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\diskimage.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\diskimage "/I "..\..\..\lib\p64 "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\diskimage.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -175,22 +172,23 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\diskimage.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\diskimage.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\diskimage.obj" \
-	"$(INTDIR)\fsimage-check.obj" \
-	"$(INTDIR)\fsimage-create.obj" \
-	"$(INTDIR)\fsimage-dxx.obj" \
-	"$(INTDIR)\fsimage-gcr.obj" \
-	"$(INTDIR)\fsimage-p64.obj" \
-	"$(INTDIR)\fsimage-probe.obj" \
-	"$(INTDIR)\fsimage.obj" \
-	"$(INTDIR)\rawimage.obj" \
-	"$(INTDIR)\realimage.obj"
+	"$(INTDIR)\diskimage\diskimage.obj" \
+	"$(INTDIR)\diskimage\fsimage-check.obj" \
+	"$(INTDIR)\diskimage\fsimage-create.obj" \
+	"$(INTDIR)\diskimage\fsimage-dxx.obj" \
+	"$(INTDIR)\diskimage\fsimage-gcr.obj" \
+	"$(INTDIR)\diskimage\fsimage-p64.obj" \
+	"$(INTDIR)\diskimage\fsimage-probe.obj" \
+	"$(INTDIR)\diskimage\fsimage.obj" \
+	"$(INTDIR)\diskimage\rawimage.obj" \
+	"$(INTDIR)\diskimage\realimage.obj" \
 
-"$(OUTDIR)\diskimage.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -199,63 +197,55 @@ LIB32_OBJS= \
 
 
 !IF "$(CFG)" == "diskimage - Win32 Release" || "$(CFG)" == "diskimage - Win32 Debug"
-SOURCE="..\..\..\diskimage\diskimage.c"
 
-"$(INTDIR)\diskimage.obj" : $(SOURCE) "$(INTDIR)"
+SOURCE=..\..\..\diskimage\diskimage.c
+
+"$(INTDIR)\diskimage\diskimage.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\diskimage\fsimage-check.c
 
-SOURCE="..\..\..\diskimage\fsimage-check.c"
-
-"$(INTDIR)\fsimage-check.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\diskimage\fsimage-check.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\diskimage\fsimage-create.c
 
-SOURCE="..\..\..\diskimage\fsimage-create.c"
-
-"$(INTDIR)\fsimage-create.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\diskimage\fsimage-create.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\diskimage\fsimage-dxx.c
 
-SOURCE="..\..\..\diskimage\fsimage-dxx.c"
-
-"$(INTDIR)\fsimage-dxx.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\diskimage\fsimage-dxx.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\diskimage\fsimage-gcr.c
 
-SOURCE="..\..\..\diskimage\fsimage-gcr.c"
-
-"$(INTDIR)\fsimage-gcr.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\diskimage\fsimage-gcr.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\diskimage\fsimage-p64.c
 
-SOURCE="..\..\..\diskimage\fsimage-p64.c"
-
-"$(INTDIR)\fsimage-p64.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\diskimage\fsimage-p64.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\diskimage\fsimage-probe.c
 
-SOURCE="..\..\..\diskimage\fsimage-probe.c"
-
-"$(INTDIR)\fsimage-probe.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\diskimage\fsimage-probe.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\diskimage\fsimage.c
 
-SOURCE="..\..\..\diskimage\fsimage.c"
-
-"$(INTDIR)\fsimage.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\diskimage\fsimage.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\diskimage\rawimage.c
 
-SOURCE="..\..\..\diskimage\rawimage.c"
-
-"$(INTDIR)\rawimage.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\diskimage\rawimage.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\diskimage\realimage.c
 
-SOURCE="..\..\..\diskimage\realimage.c"
-
-"$(INTDIR)\realimage.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\diskimage\realimage.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

@@ -33,21 +33,19 @@ INTDIR=.\libs\fileio\Release
 OutDir=.\libs\fileio\Release
 # End Custom Macros
 
-ALL : "$(OUTDIR)\fileio.lib"
-
+ALL : "$(OUTDIR)\fileio.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\cbmfile.obj"
-	-@erase "$(INTDIR)\fileio.obj"
-	-@erase "$(INTDIR)\p00.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\fileio\cbmfile.obj"
+	-@erase "$(INTDIR)\fileio\fileio.obj"
+	-@erase "$(INTDIR)\fileio\p00.obj"
 	-@erase "$(OUTDIR)\fileio.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\drive" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\fileio.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\fileio.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -83,20 +81,21 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\fileio.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\fileio.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\cbmfile.obj" \
-	"$(INTDIR)\fileio.obj" \
-	"$(INTDIR)\p00.obj"
+	"$(INTDIR)\fileio\cbmfile.obj" \
+	"$(INTDIR)\fileio\fileio.obj" \
+	"$(INTDIR)\fileio\p00.obj" \
 
-"$(OUTDIR)\fileio.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "fileio - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\fileio\Debug
 INTDIR=.\libs\fileio\Debug
@@ -104,21 +103,19 @@ INTDIR=.\libs\fileio\Debug
 OutDir=.\libs\fileio\Debug
 # End Custom Macros
 
-ALL : "$(OUTDIR)\fileio.lib"
-
+ALL : "$(OUTDIR)\fileio.lib" 
 
 CLEAN :
-	-@erase "$(INTDIR)\cbmfile.obj"
-	-@erase "$(INTDIR)\fileio.obj"
-	-@erase "$(INTDIR)\p00.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\fileio\cbmfile.obj"
+	-@erase "$(INTDIR)\fileio\fileio.obj"
+	-@erase "$(INTDIR)\fileio\p00.obj"
 	-@erase "$(OUTDIR)\fileio.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\drive" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\fileio.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive "/I "..\..\..\vdrive "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\fileio.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -154,15 +151,16 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\fileio.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\fileio.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\cbmfile.obj" \
-	"$(INTDIR)\fileio.obj" \
-	"$(INTDIR)\p00.obj"
+	"$(INTDIR)\fileio\cbmfile.obj" \
+	"$(INTDIR)\fileio\fileio.obj" \
+	"$(INTDIR)\fileio\p00.obj" \
 
-"$(OUTDIR)\fileio.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -171,21 +169,20 @@ LIB32_OBJS= \
 
 
 !IF "$(CFG)" == "fileio - Win32 Release" || "$(CFG)" == "fileio - Win32 Debug"
+
 SOURCE=..\..\..\fileio\cbmfile.c
 
-"$(INTDIR)\cbmfile.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\fileio\cbmfile.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\fileio\fileio.c
 
-SOURCE="..\..\..\fileio\fileio.c"
-
-"$(INTDIR)\fileio.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\fileio\fileio.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\fileio\p00.c
 
-SOURCE="..\..\..\fileio\p00.c"
-
-"$(INTDIR)\p00.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\fileio\p00.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

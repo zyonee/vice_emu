@@ -33,40 +33,39 @@ INTDIR=.\libs\scpu64\Release
 OutDir=.\libs\scpu64\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\scpu64.lib"
+ALL : "$(OUTDIR)\scpu64.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\scpu64.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\scpu64.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\scpu64.obj"
-	-@erase "$(INTDIR)\scpu64-cmdline-options.obj"
-	-@erase "$(INTDIR)\scpu64cpu.obj"
-	-@erase "$(INTDIR)\scpu64gluelogic.obj"
-	-@erase "$(INTDIR)\scpu64mem.obj"
-	-@erase "$(INTDIR)\scpu64meminit.obj"
-	-@erase "$(INTDIR)\scpu64memsnapshot.obj"
-	-@erase "$(INTDIR)\scpu64-resources.obj"
-	-@erase "$(INTDIR)\scpu64rom.obj"
-	-@erase "$(INTDIR)\scpu64-snapshot.obj"
-	-@erase "$(INTDIR)\scpu64stubs.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\scpu64\scpu64.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64-cmdline-options.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64gluelogic.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64mem.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64meminit.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64memsnapshot.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64-resources.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64rom.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64-snapshot.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64stubs.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64cpu.obj"
 	-@erase "$(OUTDIR)\scpu64.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\drive\iec\c64exp" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\viciisc" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\rs232drv" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\scpu64.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64 "/I "..\..\..\c64\cart "/I "..\..\..\drive "/I "..\..\..\drive\iec\c64exp "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\raster "/I "..\..\..\rs232drv "/I "..\..\..\sid "/I "..\..\..\tape "/I "..\..\..\userport "/I "..\..\..\viciisc "/I "..\..\..\video "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\scpu64.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -102,29 +101,30 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\scpu64.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\scpu64.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\scpu64.obj" \
-	"$(INTDIR)\scpu64-cmdline-options.obj" \
-	"$(INTDIR)\scpu64cpu.obj" \
-	"$(INTDIR)\scpu64gluelogic.obj" \
-	"$(INTDIR)\scpu64mem.obj" \
-	"$(INTDIR)\scpu64meminit.obj" \
-	"$(INTDIR)\scpu64memsnapshot.obj" \
-	"$(INTDIR)\scpu64-resources.obj" \
-	"$(INTDIR)\scpu64rom.obj" \
-	"$(INTDIR)\scpu64-snapshot.obj" \
-	"$(INTDIR)\scpu64stubs.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\scpu64\scpu64.obj" \
+	"$(INTDIR)\scpu64\scpu64-cmdline-options.obj" \
+	"$(INTDIR)\scpu64\scpu64gluelogic.obj" \
+	"$(INTDIR)\scpu64\scpu64mem.obj" \
+	"$(INTDIR)\scpu64\scpu64meminit.obj" \
+	"$(INTDIR)\scpu64\scpu64memsnapshot.obj" \
+	"$(INTDIR)\scpu64\scpu64-resources.obj" \
+	"$(INTDIR)\scpu64\scpu64rom.obj" \
+	"$(INTDIR)\scpu64\scpu64-snapshot.obj" \
+	"$(INTDIR)\scpu64\scpu64stubs.obj" \
+	"$(INTDIR)\scpu64\scpu64cpu.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\scpu64.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "scpu64 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\scpu64\Debug
 INTDIR=.\libs\scpu64\Debug
@@ -132,40 +132,39 @@ INTDIR=.\libs\scpu64\Debug
 OutDir=.\libs\scpu64\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\scpu64.lib"
+ALL : "$(OUTDIR)\scpu64.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\scpu64.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\scpu64.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\scpu64.obj"
-	-@erase "$(INTDIR)\scpu64-cmdline-options.obj"
-	-@erase "$(INTDIR)\scpu64cpu.obj"
-	-@erase "$(INTDIR)\scpu64gluelogic.obj"
-	-@erase "$(INTDIR)\scpu64mem.obj"
-	-@erase "$(INTDIR)\scpu64meminit.obj"
-	-@erase "$(INTDIR)\scpu64memsnapshot.obj"
-	-@erase "$(INTDIR)\scpu64-resources.obj"
-	-@erase "$(INTDIR)\scpu64rom.obj"
-	-@erase "$(INTDIR)\scpu64-snapshot.obj"
-	-@erase "$(INTDIR)\scpu64stubs.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\scpu64\scpu64.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64-cmdline-options.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64gluelogic.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64mem.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64meminit.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64memsnapshot.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64-resources.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64rom.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64-snapshot.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64stubs.obj"
+	-@erase "$(INTDIR)\scpu64\scpu64cpu.obj"
 	-@erase "$(OUTDIR)\scpu64.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\drive\iec\c64exp" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\viciisc" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\rs232drv" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\scpu64.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64 "/I "..\..\..\c64\cart "/I "..\..\..\drive "/I "..\..\..\drive\iec\c64exp "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\raster "/I "..\..\..\rs232drv "/I "..\..\..\sid "/I "..\..\..\tape "/I "..\..\..\userport "/I "..\..\..\viciisc "/I "..\..\..\video "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\scpu64.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -201,24 +200,25 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\scpu64.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\scpu64.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\scpu64.obj" \
-	"$(INTDIR)\scpu64-cmdline-options.obj" \
-	"$(INTDIR)\scpu64cpu.obj" \
-	"$(INTDIR)\scpu64gluelogic.obj" \
-	"$(INTDIR)\scpu64mem.obj" \
-	"$(INTDIR)\scpu64meminit.obj" \
-	"$(INTDIR)\scpu64memsnapshot.obj" \
-	"$(INTDIR)\scpu64-resources.obj" \
-	"$(INTDIR)\scpu64rom.obj" \
-	"$(INTDIR)\scpu64-snapshot.obj" \
-	"$(INTDIR)\scpu64stubs.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\scpu64\scpu64.obj" \
+	"$(INTDIR)\scpu64\scpu64-cmdline-options.obj" \
+	"$(INTDIR)\scpu64\scpu64gluelogic.obj" \
+	"$(INTDIR)\scpu64\scpu64mem.obj" \
+	"$(INTDIR)\scpu64\scpu64meminit.obj" \
+	"$(INTDIR)\scpu64\scpu64memsnapshot.obj" \
+	"$(INTDIR)\scpu64\scpu64-resources.obj" \
+	"$(INTDIR)\scpu64\scpu64rom.obj" \
+	"$(INTDIR)\scpu64\scpu64-snapshot.obj" \
+	"$(INTDIR)\scpu64\scpu64stubs.obj" \
+	"$(INTDIR)\scpu64\scpu64cpu.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\scpu64.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -254,70 +254,79 @@ LIB32_OBJS= \
 
 !ENDIF 
 
-SOURCE="..\..\..\scpu64\scpu64.c"
+SOURCE=..\..\..\scpu64\scpu64.c
 
-"$(INTDIR)\scpu64.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\scpu64\scpu64.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\scpu64\scpu64-cmdline-options.c
 
-SOURCE="..\..\..\scpu64\scpu64-cmdline-options.c"
-
-"$(INTDIR)\scpu64-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\scpu64\scpu64-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\scpu64\scpu64gluelogic.c
 
-SOURCE="..\..\..\scpu64\scpu64cpu.c"
-
-"$(INTDIR)\scpu64cpu.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\scpu64\scpu64gluelogic.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\scpu64\scpu64mem.c
 
-SOURCE="..\..\..\scpu64\scpu64gluelogic.c"
-
-"$(INTDIR)\scpu64gluelogic.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\scpu64\scpu64mem.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\scpu64\scpu64meminit.c
 
-SOURCE="..\..\..\scpu64\scpu64mem.c"
-
-"$(INTDIR)\scpu64mem.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\scpu64\scpu64meminit.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\scpu64\scpu64memsnapshot.c
 
-SOURCE="..\..\..\scpu64\scpu64meminit.c"
-
-"$(INTDIR)\scpu64meminit.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\scpu64\scpu64memsnapshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\scpu64\scpu64-resources.c
 
-SOURCE="..\..\..\scpu64\scpu64memsnapshot.c"
-
-"$(INTDIR)\scpu64memsnapshot.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\scpu64\scpu64-resources.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\scpu64\scpu64rom.c
 
-SOURCE="..\..\..\scpu64\scpu64-resources.c"
-
-"$(INTDIR)\scpu64-resources.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\scpu64\scpu64rom.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\scpu64\scpu64-snapshot.c
 
-SOURCE="..\..\..\scpu64\scpu64rom.c"
-
-"$(INTDIR)\scpu64rom.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\scpu64\scpu64-snapshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\scpu64\scpu64stubs.c
 
-SOURCE="..\..\..\scpu64\scpu64-snapshot.c"
-
-"$(INTDIR)\scpu64-snapshot.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\scpu64\scpu64stubs.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\scpu64\scpu64cpu.c
 
-SOURCE="..\..\..\scpu64\scpu64stubs.c"
+!IF  "$(CFG)" == "scpu64 - Win32 Release"
 
-"$(INTDIR)\scpu64stubs.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+CPP_SWITCHES=/nologo /MD /W3 /GX /Ot /Oa /Ow /Oi /Op /Oy /Ob2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\drive\iec\c64exp" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\rs232drv" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\userport" /I "..\..\..\viciisc" /I "..\..\..\video" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\scpu64.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+
+"$(INTDIR)\scpu64\scpu64cpu.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) @<<
+  $(CPP_SWITCHES) $(SOURCE)
+<<
+
+!ELSEIF  "$(CFG)" == "scpu64 - Win32 Debug"
+
+
+CPP_SWITCHES=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\drive\iec\c64exp" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\rs232drv" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\userport" /I "..\..\..\viciisc" /I "..\..\..\video" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\scpu64.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+
+"$(INTDIR)\scpu64\scpu64cpu.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) @<<
+  $(CPP_SWITCHES) $(SOURCE)
+<<
+
+!ENDIF 
 
 
 

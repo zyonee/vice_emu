@@ -24,100 +24,6 @@
  *
  */
 
-/* Tested and confirmed working for:
-   version    | platform | type
-   ---------------------------------------
-   6 (1200)   |    x86   | Release
-   6 (1200)   |    x86   | Debug
-   6 (1200)   |    x86   | DX-Release
-   6 (1200)   |    x86   | DX-Debug
-   6 (1200)   |    x86   | SDL-Release
-   6 (1200)   |    x86   | SDL-Debug
-   7.0 (1300) |    x86   | Release
-   7.0 (1300) |    x86   | Debug
-   7.0 (1300) |    x86   | DX-Release
-   7.0 (1300) |    x86   | DX-Debug
-   7.0 (1300) |    x86   | SDL-Release
-   7.0 (1300) |    x86   | SDL-Debug
-   7.1 (1310) |    x86   | Release
-   7.1 (1310) |    x86   | Debug
-   7.1 (1310) |    x86   | DX-Release
-   7.1 (1310) |    x86   | DX-Debug
-   7.1 (1310) |    x86   | SDL-Release
-   7.1 (1310) |    x86   | SDL-Debug
-   8 (1400)   |    x86   | Release
-   8 (1400)   |    x86   | Debug
-   8 (1400)   |    x86   | DX-Release
-   8 (1400)   |    x86   | DX-Debug
-   8 (1400)   |    x86   | SDL-Release
-   8 (1400)   |    x86   | SDL-Debug
-   8 (1400)   |    x64   | Release
-   8 (1400)   |    x64   | Debug
-   8 (1400)   |    x64   | DX-Release
-   8 (1400)   |    x64   | DX-Debug
-   8 (1400)   |    x64   | SDL-Release
-   8 (1400)   |    x64   | SDL-Debug
-   8 (1400)   |    ia64  | Release
-   8 (1400)   |    ia64  | Debug
-   8 (1400)   |    ia64  | DX-Release
-   8 (1400)   |    ia64  | DX-Debug
-   8 (1400)   |    ia64  | SDL-Release
-   8 (1400)   |    ia64  | SDL-Debug
- */
-
-/* Untested:
-   version | platform | type
-   -------------------------
-      9    |    x86   | Release
-      9    |    x86   | Debug
-      9    |    x86   | DX-Release
-      9    |    x86   | DX-Debug
-      9    |    x86   | SDL-Release
-      9    |    x86   | SDL-Debug
-      9    |    x64   | Release
-      9    |    x64   | Debug
-      9    |    x64   | DX-Release
-      9    |    x64   | DX-Debug
-      9    |    x64   | SDL-Release
-      9    |    x64   | SDL-Debug
-      9    |    ia64  | Release
-      9    |    ia64  | Debug
-      9    |    ia64  | DX-Release
-      9    |    ia64  | DX-Debug
-      9    |    ia64  | SDL-Release
-      9    |    ia64  | SDL-Debug
-     10    |    x86   | Release
-     10    |    x86   | Debug
-     10    |    x86   | DX-Release
-     10    |    x86   | DX-Debug
-     10    |    x86   | SDL-Release
-     10    |    x86   | SDL-Debug
-     10    |    x64   | Release
-     10    |    x64   | Debug
-     10    |    x64   | DX-Release
-     10    |    x64   | DX-Debug
-     10    |    x64   | SDL-Release
-     10    |    x64   | SDL-Debug
-     10    |    ia64  | Release
-     10    |    ia64  | Debug
-     10    |    ia64  | DX-Release
-     10    |    ia64  | DX-Debug
-     10    |    ia64  | SDL-Release
-     10    |    ia64  | SDL-Debug
-     11    |    x86   | Release
-     11    |    x86   | Debug
-     11    |    x86   | DX-Release
-     11    |    x86   | DX-Debug
-     11    |    x86   | SDL-Release
-     11    |    x86   | SDL-Debug
-     11    |    x64   | Release
-     11    |    x64   | Debug
-     11    |    x64   | DX-Release
-     11    |    x64   | DX-Debug
-     11    |    x64   | SDL-Release
-     11    |    x64   | SDL-Debug
- */
-
 #include <stdio.h>
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -369,6 +275,80 @@ static int test_win32_exception(char *name)
     }
 
     return 0;
+}
+
+/* ---------------------------------------------------------------------- */
+
+static int read_template_file(char *fname, int sdl);
+
+static char *project_lib_type[MAX_NAMES];
+
+static int is_lib_type(char *name)
+{
+    int i;
+
+    if (project_lib_type[0]) {
+        for (i = 0; project_lib_type[i]; i++) {
+            if (!strcmp(project_lib_type[i], name)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+static int insert_lib_type(char *name)
+{
+    int i = 0;
+
+    /* No resid* projects for winmips */
+    if (!strncmp(name, "resid", 5)) {
+        return 0;
+    }
+
+    if (project_lib_type[0]) {
+        for (i = 0; project_lib_type[i]; i++) {
+        }
+    } 
+    project_lib_type[i] = strdup(name);
+    project_lib_type[i + 1] = NULL;
+
+    return 0;
+}
+
+static void free_preparse(void)
+{
+    int i;
+
+    if (project_lib_type[0]) {
+        for (i = 0; project_lib_type[i]; i++) {
+            free(project_lib_type[i]);
+        }
+    }
+}
+
+static int preparse_project(char *name)
+{
+    int error = read_template_file(name, 1);
+
+    if (!error && (cp_type == CP_TYPE_LIBRARY)) {
+        error = insert_lib_type(cp_name);
+    }
+
+    if (cp_libs) {
+        free(cp_libs);
+        cp_libs = NULL;
+    }
+
+    if (read_buffer) {
+        free(read_buffer);
+        read_buffer = NULL;
+        read_buffer_line = 0;
+        read_buffer_pos = 0;
+        read_buffer_len = 0;
+    }
+
+    return error;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -4098,6 +4078,631 @@ static int output_msvc6_file(char *fname, int filelist, int sdl)
 
 /* ---------------------------------------------------------------------- */
 
+static char *msvc4_project_start = "# Microsoft Developer Studio Generated NMAKE File, Based on %s.dsp\r\n"
+                                   "!IF \"$(CFG)\" == \"\"\r\n"
+                                   "CFG=%s - Win32 Release\r\n"
+                                   "!MESSAGE No configuration specified. Defaulting to %s - Win32 Release.\r\n"
+                                   "!ENDIF \r\n\r\n"
+                                   "!IF \"$(CFG)\" != \"%s - Win32 Release\" && \"$(CFG)\" != \"%s - Win32 Debug\"\r\n"
+                                   "!MESSAGE Invalid configuration \"$(CFG)\" specified.\r\n"
+                                   "!MESSAGE You can specify a configuration when running NMAKE\r\n"
+                                   "!MESSAGE by defining the macro CFG on the command line. For example:\r\n"
+                                   "!MESSAGE \r\n"
+                                   "!MESSAGE NMAKE /f \"%s.mak\" CFG=\"%s - Win32 Debug\"\r\n"
+                                   "!MESSAGE \r\n"
+                                   "!MESSAGE Possible choices for configuration are:\r\n"
+                                   "!MESSAGE \r\n";
+
+static char *msvc4_based_on_gui = "!MESSAGE \"%s - Win32 Release\" (based on \"Win32 (x86) Application\")\r\n"
+                                  "!MESSAGE \"%s - Win32 Debug\" (based on \"Win32 (x86) Application\")\r\n";
+
+static char *msvc4_based_on_console = "!MESSAGE \"%s - Win32 Release\" (based on \"Win32 (x86) Console Application\")\r\n"
+                                      "!MESSAGE \"%s - Win32 Debug\" (based on \"Win32 (x86) Console Application\")\r\n";
+
+static char *msvc4_based_on_lib = "!MESSAGE \"%s - Win32 Release\" (based on \"Win32 (x86) Static Library\")\r\n"
+                                  "!MESSAGE \"%s - Win32 Debug\" (based on \"Win32 (x86) Static Library\")\r\n";
+
+static char *msvc4_project_part2 = "!MESSAGE \r\n"
+                                   "!ERROR An invalid configuration is specified.\r\n"
+                                   "!ENDIF \r\n"
+                                   "\r\n"
+                                   "!IF \"$(OS)\" == \"Windows_NT\"\r\n"
+                                   "NULL=\r\n"
+                                   "!ELSE \r\n"
+                                   "NULL=nul\r\n"
+                                   "!ENDIF \r\n"
+                                   "\r\n";
+
+static char *msvc4_ifs[2] = {
+    "!IF  \"$(CFG)\" == \"%s - Win32 Release\"\r\n\r\n",
+    "!ELSEIF  \"$(CFG)\" == \"%s - Win32 Debug\"\r\n\r\n"
+};
+
+static char *msvc4_type[2] = {
+    "Release",
+    "Debug"
+};
+
+static char *msvc4_outdir_app = "OUTDIR=.\\..\\..\\..\\..\\data\r\n";
+
+static char *msvc4_outdir_lib = "OUTDIR=.\\libs\\%s\\%s\r\n";
+
+static char *msvc4_intdir = "INTDIR=.\\libs\\%s\\%s\r\n"
+                            "# Begin Custom Macros\r\n";
+
+static char *msvc4_outdir_app_small = "OutDir=.\\..\\..\\..\\..\\data\r\n";
+
+static char *msvc4_outdir_lib_small = "OutDir=.\\libs\\%s\\%s\r\n";
+
+static char *msvc4_ecm = "# End Custom Macros\r\n"
+                         "\r\n";
+
+static char *msvc4_rec_if_0 = "!IF \"$(RECURSE)\" == \"0\"\r\n"
+                              "\r\n";
+
+static char *msvc4_all = "ALL : ";
+
+static char *msvc4_rec_else = "\r\n\r\n"
+                              "!ELSE \r\n"
+                              "\r\n";
+
+static char *msvc4_double_end = "\r\n\r\n";
+
+static char *msvc4_rec_endif = "\r\n"
+                               "\r\n"
+                               "!ENDIF \r\n"
+                               "\r\n";
+
+static char *msvc4_rec_if_1 = "!IF \"$(RECURSE)\" == \"1\"\r\n";
+
+static char *msvc4_clean = "CLEAN :";
+
+static char *msvc4_else_clean_endif = "\r\n"
+                                      "!ELSE \r\n"
+                                      "CLEAN :\r\n"
+                                      "!ENDIF \r\n";
+
+static char *msvc4_clean_newline = "CLEAN :\r\n";
+
+static char *msvc4_erase = "\t-@erase \r\n";
+
+static char *msvc4_erase_object = "\t-@erase \"$(INTDIR)\\%s.obj\"\r\n";
+
+static char *msvc4_erase_lib = "\t-@erase \"$(OUTDIR)\\%s.lib\"\r\n";
+
+static char *msvc4_erase_exe = "\t-@erase \"$(OUTDIR)\\%s.exe\"\r\n";
+
+static char *msvc4_erase_exe_debug = "\t-@erase \"$(OUTDIR)\\%s.ilk\"\r\n"
+                                     "\t-@erase \"$(OUTDIR)\\%s.pdb\"\r\n";
+
+static char *msvc4_erase_custom = "\t-@erase \"%s\"\r\n";
+
+static char *msvc4_mkdir_outdir = "\r\n"
+                                  "\"$(OUTDIR)\" :\r\n"
+                                  "    if not exist \"$(OUTDIR)/$(NULL)\" mkdir \"$(OUTDIR)\"\r\n"
+                                  "\r\n";
+
+static char *msvc4_mkdir_intdir = "\"$(INTDIR)\" :\r\n"
+                                  "    if not exist \"$(INTDIR)/$(NULL)\" mkdir \"$(INTDIR)\"\r\n"
+                                  "\r\n";
+
+static char *msvc4_cpp_start = "CPP=cl.exe\r\n"
+                               "CPP_PROJ=/nologo ";
+
+static char *msvc4_flags[2] = {
+    "/MD /W3 /GX /O2 ",
+    "/MDd /W3 /GX /Z7 /Od "
+};
+
+static char *msvc4_standard_inc = "/I \".\\\\\" /I \"..\\\\\" /I \"..\\..\\..\\\\\" ";
+
+static char *msvc4_standard_defs = "/D \"WIN32\" /D \"WINMIPS\" /D \"IDE_COMPILE\" /D \"_WINDOWS\" /D \"DONT_USE_UNISTD_H\" ";
+
+static char *msvc4_console_defs = "/D \"_CONSOLE\" /D \"_MBCS\" ";
+
+static char *msvc4_debug_defs[2] = {
+    "/D \"NDEBUG\" ",
+    "/D \"_DEBUG\" "
+};
+
+static char *msvc4_other_flags = "/Fp\"$(INTDIR)\\%s.pch\" /YX /Fo\"$(INTDIR)\\\\\" /Fd\"$(INTDIR)\\\\\"  /c \r\n"
+                                 "\r\n"
+                                 ".c{$(INTDIR)}.obj :\r\n"
+                                 "   $(CPP) @<<\r\n"
+                                 "   $(CPP_PROJ) $< \r\n"
+                                 "<<\r\n"
+                                 "\r\n"
+                                 ".cpp{$(INTDIR)}.obj :\r\n"
+                                 "   $(CPP) @<<\r\n"
+                                 "   $(CPP_PROJ) $< \r\n"
+                                 "<<\r\n"
+                                 "\r\n"
+                                 ".cxx{$(INTDIR)}.obj :\r\n"
+                                 "   $(CPP) @<<\r\n"
+                                 "   $(CPP_PROJ) $< \r\n"
+                                 "<<\r\n"
+                                 "\r\n"
+                                 ".c{$(INTDIR)}.sbr :\r\n"
+                                 "   $(CPP) @<<\r\n"
+                                 "   $(CPP_PROJ) $< \r\n"
+                                 "<<\r\n"
+                                 "\r\n"
+                                 ".cpp{$(INTDIR)}.sbr :\r\n"
+                                 "   $(CPP) @<<\r\n"
+                                 "   $(CPP_PROJ) $< \r\n"
+                                 "<<\r\n"
+                                 "\r\n"
+                                 ".cxx{$(INTDIR)}.sbr :\r\n"
+                                 "   $(CPP) @<<\r\n"
+                                 "   $(CPP_PROJ) $< \r\n"
+                                 "<<\r\n"
+                                 "\r\n";
+
+static char *msvc4_mtl_gui = "MTL=midl.exe\r\n"
+                             "MTL_PROJ=/nologo %s/mktyplib203 /o \"NUL\" /win32 \r\n";
+
+
+static char *msvc4_rsc_bsc32 = "RSC=rc.exe\r\n"
+                               "BSC32=bscmake.exe\r\n"
+                               "BSC32_FLAGS=/nologo /o\"$(OUTDIR)\\%s.bsc\" \r\n"
+                               "BSC32_SBRS= \\\r\n"
+                               "\r\n";
+
+static char *msvc4_lib32 = "LIB32=link.exe -lib\r\n"
+                           "LIB32_FLAGS=/nologo /out:\"$(OUTDIR)\\%s.lib\" \r\n"
+                           "LIB32_OBJS= \\\r\n";
+
+static char *msvc4_lib32_end = "\r\n"
+                               "\r\n"
+                               "\"$(OUTDIR)\\%s.lib\" : \"$(OUTDIR)\" $(DEF_FILE) $(LIB32_OBJS)\r\n"
+                               "    $(LIB32) @<<\r\n"
+                               "  $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)\r\n"
+                               "<<\r\n"
+                               "\r\n";
+
+static char *msvc4_link32 = "LINK32=link.exe\r\n"
+                            "LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib comctl32.lib winmm.lib ole32.lib oleaut32.lib uuid.lib wsock32.lib version.lib SDLmain.lib SDL.lib opengl32.lib /nologo ";
+
+static char *msvc4_subsystem_gui = "/subsystem:windows ";
+
+static char *msvc4_subsystem_console = "/subsystem:console ";
+
+static char *msvc4_incremental_debug[2] = {
+    "/incremental:no ",
+    "/incremental:yes "
+};
+
+static char *msvc4_pdb = "/pdb:\"$(OUTDIR)\\%s.pdb\" %s/machine:MIPS %s/out:\"$(OUTDIR)\\%s.exe\" %s\r\n"
+                         "LINK32_OBJS= \\\r\n";
+
+static char *msvc4_exe32 = "\"$(OUTDIR)\\%s.exe\" : \"$(OUTDIR)\" $(DEF_FILE) $(LINK32_OBJS)\r\n"
+                           "    $(LINK32) @<<\r\n"
+                           "  $(LINK32_FLAGS) $(LINK32_OBJS)\r\n"
+                           "<<\r\n"
+                           "\r\n";
+
+static char *msvc4_post_custom = "InputPath=%s\r\n"
+                                 "SOURCE=\"$(InputPath)\"\r\n"
+                                 "\r\n"
+                                 "\"%s\" : $(SOURCE) \"$(INTDIR)\" \"$(OUTDIR)\"\r\n"
+                                 "\t<<tempfile.bat \r\n"
+                                 "\t@echo off \r\n"
+                                 "\t%s\r\n"
+                                 "<< \r\n"
+                                 "\r\n"
+                                 "\r\n";
+
+static char *msvc4_endif_double_end = "!ENDIF \r\n"
+                                      "\r\n"
+                                      "\r\n";
+
+static char *msvc4_global_if = "!IF \"$(CFG)\" == \"%s - Win32 Release\" || \"$(CFG)\" == \"%s - Win32 Debug\"\r\n"
+                               "\r\n";
+
+static char *msvc4_global_make = "\"%s - Win32 %s\" : \r\n"
+                                 "   cd \".\"\r\n"
+                                 "   $(MAKE) /$(MAKEFLAGS) /F \".\\%s.mak\" CFG=\"%s - Win32 %s\" \r\n"
+                                 "   cd \".\"\r\n"
+                                 "\r\n"
+                                 "\"%s - Win32 %sCLEAN\" : \r\n"
+                                 "   cd \".\"\r\n"
+                                 "   $(MAKE) /$(MAKEFLAGS) /F \".\\%s.mak\" CFG=\"%s - Win32 %s\" RECURSE=1 CLEAN \r\n"
+                                 "   cd \".\"\r\n"
+                                 "\r\n";
+
+static char *msvc4_endif_single_end = "!ENDIF \r\n"
+                                      "\r\n";
+
+static char *msvc4_source_build = "SOURCE=..\\..\\..\\%s\r\n"
+                                  "\r\n"
+                                  "\"$(INTDIR)\\%s.obj\" : $(SOURCE) \"$(INTDIR)\"\r\n"
+                                  "\t$(CPP) $(CPP_PROJ) $(SOURCE)\r\n"
+                                  "\r\n";
+
+static char *msvc4_cpu_source_start = "SOURCE=..\\..\\..\\%s\r\n"
+                                      "\r\n";
+
+static char *msvc4_cpp_switch_start = "\r\n"
+                                      "CPP_SWITCHES=/nologo ";
+
+static char *msvc4_cpp_switch_flags[2] = {
+    "/MD /W3 /GX /Ot /Oa /Ow /Oi /Op /Oy /Ob2 ",
+    "/MDd /W3 /GX /Z7 /Od "
+};
+
+static char *msvc4_cpu_source_flags = "/Fp\"$(INTDIR)\\%s.pch\" /YX /Fo\"$(INTDIR)\\\\\" /Fd\"$(INTDIR)\\\\\"  /c \r\n"
+                                      "\r\n"
+                                      "\"$(INTDIR)\\%s.obj\" : $(SOURCE) \"$(INTDIR)\"\r\n"
+                                      "\t$(CPP) @<<\r\n"
+                                      "  $(CPP_SWITCHES) $(SOURCE)\r\n"
+                                      "<<\r\n"
+                                      "\r\n";
+
+static char *msvc4_custom_source = "InputDir=..\\..\\..\r\n"
+                                   "InputPath=\"%s\"\r\n"
+                                   "USERDEP__SRC=\"%s\"\r\n"
+                                   "\r\n"
+                                   "\"%s\" : $(SOURCE) \"$(INTDIR)\" \"$(OUTDIR)\" $(USERDEP__SRC)\r\n"
+                                   "\t<<tempfile.bat \r\n"
+                                   "\t@echo off \r\n"
+                                   "\t%s\r\n"
+                                   "<< \r\n"
+                                   "\r\n"
+                                   "\r\n";
+
+static char *msvc4_strip_c_extension(char *name)
+{
+    char *new_name = NULL;
+    int len = 0;
+
+    if (!name) {
+        return NULL;
+    }
+
+    len = strlen(name);
+
+    if (len < 3) {
+        return NULL;
+    }
+
+    if (name[len - 2] != '.' || name[len - 1] != 'c') {
+        return NULL;
+    }
+
+    new_name = strndup(name, len - 2);
+
+    return new_name;
+}
+
+static void msvc4_output_all_phase1(FILE *outfile)
+{
+    if (cp_custom_output) {
+        fprintf(outfile, "\"%s\" ", cp_custom_output);
+    }
+    if (cp_type == CP_TYPE_LIBRARY) {
+        fprintf(outfile, "\"$(OUTDIR)\\%s.lib\" ", cp_name);
+    } else {
+        if (cp_source_names[0] || cp_sdl_source_names[0]) {
+            fprintf(outfile, "\"$(OUTDIR)\\%s.exe\" ", cp_name);
+        }
+    }
+    if (cp_post_custom_output) {
+        fprintf(outfile, "\"%s\" ", cp_post_custom_output);
+    }
+}
+
+static int output_msvc4_file(char *fname, int filelist)
+{
+    char *filename;
+    int retval = 0;
+    FILE *outfile = NULL;
+    int i, j, k;
+    int libs_dep_count = 0;
+    char *rfname;
+    char *new_name = NULL;
+
+    if (!strcmp(fname, "arch_native") || !strcmp(fname, "arch_sdl")) {
+        rfname = "arch";
+    } else {
+        rfname = fname;
+    }
+
+    if (filelist) {
+        filename = malloc(strlen(rfname) + sizeof("../../sdl/winmips-msvc/.mak"));
+        sprintf(filename, "../../sdl/winmips-msvc/%s.mak", rfname);
+    } else {
+        filename = malloc(strlen(rfname) + sizeof(".mak"));
+        sprintf(filename, "%s.mak", rfname);
+    }
+
+    outfile = fopen(filename, "wb");
+    if (!outfile) {
+        printf("Cannot open %s for output\n", filename);
+        retval = 1;
+    }
+
+    if (!retval) {
+        if (cp_dep_names[0]) {
+            for (j = 0; cp_dep_names[j]; j++) {
+                libs_dep_count += is_lib_type(cp_dep_names[j]);
+            }
+        }
+        fprintf(outfile, msvc4_project_start, cp_name, cp_name, cp_name, cp_name, cp_name, cp_name, cp_name);
+        switch (cp_type) {
+            default:
+            case CP_TYPE_GUI:
+                fprintf(outfile, msvc4_based_on_gui, cp_name, cp_name);
+                break;
+            case CP_TYPE_CONSOLE:
+                fprintf(outfile, msvc4_based_on_console, cp_name, cp_name);
+                break;
+            case CP_TYPE_LIBRARY:
+                fprintf(outfile, msvc4_based_on_lib, cp_name, cp_name);
+                break;
+        }
+        fprintf(outfile, msvc4_project_part2);
+        for (i = 0; i < 2; i++) {
+            fprintf(outfile, msvc4_ifs[i]);
+            if (cp_type == CP_TYPE_LIBRARY) {
+                fprintf(outfile, msvc4_outdir_lib, cp_name, msvc4_type[i]);
+            } else {
+                fprintf(outfile, msvc4_outdir_app);
+            }
+            fprintf(outfile, msvc4_intdir, cp_name, msvc4_type[i]);
+            if (cp_type == CP_TYPE_LIBRARY) {
+                fprintf(outfile, msvc4_outdir_lib_small, cp_name, msvc4_type[i]);
+            } else {
+                fprintf(outfile, msvc4_outdir_app_small);
+            }
+            fprintf(outfile, msvc4_ecm);
+            if (cp_dep_names[0]) {
+                fprintf(outfile, msvc4_rec_if_0);
+                fprintf(outfile, msvc4_all);
+                msvc4_output_all_phase1(outfile);
+                fprintf(outfile, msvc4_rec_else);
+                fprintf(outfile, msvc4_all);
+                for (j = 0; cp_dep_names[j]; j++) {
+                    if (strncmp(cp_dep_names[j], "resid", 5)) {
+                        fprintf(outfile, "\"%s - Win32 %s\" ", cp_dep_names[j], msvc4_type[i]);
+                    }
+                }
+                msvc4_output_all_phase1(outfile);
+                fprintf(outfile, msvc4_rec_endif);
+                fprintf(outfile, msvc4_rec_if_1);
+                fprintf(outfile, msvc4_clean);
+                j--;
+                while (j != -1) {
+                    if (strncmp(cp_dep_names[j], "resid", 5)) {
+                        fprintf(outfile, "\"%s - Win32 %sCLEAN\" ", cp_dep_names[j], msvc4_type[i]);
+                    }
+                    j--;
+                }
+                fprintf(outfile, msvc4_else_clean_endif);
+            } else {
+                fprintf(outfile, msvc4_all);
+                msvc4_output_all_phase1(outfile);
+                fprintf(outfile, msvc4_double_end);
+                fprintf(outfile, msvc4_clean_newline);
+            }
+            if (cp_source_names[0] || cp_sdl_source_names[0]) {
+                if (cp_source_names[0]) {
+                    for (j = 0; cp_source_names[j]; j++) {
+                        new_name = msvc4_strip_c_extension(cp_source_names[j]);
+                        if (new_name) {
+                            fprintf(outfile, msvc4_erase_object, new_name);
+                            free(new_name);
+                        }
+                    }
+                }
+                if (cp_sdl_source_names[0]) {
+                    for (j = 0; cp_sdl_source_names[j]; j++) {
+                        new_name = msvc4_strip_c_extension(cp_sdl_source_names[j]);
+                        if (new_name) {
+                            fprintf(outfile, msvc4_erase_object, new_name);
+                            free(new_name);
+                        }
+                    }
+                }
+                if (cp_cpusource_names[0]) {
+                    for (j = 0; cp_cpusource_names[j]; j++) {
+                        new_name = msvc4_strip_c_extension(cp_cpusource_names[j]);
+                        if (new_name) {
+                            fprintf(outfile, msvc4_erase_object, new_name);
+                            free(new_name);
+                        }
+                    }
+                }
+                if (cp_type == CP_TYPE_LIBRARY) {
+                    fprintf(outfile, msvc4_erase_lib, cp_name);
+                } else {
+                    fprintf(outfile, msvc4_erase_exe, cp_name);
+                    if (i & 1) {
+                        fprintf(outfile, msvc4_erase_exe_debug, cp_name, cp_name);
+                    }
+                }
+                if (cp_custom_output) {
+                    fprintf(outfile, msvc4_erase_custom, cp_custom_output);
+                }
+                if (cp_post_custom_output) {
+                    fprintf(outfile, msvc4_erase_custom, cp_post_custom_output);
+                }
+            } else {
+                fprintf(outfile, msvc4_erase);
+            }
+            fprintf(outfile, msvc4_mkdir_outdir);
+            if (cp_type != CP_TYPE_LIBRARY && cp_source_names[0]) {
+                fprintf(outfile, msvc4_mkdir_intdir);
+            }
+            fprintf(outfile, msvc4_cpp_start);
+            fprintf(outfile, msvc4_flags[i]);
+            fprintf(outfile, msvc4_standard_inc);
+            if (cp_include_dirs[0]) {
+                for (j = 0; cp_include_dirs[j]; j++) {
+                    fprintf(outfile, "/I \"..\\..\\..\\%s \"", cp_include_dirs[j]);
+                }
+            }
+            fprintf(outfile, msvc4_standard_defs);
+            if (cp_type == CP_TYPE_CONSOLE) {
+                fprintf(outfile, msvc4_console_defs);
+            }
+            fprintf(outfile, msvc4_debug_defs[i]);
+            fprintf(outfile, msvc4_other_flags, cp_name);
+            if (cp_type == CP_TYPE_GUI) {
+                fprintf(outfile, msvc4_mtl_gui, msvc4_debug_defs[i]);
+            }
+            fprintf(outfile, msvc4_rsc_bsc32, cp_name);
+            if (cp_type == CP_TYPE_LIBRARY) {
+                fprintf(outfile, msvc4_lib32, cp_name);
+            } else {
+                fprintf(outfile, msvc4_link32);
+                if (cp_type == CP_TYPE_GUI) {
+                    fprintf(outfile, msvc4_subsystem_gui);
+                } else {
+                    fprintf(outfile, msvc4_subsystem_console);
+                }
+                fprintf(outfile, msvc4_incremental_debug[i]);
+                fprintf(outfile, msvc4_pdb, cp_name, (i & 1) ? "/debug " : "", (i & 1) ? "/nodefaultlib:\"msvcrt.lib\" " : "", cp_name, (i & 1) ? "/pdbtype:sept" : "");
+            }
+            if (cp_source_names[0]) {
+                for (j = 0; cp_source_names[j]; j++) {
+                new_name = msvc4_strip_c_extension(cp_source_names[j]);
+                if (new_name) {
+                        fprintf(outfile, "\t\"$(INTDIR)\\%s.obj\" \\\r\n", new_name);
+                        free(new_name);
+                    }
+                }
+                if (cp_sdl_source_names[0]) {
+                    for (j = 0; cp_sdl_source_names[j]; j++) {
+                        new_name = msvc4_strip_c_extension(cp_sdl_source_names[j]);
+                        if (new_name) {
+                            fprintf(outfile, "\t\"$(INTDIR)\\%s.obj\" \\\r\n", new_name);
+                            free(new_name);
+                        }
+                    }
+                }
+                if (cp_cpusource_names[0]) {
+                    for (j = 0; cp_cpusource_names[j]; j++) {
+                        new_name = msvc4_strip_c_extension(cp_cpusource_names[j]);
+                        if (new_name) {
+                            fprintf(outfile, "\t\"$(INTDIR)\\%s.obj\" \\\r\n", new_name);
+                            free(new_name);
+                        }
+                    }
+                }
+                if (libs_dep_count) {
+                    for (j = 0; cp_dep_names[j]; j++) {
+                        if (is_lib_type(cp_dep_names[j])) {
+                            fprintf(outfile, "\t\".\\libs\%s\\%s\\%s.lib\" \\\r\n", cp_dep_names[j], msvc4_type[i], cp_dep_names[j]);
+                        }
+                    }
+                }
+                if (cp_type == CP_TYPE_LIBRARY) {
+                    fprintf(outfile, msvc4_lib32_end, msvc4_type[i], cp_name, cp_name);
+                } else {
+                    fprintf(outfile, msvc4_double_end);
+                    if (cp_source_names[0]) {
+                        fprintf(outfile, msvc4_exe32, cp_name);
+                    }
+                    if (cp_post_custom_source) {
+                        fprintf(outfile, msvc4_post_custom, cp_post_custom_source, cp_post_custom_output, cp_post_custom_command);
+                    }
+                }
+            }
+        }
+        fprintf(outfile, msvc4_endif_double_end);
+        if (cp_source_names[0] || cp_dep_names[0]) {
+            fprintf(outfile, msvc4_global_if, cp_name, cp_name);
+            if (cp_dep_names[0]) {
+                for (j = 0; cp_dep_names[j]; j++) {
+                    if (strncmp(cp_dep_names[j], "resid", 5)) {
+                        for (i = 0; i < 2; i++) {
+                            fprintf(outfile, msvc4_ifs[i], cp_name);
+                            fprintf(outfile, msvc4_global_make, cp_dep_names[j], msvc4_type[i], cp_dep_names[j], cp_dep_names[j], msvc4_type[i], cp_dep_names[j], msvc4_type[i], cp_dep_names[j], cp_dep_names[j], msvc4_type[i]);
+                        }
+                        fprintf(outfile, msvc4_endif_single_end);
+                    }
+                }
+            }
+            if (cp_source_names[0]) {
+                for (j = 0; cp_source_names[j]; j++) {
+                    new_name = msvc4_strip_c_extension(cp_source_names[j]);
+                    if (new_name) {
+                        fprintf(outfile, msvc4_source_build, cp_source_names[j], new_name);
+                        free(new_name);
+                    }
+                }
+            }
+            if (cp_sdl_source_names[0]) {
+                for (j = 0; cp_sdl_source_names[j]; j++) {
+                    new_name = msvc4_strip_c_extension(cp_sdl_source_names[j]);
+                    if (new_name) {
+                        fprintf(outfile, msvc4_source_build, cp_source_names[j], new_name);
+                        free(new_name);
+                    }
+                }
+            }
+            if (cp_cpusource_names[0]) {
+                for (j = 0; cp_cpusource_names[j]; j++) {
+                    fprintf(outfile, msvc4_cpu_source_start, cp_cpusource_names[j]);
+                    for (i = 0; i < 2; i++) {
+                        fprintf(outfile, msvc4_ifs[i], cp_name);
+                        fprintf(outfile, msvc4_cpp_switch_start);
+                        fprintf(outfile, msvc4_cpp_switch_flags[i]);
+                        fprintf(outfile, msvc4_standard_inc);
+                        if (cp_include_dirs[0]) {
+                            for (k = 0; cp_include_dirs[k]; k++) {
+                                fprintf(outfile, "/I \"..\\..\\..\\%s\" ", cp_include_dirs[k]);
+                            }
+                        }
+                        fprintf(outfile, msvc4_standard_defs);
+                        fprintf(outfile, msvc4_debug_defs[i]);
+                        new_name = msvc4_strip_c_extension(cp_cpusource_names[j]);
+                        if (new_name) {
+                            fprintf(outfile, msvc4_cpu_source_flags, cp_name, new_name);
+                            free(new_name);
+                        }
+                    }
+                    fprintf(outfile, msvc4_endif_single_end);
+                }
+            }
+            if (cp_custom_source) {
+                fprintf(outfile, msvc4_cpu_source_start, cp_custom_source);
+                for (i = 0; i < 2; i++) {
+                    fprintf(outfile, msvc4_ifs[i], cp_name);
+                    fprintf(outfile, msvc4_custom_source, cp_custom_source, cp_custom_source, cp_custom_output, cp_custom_command);
+                }
+                fprintf(outfile, msvc4_endif_single_end);
+            }
+        }
+        fprintf(outfile, msvc4_rec_endif);
+    }
+
+    if (outfile) {
+        fclose(outfile);
+    }
+
+    if (filename) {
+        free(filename);
+    }
+
+    if (cp_libs) {
+        free(cp_libs);
+        cp_libs = NULL;
+    }
+
+    if (read_buffer) {
+        free(read_buffer);
+        read_buffer = NULL;
+        read_buffer_line = 0;
+        read_buffer_pos = 0;
+        read_buffer_len = 0;
+    }
+
+    return retval;
+}
+
+/* ---------------------------------------------------------------------- */
+
 static char *make_cp_libs(void)
 {
     int i, j;
@@ -4171,7 +4776,7 @@ static char *get_next_line_from_buffer(void)
 {
     char *retval = NULL;
 
-    if (read_buffer_pos == read_buffer_len) {
+    if (read_buffer_pos >= read_buffer_len) {
         return NULL;
     }
 
@@ -4736,9 +5341,16 @@ int main(int argc, char *argv[])
             error = 1;
         }
 
+        /* msvc4 has to have sdl defined too */
+        if (msvc4 && !sdl) {
+            printf("Error: mips nt msvc4 can only be compiled for sdl\n");
+            error = 1;
+        }
+
         project_names[0] = NULL;
         project_names_sdl[0] = NULL;
         project_names_native[0] = NULL;
+        project_lib_type[0] = NULL;
 
         if (!error) {
             if (read_template_file(filename, sdl)) {
@@ -4749,9 +5361,42 @@ int main(int argc, char *argv[])
                 read_buffer_line = 0;
                 read_buffer_pos = 0;
                 read_buffer_len = 0;
-                if (msvc4) {
+                if (!error && msvc4) {
                     current_level = 40;
-                    printf("Not yet implemented.\n");
+                    if (project_names[0]) {
+                        for (i = 0; project_names[i] && !error; i++) {
+                            if (strncmp(project_names[i], "resid", 5)) {
+                                error = preparse_project(project_names[i]);
+                            }
+                        }
+                        if (project_names_sdl[0] && !error) {
+                            for (i = 0; project_names_sdl[i] && !error; i++) {
+                                error = preparse_project(project_names_sdl[i]);
+                            }
+                        }
+                        for (i = 0; project_names[i] && !error; i++) {
+                            if (strncmp(project_names[i], "resid", 5)) {
+                                error = read_template_file(project_names[i], 1);
+                                if (!error) {
+                                    error = output_msvc4_file(project_names[i], 1);
+                                }
+                            }
+                        }
+                        if (project_names_sdl[0] && !error) {
+                            for (i = 0; project_names_sdl[i] && !error; i++) {
+                                error = read_template_file(project_names_sdl[i], 1);
+                                if (!error) {
+                                    error = output_msvc4_file(project_names_sdl[i], 1);
+                                }
+                            }
+                        }
+                        free_preparse();
+                    } else {
+                        error = output_msvc4_file(filename, 0);
+                    }
+                    if (!error) {
+                        free_buffers();
+                    }
                 }
                 if (!error && msvc6) {
                     current_level = 60;

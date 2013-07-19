@@ -33,35 +33,34 @@ INTDIR=.\libs\cbm2\Release
 OutDir=.\libs\cbm2\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\cbm2.lib"
+ALL : "$(OUTDIR)\cbm2.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "cbm2common - Win32 Release" "$(OUTDIR)\cbm2.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\cbm2.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
-CLEAN :"base - Win32 ReleaseCLEAN" "cbm2common - Win32 ReleaseCLEAN"
+!IF "$(RECURSE)" == "1"
+CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\cbm2-resources.obj"
-	-@erase "$(INTDIR)\cbm2-snapshot.obj"
-	-@erase "$(INTDIR)\cbm2.obj"
-	-@erase "$(INTDIR)\cbm2mem.obj"
-	-@erase "$(INTDIR)\cbm2rom.obj"
-	-@erase "$(INTDIR)\cbm2video.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\cbm2\cbm2-resources.obj"
+	-@erase "$(INTDIR)\cbm2\cbm2-snapshot.obj"
+	-@erase "$(INTDIR)\cbm2\cbm2.obj"
+	-@erase "$(INTDIR)\cbm2\cbm2mem.obj"
+	-@erase "$(INTDIR)\cbm2\cbm2rom.obj"
+	-@erase "$(INTDIR)\cbm2\cbm2video.obj"
 	-@erase "$(OUTDIR)\cbm2.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\crtc" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\monitor" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\cbm2.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\crtc "/I "..\..\..\drive "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\raster "/I "..\..\..\sid "/I "..\..\..\tape "/I "..\..\..\userport "/I "..\..\..\vicii "/I "..\..\..\video "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\cbm2.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -97,24 +96,25 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\cbm2.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\cbm2.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\cbm2-resources.obj" \
-	"$(INTDIR)\cbm2-snapshot.obj" \
-	"$(INTDIR)\cbm2.obj" \
-	"$(INTDIR)\cbm2mem.obj" \
-	"$(INTDIR)\cbm2rom.obj" \
-	"$(INTDIR)\cbm2video.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\cbm2\cbm2-resources.obj" \
+	"$(INTDIR)\cbm2\cbm2-snapshot.obj" \
+	"$(INTDIR)\cbm2\cbm2.obj" \
+	"$(INTDIR)\cbm2\cbm2mem.obj" \
+	"$(INTDIR)\cbm2\cbm2rom.obj" \
+	"$(INTDIR)\cbm2\cbm2video.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\cbm2.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "cbm2 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\cbm2\Debug
 INTDIR=.\libs\cbm2\Debug
@@ -122,35 +122,34 @@ INTDIR=.\libs\cbm2\Debug
 OutDir=.\libs\cbm2\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\cbm2.lib"
+ALL : "$(OUTDIR)\cbm2.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "cbm2common - Win32 Debug" "$(OUTDIR)\cbm2.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\cbm2.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
-CLEAN :"base - Win32 DebugCLEAN" "cbm2common - Win32 DebugCLEAN"
+!IF "$(RECURSE)" == "1"
+CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\cbm2-resources.obj"
-	-@erase "$(INTDIR)\cbm2-snapshot.obj"
-	-@erase "$(INTDIR)\cbm2.obj"
-	-@erase "$(INTDIR)\cbm2mem.obj"
-	-@erase "$(INTDIR)\cbm2rom.obj"
-	-@erase "$(INTDIR)\cbm2video.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\cbm2\cbm2-resources.obj"
+	-@erase "$(INTDIR)\cbm2\cbm2-snapshot.obj"
+	-@erase "$(INTDIR)\cbm2\cbm2.obj"
+	-@erase "$(INTDIR)\cbm2\cbm2mem.obj"
+	-@erase "$(INTDIR)\cbm2\cbm2rom.obj"
+	-@erase "$(INTDIR)\cbm2\cbm2video.obj"
 	-@erase "$(OUTDIR)\cbm2.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\crtc" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\monitor" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\cbm2.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\crtc "/I "..\..\..\drive "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\raster "/I "..\..\..\sid "/I "..\..\..\tape "/I "..\..\..\userport "/I "..\..\..\vicii "/I "..\..\..\video "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\cbm2.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -186,19 +185,20 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\cbm2.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\cbm2.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\cbm2-resources.obj" \
-	"$(INTDIR)\cbm2-snapshot.obj" \
-	"$(INTDIR)\cbm2.obj" \
-	"$(INTDIR)\cbm2mem.obj" \
-	"$(INTDIR)\cbm2rom.obj" \
-	"$(INTDIR)\cbm2video.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\cbm2\cbm2-resources.obj" \
+	"$(INTDIR)\cbm2\cbm2-snapshot.obj" \
+	"$(INTDIR)\cbm2\cbm2.obj" \
+	"$(INTDIR)\cbm2\cbm2mem.obj" \
+	"$(INTDIR)\cbm2\cbm2rom.obj" \
+	"$(INTDIR)\cbm2\cbm2video.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\cbm2.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -215,19 +215,9 @@ LIB32_OBJS= \
    $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Release" 
    cd "."
 
-"cbm2common - Win32 Release" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\cbm2common.mak" CFG="cbm2common - Win32 Release" 
-   cd "."
-
 "base - Win32 ReleaseCLEAN" : 
    cd "."
    $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Release" RECURSE=1 CLEAN 
-   cd "."
-
-"cbm2common - Win32 ReleaseCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\cbm2common.mak" CFG="cbm2common - Win32 Release" RECURSE=1 CLEAN 
    cd "."
 
 !ELSEIF  "$(CFG)" == "cbm2 - Win32 Debug"
@@ -237,56 +227,41 @@ LIB32_OBJS= \
    $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Debug" 
    cd "."
 
-"cbm2common - Win32 Debug" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\cbm2common.mak" CFG="cbm2common - Win32 Debug" 
-   cd "."
-
 "base - Win32 DebugCLEAN" : 
    cd "."
    $(MAKE) /$(MAKEFLAGS) /F ".\base.mak" CFG="base - Win32 Debug" RECURSE=1 CLEAN 
    cd "."
 
-"cbm2common - Win32 DebugCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F ".\cbm2common.mak" CFG="cbm2common - Win32 Debug" RECURSE=1 CLEAN 
-   cd "."
-
 !ENDIF 
 
-SOURCE="..\..\..\cbm2\cbm2-resources.c"
+SOURCE=..\..\..\cbm2\cbm2-resources.c
 
-"$(INTDIR)\cbm2-resources.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\cbm2\cbm2-resources.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\cbm2\cbm2-snapshot.c
 
-SOURCE="..\..\..\cbm2\cbm2-snapshot.c"
-
-"$(INTDIR)\cbm2-snapshot.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\cbm2\cbm2-snapshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\cbm2\cbm2.c
 
-"$(INTDIR)\cbm2.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\cbm2\cbm2.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\cbm2\cbm2mem.c
 
-"$(INTDIR)\cbm2mem.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\cbm2\cbm2mem.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\cbm2\cbm2rom.c
 
-"$(INTDIR)\cbm2rom.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\cbm2\cbm2rom.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\cbm2\cbm2video.c
 
-"$(INTDIR)\cbm2video.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\cbm2\cbm2video.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

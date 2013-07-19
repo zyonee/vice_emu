@@ -33,56 +33,55 @@ INTDIR=.\libs\pet\Release
 OutDir=.\libs\pet\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\pet.lib"
+ALL : "$(OUTDIR)\pet.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\pet.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\pet.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\6809.obj"
-	-@erase "$(INTDIR)\pet-cmdline-options.obj"
-	-@erase "$(INTDIR)\pet-resources.obj"
-	-@erase "$(INTDIR)\pet-sidcart.obj"
-	-@erase "$(INTDIR)\pet-snapshot.obj"
-	-@erase "$(INTDIR)\pet.obj"
-	-@erase "$(INTDIR)\petacia1.obj"
-	-@erase "$(INTDIR)\petbus.obj"
-	-@erase "$(INTDIR)\petcolour.obj"
-	-@erase "$(INTDIR)\petcpu.obj"
-	-@erase "$(INTDIR)\petdatasette.obj"
-	-@erase "$(INTDIR)\petdrive.obj"
-	-@erase "$(INTDIR)\petdww.obj"
-	-@erase "$(INTDIR)\pethre.obj"
-	-@erase "$(INTDIR)\petiec.obj"
-	-@erase "$(INTDIR)\petmem.obj"
-	-@erase "$(INTDIR)\petmemsnapshot.obj"
-	-@erase "$(INTDIR)\petmodel.obj"
-	-@erase "$(INTDIR)\petpia1.obj"
-	-@erase "$(INTDIR)\petpia2.obj"
-	-@erase "$(INTDIR)\petprinter.obj"
-	-@erase "$(INTDIR)\petreu.obj"
-	-@erase "$(INTDIR)\petrom.obj"
-	-@erase "$(INTDIR)\petromset.obj"
-	-@erase "$(INTDIR)\petsound.obj"
-	-@erase "$(INTDIR)\petvia.obj"
-	-@erase "$(INTDIR)\petvideo.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\pet\6809.obj"
+	-@erase "$(INTDIR)\pet\pet-cmdline-options.obj"
+	-@erase "$(INTDIR)\pet\pet-resources.obj"
+	-@erase "$(INTDIR)\pet\pet-sidcart.obj"
+	-@erase "$(INTDIR)\pet\pet-snapshot.obj"
+	-@erase "$(INTDIR)\pet\pet.obj"
+	-@erase "$(INTDIR)\pet\petacia1.obj"
+	-@erase "$(INTDIR)\pet\petbus.obj"
+	-@erase "$(INTDIR)\pet\petcolour.obj"
+	-@erase "$(INTDIR)\pet\petdatasette.obj"
+	-@erase "$(INTDIR)\pet\petdrive.obj"
+	-@erase "$(INTDIR)\pet\petdww.obj"
+	-@erase "$(INTDIR)\pet\pethre.obj"
+	-@erase "$(INTDIR)\pet\petiec.obj"
+	-@erase "$(INTDIR)\pet\petmem.obj"
+	-@erase "$(INTDIR)\pet\petmemsnapshot.obj"
+	-@erase "$(INTDIR)\pet\petmodel.obj"
+	-@erase "$(INTDIR)\pet\petpia1.obj"
+	-@erase "$(INTDIR)\pet\petpia2.obj"
+	-@erase "$(INTDIR)\pet\petprinter.obj"
+	-@erase "$(INTDIR)\pet\petreu.obj"
+	-@erase "$(INTDIR)\pet\petrom.obj"
+	-@erase "$(INTDIR)\pet\petromset.obj"
+	-@erase "$(INTDIR)\pet\petsound.obj"
+	-@erase "$(INTDIR)\pet\petvia.obj"
+	-@erase "$(INTDIR)\pet\petvideo.obj"
+	-@erase "$(INTDIR)\pet\petcpu.obj"
 	-@erase "$(OUTDIR)\pet.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\crtc" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\pet.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\crtc "/I "..\..\..\drive "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\raster "/I "..\..\..\sid "/I "..\..\..\tape "/I "..\..\..\userport "/I "..\..\..\video "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\pet.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -118,45 +117,46 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\pet.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\pet.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\6809.obj" \
-	"$(INTDIR)\pet-cmdline-options.obj" \
-	"$(INTDIR)\pet-resources.obj" \
-	"$(INTDIR)\pet-sidcart.obj" \
-	"$(INTDIR)\pet-snapshot.obj" \
-	"$(INTDIR)\pet.obj" \
-	"$(INTDIR)\petacia1.obj" \
-	"$(INTDIR)\petbus.obj" \
-	"$(INTDIR)\petcolour.obj" \
-	"$(INTDIR)\petcpu.obj" \
-	"$(INTDIR)\petdatasette.obj" \
-	"$(INTDIR)\petdrive.obj" \
-	"$(INTDIR)\petdww.obj" \
-	"$(INTDIR)\pethre.obj" \
-	"$(INTDIR)\petiec.obj" \
-	"$(INTDIR)\petmem.obj" \
-	"$(INTDIR)\petmemsnapshot.obj" \
-	"$(INTDIR)\petmodel.obj" \
-	"$(INTDIR)\petpia1.obj" \
-	"$(INTDIR)\petpia2.obj" \
-	"$(INTDIR)\petprinter.obj" \
-	"$(INTDIR)\petreu.obj" \
-	"$(INTDIR)\petrom.obj" \
-	"$(INTDIR)\petromset.obj" \
-	"$(INTDIR)\petsound.obj" \
-	"$(INTDIR)\petvia.obj" \
-	"$(INTDIR)\petvideo.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\pet\6809.obj" \
+	"$(INTDIR)\pet\pet-cmdline-options.obj" \
+	"$(INTDIR)\pet\pet-resources.obj" \
+	"$(INTDIR)\pet\pet-sidcart.obj" \
+	"$(INTDIR)\pet\pet-snapshot.obj" \
+	"$(INTDIR)\pet\pet.obj" \
+	"$(INTDIR)\pet\petacia1.obj" \
+	"$(INTDIR)\pet\petbus.obj" \
+	"$(INTDIR)\pet\petcolour.obj" \
+	"$(INTDIR)\pet\petdatasette.obj" \
+	"$(INTDIR)\pet\petdrive.obj" \
+	"$(INTDIR)\pet\petdww.obj" \
+	"$(INTDIR)\pet\pethre.obj" \
+	"$(INTDIR)\pet\petiec.obj" \
+	"$(INTDIR)\pet\petmem.obj" \
+	"$(INTDIR)\pet\petmemsnapshot.obj" \
+	"$(INTDIR)\pet\petmodel.obj" \
+	"$(INTDIR)\pet\petpia1.obj" \
+	"$(INTDIR)\pet\petpia2.obj" \
+	"$(INTDIR)\pet\petprinter.obj" \
+	"$(INTDIR)\pet\petreu.obj" \
+	"$(INTDIR)\pet\petrom.obj" \
+	"$(INTDIR)\pet\petromset.obj" \
+	"$(INTDIR)\pet\petsound.obj" \
+	"$(INTDIR)\pet\petvia.obj" \
+	"$(INTDIR)\pet\petvideo.obj" \
+	"$(INTDIR)\pet\petcpu.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\pet.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "pet - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\pet\Debug
 INTDIR=.\libs\pet\Debug
@@ -164,56 +164,55 @@ INTDIR=.\libs\pet\Debug
 OutDir=.\libs\pet\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\pet.lib"
+ALL : "$(OUTDIR)\pet.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\pet.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\pet.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\6809.obj"
-	-@erase "$(INTDIR)\pet-cmdline-options.obj"
-	-@erase "$(INTDIR)\pet-resources.obj"
-	-@erase "$(INTDIR)\pet-sidcart.obj"
-	-@erase "$(INTDIR)\pet-snapshot.obj"
-	-@erase "$(INTDIR)\pet.obj"
-	-@erase "$(INTDIR)\petacia1.obj"
-	-@erase "$(INTDIR)\petbus.obj"
-	-@erase "$(INTDIR)\petcolour.obj"
-	-@erase "$(INTDIR)\petcpu.obj"
-	-@erase "$(INTDIR)\petdatasette.obj"
-	-@erase "$(INTDIR)\petdrive.obj"
-	-@erase "$(INTDIR)\petdww.obj"
-	-@erase "$(INTDIR)\pethre.obj"
-	-@erase "$(INTDIR)\petiec.obj"
-	-@erase "$(INTDIR)\petmem.obj"
-	-@erase "$(INTDIR)\petmemsnapshot.obj"
-	-@erase "$(INTDIR)\petmodel.obj"
-	-@erase "$(INTDIR)\petpia1.obj"
-	-@erase "$(INTDIR)\petpia2.obj"
-	-@erase "$(INTDIR)\petprinter.obj"
-	-@erase "$(INTDIR)\petreu.obj"
-	-@erase "$(INTDIR)\petrom.obj"
-	-@erase "$(INTDIR)\petromset.obj"
-	-@erase "$(INTDIR)\petsound.obj"
-	-@erase "$(INTDIR)\petvia.obj"
-	-@erase "$(INTDIR)\petvideo.obj"
-	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\pet\6809.obj"
+	-@erase "$(INTDIR)\pet\pet-cmdline-options.obj"
+	-@erase "$(INTDIR)\pet\pet-resources.obj"
+	-@erase "$(INTDIR)\pet\pet-sidcart.obj"
+	-@erase "$(INTDIR)\pet\pet-snapshot.obj"
+	-@erase "$(INTDIR)\pet\pet.obj"
+	-@erase "$(INTDIR)\pet\petacia1.obj"
+	-@erase "$(INTDIR)\pet\petbus.obj"
+	-@erase "$(INTDIR)\pet\petcolour.obj"
+	-@erase "$(INTDIR)\pet\petdatasette.obj"
+	-@erase "$(INTDIR)\pet\petdrive.obj"
+	-@erase "$(INTDIR)\pet\petdww.obj"
+	-@erase "$(INTDIR)\pet\pethre.obj"
+	-@erase "$(INTDIR)\pet\petiec.obj"
+	-@erase "$(INTDIR)\pet\petmem.obj"
+	-@erase "$(INTDIR)\pet\petmemsnapshot.obj"
+	-@erase "$(INTDIR)\pet\petmodel.obj"
+	-@erase "$(INTDIR)\pet\petpia1.obj"
+	-@erase "$(INTDIR)\pet\petpia2.obj"
+	-@erase "$(INTDIR)\pet\petprinter.obj"
+	-@erase "$(INTDIR)\pet\petreu.obj"
+	-@erase "$(INTDIR)\pet\petrom.obj"
+	-@erase "$(INTDIR)\pet\petromset.obj"
+	-@erase "$(INTDIR)\pet\petsound.obj"
+	-@erase "$(INTDIR)\pet\petvia.obj"
+	-@erase "$(INTDIR)\pet\petvideo.obj"
+	-@erase "$(INTDIR)\pet\petcpu.obj"
 	-@erase "$(OUTDIR)\pet.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\crtc" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\pet.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\crtc "/I "..\..\..\drive "/I "..\..\..\lib\p64 "/I "..\..\..\monitor "/I "..\..\..\raster "/I "..\..\..\sid "/I "..\..\..\tape "/I "..\..\..\userport "/I "..\..\..\video "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\pet.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -249,40 +248,41 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\pet.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\pet.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\6809.obj" \
-	"$(INTDIR)\pet-cmdline-options.obj" \
-	"$(INTDIR)\pet-resources.obj" \
-	"$(INTDIR)\pet-sidcart.obj" \
-	"$(INTDIR)\pet-snapshot.obj" \
-	"$(INTDIR)\pet.obj" \
-	"$(INTDIR)\petacia1.obj" \
-	"$(INTDIR)\petbus.obj" \
-	"$(INTDIR)\petcolour.obj" \
-	"$(INTDIR)\petcpu.obj" \
-	"$(INTDIR)\petdatasette.obj" \
-	"$(INTDIR)\petdrive.obj" \
-	"$(INTDIR)\petdww.obj" \
-	"$(INTDIR)\pethre.obj" \
-	"$(INTDIR)\petiec.obj" \
-	"$(INTDIR)\petmem.obj" \
-	"$(INTDIR)\petmemsnapshot.obj" \
-	"$(INTDIR)\petmodel.obj" \
-	"$(INTDIR)\petpia1.obj" \
-	"$(INTDIR)\petpia2.obj" \
-	"$(INTDIR)\petprinter.obj" \
-	"$(INTDIR)\petreu.obj" \
-	"$(INTDIR)\petrom.obj" \
-	"$(INTDIR)\petromset.obj" \
-	"$(INTDIR)\petsound.obj" \
-	"$(INTDIR)\petvia.obj" \
-	"$(INTDIR)\petvideo.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\pet\6809.obj" \
+	"$(INTDIR)\pet\pet-cmdline-options.obj" \
+	"$(INTDIR)\pet\pet-resources.obj" \
+	"$(INTDIR)\pet\pet-sidcart.obj" \
+	"$(INTDIR)\pet\pet-snapshot.obj" \
+	"$(INTDIR)\pet\pet.obj" \
+	"$(INTDIR)\pet\petacia1.obj" \
+	"$(INTDIR)\pet\petbus.obj" \
+	"$(INTDIR)\pet\petcolour.obj" \
+	"$(INTDIR)\pet\petdatasette.obj" \
+	"$(INTDIR)\pet\petdrive.obj" \
+	"$(INTDIR)\pet\petdww.obj" \
+	"$(INTDIR)\pet\pethre.obj" \
+	"$(INTDIR)\pet\petiec.obj" \
+	"$(INTDIR)\pet\petmem.obj" \
+	"$(INTDIR)\pet\petmemsnapshot.obj" \
+	"$(INTDIR)\pet\petmodel.obj" \
+	"$(INTDIR)\pet\petpia1.obj" \
+	"$(INTDIR)\pet\petpia2.obj" \
+	"$(INTDIR)\pet\petprinter.obj" \
+	"$(INTDIR)\pet\petreu.obj" \
+	"$(INTDIR)\pet\petrom.obj" \
+	"$(INTDIR)\pet\petromset.obj" \
+	"$(INTDIR)\pet\petsound.obj" \
+	"$(INTDIR)\pet\petvia.obj" \
+	"$(INTDIR)\pet\petvideo.obj" \
+	"$(INTDIR)\pet\petcpu.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\pet.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -318,166 +318,159 @@ LIB32_OBJS= \
 
 !ENDIF 
 
-SOURCE="..\..\..\pet\6809.c"
+SOURCE=..\..\..\pet\6809.c
 
-"$(INTDIR)\6809.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\6809.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\pet\pet-cmdline-options.c
 
-SOURCE="..\..\..\pet\pet-cmdline-options.c"
-
-"$(INTDIR)\pet-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\pet-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\pet\pet-resources.c
 
-SOURCE="..\..\..\pet\pet-resources.c"
-
-"$(INTDIR)\pet-resources.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\pet-resources.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\pet\pet-sidcart.c
 
-SOURCE="..\..\..\pet\pet-sidcart.c"
-
-"$(INTDIR)\pet-sidcart.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\pet-sidcart.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\pet\pet-snapshot.c
 
-SOURCE="..\..\..\pet\pet-snapshot.c"
-
-"$(INTDIR)\pet-snapshot.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\pet-snapshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\pet.c
 
-"$(INTDIR)\pet.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\pet.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petacia1.c
 
-"$(INTDIR)\petacia1.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petacia1.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petbus.c
 
-"$(INTDIR)\petbus.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petbus.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petcolour.c
 
-"$(INTDIR)\petcolour.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petcolour.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\..\pet\petcpu.c
-
-"$(INTDIR)\petcpu.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petdatasette.c
 
-"$(INTDIR)\petdatasette.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petdatasette.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petdrive.c
 
-"$(INTDIR)\petdrive.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petdrive.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petdww.c
 
-"$(INTDIR)\petdww.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petdww.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\pethre.c
 
-"$(INTDIR)\pethre.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\pethre.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petiec.c
 
-"$(INTDIR)\petiec.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petiec.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petmem.c
 
-"$(INTDIR)\petmem.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petmem.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petmemsnapshot.c
 
-"$(INTDIR)\petmemsnapshot.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petmemsnapshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petmodel.c
 
-"$(INTDIR)\petmodel.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petmodel.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petpia1.c
 
-"$(INTDIR)\petpia1.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petpia1.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petpia2.c
 
-"$(INTDIR)\petpia2.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petpia2.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petprinter.c
 
-"$(INTDIR)\petprinter.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petprinter.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petreu.c
 
-"$(INTDIR)\petreu.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petreu.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petrom.c
 
-"$(INTDIR)\petrom.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petrom.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petromset.c
 
-"$(INTDIR)\petromset.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petromset.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petsound.c
 
-"$(INTDIR)\petsound.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petsound.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petvia.c
 
-"$(INTDIR)\petvia.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petvia.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\pet\petvideo.c
 
-"$(INTDIR)\petvideo.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pet\petvideo.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+SOURCE=..\..\..\pet\petcpu.c
+
+!IF  "$(CFG)" == "pet - Win32 Release"
+
+
+CPP_SWITCHES=/nologo /MD /W3 /GX /Ot /Oa /Ow /Oi /Op /Oy /Ob2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\crtc" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\userport" /I "..\..\..\video" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\pet.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+
+"$(INTDIR)\pet\petcpu.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) @<<
+  $(CPP_SWITCHES) $(SOURCE)
+<<
+
+!ELSEIF  "$(CFG)" == "pet - Win32 Debug"
+
+
+CPP_SWITCHES=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\crtc" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\monitor" /I "..\..\..\raster" /I "..\..\..\sid" /I "..\..\..\tape" /I "..\..\..\userport" /I "..\..\..\video" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\pet.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+
+"$(INTDIR)\pet\petcpu.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) @<<
+  $(CPP_SWITCHES) $(SOURCE)
+<<
+
+!ENDIF 
 
 
 

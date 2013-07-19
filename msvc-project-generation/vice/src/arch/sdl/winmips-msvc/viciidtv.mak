@@ -33,42 +33,41 @@ INTDIR=.\libs\viciidtv\Release
 OutDir=.\libs\viciidtv\Release
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\viciidtv.lib"
+ALL : "$(OUTDIR)\viciidtv.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Release" "$(OUTDIR)\viciidtv.lib"
+ALL : "base - Win32 Release" "$(OUTDIR)\viciidtv.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 ReleaseCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\vicii-badline.obj"
-	-@erase "$(INTDIR)\vicii-cmdline-options.obj"
-	-@erase "$(INTDIR)\vicii-fetch.obj"
-	-@erase "$(INTDIR)\vicii-irq.obj"
-	-@erase "$(INTDIR)\vicii-mem.obj"
-	-@erase "$(INTDIR)\vicii-phi1.obj"
-	-@erase "$(INTDIR)\vicii-resources.obj"
-	-@erase "$(INTDIR)\vicii-sprites.obj"
-	-@erase "$(INTDIR)\vicii-timing.obj"
-	-@erase "$(INTDIR)\vicii.obj"
-	-@erase "$(INTDIR)\viciidtv-color.obj"
-	-@erase "$(INTDIR)\viciidtv-draw.obj"
-	-@erase "$(INTDIR)\viciidtv-snapshot.obj"
+	-@erase "$(INTDIR)\vicii\vicii-badline.obj"
+	-@erase "$(INTDIR)\vicii\vicii-cmdline-options.obj"
+	-@erase "$(INTDIR)\vicii\vicii-fetch.obj"
+	-@erase "$(INTDIR)\vicii\vicii-irq.obj"
+	-@erase "$(INTDIR)\vicii\vicii-mem.obj"
+	-@erase "$(INTDIR)\vicii\vicii-phi1.obj"
+	-@erase "$(INTDIR)\vicii\vicii-resources.obj"
+	-@erase "$(INTDIR)\vicii\vicii-sprites.obj"
+	-@erase "$(INTDIR)\vicii\vicii-timing.obj"
+	-@erase "$(INTDIR)\vicii\vicii.obj"
+	-@erase "$(INTDIR)\vicii\viciidtv-color.obj"
+	-@erase "$(INTDIR)\vicii\viciidtv-draw.obj"
+	-@erase "$(INTDIR)\vicii\viciidtv-snapshot.obj"
 	-@erase "$(OUTDIR)\viciidtv.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\c64dtv" /I "..\..\..\raster" /I "..\..\..\video" /I "..\..\..\monitor" /I "..\..\..\c64\cart" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\viciidtv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MD /W3 /GX /O2 /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64 "/I "..\..\..\c64\cart "/I "..\..\..\c64dtv "/I "..\..\..\monitor "/I "..\..\..\raster "/I "..\..\..\video "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "NDEBUG" /Fp"$(INTDIR)\viciidtv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -104,31 +103,32 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\viciidtv.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\viciidtv.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\vicii-badline.obj" \
-	"$(INTDIR)\vicii-cmdline-options.obj" \
-	"$(INTDIR)\vicii-fetch.obj" \
-	"$(INTDIR)\vicii-irq.obj" \
-	"$(INTDIR)\vicii-mem.obj" \
-	"$(INTDIR)\vicii-phi1.obj" \
-	"$(INTDIR)\vicii-resources.obj" \
-	"$(INTDIR)\vicii-sprites.obj" \
-	"$(INTDIR)\vicii-timing.obj" \
-	"$(INTDIR)\vicii.obj" \
-	"$(INTDIR)\viciidtv-color.obj" \
-	"$(INTDIR)\viciidtv-draw.obj" \
-	"$(INTDIR)\viciidtv-snapshot.obj" \
-	".\libs\base\Release\base.lib"
+	"$(INTDIR)\vicii\vicii-badline.obj" \
+	"$(INTDIR)\vicii\vicii-cmdline-options.obj" \
+	"$(INTDIR)\vicii\vicii-fetch.obj" \
+	"$(INTDIR)\vicii\vicii-irq.obj" \
+	"$(INTDIR)\vicii\vicii-mem.obj" \
+	"$(INTDIR)\vicii\vicii-phi1.obj" \
+	"$(INTDIR)\vicii\vicii-resources.obj" \
+	"$(INTDIR)\vicii\vicii-sprites.obj" \
+	"$(INTDIR)\vicii\vicii-timing.obj" \
+	"$(INTDIR)\vicii\vicii.obj" \
+	"$(INTDIR)\vicii\viciidtv-color.obj" \
+	"$(INTDIR)\vicii\viciidtv-draw.obj" \
+	"$(INTDIR)\vicii\viciidtv-snapshot.obj" \
+	".\libsbase\Release\base.lib" \
 
-"$(OUTDIR)\viciidtv.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Release.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
 
-!ELSEIF  "$(CFG)" == "viciidtv - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Release - Win32 Debug"
 
 OUTDIR=.\libs\viciidtv\Debug
 INTDIR=.\libs\viciidtv\Debug
@@ -136,42 +136,41 @@ INTDIR=.\libs\viciidtv\Debug
 OutDir=.\libs\viciidtv\Debug
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+!IF "$(RECURSE)" == "0"
 
-ALL : "$(OUTDIR)\viciidtv.lib"
+ALL : "$(OUTDIR)\viciidtv.lib" 
 
 !ELSE 
 
-ALL : "base - Win32 Debug" "$(OUTDIR)\viciidtv.lib"
+ALL : "base - Win32 Debug" "$(OUTDIR)\viciidtv.lib" 
 
 !ENDIF 
 
-!IF "$(RECURSE)" == "1" 
+!IF "$(RECURSE)" == "1"
 CLEAN :"base - Win32 DebugCLEAN" 
 !ELSE 
 CLEAN :
 !ENDIF 
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\vicii-badline.obj"
-	-@erase "$(INTDIR)\vicii-cmdline-options.obj"
-	-@erase "$(INTDIR)\vicii-fetch.obj"
-	-@erase "$(INTDIR)\vicii-irq.obj"
-	-@erase "$(INTDIR)\vicii-mem.obj"
-	-@erase "$(INTDIR)\vicii-phi1.obj"
-	-@erase "$(INTDIR)\vicii-resources.obj"
-	-@erase "$(INTDIR)\vicii-sprites.obj"
-	-@erase "$(INTDIR)\vicii-timing.obj"
-	-@erase "$(INTDIR)\vicii.obj"
-	-@erase "$(INTDIR)\viciidtv-color.obj"
-	-@erase "$(INTDIR)\viciidtv-draw.obj"
-	-@erase "$(INTDIR)\viciidtv-snapshot.obj"
+	-@erase "$(INTDIR)\vicii\vicii-badline.obj"
+	-@erase "$(INTDIR)\vicii\vicii-cmdline-options.obj"
+	-@erase "$(INTDIR)\vicii\vicii-fetch.obj"
+	-@erase "$(INTDIR)\vicii\vicii-irq.obj"
+	-@erase "$(INTDIR)\vicii\vicii-mem.obj"
+	-@erase "$(INTDIR)\vicii\vicii-phi1.obj"
+	-@erase "$(INTDIR)\vicii\vicii-resources.obj"
+	-@erase "$(INTDIR)\vicii\vicii-sprites.obj"
+	-@erase "$(INTDIR)\vicii\vicii-timing.obj"
+	-@erase "$(INTDIR)\vicii\vicii.obj"
+	-@erase "$(INTDIR)\vicii\viciidtv-color.obj"
+	-@erase "$(INTDIR)\vicii\viciidtv-draw.obj"
+	-@erase "$(INTDIR)\vicii\viciidtv-snapshot.obj"
 	-@erase "$(OUTDIR)\viciidtv.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\c64dtv" /I "..\..\..\raster" /I "..\..\..\video" /I "..\..\..\monitor" /I "..\..\..\c64\cart" /D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"$(INTDIR)\viciidtv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
+CPP_PROJ=/nologo /MDd /W3 /GX /Z7 /Od /I ".\\" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64 "/I "..\..\..\c64\cart "/I "..\..\..\c64dtv "/I "..\..\..\monitor "/I "..\..\..\raster "/I "..\..\..\video "/D "WIN32" /D "WINMIPS" /D "IDE_COMPILE" /D "_WINDOWS" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /Fp"$(INTDIR)\viciidtv.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\"  /c 
 
 .c{$(INTDIR)}.obj :
    $(CPP) @<<
@@ -207,26 +206,27 @@ RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\viciidtv.bsc" 
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\viciidtv.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\vicii-badline.obj" \
-	"$(INTDIR)\vicii-cmdline-options.obj" \
-	"$(INTDIR)\vicii-fetch.obj" \
-	"$(INTDIR)\vicii-irq.obj" \
-	"$(INTDIR)\vicii-mem.obj" \
-	"$(INTDIR)\vicii-phi1.obj" \
-	"$(INTDIR)\vicii-resources.obj" \
-	"$(INTDIR)\vicii-sprites.obj" \
-	"$(INTDIR)\vicii-timing.obj" \
-	"$(INTDIR)\vicii.obj" \
-	"$(INTDIR)\viciidtv-color.obj" \
-	"$(INTDIR)\viciidtv-draw.obj" \
-	"$(INTDIR)\viciidtv-snapshot.obj" \
-	".\libs\base\Debug\base.lib"
+	"$(INTDIR)\vicii\vicii-badline.obj" \
+	"$(INTDIR)\vicii\vicii-cmdline-options.obj" \
+	"$(INTDIR)\vicii\vicii-fetch.obj" \
+	"$(INTDIR)\vicii\vicii-irq.obj" \
+	"$(INTDIR)\vicii\vicii-mem.obj" \
+	"$(INTDIR)\vicii\vicii-phi1.obj" \
+	"$(INTDIR)\vicii\vicii-resources.obj" \
+	"$(INTDIR)\vicii\vicii-sprites.obj" \
+	"$(INTDIR)\vicii\vicii-timing.obj" \
+	"$(INTDIR)\vicii\vicii.obj" \
+	"$(INTDIR)\vicii\viciidtv-color.obj" \
+	"$(INTDIR)\vicii\viciidtv-draw.obj" \
+	"$(INTDIR)\vicii\viciidtv-snapshot.obj" \
+	".\libsbase\Debug\base.lib" \
 
-"$(OUTDIR)\viciidtv.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+
+"$(OUTDIR)\Debug.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -262,81 +262,69 @@ LIB32_OBJS= \
 
 !ENDIF 
 
-SOURCE="..\..\..\vicii\vicii-badline.c"
+SOURCE=..\..\..\vicii\vicii-badline.c
 
-"$(INTDIR)\vicii-badline.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vicii\vicii-badline.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vicii\vicii-cmdline-options.c
 
-SOURCE="..\..\..\vicii\vicii-cmdline-options.c"
-
-"$(INTDIR)\vicii-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vicii\vicii-cmdline-options.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vicii\vicii-fetch.c
 
-SOURCE="..\..\..\vicii\vicii-fetch.c"
-
-"$(INTDIR)\vicii-fetch.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vicii\vicii-fetch.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vicii\vicii-irq.c
 
-SOURCE="..\..\..\vicii\vicii-irq.c"
-
-"$(INTDIR)\vicii-irq.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vicii\vicii-irq.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vicii\vicii-mem.c
 
-SOURCE="..\..\..\vicii\vicii-mem.c"
-
-"$(INTDIR)\vicii-mem.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vicii\vicii-mem.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vicii\vicii-phi1.c
 
-SOURCE="..\..\..\vicii\vicii-phi1.c"
-
-"$(INTDIR)\vicii-phi1.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vicii\vicii-phi1.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vicii\vicii-resources.c
 
-SOURCE="..\..\..\vicii\vicii-resources.c"
-
-"$(INTDIR)\vicii-resources.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vicii\vicii-resources.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vicii\vicii-sprites.c
 
-SOURCE="..\..\..\vicii\vicii-sprites.c"
-
-"$(INTDIR)\vicii-sprites.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vicii\vicii-sprites.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vicii\vicii-timing.c
 
-SOURCE="..\..\..\vicii\vicii-timing.c"
-
-"$(INTDIR)\vicii-timing.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vicii\vicii-timing.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
-
 
 SOURCE=..\..\..\vicii\vicii.c
 
-"$(INTDIR)\vicii.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vicii\vicii.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vicii\viciidtv-color.c
 
-SOURCE="..\..\..\vicii\viciidtv-color.c"
-
-"$(INTDIR)\viciidtv-color.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vicii\viciidtv-color.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vicii\viciidtv-draw.c
 
-SOURCE="..\..\..\vicii\viciidtv-draw.c"
-
-"$(INTDIR)\viciidtv-draw.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vicii\viciidtv-draw.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
+SOURCE=..\..\..\vicii\viciidtv-snapshot.c
 
-SOURCE="..\..\..\vicii\viciidtv-snapshot.c"
-
-"$(INTDIR)\viciidtv-snapshot.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\vicii\viciidtv-snapshot.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
