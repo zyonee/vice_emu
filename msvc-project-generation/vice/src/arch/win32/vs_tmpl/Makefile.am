@@ -36,6 +36,10 @@ EXTRA_DIST = \
 	iecieee.tmpl \
 	ieee.tmpl \
 	imagecontents.tmpl \
+	mkmsvc.c \
+	mkmsvc.dsp \
+	mkmsvc.dsw \
+	mkmsvc.exe \
 	monitor.tmpl \
 	p64.tmpl \
 	parallel.tmpl \

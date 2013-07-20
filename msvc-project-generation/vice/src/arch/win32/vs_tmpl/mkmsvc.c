@@ -24,13 +24,14 @@
  *
  */
 
+#include <ctype.h>
 #include <stdio.h>
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <string.h>
 
 /* Enable debug options */
-#define MKMSVC_DEBUG 1
+/* #define MKMSVC_DEBUG 1 */
 
 #define CP_PROJECT_NAMES_STRING       "PROJECTS ="
 #define CP_PROJECT_NAMES_SIZE         sizeof(CP_PROJECT_NAMES_STRING) - 1
@@ -181,6 +182,25 @@ typedef struct project_info_s {
 static project_info_t project_info[MAX_DEP_NAMES];
 
 /* ---------------------------------------------------------------------- */
+
+static size_t vs_strnlen(const char *string, size_t maxlen)
+{
+    const char *end = memchr(string, '\0', maxlen);
+    return end ? end - string : maxlen;
+}
+
+static char *vs_strndup(const char *s, size_t n)
+{
+    size_t len = vs_strnlen(s, n);
+    char *new = malloc(len + 1);
+
+    if (new == NULL) {
+        return NULL;
+    }
+
+    new[len] = '\0';
+    return memcpy(new, s, len);
+}
 
 void pi_init(void)
 {
@@ -780,7 +800,6 @@ static char *msvc10_main_end = "\tEndGlobalSection\r\n"
 static void generate_msvc10_11_sln(int msvc11, int sdl)
 {
     int i, j, k;
-    int index;
     int exc = 0;
     int max_k = (msvc11) ? 2 : 3;
     int max_i = (sdl) ? 2 : 4;
@@ -4369,7 +4388,7 @@ static char *msvc4_strip_c_extension(char *name)
         return NULL;
     }
 
-    new_name = strndup(name, len - 2);
+    new_name = vs_strndup(name, len - 2);
 
     return new_name;
 }
@@ -4592,7 +4611,7 @@ static int output_msvc4_file(char *fname, int filelist)
                 if (libs_dep_count) {
                     for (j = 0; cp_dep_names[j]; j++) {
                         if (is_lib_type(cp_dep_names[j])) {
-                            fprintf(outfile, "\t\".\\libs\%s\\%s\\%s.lib\" \\\r\n", cp_dep_names[j], msvc4_type[i], cp_dep_names[j]);
+                            fprintf(outfile, "\t\".\\libs\\%s\\%s\\%s.lib\" \\\r\n", cp_dep_names[j], msvc4_type[i], cp_dep_names[j]);
                         }
                     }
                 }
@@ -4705,7 +4724,8 @@ static int output_msvc4_file(char *fname, int filelist)
 
 static char *make_cp_libs(void)
 {
-    int i, j;
+    int i;
+	unsigned int j;
     char *retval = NULL;
     int length = 0;
     int k = 0;
@@ -4852,6 +4872,7 @@ static int parse_template(char *filename)
 {
     char *line = NULL;
     int parsed;
+    int is_main_project_template = 0;
 
     /* set current project parameters to 'empty' */
     cp_name = NULL;
@@ -4877,8 +4898,6 @@ static int parse_template(char *filename)
     cp_res_output_name = NULL;
     cp_cpusource_names[0] = NULL;
     cp_libs_elements[0] = NULL;
-
-    int is_main_project_template = 0;
 
     line = get_next_line_from_buffer();
     while (line) {
@@ -5218,7 +5237,7 @@ static int read_template_file(char *fname, int sdl)
     if (!retval) {
         read_buffer = malloc(read_buffer_len);
 
-        if (fread(read_buffer, 1, read_buffer_len, infile) < read_buffer_len) {
+        if (fread(read_buffer, 1, read_buffer_len, infile) < (unsigned int)read_buffer_len) {
             printf("Cannot read from %s\n", filename);
             retval = 1;
         }
