@@ -9,4 +9,7 @@ EXTRA_DIST = \
 	inttypes.h \
 	make-msvc-bindist-native.bat.proto \
 	stdint.h \
-	system.h
+	system.h \
+	winid_ia64.bat \
+	winid_x64.bat \
+	winid_x86.bat
