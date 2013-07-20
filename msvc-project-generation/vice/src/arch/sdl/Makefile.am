@@ -11,7 +11,6 @@ SUBDIRS = \
 	msvc-files \
 	qnx4 \
 	syllable-files \
-        win32-msvc71 \
 	win32-msvc8 \
 	win32-msvc9 \
 	win32-msvc10 \
