@@ -8,6 +8,7 @@ endif
 
 SUBDIRS = \
 	dingoo-files \
+	msvc-files \
 	qnx4 \
 	syllable-files \
 	win32-msvc6 \
@@ -207,6 +208,7 @@ EXTRA_DIST = \
 	archdep_win32.h \
 	archdep_xbox.c \
 	archdep_xbox.h \
+	generate_msvc6_project.bat \
 	make-bindist_amiga.sh \
 	make-bindist_beos.sh \
 	make-bindist_dingoo.sh \

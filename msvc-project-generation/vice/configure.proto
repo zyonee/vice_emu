@@ -3683,6 +3683,7 @@ AC_OUTPUT([Makefile
            src/arch/os2/watcom/Makefile
            src/arch/sdl/Makefile
            src/arch/sdl/dingoo-files/Makefile
+           src/arch/sdl/msvc-files/Makefile
            src/arch/sdl/qnx4/Makefile
            src/arch/sdl/syllable-files/Makefile
            src/arch/sdl/win32-msvc6/Makefile
