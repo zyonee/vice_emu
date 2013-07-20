@@ -331,6 +331,7 @@ EXTRA_DIST = \
 	generate_msvc71_project.bat \
 	generate_msvc8_project.bat \
 	generate_msvc9_project.bat \
+	generate_msvc10_project.bat \
 	genmenuid.sh \
 	genstringid.sh \
 	genwinres.sh \
