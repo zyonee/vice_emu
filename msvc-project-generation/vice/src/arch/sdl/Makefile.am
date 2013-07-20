@@ -208,6 +208,7 @@ EXTRA_DIST = \
 	archdep_xbox.c \
 	archdep_xbox.h \
 	generate_msvc6_project.bat \
+	generate_msvc70_project.bat \
 	make-bindist_amiga.sh \
 	make-bindist_beos.sh \
 	make-bindist_dingoo.sh \
