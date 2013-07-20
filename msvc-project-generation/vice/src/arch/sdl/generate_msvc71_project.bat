@@ -16,7 +16,7 @@ copy msvc-files\ide-sidfpdefs.h win32-msvc71
 copy msvc-files\inttypes.h win32-msvc71
 copy msvc-files\stdint.h win32-msvc71
 copy msvc-files\vice.manifest win32-msvc71
-echo MSVC6 project files generated in win32-msvc71
+echo MSVC7.1 project files generated in win32-msvc71
 goto end
 :missingmkmsvc
 echo ..\win32\vs_tmpl\mkmsvc.exe is missing
