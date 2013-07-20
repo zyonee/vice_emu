@@ -7,5 +7,6 @@ EXTRA_DIST = \
 	ide-siddtvdefs.h \
 	ide-sidfpdefs.h \
 	inttypes.h \
+	make-msvc-bindist-native.bat.proto \
 	stdint.h \
 	system.h
