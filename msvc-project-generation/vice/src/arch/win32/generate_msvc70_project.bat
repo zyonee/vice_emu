@@ -1,6 +1,6 @@
 @echo off
 if not exist vs_tmpl\mkmsvc.exe goto missingmkmsvc
-echo generating MSVC6 project as vs70
+echo generating MSVC7.0 project as vs70
 if exist vs70 goto removedir
 :makemsvcdir
 mkdir vs70
