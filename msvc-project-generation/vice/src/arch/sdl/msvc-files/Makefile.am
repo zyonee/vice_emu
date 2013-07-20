@@ -7,4 +7,7 @@ EXTRA_DIST = \
 	inttypes.h \
 	make-bindist.bat.proto \
 	stdint.h \
-	vice.manifest
+	vice.manifest \
+	winid_ia64.bat \
+	winid_x64.bat \
+	winid_x86.bat
