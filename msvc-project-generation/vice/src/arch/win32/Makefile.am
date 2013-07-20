@@ -327,6 +327,7 @@ endif
 EXTRA_DIST = \
 	dirent.c \
 	generate_msvc6_project.bat \
+	generate_msvc70_project.bat \
 	genmenuid.sh \
 	genstringid.sh \
 	genwinres.sh \
