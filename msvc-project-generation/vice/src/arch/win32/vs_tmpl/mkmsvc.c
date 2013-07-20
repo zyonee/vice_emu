@@ -1805,7 +1805,7 @@ static int output_msvc9_file(char *fname, int filelist, int sdl)
                         fprintf(outfile, msvc9_target_machine, (k == 1) ? 5 : 17);
                     }
                 } else {
-                    fprintf(outfile, msvc9_lib_tool, cp_name, msvc_platform[k], type[i]);
+                    fprintf(outfile, msvc9_lib_tool, cp_name, msvc_platform[k], type[i], cp_name);
                 }
                 fprintf(outfile, msvc9_config_part6, (cp_type == CP_TYPE_LIBRARY) ? "" : msvc9_manifest_tool, (cp_type == CP_TYPE_LIBRARY) ? "" : msvc9_app_ver_tool);
             }
