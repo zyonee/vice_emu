@@ -19,7 +19,7 @@ copy msvc-files\vice.manifest win32-msvc10
 copy msvc-files\winid_ia64.bat win32-msvc10
 copy msvc-files\winid_x64.bat win32-msvc10
 copy msvc-files\winid_x86.bat win32-msvc10
-echo MSVC9 project files generated in win32-msvc10
+echo MSVC10 project files generated in win32-msvc10
 goto end
 :missingmkmsvc
 echo ..\win32\vs_tmpl\mkmsvc.exe is missing
