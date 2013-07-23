@@ -202,6 +202,8 @@ static char *vs_strndup(const char *s, size_t n)
     return memcpy(new, s, len);
 }
 
+/* ---------------------------------------------------------------------- */
+
 void pi_init(void)
 {
     int i, j;
@@ -321,8 +323,8 @@ static int insert_lib_type(char *name)
 {
     int i = 0;
 
-    /* No resid* projects for winmips */
-    if (!strncmp(name, "resid", 5)) {
+    /* No resid* projects or x64dtv or xscpu64 projects for winmips */
+    if (!strncmp(name, "resid", 5) || !strcmp(name, "x64dtv") || !strcmp(name, "xscpu64")) {
         return 0;
     }
 
@@ -4341,6 +4343,9 @@ static char *msvc4_source_build = "SOURCE=..\\..\\..\\%s\r\n"
 static char *msvc4_cpu_source_start = "SOURCE=..\\..\\..\\%s\r\n"
                                       "\r\n";
 
+static char *msvc4_custom_source_start = "SOURCE=%s\r\n"
+                                         "\r\n";
+
 static char *msvc4_cpp_switch_start = "\r\n"
                                       "CPP_SWITCHES=/nologo ";
 
@@ -4357,7 +4362,7 @@ static char *msvc4_cpu_source_flags = "/Fp\"$(INTDIR)\\%s.pch\" /YX /Fo\"$(INTDI
                                       "<<\r\n"
                                       "\r\n";
 
-static char *msvc4_custom_source = "InputDir=..\\..\\..\r\n"
+static char *msvc4_custom_source = "InputDir=.\\\r\n"
                                    "InputPath=\"%s\"\r\n"
                                    "USERDEP__SRC=\"%s\"\r\n"
                                    "\r\n"
@@ -4372,7 +4377,9 @@ static char *msvc4_custom_source = "InputDir=..\\..\\..\r\n"
 static char *msvc4_strip_c_extension(char *name)
 {
     char *new_name = NULL;
+    int i;
     int len = 0;
+    int slash_pos = 0;
 
     if (!name) {
         return NULL;
@@ -4388,7 +4395,13 @@ static char *msvc4_strip_c_extension(char *name)
         return NULL;
     }
 
-    new_name = vs_strndup(name, len - 2);
+    for (i = 0; name[i] != 0; i++) {
+        if (name[i] == '\\') {
+            slash_pos = i + 1;
+        }
+    }
+
+    new_name = vs_strndup(name + slash_pos, len - (2 + slash_pos));
 
     return new_name;
 }
@@ -4461,7 +4474,7 @@ static int output_msvc4_file(char *fname, int filelist)
         }
         fprintf(outfile, msvc4_project_part2);
         for (i = 0; i < 2; i++) {
-            fprintf(outfile, msvc4_ifs[i]);
+            fprintf(outfile, msvc4_ifs[i], cp_name);
             if (cp_type == CP_TYPE_LIBRARY) {
                 fprintf(outfile, msvc4_outdir_lib, cp_name, msvc4_type[i]);
             } else {
@@ -4481,7 +4494,7 @@ static int output_msvc4_file(char *fname, int filelist)
                 fprintf(outfile, msvc4_rec_else);
                 fprintf(outfile, msvc4_all);
                 for (j = 0; cp_dep_names[j]; j++) {
-                    if (strncmp(cp_dep_names[j], "resid", 5)) {
+                    if (strncmp(cp_dep_names[j], "resid", 5) && strcmp(cp_dep_names[j], "x64dtv") && strcmp(cp_dep_names[j], "xscpu64")) {
                         fprintf(outfile, "\"%s - Win32 %s\" ", cp_dep_names[j], msvc4_type[i]);
                     }
                 }
@@ -4491,7 +4504,7 @@ static int output_msvc4_file(char *fname, int filelist)
                 fprintf(outfile, msvc4_clean);
                 j--;
                 while (j != -1) {
-                    if (strncmp(cp_dep_names[j], "resid", 5)) {
+                    if (strncmp(cp_dep_names[j], "resid", 5) && strcmp(cp_dep_names[j], "x64dtv") && strcmp(cp_dep_names[j], "xscpu64")) {
                         fprintf(outfile, "\"%s - Win32 %sCLEAN\" ", cp_dep_names[j], msvc4_type[i]);
                     }
                     j--;
@@ -4557,7 +4570,7 @@ static int output_msvc4_file(char *fname, int filelist)
             fprintf(outfile, msvc4_standard_inc);
             if (cp_include_dirs[0]) {
                 for (j = 0; cp_include_dirs[j]; j++) {
-                    fprintf(outfile, "/I \"..\\..\\..\\%s \"", cp_include_dirs[j]);
+                    fprintf(outfile, "/I \"..\\..\\..\\%s\" ", cp_include_dirs[j]);
                 }
             }
             fprintf(outfile, msvc4_standard_defs);
@@ -4616,7 +4629,7 @@ static int output_msvc4_file(char *fname, int filelist)
                     }
                 }
                 if (cp_type == CP_TYPE_LIBRARY) {
-                    fprintf(outfile, msvc4_lib32_end, msvc4_type[i], cp_name, cp_name);
+                    fprintf(outfile, msvc4_lib32_end, cp_name, msvc4_type[i], cp_name, cp_name);
                 } else {
                     fprintf(outfile, msvc4_double_end);
                     if (cp_source_names[0]) {
@@ -4633,7 +4646,7 @@ static int output_msvc4_file(char *fname, int filelist)
             fprintf(outfile, msvc4_global_if, cp_name, cp_name);
             if (cp_dep_names[0]) {
                 for (j = 0; cp_dep_names[j]; j++) {
-                    if (strncmp(cp_dep_names[j], "resid", 5)) {
+                    if (strncmp(cp_dep_names[j], "resid", 5) && strcmp(cp_dep_names[j], "x64dtv") && strcmp(cp_dep_names[j], "xscpu64")) {
                         for (i = 0; i < 2; i++) {
                             fprintf(outfile, msvc4_ifs[i], cp_name);
                             fprintf(outfile, msvc4_global_make, cp_dep_names[j], msvc4_type[i], cp_dep_names[j], cp_dep_names[j], msvc4_type[i], cp_dep_names[j], msvc4_type[i], cp_dep_names[j], cp_dep_names[j], msvc4_type[i]);
@@ -4655,7 +4668,7 @@ static int output_msvc4_file(char *fname, int filelist)
                 for (j = 0; cp_sdl_source_names[j]; j++) {
                     new_name = msvc4_strip_c_extension(cp_sdl_source_names[j]);
                     if (new_name) {
-                        fprintf(outfile, msvc4_source_build, cp_source_names[j], new_name);
+                        fprintf(outfile, msvc4_source_build, cp_sdl_source_names[j], new_name);
                         free(new_name);
                     }
                 }
@@ -4685,7 +4698,7 @@ static int output_msvc4_file(char *fname, int filelist)
                 }
             }
             if (cp_custom_source) {
-                fprintf(outfile, msvc4_cpu_source_start, cp_custom_source);
+                fprintf(outfile, msvc4_custom_source_start, cp_custom_source);
                 for (i = 0; i < 2; i++) {
                     fprintf(outfile, msvc4_ifs[i], cp_name);
                     fprintf(outfile, msvc4_custom_source, cp_custom_source, cp_custom_source, cp_custom_output, cp_custom_command);
@@ -5384,7 +5397,7 @@ int main(int argc, char *argv[])
                     current_level = 40;
                     if (project_names[0]) {
                         for (i = 0; project_names[i] && !error; i++) {
-                            if (strncmp(project_names[i], "resid", 5)) {
+                            if (strncmp(project_names[i], "resid", 5) && strcmp(project_names[i], "x64dtv") && strcmp(project_names[i], "xscpu64")) {
                                 error = preparse_project(project_names[i]);
                             }
                         }
@@ -5394,7 +5407,7 @@ int main(int argc, char *argv[])
                             }
                         }
                         for (i = 0; project_names[i] && !error; i++) {
-                            if (strncmp(project_names[i], "resid", 5)) {
+                            if (strncmp(project_names[i], "resid", 5) && strcmp(project_names[i], "x64dtv") && strcmp(project_names[i], "xscpu64")) {
                                 error = read_template_file(project_names[i], 1);
                                 if (!error) {
                                     error = output_msvc4_file(project_names[i], 1);

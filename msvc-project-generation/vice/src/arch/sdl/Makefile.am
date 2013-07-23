@@ -208,6 +208,7 @@ EXTRA_DIST = \
 	generate_msvc9_project.bat \
 	generate_msvc10_project.bat \
 	generate_msvc11_project.bat \
+	generate_msvcmips_project.bat \
 	make-bindist_amiga.sh \
 	make-bindist_beos.sh \
 	make-bindist_dingoo.sh \
