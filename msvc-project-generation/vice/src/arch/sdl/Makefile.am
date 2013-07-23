@@ -11,8 +11,7 @@ SUBDIRS = \
 	msvc-files \
 	qnx4 \
 	syllable-files \
-	win32-watcom \
-	winmips-msvc
+	win32-watcom
 
 INCLUDES = \
 	@ARCH_INCLUDES@ \

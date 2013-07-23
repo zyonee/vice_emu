@@ -3687,7 +3687,6 @@ AC_OUTPUT([Makefile
            src/arch/sdl/qnx4/Makefile
            src/arch/sdl/syllable-files/Makefile
            src/arch/sdl/win32-watcom/Makefile
-           src/arch/sdl/winmips-msvc/Makefile
            src/arch/unix/Makefile
            src/arch/unix/gp2x/Makefile
            src/arch/unix/gp2x/gpe-files/Makefile
