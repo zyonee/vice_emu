@@ -1,1 +1,1 @@
-SUBDIRS = libavcodec libavdevice libavformat libavutil libswscale
+SUBDIRS = libavcodec libavdevice libavfilter libavformat libavutil libpostproc libswresample libswscale

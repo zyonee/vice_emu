@@ -95,6 +95,7 @@ static void update_ffmpeg_codecs(HWND hwnd)
             }
             if (!codec_set) {
                 SendMessage(audio_codec_combo,CB_SETCURSEL,0 , 0);
+                resources_set_int("FFMPEGAudioCodec", current_format->audio_codecs[0].id);
             }
             EnableWindow(audio_codec_combo, 1);
         } else {
@@ -116,6 +117,7 @@ static void update_ffmpeg_codecs(HWND hwnd)
             }
             if (!codec_set) {
                 SendMessage(video_codec_combo,CB_SETCURSEL,0 , 0);
+                resources_set_int("FFMPEGVideoCodec", current_format->video_codecs[0].id);
             }
             EnableWindow(video_codec_combo, 1);
         } else {
