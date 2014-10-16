@@ -127,7 +127,6 @@ static soundmovie_buffer_t ffmpegdrv_audio_in;
 static int audio_init_done;
 static int audio_is_open;
 static struct SwrContext *swr_ctx;
-static int audio_outbuf_size;
 
 /* video */
 static OutputStream video_st = { 0 };
