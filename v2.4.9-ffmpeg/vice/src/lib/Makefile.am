@@ -1,4 +1,4 @@
-SUBDIRS = libffmpeg p64
+SUBDIRS = archives p64
 
 .PHONY: libp64
 
