@@ -98,6 +98,8 @@ typedef int64_t(*av_rescale_rnd_t)(int64_t, int64_t, int64_t, enum AVRounding);
 typedef int64_t(*av_rescale_q_t)(int64_t, AVRational, AVRational);
 typedef int(*av_frame_make_writable_t)(AVFrame*);
 typedef void(*av_frame_free_t)(AVFrame**);
+typedef int(*av_dict_set_t)(AVDictionary**, const char*, const char*, int);
+typedef void(*av_dict_free_t)(AVDictionary**);
 
 /* swscale functions */
 typedef struct SwsContext * (*sws_getContext_t)(int srcW, int srcH,
@@ -152,6 +154,8 @@ struct ffmpeglib_s {
     av_rescale_q_t              p_av_rescale_q;
     av_frame_make_writable_t    p_av_frame_make_writable;
     av_frame_free_t             p_av_frame_free;
+    av_dict_set_t               p_av_dict_set;
+    av_dict_free_t              p_av_dict_free;
 
     /* swscale */
     sws_getContext_t            p_sws_getContext;

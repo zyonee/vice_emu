@@ -331,10 +331,17 @@ static int ffmpegdrv_open_audio(AVFormatContext *oc, AVStream *st)
     AVCodecContext *c;
     int audio_inbuf_samples;
     int ret;
+    AVDictionary *opts = NULL;
+    
+    //av_dict_free(&opts);
 
     c = st->codec;
     /* open codec */
-    ret = (*ffmpeglib.p_avcodec_open2)(c, avcodecaudio, NULL);
+    /* aac encoder ist flaged 'experimental' */
+    (*ffmpeglib.p_av_dict_set)(&opts, "strict", "experimental", 0);
+    ret = (*ffmpeglib.p_avcodec_open2)(c, avcodecaudio, &opts);
+    (*ffmpeglib.p_av_dict_free)(&opts);
+
     if (ret < 0) {
         log_debug("ffmpegdrv: could not open audio codec (%d)", ret);
         return -1;
@@ -800,13 +807,25 @@ static int ffmpegdrv_save(screenshot_t *screenshot, const char *filename)
         /* the codec from resource */
         ffmpegdrv_fmt->audio_codec = audio_codec;
     }
-    avcodecaudio = (*ffmpeglib.p_avcodec_find_encoder)(ffmpegdrv_fmt->audio_codec);
+    if (ffmpegdrv_fmt->audio_codec != AV_CODEC_ID_NONE) {
+        avcodecaudio = (*ffmpeglib.p_avcodec_find_encoder)(ffmpegdrv_fmt->audio_codec);
+        if (!avcodecaudio) {
+            log_debug("ffmpegdrv: Cannot find suitable audio codec");
+            return -1;
+        }
+    }
 
     if (format->video_codecs != NULL) {
         /* the codec from resource */
         ffmpegdrv_fmt->video_codec = video_codec;
     }
-    avcodecvideo = (*ffmpeglib.p_avcodec_find_encoder)(ffmpegdrv_fmt->video_codec);
+    if (ffmpegdrv_fmt->video_codec != AV_CODEC_ID_NONE) {
+        avcodecvideo = (*ffmpeglib.p_avcodec_find_encoder)(ffmpegdrv_fmt->video_codec);
+        if (!avcodecvideo) {
+            log_debug("ffmpegdrv: Cannot find suitable video codec");
+            return -1;
+        }
+    }
 
     ffmpegdrv_oc = (*ffmpeglib.p_avformat_alloc_context)();
 
