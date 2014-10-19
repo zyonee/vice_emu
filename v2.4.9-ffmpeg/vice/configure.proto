@@ -3726,12 +3726,7 @@ AC_OUTPUT([Makefile
            src/iecbus/Makefile
            src/imagecontents/Makefile
            src/lib/Makefile
-           src/lib/libffmpeg/Makefile
-           src/lib/libffmpeg/libavcodec/Makefile
-           src/lib/libffmpeg/libavdevice/Makefile
-           src/lib/libffmpeg/libavformat/Makefile
-           src/lib/libffmpeg/libavutil/Makefile
-           src/lib/libffmpeg/libswscale/Makefile
+           src/lib/archives/Makefile
            src/lib/p64/Makefile
            src/monitor/Makefile
            src/parallel/Makefile
