@@ -128,6 +128,11 @@ petcat:
 cartconv:
 	(cd src; $(MAKE) cartconv)
 
+ffmpeglibs:
+	(cd src/lib; $(MAKE) ffmpeglibs)
+
+ffmpeglibs-install:
+	(cd src/lib; $(MAKE) ffmpeglibs-install)
 
 install: installvice
 

@@ -335,6 +335,7 @@ AC_CHECK_PROG(AR, ar, ar, ar)
 AC_CHECK_TOOL(RANLIB, ranlib, :)
 AC_CHECK_TOOL(STRIP, strip, :)
 AC_CHECK_PROG(SVN, svn, svn, :)
+AC_CHECK_PROG(TAR, tar, tar, :)
 AC_CHECK_PROG(SVNVERSION, svnversion, svnversion, :)
 AC_PROG_INSTALL
 AC_PROG_LN_S
@@ -576,7 +577,7 @@ elif test x"$host_os" = "xcygwin32" -o x"$host_os" = "xcygwin" -o x"$host_os" = 
 	  	 )
   fi
 
-  dln warnings_cxx="-Wall -W -Wno-unused-parameter -Wno-missing-field-initializers -Wno-sign-compare"
+  dnl warnings_cxx="-Wall -W -Wno-unused-parameter -Wno-missing-field-initializers -Wno-sign-compare"
   warnings_cxx="-Wall -Wno-unused-parameter -Wno-sign-compare"
   CFLAGS="$CFLAGS $warnings_cxx"
   CXXFLAGS="$CXXFLAGS $warnings_cxx"
@@ -1607,54 +1608,44 @@ dnl ----- FFMPEG -----
 PKG_PROG_PKG_CONFIG
 FFMPEG_INCLUDES=
 FFMPEG_LIBS=
+FFMPEG_DIR=
 AC_MSG_CHECKING([for FFMPEG support])
 if test x"$enable_ffmpeg" != "xno"; then
-  if test x"$is_win32" = "xyes" ; then
-    dnl --- win32 ---
-    AC_MSG_RESULT([yes (internal)])
-    GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o ffmpeglib.o"
-    AC_DEFINE([HAVE_FFMPEG],,[Have FFMPEG av* libs available])
-    AC_DEFINE([HAVE_FFMPEG_SWSCALE],,[Have FFMPEG swscale lib available])
-    AC_DEFINE([HAVE_FFMPEG_HEADER_SUBDIRS],,[FFMPEG uses subdirs for headers])
-    FFMPEG_INCLUDES="-I\$(top_srcdir)/src/lib/libffmpeg"
-  elif test x"$is_unix" = "xyes" -a x"$dynlib_support" = "xyes" ; then
-    dnl --- unix (requires dynlib support) ---
-    AC_MSG_RESULT([via pkg-config])
-    PKG_CHECK_MODULES(FFMPEG_AV,  [libavcodec libavformat libavutil], 
-      [old_CFLAGS=$CFLAGS
-       old_CPPFLAGS=$CPPFLAGS
-       CFLAGS="$CFLAGS $FFMPEG_AV_CFLAGS"
-       CPPFLAGS="$CPPFLAGS $FFMPEG_AV_CFLAGS"
-
-       AC_CHECK_HEADER(libavformat/avformat.h,
-        [AC_DEFINE([HAVE_FFMPEG_HEADER_SUBDIRS],,[FFMPEG uses subdirs for headers])],
-        [AC_CHECK_HEADER(avformat.h,,
-          [AC_MSG_ERROR([No suitable FFMPEG header found!])])])
-
-       CFLAGS=$old_CFLAGS
-       CPPFLAGS=$old_CPPFLAGS
-
-      PKG_CHECK_MODULES(FFMPEG_SWSCALE, [libswscale],
-        [have_swscale=yes],
-        [echo "no. trying img_convert"]
-        [old_LIBS=$LIBS]
-        [AC_CHECK_LIB(avcodec, img_convert,[have_imgconvert=yes])]
-        [LIBS=$old_LIBS]
-      )
-      if (test x"${have_swscale}" = x"yes") || (test x"${have_imgconvert}" = x"yes") ; then
-        AC_DEFINE([HAVE_FFMPEG],,[Have FFMPEG av* libs available])
-        FFMPEG_INCLUDES="$FFMPEG_AV_CFLAGS"
-        GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o ffmpeglib.o"
-	dlopen_pthread=yes
-      fi
-      if (test x"${have_swscale}" = x"yes") ; then
-        AC_DEFINE([HAVE_FFMPEG_SWSCALE],,[Have FFMPEG swscale lib available])
-        FFMPEG_INCLUDES="$FFMPEG_INCLUDES $FFMPEG_SWSCALE_CFLAGS"
-	dlopen_pthread=yes
-      fi
-       ],
-      [echo "no. disabled."]
-    )
+  if test x"$is_win32" = "xyes" -o x"$is_unix" = "xyes" -a x"$dynlib_support" = "xyes" ; then
+    dnl --- archs supporting ffmpeg ---
+    dnl --- try to extract the source archives for the ffmpeg lib ---
+    if test ! -d src/lib/liblame; then
+      $TAR -xzf src/lib/archives/lame*.gz -C src/lib
+      mv src/lib/lame* src/lib/liblame && FFMPEG_DIR="$FFMPEG_DIR liblame"
+    else
+      FFMPEG_DIR="$FFMPEG_DIR liblame"
+    fi
+    if test ! -d src/lib/libx264; then
+      $TAR -xjf src/lib/archives/*x264*.bz2 -C src/lib
+      mv src/lib/x264* src/lib/libx264 && FFMPEG_DIR="$FFMPEG_DIR libx264"
+    else
+      FFMPEG_DIR="$FFMPEG_DIR libx264"
+    fi
+    if test ! -d src/lib/libffmpeg; then
+      $TAR -xjf src/lib/archives/ffmpeg*.tar.bz2 -C src/lib
+      mv src/lib/ffmpeg* src/lib/libffmpeg && FFMPEG_DIR="$FFMPEG_DIR libffmpeg"
+      dnl --- copy dummy header libavutil/avconfig.h ---
+      cp src/lib/archives/avconfig.h src/lib/libffmpeg/libavutil
+    else
+      FFMPEG_DIR="$FFMPEG_DIR libffmpeg"
+    fi
+    dnl --- if extraction of libs was successful the headers should be found ---
+    if test -f "src/lib/libffmpeg/libavformat/avformat.h" ; then
+      AC_DEFINE([HAVE_FFMPEG],,[Have FFMPEG av* libs available])
+      FFMPEG_INCLUDES="-I\$(top_srcdir)/src/lib/libffmpeg"
+      dnl --- define obsolete variables as long as they are not removed from driver code ---
+      AC_DEFINE([HAVE_FFMPEG_SWSCALE],,[Have FFMPEG swscale lib available])
+      AC_DEFINE([HAVE_FFMPEG_HEADER_SUBDIRS],,[FFMPEG uses subdirs for headers])
+      AC_MSG_RESULT([yes (internal)])
+      GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o ffmpeglib.o"
+    else
+      AC_MSG_RESULT([no])
+    fi
   else
     AC_MSG_RESULT([not available])
   fi
@@ -1663,6 +1654,7 @@ else
 fi
 AC_SUBST(FFMPEG_INCLUDES)
 AC_SUBST(FFMPEG_LIBS)
+AC_SUBST(FFMPEG_DIR)
 
 dnl ----- Apple QuickTime -----
 QUICKTIME_INCLUDES=
@@ -3546,6 +3538,11 @@ esac
 AC_SUBST(VICEDIR)
 AC_DEFINE_UNQUOTED(VICEDIR, "$VICEDIR",
 		   [Where should we lookup for data files?])
+
+
+# Add path with private dynamic ffmpeg libs to the search path
+LDFLAGS="$LDFLAGS -Wl,-rpath,$VICEDIR/lib"
+
 
 AC_OUTPUT([Makefile
            vice.spec
