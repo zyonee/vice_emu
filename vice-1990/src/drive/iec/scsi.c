@@ -39,7 +39,7 @@
 #define SCSI_STATUS_CHECK_CONDITION (SCSI_BSY | SCSI_REQ | SCSI_C_D | SCSI_I_O | 0x02)
 #define SCSI_COPYRIGHT "KAJTAR ZSOLT"
 #define SCSI_VENDOR "VICE-EMU"
-#define SCSI_REVISION &"$Revision:: 27835    $"[12]
+#define SCSI_REVISION &"$Revision::          $"[12]
 
 /* required for off_t on some platforms */
 #ifdef HAVE_SYS_TYPES_H
