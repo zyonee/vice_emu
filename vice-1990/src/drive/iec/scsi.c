@@ -476,11 +476,29 @@ static WORD scsi_execute_command(scsi_drive_t *drv)
         }
         drv->bufp = 0;
         return SCSI_DATA_OUT;
+    case 0x55:
+        if (drv->bufp < 10) {
+            return SCSI_COMMAND;
+        }
+        debug((drv->log, "MODE SELECT 10"));
+        if (command[1] & 0xe0) {
+            return scsi_update_sense(drv, SCSI_LOGICAL_UNIT_NOT_SUPPORTED);
+        }
+        break;
+    case 0x5a:
+        if (drv->bufp < 10) {
+            return SCSI_COMMAND;
+        }
+        debug((drv->log, "MODE SENSE 10"));
+        if (command[1] & 0xe0) {
+            return scsi_update_sense(drv, SCSI_LOGICAL_UNIT_NOT_SUPPORTED);
+        }
+        break;
     default:
         if (drv->bufp < 6 && command[0] < 0x20) {
             return SCSI_COMMAND;
         }
-        if (drv->bufp < 10 && command[0] < 0x60) {
+        if (drv->bufp < 10 && command[0] < 0x60 && command[0] >= 0x20) {
             return SCSI_COMMAND;
         }
         if (drv->bufp < 12 && command[0] < 0xc0 && command[0] >= 0xa0) {
