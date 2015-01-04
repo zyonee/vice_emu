@@ -396,6 +396,9 @@ static WORD scsi_execute_command(scsi_drive_t *drv)
         case 0: break;
         case 1: break;
         case 2:
+            if (drv->type != SCSI_DRIVE_FDD && drv->type != SCSI_DRIVE_HDD) {
+                return scsi_update_sense(drv, SCSI_ILLEGAL_REQUEST);
+            }
             if (drv->file) {
                 if (drv->locked) {
                     return scsi_update_sense(drv, SCSI_MEDIUM_REMOVAL_PREVENTED);
@@ -405,6 +408,9 @@ static WORD scsi_execute_command(scsi_drive_t *drv)
             }
             break;
         case 3:
+            if (drv->type != SCSI_DRIVE_FDD && drv->type != SCSI_DRIVE_HDD) {
+                return scsi_update_sense(drv, SCSI_ILLEGAL_REQUEST);
+            }
             if (!drv->file) {
                 scsi_image_attach(drv, drv->filename, drv->type);
                 if (!drv->file) {
@@ -415,6 +421,19 @@ static WORD scsi_execute_command(scsi_drive_t *drv)
         default:
             break;
         }
+        return scsi_update_sense(drv, SCSI_NO_ADDITIONAL_SENSE_INFORMATION);
+    case 0x1e:
+        if (drv->bufp < 6) {
+            return SCSI_COMMAND;
+        }
+        debug((drv->log, "PREVENT/ALLOW MEDIUM REMOVAL"));
+        if (command[1] & 0xe0) {
+            return scsi_update_sense(drv, SCSI_LOGICAL_UNIT_NOT_SUPPORTED);
+        }
+        if (drv->type != SCSI_DRIVE_FDD && drv->type != SCSI_DRIVE_HDD) {
+            return scsi_update_sense(drv, SCSI_ILLEGAL_REQUEST);
+        }
+        drv->locked = command[4] & 1;
         return scsi_update_sense(drv, SCSI_NO_ADDITIONAL_SENSE_INFORMATION);
     case 0x25:
         if (drv->bufp < 10) {
@@ -693,7 +712,7 @@ void scsi_image_detach(scsi_drive_t *drv)
 
 int scsi_image_change(scsi_drive_t *drv, char *filename, scsi_drive_type_t type)
 {
-    if (drv->type != type) {
+    if (drv->type != type || drv->locked) {
         return 1;
     }
     scsi_image_attach(drv, filename, type);
