@@ -46,7 +46,12 @@
 #include "via1d1541.h"
 #include "wd1770.h"
 #include "via4000.h"
+#include "via1d1990.h"
+#include "via2d1990.h"
+#include "gpio1990.h"
+#include "ppi1990.h"
 #include "pc8477.h"
+#include "scsi.h"
 
 
 /* Pointer to the IEC bus structure.  */
@@ -75,6 +80,10 @@ void iec_drive_init(struct drive_context_s *drv)
     cia1571_init(drv);
     cia1581_init(drv);
     via4000_init(drv);
+    via1d1990_init(drv);
+    via2d1990_init(drv);
+    gpio1990_init(drv);
+    ppi1990_init(drv);
     wd1770d_init(drv);
     pc8477d_init(drv);
 }
@@ -106,12 +115,28 @@ void iec_drive_reset(struct drive_context_s *drv)
         ciacore_disable(drv->cia1581);
     }
 
+    switch (drv->drive->type) {
+    case DRIVE_TYPE_2000:
+    case DRIVE_TYPE_4000:
+        viacore_reset(drv->via4000);
+        break;
+    default:
+        viacore_disable(drv->via4000);
+    }
+
     if (drv->drive->type == DRIVE_TYPE_2000
         || drv->drive->type == DRIVE_TYPE_4000) {
-        viacore_reset(drv->via4000);
         pc8477_reset(drv->pc8477, drv->drive->type == DRIVE_TYPE_4000);
+    }
+
+    if (drv->drive->type == DRIVE_TYPE_1990) {
+        gpio1990_reset(drv->gpio1990);
+        ppi1990_reset(drv->ppi1990);
+        viacore_reset(drv->via1d1990);
+        viacore_reset(drv->via2d1990);
     } else {
-        viacore_disable(drv->via4000);
+        viacore_disable(drv->via1d1990);
+        viacore_disable(drv->via2d1990);
     }
 }
 
@@ -126,7 +151,13 @@ void iec_drive_setup_context(struct drive_context_s *drv)
     cia1571_setup_context(drv);
     cia1581_setup_context(drv);
     via4000_setup_context(drv);
+    via1d1990_setup_context(drv);
+    via2d1990_setup_context(drv);
+    gpio1990_setup_context(drv);
+    ppi1990_setup_context(drv);
     pc8477_setup_context(drv);
+    drv->scsi_drive = scsi_init(8 * drv->mynumber);
+    scsi_image_attach(drv->scsi_drive, "/tmp/image", SCSI_DRIVE_HDD); /* FOR TESTING ONLY */
 }
 
 void iec_drive_shutdown(struct drive_context_s *drv)
@@ -135,8 +166,14 @@ void iec_drive_shutdown(struct drive_context_s *drv)
     ciacore_shutdown(drv->cia1571);
     ciacore_shutdown(drv->cia1581);
     viacore_shutdown(drv->via4000);
+    viacore_shutdown(drv->via1d1990);
+    viacore_shutdown(drv->via2d1990);
+    gpio1990_shutdown(drv->gpio1990);
+    ppi1990_shutdown(drv->ppi1990);
     wd1770_shutdown(drv->wd1770);
     pc8477_shutdown(drv->pc8477);
+    scsi_image_detach(drv->scsi_drive); /* FOR TESTING ONLY */
+    scsi_shutdown(drv->scsi_drive);
 }
 
 void iec_drive_idling_method(unsigned int dnr)
@@ -157,6 +194,7 @@ void iec_drive_rom_load(void)
     iecrom_load_1570();
     iecrom_load_1571();
     iecrom_load_1581();
+    iecrom_load_1990();
     iecrom_load_2000();
     iecrom_load_4000();
 }
@@ -208,9 +246,22 @@ int iec_drive_snapshot_read(struct drive_context_s *ctxptr,
         }
     }
 
-    if (ctxptr->drive->type == DRIVE_TYPE_2000
-        || ctxptr->drive->type == DRIVE_TYPE_4000) {
+    switch (ctxptr->drive->type) {
+    case DRIVE_TYPE_2000:
+    case DRIVE_TYPE_4000:
         if (viacore_snapshot_read_module(ctxptr->via4000, s) < 0) {
+            return -1;
+        }
+    }
+
+    if (ctxptr->drive->type == DRIVE_TYPE_1990) {
+        if (viacore_snapshot_read_module(ctxptr->via1d1990, s) < 0) {
+            return -1;
+        }
+        if (viacore_snapshot_read_module(ctxptr->via2d1990, s) < 0) {
+            return -1;
+        }
+        if (scsi_snapshot_read_module(ctxptr->scsi_drive, s) < 0) {
             return -1;
         }
     }
@@ -245,9 +296,22 @@ int iec_drive_snapshot_write(struct drive_context_s *ctxptr,
         }
     }
 
-    if (ctxptr->drive->type == DRIVE_TYPE_2000
-        || ctxptr->drive->type == DRIVE_TYPE_4000) {
+    switch (ctxptr->drive->type) {
+    case DRIVE_TYPE_2000:
+    case DRIVE_TYPE_4000:
         if (viacore_snapshot_write_module(ctxptr->via4000, s) < 0) {
+            return -1;
+        }
+    }
+
+    if (ctxptr->drive->type == DRIVE_TYPE_1990) {
+        if (viacore_snapshot_write_module(ctxptr->via1d1990, s) < 0) {
+            return -1;
+        }
+        if (viacore_snapshot_write_module(ctxptr->via2d1990, s) < 0) {
+            return -1;
+        }
+        if (scsi_snapshot_write_module(ctxptr->scsi_drive, s) < 0) {
             return -1;
         }
     }

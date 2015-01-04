@@ -192,6 +192,7 @@ int drive_init(void)
         drive->drive_ram_expand6 = NULL;
         drive->drive_ram_expand8 = NULL;
         drive->drive_ram_expanda = NULL;
+        drive->drive_ram_expandc = NULL;
 
         machine_drive_port_default(drive_context[dnr]);
 
@@ -243,9 +244,13 @@ int drive_init(void)
 
         rotation_init((drive->clock_frequency == 2) ? 1 : 0, dnr);
 
-        if (drive->type == DRIVE_TYPE_2000 || drive->type == DRIVE_TYPE_4000) {
+        switch (drive->type) {
+        case DRIVE_TYPE_1990:
+        case DRIVE_TYPE_2000:
+        case DRIVE_TYPE_4000:
             drivecpu65c02_init(drive_context[dnr], drive->type);
-        } else {
+            break;
+        default:
             drivecpu_init(drive_context[dnr], drive->type);
         }
 
@@ -271,9 +276,13 @@ void drive_shutdown(void)
     }
 
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
-        if (drive_context[dnr]->drive->type == DRIVE_TYPE_2000 || drive_context[dnr]->drive->type == DRIVE_TYPE_4000) {
+        switch (drive_context[dnr]->drive->type) {
+        case DRIVE_TYPE_1990:
+        case DRIVE_TYPE_2000:
+        case DRIVE_TYPE_4000:
             drivecpu65c02_shutdown(drive_context[dnr]);
-        } else {
+            break;
+        default:
             drivecpu_shutdown(drive_context[dnr]);
         }
         if (drive_context[dnr]->drive->gcr) {
@@ -307,6 +316,7 @@ void drive_set_active_led_color(unsigned int type, unsigned int dnr)
             break;
         case DRIVE_TYPE_1541II:
         case DRIVE_TYPE_1581:
+        case DRIVE_TYPE_1990:
         case DRIVE_TYPE_2000:
         case DRIVE_TYPE_4000:
             drive_led_color[dnr] = DRIVE_ACTIVE_GREEN;
@@ -344,9 +354,13 @@ int drive_set_disk_drive_type(unsigned int type, struct drive_context_s *drv)
 
     rotation_init(0, dnr);
     drive->type = type;
-    if (type == DRIVE_TYPE_2000 || type == DRIVE_TYPE_4000) {
+    switch (type) {
+    case DRIVE_TYPE_1990:
+    case DRIVE_TYPE_2000:
+    case DRIVE_TYPE_4000:
         drivecpu65c02_setup_context(drv, 0);
-    } else {
+        break;
+    default:
         drivecpu_setup_context(drv, 0);
     }
     drive->side = 0;
@@ -366,9 +380,13 @@ int drive_set_disk_drive_type(unsigned int type, struct drive_context_s *drv)
         drive1->drive0 = NULL;
     }
 
-    if (type == DRIVE_TYPE_2000 || type == DRIVE_TYPE_4000) {
+    switch (type) {
+    case DRIVE_TYPE_1990:
+    case DRIVE_TYPE_2000:
+    case DRIVE_TYPE_4000:
         drivecpu65c02_init(drv, type);
-    } else {
+        break;
+    default:
         drivecpu_init(drv, type);
     }
 
@@ -442,9 +460,13 @@ int drive_enable(drive_context_t *drv)
     /* resync */
     drv->cpu->stop_clk = *(drv->clk_ptr);
 
-    if (drive->type == DRIVE_TYPE_2000 || drive->type == DRIVE_TYPE_4000) {
+    switch (drive->type) {
+    case DRIVE_TYPE_1990:
+    case DRIVE_TYPE_2000:
+    case DRIVE_TYPE_4000:
         drivecpu65c02_wake_up(drv);
-    } else {
+        break;
+    default:
         drivecpu_wake_up(drv);
     }
 
@@ -468,9 +490,13 @@ void drive_disable(drive_context_t *drv)
     resources_get_int("DriveTrueEmulation", &drive_true_emulation);
 
     if (rom_loaded) {
-        if (drive->type == DRIVE_TYPE_2000 || drive->type == DRIVE_TYPE_4000) {
+        switch (drive->type) {
+        case DRIVE_TYPE_1990:
+        case DRIVE_TYPE_2000:
+        case DRIVE_TYPE_4000:
             drivecpu65c02_sleep(drv);
-        } else {
+            break;
+        default:
             drivecpu_sleep(drv);
         }
         machine_drive_port_default(drv);
@@ -491,9 +517,13 @@ void drive_reset(void)
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         drive = drive_context[dnr]->drive;
 
-        if (drive->type == DRIVE_TYPE_2000 || drive->type == DRIVE_TYPE_4000) {
+        switch (drive->type) {
+        case DRIVE_TYPE_1990:
+        case DRIVE_TYPE_2000:
+        case DRIVE_TYPE_4000:
             drivecpu65c02_reset(drive_context[dnr]);
-        } else {
+            break;
+        default:
             drivecpu_reset(drive_context[dnr]);
         }
 
@@ -736,8 +766,10 @@ int drive_num_leds(unsigned int dnr)
         return 2;
     }
 
-    if (drive->type == DRIVE_TYPE_2000
-        || drive->type == DRIVE_TYPE_4000) {
+    switch (drive->type) {
+    case DRIVE_TYPE_1990:
+    case DRIVE_TYPE_2000:
+    case DRIVE_TYPE_4000:
         return 2;
     }
 
@@ -748,9 +780,12 @@ void drivecpu_execute_one(drive_context_t *drv, CLOCK clk_value)
 {
     drive_t *drive = drv->drive;
 
-    if (drive->type == DRIVE_TYPE_2000 || drive->type == DRIVE_TYPE_4000) {
+    switch (drive->type) {
+    case DRIVE_TYPE_1990:
+    case DRIVE_TYPE_2000:
+    case DRIVE_TYPE_4000:
         drivecpu65c02_execute(drv, clk_value);
-    } else {
+    default:
         drivecpu_execute(drv, clk_value);
     }
 }
@@ -802,9 +837,13 @@ static void drive_setup_context_for_drive(drive_context_t *drv,
     drv->drive = lib_calloc(1, sizeof(drive_t));
     drv->clk_ptr = &drive_clk[dnr];
 
-    if (drv->drive->type == DRIVE_TYPE_2000 || drv->drive->type == DRIVE_TYPE_4000) {
+    switch (drv->drive->type) {
+    case DRIVE_TYPE_1990:
+    case DRIVE_TYPE_2000:
+    case DRIVE_TYPE_4000:
         drivecpu65c02_setup_context(drv, 1);
-    } else {
+        break;
+    default:
         drivecpu_setup_context(drv, 1);
     }
     machine_drive_setup_context(drv);

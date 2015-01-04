@@ -38,12 +38,14 @@
 #include "resources.h"
 #include "traps.h"
 #include "util.h"
+#include "via.h"
 
 static char *dos_rom_name_1541 = NULL;
 static char *dos_rom_name_1541ii = NULL;
 static char *dos_rom_name_1570 = NULL;
 static char *dos_rom_name_1571 = NULL;
 static char *dos_rom_name_1581 = NULL;
+static char *dos_rom_name_1990 = NULL;
 static char *dos_rom_name_2000 = NULL;
 static char *dos_rom_name_4000 = NULL;
 
@@ -103,6 +105,15 @@ static int set_dos_rom_name_1581(const char *val, void *param)
     }
 
     return iecrom_load_1581();
+}
+
+static int set_dos_rom_name_1990(const char *val, void *param)
+{
+    if (util_string_set(&dos_rom_name_1990, val)) {
+        return 0;
+    }
+
+    return iecrom_load_1990();
 }
 
 static int set_dos_rom_name_2000(const char *val, void *param)
@@ -168,6 +179,37 @@ static int set_drive_rama(int val, void *param)
     return 0;
 }
 
+static int set_drive_swap8(int val, void *param)
+{
+    drive_t *drive = drive_context[vice_ptr_to_uint(param)]->drive;
+    val = val ? 1 : 0;
+
+    if (drive->swap8_button != val) {
+        if (drive->type == DRIVE_TYPE_2000 || drive->type == DRIVE_TYPE_4000) {
+            viacore_signal(drive_context[vice_ptr_to_uint(param)]->via4000, VIA_SIG_CA1, drive->swap8_button ? VIA_SIG_RISE : VIA_SIG_FALL);
+        }
+        drive->swap8_button = val;
+    }
+
+    return 0;
+}
+
+static int set_drive_swap9(int val, void *param)
+{
+    drive_t *drive = drive_context[vice_ptr_to_uint(param)]->drive;
+
+    drive->swap9_button = val ? 1 : 0;
+    return 0;
+}
+
+static int set_drive_write_protect(int val, void *param)
+{
+    drive_t *drive = drive_context[vice_ptr_to_uint(param)]->drive;
+
+    drive->write_protect_button = val ? 1 : 0;
+    return 0;
+}
+
 static const resource_string_t resources_string[] = {
     { "DosName1541", "dos1541", RES_EVENT_NO, NULL,
       /* FIXME: should be same but names may differ */
@@ -180,6 +222,8 @@ static const resource_string_t resources_string[] = {
       &dos_rom_name_1571, set_dos_rom_name_1571, NULL },
     { "DosName1581", "dos1581", RES_EVENT_NO, NULL,
       &dos_rom_name_1581, set_dos_rom_name_1581, NULL },
+    { "DosName1990", "dos1990", RES_EVENT_NO, NULL,
+      &dos_rom_name_1990, set_dos_rom_name_1990, NULL },
     { "DosName2000", "dos2000", RES_EVENT_NO, NULL,
       &dos_rom_name_2000, set_dos_rom_name_2000, NULL },
     { "DosName4000", "dos4000", RES_EVENT_NO, NULL,
@@ -198,6 +242,12 @@ static resource_int_t res_drive[] = {
       NULL, set_drive_ram8, NULL },
     { NULL, 0, RES_EVENT_SAME, NULL,
       NULL, set_drive_rama, NULL },
+    { NULL, 0, RES_EVENT_SAME, NULL,
+      NULL, set_drive_swap8, NULL },
+    { NULL, 0, RES_EVENT_SAME, NULL,
+      NULL, set_drive_swap9, NULL },
+    { NULL, 0, RES_EVENT_SAME, NULL,
+      NULL, set_drive_write_protect, NULL },
     { NULL }
 };
 
@@ -224,6 +274,15 @@ int iec_resources_init(void)
         res_drive[4].name = lib_msprintf("Drive%iRAMA000", dnr + 8);
         res_drive[4].value_ptr = &(drive->drive_rama_enabled);
         res_drive[4].param = uint_to_void_ptr(dnr);
+        res_drive[5].name = lib_msprintf("Drive%iSwap8Button", dnr + 8);
+        res_drive[5].value_ptr = &(drive->swap8_button);
+        res_drive[5].param = uint_to_void_ptr(dnr);
+        res_drive[6].name = lib_msprintf("Drive%iSwap9Button", dnr + 8);
+        res_drive[6].value_ptr = &(drive->swap9_button);
+        res_drive[6].param = uint_to_void_ptr(dnr);
+        res_drive[7].name = lib_msprintf("Drive%iWriteProtectButton", dnr + 8);
+        res_drive[7].value_ptr = &(drive->write_protect_button);
+        res_drive[7].param = uint_to_void_ptr(dnr);
 
         if (resources_register_int(res_drive) < 0) {
             return -1;
@@ -234,6 +293,9 @@ int iec_resources_init(void)
         lib_free((char *)(res_drive[2].name));
         lib_free((char *)(res_drive[3].name));
         lib_free((char *)(res_drive[4].name));
+        lib_free((char *)(res_drive[5].name));
+        lib_free((char *)(res_drive[6].name));
+        lib_free((char *)(res_drive[7].name));
     }
 
     if (resources_register_string(resources_string) < 0) {
@@ -250,6 +312,7 @@ void iec_resources_shutdown(void)
     lib_free(dos_rom_name_1570);
     lib_free(dos_rom_name_1571);
     lib_free(dos_rom_name_1581);
+    lib_free(dos_rom_name_1990);
     lib_free(dos_rom_name_2000);
     lib_free(dos_rom_name_4000);
 }

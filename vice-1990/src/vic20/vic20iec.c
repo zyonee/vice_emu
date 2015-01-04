@@ -93,6 +93,7 @@ static void iec_calculate_data_modifier(unsigned int dnr)
 {
     switch (drive_context[dnr]->drive->type) {
         case DRIVE_TYPE_1581:
+        case DRIVE_TYPE_1990:
         case DRIVE_TYPE_2000:
         case DRIVE_TYPE_4000:
             drive_data_modifier[dnr] = (cpu_atn & drive_atna[dnr]);
@@ -161,6 +162,7 @@ void iec_pa_write(BYTE data)
                     case DRIVE_TYPE_1581:
                         ciacore_set_flag(drive_context[i]->cia1581);
                         break;
+                    case DRIVE_TYPE_1990:
                     case DRIVE_TYPE_2000:
                     case DRIVE_TYPE_4000:
                         viacore_signal(drive_context[i]->via4000, VIA_SIG_CA2, VIA_SIG_RISE);
@@ -181,6 +183,7 @@ void iec_pa_write(BYTE data)
                 switch (drive->type) {
                     case DRIVE_TYPE_1581:
                         break;
+                    case DRIVE_TYPE_1990:
                     case DRIVE_TYPE_2000:
                     case DRIVE_TYPE_4000:
                         viacore_signal(drive_context[i]->via4000, VIA_SIG_CA2, 0);

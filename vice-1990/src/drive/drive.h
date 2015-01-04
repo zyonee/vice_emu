@@ -59,6 +59,7 @@
 #define DRIVE_TYPE_1571   1571
 #define DRIVE_TYPE_1571CR 1573
 #define DRIVE_TYPE_1581   1581
+#define DRIVE_TYPE_1990   1990
 #define DRIVE_TYPE_2000   2000
 #define DRIVE_TYPE_4000   4000
 #define DRIVE_TYPE_2031   2031
@@ -250,11 +251,14 @@ typedef struct drive_s {
 
     /* Pointer to 8KB RAM expansion.  */
     BYTE *drive_ram_expand2, *drive_ram_expand4, *drive_ram_expand6,
-    *drive_ram_expand8, *drive_ram_expanda;
+    *drive_ram_expand8, *drive_ram_expanda, *drive_ram_expandc;
 
     /* Which RAM expansion is enabled?  */
     int drive_ram2_enabled, drive_ram4_enabled, drive_ram6_enabled,
         drive_ram8_enabled, drive_rama_enabled;
+
+    /* Front panel buttons  */
+    int swap8_button, swap9_button, write_protect_button;
 
     /* Is the Professional DOS extension enabled?  */
     int profdos;

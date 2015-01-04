@@ -32,10 +32,20 @@ libdriveiec_a_SOURCES = \
 	wd1770.h \
 	via4000.c \
 	via4000.h \
+	via1d1990.c \
+	via1d1990.h \
+	via2d1990.c \
+	via2d1990.h \
+	gpio1990.c \
+	gpio1990.h \
+	ppi1990.c \
+	ppi1990.h \
 	fdd.c \
 	fdd.h \
 	pc8477.c \
-	pc8477.h
+	pc8477.h \
+	scsi.c \
+	scsi.h
 
 .PHONY: libdriveiecc64exp libdriveiecplus4exp
 

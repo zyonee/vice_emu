@@ -575,6 +575,11 @@ int drivecpu65c02_snapshot_write_module(drive_context_t *drv, snapshot_t *s)
             goto fail;
         }
     }
+    if (drv->drive->type == DRIVE_TYPE_1990) {
+        if (SMW_BA(m, drv->cpud->drive_ram, 0x10000) < 0) {
+            goto fail;
+        }
+    }
 
     if (interrupt_write_new_snapshot(cpu->int_status, m) < 0) {
         goto fail;
@@ -645,6 +650,11 @@ int drivecpu65c02_snapshot_read_module(drive_context_t *drv, snapshot_t *s)
     if (drv->drive->type == DRIVE_TYPE_2000
         || drv->drive->type == DRIVE_TYPE_4000) {
         if (SMR_BA(m, drv->cpud->drive_ram, 0x2000) < 0) {
+            goto fail;
+        }
+    }
+    if (drv->drive->type == DRIVE_TYPE_1990) {
+        if (SMR_BA(m, drv->cpud->drive_ram, 0x10000) < 0) {
             goto fail;
         }
     }

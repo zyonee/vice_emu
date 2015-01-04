@@ -1572,7 +1572,7 @@ The C128 needs the following files:
 @end itemize
 
 The C128, VIC20, SCPU64 and C64 emulators also need the following DOS ROMs for
-the hardware-level emulation of the 1541, 1571, 1581, 2000 and 4000 disk
+the hardware-level emulation of the 1541, 1571, 1581, 1990, 2000 and 4000 disk
 drives:
 
 @itemize @bullet
@@ -1588,6 +1588,9 @@ drives:
 
 @item
 @file{dos1581}, the 1581 drive ROM (32 Kbytes)
+
+@item
+@file{dos1990}, the 1990 drive ROM (16 Kbytes)
 
 @item
 @file{dos2000}, the 2000 drive ROM (32 Kbytes)
@@ -3434,6 +3437,7 @@ values are @code{1541} [all emulators except xcbm2, xcbm5x0, xpet and vsid],
 @code{1551} [xplus4 only],
 @code{1581} [all emulators except xcbm2, xcbm5x0, xpet and vsid],
 @code{1001} [all emulators except x64dtv, xplus4 and vsid],
+@code{1990} [all emulators except xcbm2, xcbm5x0, xpet and vsid],
 @code{2000} [all emulators except xcbm2, xcbm5x0, xpet and vsid],
 @code{2031} [all emulators except x64dtv, xplus4 and vsid],
 @code{2040} [all emulators except x64dtv, xplus4 and vsid],
@@ -3507,6 +3511,32 @@ Booleans controlling whether Professional DOS is emulated or not for drives 8 to
 Booleans controlling whether a RAM block is emulated at the respective block or
 not for drives 8 to 11 respectively.
 
+@vindex Drive8Swap8Button
+@vindex Drive8Swap9Button
+@vindex Drive8WriteProtectButton
+@vindex Drive9Swap8Button
+@vindex Drive9Swap9Button
+@vindex Drive9WriteProtectButton
+@vindex Drive10Swap8Button
+@vindex Drive10Swap9Button
+@vindex Drive10WriteProtectButton
+@vindex Drive11Swap8Button
+@vindex Drive11Swap9Button
+@vindex Drive11WriteProtectButton
+@item Drive8Swap8Button
+@itemx Drive8Swap9Button
+@itemx Drive8WriteProtectButton
+@itemx Drive9Swap8Button
+@itemx Drive9Swap9Button
+@itemx Drive9WriteProtectButton
+@itemx Drive10Swap8Button
+@itemx Drive10Swap9Button
+@itemx Drive10WriteProtectButton
+@itemx Drive11Swap8Button
+@itemx Drive11Swap9Button
+@itemx Drive11WriteProtectButton
+Booleans controlling the front side panel buttons for drives 8 to 11.
+
 @vindex Drive8ExtendImagePolicy
 @vindex Drive9ExtendImagePolicy
 @vindex Drive10ExtendImagePolicy
@@ -3535,6 +3565,7 @@ Integers specifying the idling method for the drive CPU.
 @vindex DosName1570
 @vindex DosName1571
 @vindex DosName1581
+@vindex DosName1990
 @vindex DosName2000
 @vindex DosName4000
 @item DosName1541
@@ -3542,6 +3573,7 @@ Integers specifying the idling method for the drive CPU.
 @itemx DosName1570
 @itemx DosName1571
 @itemx DosName1581
+@itemx DosName1990
 @itemx DosName2000
 @itemx DosName4000
 Strings specifying the names of the ROM images for the drive emulation.
@@ -3610,6 +3642,7 @@ Possible values for @code{TYPE} are
 @code{1571} [all emulators except xcbm2, xcbm5x0, xpet and vsid],
 @code{1573} (meaning 1571cr) [x128 only],
 @code{1581} [all emulators except xcbm2, xcbm5x0, xpet and vsid],
+@code{1990} [all emulators except xcbm2, xcbm5x0, xpet and vsid],
 @code{2000} [all emulators except xcbm2, xcbm5x0, xpet and vsid],
 @code{4000} [all emulators except xcbm2, xcbm5x0, xpet and vsid],
 @code{2031} [all emulators except x64dtv, xplus4 and vsid],
@@ -3696,6 +3729,12 @@ Specify the ROM name for the 1571 emulation
 @item -dos1581 <name>
 Specify the ROM name for the 1581 emulation
 (@code{DosName1581}).
+(all emulators except xcbm2, xcbm5x0, xpet and vsid)
+
+@findex -dos1990
+@item -dos1990 <name>
+Specify the ROM name for the CMD-HD emulation
+(@code{DosName1990}).
 (all emulators except xcbm2, xcbm5x0, xpet and vsid)
 
 @findex -dos2000
@@ -23805,9 +23844,9 @@ Maintains the BeOS port.
 @item
 @b{Kajtar Zsolt}
 Wrote the IDE64 interface emulation, FD2000/4000 drive emulation, SCPU64
-emulation and alot of fixes. Improved the mouse support. Added drive
-burst modification support. Added 1541 drive sounds emulation. Improved
-c64 cart emulation.
+emulation, CMD-HD emulation and alot of fixes. Improved the mouse
+support. Added drive burst modification support. Added 1541 drive sounds
+emulation. Improved c64 cart emulation.
 
 @end itemize
 

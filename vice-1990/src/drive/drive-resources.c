@@ -69,9 +69,13 @@ static int set_drive_true_emulation(int val, void *param)
             drive = drive_context[dnr]->drive;
             if (drive->type != DRIVE_TYPE_NONE) {
                 drive->enable = 1;
-                if (drive->type == DRIVE_TYPE_2000 || drive->type == DRIVE_TYPE_4000) {
+                switch (drive->type) {
+                case DRIVE_TYPE_1990:
+                case DRIVE_TYPE_2000:
+                case DRIVE_TYPE_4000:
                     drivecpu65c02_reset_clk(drive_context[dnr]);
-                } else {
+                    break;
+                default:
                     drivecpu_reset_clk(drive_context[dnr]);
                 }
             }
@@ -190,6 +194,7 @@ static int drive_resources_type(int val, void *param)
         case DRIVE_TYPE_1571:
         case DRIVE_TYPE_1571CR:
         case DRIVE_TYPE_1581:
+        case DRIVE_TYPE_1990:
         case DRIVE_TYPE_2000:
         case DRIVE_TYPE_4000:
         case DRIVE_TYPE_2031:

@@ -239,11 +239,15 @@ int drive_snapshot_write_module(snapshot_t *s, int save_disks, int save_roms)
     for (i = 0; i < 2; i++) {
         drive = drive_context[i]->drive;
         if (drive->enable) {
-            if (drive->type == DRIVE_TYPE_2000 || drive->type == DRIVE_TYPE_4000) {
+            switch (drive->type) {
+            case DRIVE_TYPE_1990:
+            case DRIVE_TYPE_2000:
+            case DRIVE_TYPE_4000:
                 if (drivecpu65c02_snapshot_write_module(drive_context[i], s) < 0) {
                     return -1;
                 }
-            } else {
+                break;
+            default:
                 if (drivecpu_snapshot_write_module(drive_context[i], s) < 0) {
                     return -1;
                 }
@@ -561,6 +565,7 @@ int drive_snapshot_read_module(snapshot_t *s)
         case DRIVE_TYPE_1571:
         case DRIVE_TYPE_1571CR:
         case DRIVE_TYPE_1581:
+        case DRIVE_TYPE_1990:
         case DRIVE_TYPE_2000:
         case DRIVE_TYPE_4000:
         case DRIVE_TYPE_2031:
@@ -594,6 +599,7 @@ int drive_snapshot_read_module(snapshot_t *s)
         case DRIVE_TYPE_1570:
         case DRIVE_TYPE_1571:
         case DRIVE_TYPE_1581:
+        case DRIVE_TYPE_1990:
         case DRIVE_TYPE_2000:
         case DRIVE_TYPE_4000:
         case DRIVE_TYPE_2031:
@@ -626,11 +632,15 @@ int drive_snapshot_read_module(snapshot_t *s)
     for (i = 0; i < 2; i++) {
         drive = drive_context[i]->drive;
         if (drive->enable) {
-            if (drive->type == DRIVE_TYPE_2000 || drive->type == DRIVE_TYPE_4000) {
+            switch (drive->type) {
+            case DRIVE_TYPE_1990:
+            case DRIVE_TYPE_2000:
+            case DRIVE_TYPE_4000:
                 if (drivecpu65c02_snapshot_read_module(drive_context[i], s) < 0) {
                     return -1;
                 }
-            } else {
+                break;
+            default:
                 if (drivecpu_snapshot_read_module(drive_context[i], s) < 0) {
                     return -1;
                 }
