@@ -496,6 +496,7 @@ _END
                            <QPM:File>dos1570</QPM:File>
                            <QPM:File>dos1571</QPM:File>
                            <QPM:File>dos1581</QPM:File>
+                           <QPM:File>dos1990</QPM:File>
                            <QPM:File>dos2000</QPM:File>
                            <QPM:File>dos2031</QPM:File>
                            <QPM:File>dos2040</QPM:File>

@@ -1126,6 +1126,7 @@ public class PreConfig extends PreferenceActivity implements OnSharedPreferenceC
         present += checkFileExistanceInPath(DRIVE_PATH, "dos1551");
         present += checkFileExistanceInPath(DRIVE_PATH, "dos1570");
         present += checkFileExistanceInPath(DRIVE_PATH, "dos1571");
+        present += checkFileExistanceInPath(DRIVE_PATH, "dos1990");
         present += checkFileExistanceInPath(DRIVE_PATH, "dos2000");
         present += checkFileExistanceInPath(DRIVE_PATH, "dos2031");
         present += checkFileExistanceInPath(DRIVE_PATH, "dos2040");
@@ -1315,6 +1316,9 @@ public class PreConfig extends PreferenceActivity implements OnSharedPreferenceC
             return false;
         }
         if (!copyAssetFileToPath(DRIVE_PATH, "dos1571")) {
+            return false;
+        }
+        if (!copyAssetFileToPath(DRIVE_PATH, "dos1990")) {
             return false;
         }
         if (!copyAssetFileToPath(DRIVE_PATH, "dos2000")) {
