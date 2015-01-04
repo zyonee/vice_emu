@@ -37,6 +37,9 @@
 #define SCSI_MESSAGE_COMMAND_ABORT (SCSI_BSY | SCSI_REQ | SCSI_MSG | SCSI_C_D | SCSI_I_O | 0x06)
 #define SCSI_STATUS_GOOD (SCSI_BSY | SCSI_REQ | SCSI_C_D | SCSI_I_O | 0x00)
 #define SCSI_STATUS_CHECK_CONDITION (SCSI_BSY | SCSI_REQ | SCSI_C_D | SCSI_I_O | 0x02)
+#define SCSI_COPYRIGHT "KAJTAR ZSOLT"
+#define SCSI_VENDOR "VICE-EMU"
+#define SCSI_REVISION &"$Revision:: 27835    $"[12]
 
 /* required for off_t on some platforms */
 #ifdef HAVE_SYS_TYPES_H
@@ -81,6 +84,7 @@ struct scsi_drive_s {
     int size;
     int readonly;
     int attention;
+    int locked;
     int wcache;
     scsi_drive_type_t type;
     int pos;
@@ -88,17 +92,39 @@ struct scsi_drive_s {
     int sector_size;
 };
 
-static int seek_sector(scsi_drive_t *drv, int lba)
+#define SCSI_NO_ADDITIONAL_SENSE_INFORMATION 0x00000
+#define SCSI_LOGICAL_UNIT_NOT_SUPPORTED 0x52500
+#define SCSI_UNRECOVERED_READ_ERROR 0x31100
+#define SCSI_WRITE_ERROR 0x30c00
+#define SCSI_LOGICAL_BLOCK_OUT_OF_RANGE 0xd2100
+#define SCSI_MEDIUM_NOT_PRESENT 0x23a00
+#define SCSI_NO_SEEK_COMPLETE 0x40200
+#define SCSI_WRITE_PROTECTED 0x72700
+#define SCSI_ILLEGAL_REQUEST 0x50500
+#define SCSI_MEDIA_LOAD_OR_EJECT_FAILED 0x40500
+#define SCSI_MEDIUM_REMOVAL_PREVENTED 0x55302
+
+static WORD scsi_update_sense(scsi_drive_t *drv, DWORD asc) {
+    memset(drv->sense, 0, sizeof(drv->sense));
+    drv->sense[0] = 0x80 | 0x70;
+    drv->sense[2] = asc >> 16;
+    drv->sense[7] = sizeof(drv->sense) - 7;
+    drv->sense[12] = asc >> 8;
+    drv->sense[13] = asc;
+    return drv->sense[2] ? SCSI_STATUS_CHECK_CONDITION : SCSI_STATUS_GOOD;
+}
+
+static WORD seek_sector(scsi_drive_t *drv, int lba)
 {
     if (!drv->file) {
-        return 1;
+        return scsi_update_sense(drv, SCSI_MEDIUM_NOT_PRESENT);
     }
     if (lba >= drv->size || lba < 0) {
-        return 1;
+        return scsi_update_sense(drv, SCSI_LOGICAL_BLOCK_OUT_OF_RANGE);
     }
     drv->pos = lba;
     if (fseek(drv->file, (off_t)lba * drv->sector_size, SEEK_SET)) {
-        return 1;
+        return scsi_update_sense(drv, SCSI_NO_SEEK_COMPLETE);
     }
     return 0;
 }
@@ -108,7 +134,7 @@ static int read_sector(scsi_drive_t *drv)
     drv->buflen = drv->sector_size;
 
     if (!drv->file) {
-        return 1;
+        return scsi_update_sense(drv, SCSI_MEDIUM_NOT_PRESENT);
     }
 
     clearerr(drv->file);
@@ -117,7 +143,7 @@ static int read_sector(scsi_drive_t *drv)
     }
 
     if (ferror(drv->file)) {
-        return 1;
+        return scsi_update_sense(drv, SCSI_UNRECOVERED_READ_ERROR);
     }
     drv->pos++;
     drv->bufp = 0;
@@ -129,21 +155,21 @@ static int write_sector(scsi_drive_t *drv)
     drv->buflen = drv->sector_size;
 
     if (!drv->file) {
-        return 1;
+        return scsi_update_sense(drv, SCSI_MEDIUM_NOT_PRESENT);
     }
 
     if (drv->readonly) {
-        return 1;
+        return scsi_update_sense(drv, SCSI_WRITE_PROTECTED);
     }
 
     if (fwrite(drv->buffer, 1, drv->sector_size, drv->file) != (size_t)drv->sector_size) {
-        return 1;
+        return scsi_update_sense(drv, SCSI_WRITE_ERROR);
     }
     drv->pos++;
 
     if (!drv->wcache) {
         if (fflush(drv->file)) {
-            return 1;
+            return scsi_update_sense(drv, SCSI_WRITE_ERROR);
         }
     }
     return 0;
@@ -164,18 +190,22 @@ static void scsi_poweron(scsi_drive_t *drv, scsi_drive_type_t type)
     drv->type = type;
     switch (drv->type) {
         case SCSI_DRIVE_FDD:
+            drv->locked = 0;
             drv->sector_size = 512;
             drv->readonly = 0;
             break;
         case SCSI_DRIVE_CD:
+            drv->locked = 0;
             drv->sector_size = 2048;
             drv->readonly = 1;
             break;
         case SCSI_DRIVE_HDD:
+            drv->locked = 1;
             drv->sector_size = 512;
             drv->readonly = 0;
             break;
         default:
+            drv->locked = 0;
             drv->sector_size = 512;
             drv->readonly = 1;
             drv->type = SCSI_DRIVE_NONE;
@@ -214,65 +244,186 @@ void scsi_shutdown(scsi_drive_t *drv)
 static WORD scsi_execute_command(scsi_drive_t *drv)
 {
     int lba;
+    BYTE *command = drv->command;
+    WORD err;
 
-    debug((drv->log, "%02x", drv->command[drv->bufp-1]));
-    switch (drv->command[0]) {
+    switch (command[0]) {
     case 0x00:
         if (drv->bufp < 6) {
             return SCSI_COMMAND;
         }
         debug((drv->log, "TEST UNIT READY"));
-        return SCSI_STATUS_GOOD;
+        if (command[1] & 0xe0) {
+            return scsi_update_sense(drv, SCSI_LOGICAL_UNIT_NOT_SUPPORTED);
+        }
+        if (!drv->file) {
+            return scsi_update_sense(drv, SCSI_MEDIUM_NOT_PRESENT);
+        }
+        return scsi_update_sense(drv, SCSI_NO_ADDITIONAL_SENSE_INFORMATION);
     case 0x03:
         if (drv->bufp < 6) {
             return SCSI_COMMAND;
         }
         debug((drv->log, "REQUEST SENSE"));
+        if (command[1] & 0xe0) {
+            return scsi_update_sense(drv, SCSI_LOGICAL_UNIT_NOT_SUPPORTED);
+        }
         memcpy(drv->buffer, drv->sense, sizeof(drv->sense));
-        memset(drv->sense, 0, sizeof(drv->sense));
-        drv->buflen = sizeof(drv->sense);
+        memset(drv->sense, 0, sizeof(drv->sense)); 
+        drv->buflen = command[4] < sizeof(drv->sense) ? command[4] : sizeof(drv->sense);
+        if (!drv->buflen) {
+            return scsi_update_sense(drv, SCSI_NO_ADDITIONAL_SENSE_INFORMATION);
+        }
         drv->bufp = 0;
         return SCSI_DATA_IN | drv->buffer[drv->bufp++];
+    case 0x04:
+        if (drv->bufp < 6) {
+            return SCSI_COMMAND;
+        }
+        debug((drv->log, "FORMAT UNIT"));
+        if (command[1] & 0xe0) {
+            return scsi_update_sense(drv, SCSI_LOGICAL_UNIT_NOT_SUPPORTED);
+        }
+        if (!drv->file) {
+            return scsi_update_sense(drv, SCSI_MEDIUM_NOT_PRESENT);
+        }
+        if (drv->readonly) {
+            return scsi_update_sense(drv, SCSI_WRITE_PROTECTED);
+        }
+        break;
     case 0x08:
         if (drv->bufp < 6) {
             return SCSI_COMMAND;
         }
-        lba = ((drv->command[1] & 0x1f) << 16) | (drv->command[2] << 8) | drv->command[3];
-        drv->sector_count = drv->command[4];
+        lba = ((command[1] & 0x1f) << 16) | (command[2] << 8) | command[3];
+        drv->sector_count = command[4];
         if (!drv->sector_count) {
             drv->sector_count = 256;
         }
         debug((drv->log, "READ 6 (%d)*%d", lba, drv->sector_count));
-        if (seek_sector(drv, lba)) {
-            return SCSI_STATUS_CHECK_CONDITION;
+        if (command[1] & 0xe0) {
+            return scsi_update_sense(drv, SCSI_LOGICAL_UNIT_NOT_SUPPORTED);
         }
-        if (read_sector(drv)) {
-            return SCSI_STATUS_CHECK_CONDITION;
+        if ((err = seek_sector(drv, lba))) {
+            return err;
+        }
+        if ((err = read_sector(drv))) {
+            return err;
         }
         return SCSI_DATA_IN | drv->buffer[drv->bufp++];
     case 0x0a:
         if (drv->bufp < 6) {
             return SCSI_COMMAND;
         }
-        lba = ((drv->command[1] & 0x1f) << 16) | (drv->command[2] << 8) | drv->command[3];
-        drv->sector_count = drv->command[8];
+        lba = ((command[1] & 0x1f) << 16) | (command[2] << 8) | command[3];
+        drv->sector_count = command[8];
         if (!drv->sector_count) {
             drv->sector_count = 256;
         }
         debug((drv->log, "WRITE 6 (%d)*%d", lba, drv->sector_count));
-        if (seek_sector(drv, lba)) {
-            return SCSI_STATUS_CHECK_CONDITION;
+        if (command[1] & 0xe0) {
+            return scsi_update_sense(drv, SCSI_LOGICAL_UNIT_NOT_SUPPORTED);
+        }
+        if ((err = seek_sector(drv, lba))) {
+            return err;
         }
         if (drv->readonly) {
-            return SCSI_STATUS_CHECK_CONDITION;
+            return scsi_update_sense(drv, SCSI_WRITE_PROTECTED);
         }
         drv->bufp = 0;
         return SCSI_DATA_OUT;
+    case 0x12:
+        if (drv->bufp < 6) {
+            return SCSI_COMMAND;
+        }
+        debug((drv->log, "INQUIRY"));
+        if (command[1] & 0xe0) {
+            return scsi_update_sense(drv, SCSI_LOGICAL_UNIT_NOT_SUPPORTED);
+        }
+        memset(drv->buffer, 0, 36);
+        drv->buffer[0] = (drv->type == SCSI_DRIVE_CD) ? 0x05 : 0x00; /* device type */
+        drv->buffer[1] = (drv->type == SCSI_DRIVE_CD || drv->type == SCSI_DRIVE_FDD) ? 0x80 : 0x00; /* removable */
+        drv->buffer[4] = 36 - 4;
+        memcpy(drv->buffer + 8, SCSI_VENDOR, 8);
+        switch (drv->type) {
+        case SCSI_DRIVE_HDD:
+            memcpy(drv->buffer + 16, "HDD " SCSI_COPYRIGHT, 16);
+            break;
+        case SCSI_DRIVE_FDD:
+            memcpy(drv->buffer + 16, "FDD " SCSI_COPYRIGHT, 16);
+            break;
+        case SCSI_DRIVE_CD:
+            memcpy(drv->buffer + 16, "DVD " SCSI_COPYRIGHT, 16);
+            break;
+        case SCSI_DRIVE_NONE:
+            memset(drv->buffer + 16, ' ', 16);
+            break;
+        }
+        memcpy(drv->buffer + 32, SCSI_REVISION, 4);
+        drv->buflen = command[4] < 36 ? command[4] : 36;
+        if (!drv->buflen) {
+            return scsi_update_sense(drv, SCSI_NO_ADDITIONAL_SENSE_INFORMATION);
+        }
+        drv->bufp = 0;
+        return SCSI_DATA_IN | drv->buffer[drv->bufp++];
+    case 0x15:
+        if (drv->bufp < 6) {
+            return SCSI_COMMAND;
+        }
+        debug((drv->log, "MODE SELECT 6"));
+        if (command[1] & 0xe0) {
+            return scsi_update_sense(drv, SCSI_LOGICAL_UNIT_NOT_SUPPORTED);
+        }
+        break;
+    case 0x1a:
+        if (drv->bufp < 6) {
+            return SCSI_COMMAND;
+        }
+        debug((drv->log, "MODE SENSE 6"));
+        if (command[1] & 0xe0) {
+            return scsi_update_sense(drv, SCSI_LOGICAL_UNIT_NOT_SUPPORTED);
+        }
+        break;
+    case 0x1b:
+        if (drv->bufp < 6) {
+            return SCSI_COMMAND;
+        }
+        debug((drv->log, "START/STOP UNIT"));
+        if (command[1] & 0xe0) {
+            return scsi_update_sense(drv, SCSI_LOGICAL_UNIT_NOT_SUPPORTED);
+        }
+        switch (command[4]) {
+        case 0: break;
+        case 1: break;
+        case 2:
+            if (drv->file) {
+                if (drv->locked) {
+                    return scsi_update_sense(drv, SCSI_MEDIUM_REMOVAL_PREVENTED);
+                } else {
+                    scsi_image_detach(drv);
+                }
+            }
+            break;
+        case 3:
+            if (!drv->file) {
+                scsi_image_attach(drv, drv->filename, drv->type);
+                if (!drv->file) {
+                    return scsi_update_sense(drv, SCSI_MEDIA_LOAD_OR_EJECT_FAILED);
+                }
+            }
+            break;
+        default:
+            break;
+        }
+        return scsi_update_sense(drv, SCSI_NO_ADDITIONAL_SENSE_INFORMATION);
     case 0x25:
         if (drv->bufp < 10) {
             return SCSI_COMMAND;
         }
         debug((drv->log, "READ CAPACITY"));
+        if (command[1] & 0xe0) {
+            return scsi_update_sense(drv, SCSI_LOGICAL_UNIT_NOT_SUPPORTED);
+        }
         drv->buffer[0] = drv->size >> 24;
         drv->buffer[1] = drv->size >> 16;
         drv->buffer[2] = drv->size >> 8;
@@ -288,41 +439,56 @@ static WORD scsi_execute_command(scsi_drive_t *drv)
         if (drv->bufp < 10) {
             return SCSI_COMMAND;
         }
-        lba = (drv->command[2] << 24) | (drv->command[3] << 16) | (drv->command[4] << 8) | drv->command[5];
-        drv->sector_count = (drv->command[7] << 8) | drv->command[8];
+        lba = (command[2] << 24) | (command[3] << 16) | (command[4] << 8) | command[5];
+        drv->sector_count = (command[7] << 8) | command[8];
         debug((drv->log, "READ 10 (%d)*%d", lba, drv->sector_count));
-        if (seek_sector(drv, lba)) {
-            return SCSI_STATUS_CHECK_CONDITION;
+        if (command[1] & 0xe0) {
+            return scsi_update_sense(drv, SCSI_LOGICAL_UNIT_NOT_SUPPORTED);
         }
-        if (read_sector(drv)) {
-            return SCSI_STATUS_CHECK_CONDITION;
+        if ((err = seek_sector(drv, lba))) {
+            return err;
+        }
+        if ((err = read_sector(drv))) {
+            return err;
         }
         if (!drv->sector_count) {
-            return SCSI_STATUS_GOOD;
+            return scsi_update_sense(drv, SCSI_NO_ADDITIONAL_SENSE_INFORMATION);
         }
         return SCSI_DATA_IN | drv->buffer[drv->bufp++];
     case 0x2a:
         if (drv->bufp < 10) {
             return SCSI_COMMAND;
         }
-        lba = (drv->command[2] << 24) | (drv->command[3] << 16) | (drv->command[4] << 8) | drv->command[5];
-        drv->sector_count = (drv->command[7] << 8) | drv->command[8];
+        lba = (command[2] << 24) | (command[3] << 16) | (command[4] << 8) | command[5];
+        drv->sector_count = (command[7] << 8) | command[8];
         debug((drv->log, "WRITE 10 (%d)*%d", lba, drv->sector_count));
-        if (seek_sector(drv, lba)) {
-            return SCSI_STATUS_CHECK_CONDITION;
+        if (command[1] & 0xe0) {
+            return scsi_update_sense(drv, SCSI_LOGICAL_UNIT_NOT_SUPPORTED);
+        }
+        if ((err = seek_sector(drv, lba))) {
+            return err;
         }
         if (drv->readonly) {
-            return SCSI_STATUS_CHECK_CONDITION;
+            return scsi_update_sense(drv, SCSI_WRITE_PROTECTED);
         }
         if (!drv->sector_count) {
-            return SCSI_STATUS_GOOD;
+            return scsi_update_sense(drv, SCSI_NO_ADDITIONAL_SENSE_INFORMATION);
         }
         drv->bufp = 0;
         return SCSI_DATA_OUT;
     default:
-        debug((drv->log, "SCSI COMMAND %02x", drv->command[0]));
+        if (drv->bufp < 6 && command[0] < 0x20) {
+            return SCSI_COMMAND;
+        }
+        if (drv->bufp < 10 && command[0] < 0x60) {
+            return SCSI_COMMAND;
+        }
+        if (drv->bufp < 12 && command[0] < 0xc0 && command[0] >= 0xa0) {
+            return SCSI_COMMAND;
+        }
+        debug((drv->log, "SCSI COMMAND %02x", command[0]));
     }
-    return SCSI_STATUS_CHECK_CONDITION;
+    return scsi_update_sense(drv, SCSI_ILLEGAL_REQUEST);
 }
 
 WORD scsi_read(scsi_drive_t *drv, WORD bus)
@@ -336,9 +502,10 @@ WORD scsi_read(scsi_drive_t *drv, WORD bus)
         case SCSI_DATA_IN:
             switch (drv->command[0]) {
             case 0x03:
+            case 0x12:
             case 0x25:
                 if (drv->bufp >= drv->buflen) {
-                    drv->bus = SCSI_STATUS_GOOD;
+                    drv->bus = scsi_update_sense(drv, SCSI_NO_ADDITIONAL_SENSE_INFORMATION);
                     break;
                 }
                 drv->bus = SCSI_DATA_IN | drv->buffer[drv->bufp++];
@@ -346,20 +513,21 @@ WORD scsi_read(scsi_drive_t *drv, WORD bus)
             case 0x08:
             case 0x28:
                 if (drv->bufp >= drv->buflen) {
+                    WORD err;
                     drv->sector_count--;
                     if (!drv->sector_count) {
-                        drv->bus = SCSI_STATUS_GOOD;
+                        drv->bus = scsi_update_sense(drv, SCSI_NO_ADDITIONAL_SENSE_INFORMATION);
                         break;
                     }
-                    if (read_sector(drv)) {
-                        drv->bus = SCSI_STATUS_CHECK_CONDITION;
+                    if ((err = read_sector(drv))) {
+                        drv->bus = err;
                         break;
                     }
                 }
                 drv->bus = SCSI_DATA_IN | drv->buffer[drv->bufp++];
                 break;
             default:
-                drv->bus = SCSI_STATUS_CHECK_CONDITION;
+                drv->bus = scsi_update_sense(drv, SCSI_ILLEGAL_REQUEST);
             }
             break;
         case SCSI_STATUS:
@@ -416,8 +584,9 @@ void scsi_store(scsi_drive_t *drv, WORD value)
             if (value & SCSI_ACK) {
                 drv->buffer[drv->bufp++] = value & 0xff;
                 if (drv->bufp >= drv->buflen) {
-                    if (write_sector(drv)) {
-                        drv->bus = SCSI_STATUS_CHECK_CONDITION;
+                    WORD err;
+                    if ((err = write_sector(drv))) {
+                        drv->bus = err;
                         return;
                     }
                     if (--drv->sector_count) {
@@ -425,10 +594,10 @@ void scsi_store(scsi_drive_t *drv, WORD value)
                         return;
                     }
                     if (!drv->file || fflush(drv->file)) {
-                        drv->bus = SCSI_STATUS_CHECK_CONDITION;
+                        drv->bus = scsi_update_sense(drv, SCSI_WRITE_ERROR);
                         return;
                     }
-                    drv->bus = SCSI_STATUS_GOOD;
+                    drv->bus = scsi_update_sense(drv, SCSI_NO_ADDITIONAL_SENSE_INFORMATION);
                 }
             }
             return;
