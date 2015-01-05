@@ -545,7 +545,7 @@ static UI_MENU_CALLBACK(set_par_callback)
 }
 
 #define DRIVE_PARALLEL_MENU(x)                                   \
-    static const ui_menu_entry_t drive_##x##_parallel_menu[] = { \
+    static ui_menu_entry_t drive_##x##_parallel_menu[] = {       \
         { "None",                                                \
           MENU_ENTRY_OTHER,                                      \
           set_par_callback,                                      \
@@ -569,6 +569,22 @@ DRIVE_PARALLEL_MENU(8)
 DRIVE_PARALLEL_MENU(9)
 DRIVE_PARALLEL_MENU(10)
 DRIVE_PARALLEL_MENU(11)
+
+/* patch some things that are slightly different in the emulators */
+void uidrive_menu_create(void)
+{
+    int newend = 4;
+
+    if (machine_class == VICE_MACHINE_VIC20) {
+        newend = 1;
+    } else if (machine_class == VICE_MACHINE_PLUS4) {
+        newend = 2;
+    }
+    memset(&drive_8_parallel_menu[newend], 0, sizeof(ui_menu_entry_t));
+    memset(&drive_9_parallel_menu[newend], 0, sizeof(ui_menu_entry_t));
+    memset(&drive_10_parallel_menu[newend], 0, sizeof(ui_menu_entry_t));
+    memset(&drive_11_parallel_menu[newend], 0, sizeof(ui_menu_entry_t));
+}
 
 static UI_MENU_CALLBACK(set_expand_callback)
 {
@@ -984,6 +1000,11 @@ UI_MENU_DEFINE_TOGGLE(Drive9RTCSave)
 UI_MENU_DEFINE_TOGGLE(Drive10RTCSave)
 UI_MENU_DEFINE_TOGGLE(Drive11RTCSave)
 
+UI_MENU_DEFINE_TOGGLE(AttachDevice8Readonly)
+UI_MENU_DEFINE_TOGGLE(AttachDevice9Readonly)
+UI_MENU_DEFINE_TOGGLE(AttachDevice10Readonly)
+UI_MENU_DEFINE_TOGGLE(AttachDevice11Readonly)
+
 #ifdef HAVE_RAWDRIVE
 UI_MENU_DEFINE_FILE_STRING(RawDriveDriver)
 #endif
@@ -1028,10 +1049,17 @@ UI_MENU_DEFINE_FILE_STRING(RawDriveDriver)
           MENU_ENTRY_SUBMENU,                                   \
           drive_##x##_show_parallel_callback,                   \
           (ui_callback_data_t)drive_##x##_parallel_menu },      \
-        { "Save Drive " #x" FD2000/4000 RTC data when changed", \
+        SDL_MENU_ITEM_SEPARATOR,                                \
+        { "Attach Drive " #x" read only",                       \
+          MENU_ENTRY_RESOURCE_TOGGLE,                           \
+          toggle_AttachDevice##x##Readonly_callback,            \
+          NULL },                                               \
+        SDL_MENU_ITEM_SEPARATOR,                                \
+        { "Save Drive " #x" FD2000/4000 RTC data",              \
           MENU_ENTRY_RESOURCE_TOGGLE,                           \
           toggle_Drive##x##RTCSave_callback,                    \
           NULL },                                               \
+        SDL_MENU_ITEM_SEPARATOR,                                \
         DRIVE_MENU_RAWDRIVE_ITEM                                \
         SDL_MENU_LIST_END                                       \
     };

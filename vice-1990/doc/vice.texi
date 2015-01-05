@@ -3050,16 +3050,8 @@ Boolean specifying whether audio emulation is turned on.
 
 @vindex SoundSpeedAdjustment
 @item SoundSpeedAdjustment
-Integer specifying what speed adjustment method the audio renderer should
-use.  Possible values are:
-@itemize @bullet
-@item
-@code{0}: ``flexible''
-@item
-@code{1}: ``adjusting''
-@item
-@code{2}: ``exact''
-@end itemize
+Integer specifying what speed adjustment method the audio renderer should use.
+(0=flexible, 1=adjusting, 2=exact)
 
 @vindex SoundSampleRate
 @item SoundSampleRate
@@ -3175,7 +3167,8 @@ script detected the corresponding development support at the time of compilation
 String specifying additional arguments for sound recording.
 @vindex SoundFragmentSize
 @item SoundFragmentSize
-Enum specifying the fragment size (0: very small, 1: small, 2: medium, 3: large, 4: very large)
+Integer specifying the fragment size.
+(0=very small, 1=small, 2=medium, 3=large, 4=very large)
 @vindex SoundVolume
 @item SoundVolume
 Integer specifying the master volume in percent. [100] (0..100)
@@ -3194,31 +3187,37 @@ stream). (0=system, 1=mono, 2=stereo)
 
 @table @code
 
-@cindex -sound, +sound
+@findex -sound, +sound
 @item -sound
 @itemx +sound
-Turns sound emulation on (@code{Sound=1}) and off (@code{Sound=0}).
+Enable/disable sound emulation
+(@code{Sound=1}, @code{Sound=0}).
 
-@cindex -soundsync
+@findex -soundsync
 @item -soundsync <sync>
-Specify <sync> as the sound speed adjustment method (0: flexible, 1: adjusting, 2: exact) (@code{SoundSpeedAdjustment}).
+Specify the sound speed adjustment method
+(@code{SoundSpeedAdjustment}).
+(0=flexible, 1=adjusting, 2=exact)
 
-@cindex -soundrate
+@findex -soundrate
 @item -soundrate <value>
-Specifies the sound playback sample rate (@code{SoundSampleRate}).
+Specify the sound playback sample rate
+(@code{SoundSampleRate}).
 
 @cindex -soundoutput 
 @item -soundoutput <output mode>
 Sound output mode: (0: system decides mono/stereo, 1: always mono, 2: always stereo)
 
-@cindex -soundbufsize
+@findex -soundbufsize
 @item -soundbufsize <value>
-Specifies the size of the audio buffer in milliseconds
+Specify the size of the audio buffer in milliseconds
 (@code{SoundBufferSize}).
 
-@cindex -soundfragsize
+@findex -soundfragsize
 @item -soundfragsize <value>
-Set sound fragment size (0 = small, 1 = medium, 2 = large)
+Set sound fragment size
+(@code{SoundFragmentSize}).
+(0=very small, 1=small, 2=medium, 3=large, 4=very large)
 
 @cindex -sounddev
 @item -sounddev <Name>
@@ -4157,16 +4156,27 @@ Integer (ranging from 0 to 2, for device 1-3) specifying what printer device
 
 @vindex Printer4
 @vindex Printer5
+@vindex Printer6
 @item Printer4
 @itemx Printer5
-Integer specifying how the IEC printer (device 4-5) is being emulated.
-(0: NONE, 1: FS, 2: REAL)
+@itemx Printer6
+Integer specifying how the printer (device 4-6) is being emulated.
+(0=None, 1=FS, 2=Real)
 
 @vindex Printer4Driver
-@vindex Printer5Driver
 @item Printer4Driver
-@itemx Printer5Driver
-Strings (ascii, mps803, nl10) specifying the IEC printer output driver.
+String specifying the printer output driver.
+(raw, ascii, mps803, nl10)
+
+@vindex Printer5Driver
+@item Printer5Driver
+String specifying the printer output driver.
+(raw, ascii, mps803, nl10)
+
+@vindex Printer6Driver
+@item Printer6Driver
+String specifying the printer output driver.
+(raw, 1520)
 
 @vindex Printer4Output
 @vindex Printer5Output
@@ -4219,11 +4229,23 @@ Enable/Disable IEC device emulation for device #6
 @itemx +iecdevice7
 Enable/Disable IEC device emulation for device #7
 
-@cindex -device4
-@cindex -device5
+@findex -device4
 @item -device4 <type>
-@itemx -device5 <type>
-Set device type for device 4-5 (0: NONE, 1: FS, 2: REAL)
+Set device type for device 4
+(@code{Printer4}).
+(0=None, 1=FS, 2=Real)
+
+@findex -device5
+@item -device5 <type>
+Set device type for device 5
+(@code{Printer5}).
+(0=None, 1=FS, 2=Real)
+
+@findex -device6
+@item -device6 <type>
+Set device type for device 6
+(@code{Printer6}).
+(0=None, 1=FS, 2=Real)
 
 @cindex -prtxtdev1
 @cindex -prtxtdev2
@@ -4245,11 +4267,23 @@ Specify printer text output device for IEC printer #4-5
 @itemx -pr5output <name>
 Specify name of output device for device #4-5
 
-@cindex -pr4drv
-@cindex -pr5drv
+@findex -pr4drv
 @item -pr4drv <name>
-@itemx -pr5drv <name>
-Specify name of printer driver for device #4-5
+Specify name of printer driver for device #4
+(@code{Printer4Driver}).
+(ascii/mps803/nl10/raw)
+
+@findex -pr5drv
+@item -pr5drv <name>
+Specify name of printer driver for device #5
+(@code{Printer5Driver}).
+(ascii/mps803/nl10/raw)
+
+@findex -pr6drv
+@item -pr6drv <name>
+Specify name of printer driver for device #6
+(@code{Printer6Driver}).
+(1520/raw)
 
 @cindex -pruser, +pruser
 @item -pruser
@@ -4647,7 +4681,11 @@ categories.
 String specifying the search path for system files.  It is defined as a
 sequence of directory names, separated by colons (@samp{:}), just like
 the @code{PATH} variable in the shell.  The special string @samp{$$}
-stands for the default search path, which is initialized at startup to
+stands for the default search path.
+
+@c FIXME: add the following section to archdep stuff:
+@ifset dummy
+, which is initialized at startup to
 the following value:
 
 @example
@@ -4680,6 +4718,7 @@ speeddos or JiffyDos) can be stored for example.
 @xref{System files}. for a description of the method used to load the
 emulator's system files.
 
+@end ifset
 @vindex DoCoreDump
 @item DoCoreDump
 Boolean specifying whether the emulator should dump core when it gets a
@@ -4723,9 +4762,10 @@ Booleans that specify whether to attach images on drives 8 to 11 read-only.
 @subsection Miscellaneous command-line options
 
 @table @code
-@cindex -directory
+@findex -directory
 @item -directory <Path>
-Specify the system file search path (@code{Directory}).
+Specify the system file search path
+(@code{Directory}).
 
 @cindex -core, +core
 @item -core
@@ -5791,12 +5831,12 @@ Attach raw 16kB Zaxxon cartridge image.
 @vindex CIA1Model
 @item CIA1Model
 @c the exceptions will be corrected as the resource list is implemented
-Integer specifying CIA1 model (all emulators except xscpu64/x64dtv/xpet/xplus4/xvic/vsid).
+Integer specifying CIA1 model (all emulators except x64dtv/xpet/xplus4/xvic/vsid).
 (0=old 6526, 1=new 6526A)
 @vindex CIA2Model
 @item CIA2Model
 @c the exceptions will be corrected as the resource list is implemented
-Integer specifying CIA2 model (all emulators except xscpu64/x64dtv/xcbm2/xcbm5x0/xpet/xplus4/xvic/vsid).
+Integer specifying CIA2 model (all emulators except x64dtv/xcbm2/xcbm5x0/xpet/xplus4/xvic/vsid).
 (0=old 6526, 1=new 6526A)
 
 @end table
@@ -5811,21 +5851,21 @@ Integer specifying CIA2 model (all emulators except xscpu64/x64dtv/xcbm2/xcbm5x0
 Set both CIA models
 (@code{CIA1Model}, @code{CIA2Model})
 @c the exceptions will be corrected as the resource list is implemented
-(all emulators except xscpu64/x64dtv/xcbm2/xcbm5x0/xpet/xplus4/xvic/vsid).
+(all emulators except x64dtv/xcbm2/xcbm5x0/xpet/xplus4/xvic/vsid).
 (0=old 6526, 1=new 6526A)
 @findex -cia1model
 @item -cia1model <model>
 Set CIA1 model
 (@code{CIA1Model})
 @c the exceptions will be corrected as the resource list is implemented
-(all emulators except xscpu64/x64dtv/xpet/xplus4/xvic/vsid).
+(all emulators except x64dtv/xpet/xplus4/xvic/vsid).
 (0=old 6526, 1=new 6526A)
 @findex -cia2model
 @item -cia2model <model>
 Set CIA2 model
 (@code{CIA2Model})
 @c the exceptions will be corrected as the resource list is implemented
-(all emulators except xscpu64/x64dtv/xcbm2/xcbm5x0/xpet/xplus4/xvic/vsid).
+(all emulators except x64dtv/xcbm2/xcbm5x0/xpet/xplus4/xvic/vsid).
 (0=old 6526, 1=new 6526A)
 
 @end table
@@ -5888,8 +5928,8 @@ C64 graphics package GoDot
 
 @vindex VICIIModel
 @item VICIIModel
-Integer that specifies VIC-II model (6569/6569r1/8565/6567/8562/6567r56a).
-only available in @code{x64sc}.
+Integer that specifies VIC-II model (x64sc only).
+(6569/6569r1/8565/6567/8562/6567r56a/6572)
 
 @vindex VICIICheckSsColl
 @item VICIICheckSsColl
@@ -5915,11 +5955,11 @@ Boolean specifying whether double-scan mode is turned on.
 
 @vindex VICIINewLuminances
 @item VICIINewLuminances
-Boolean specifying whether to use new (9 steps) luminances
+Boolean specifying whether to use new (9 steps) luminances.
 
 @vindex VICIIPaletteFile
 @item VICIIPaletteFile
-String specifying the name of the palette file being used.  The
+String specifying the name of the palette file being used. The
 @file{.vpl} extension is optional.
 
 @vindex VICIIExternalPalette
@@ -5928,19 +5968,23 @@ Boolean specifying whether to use external palette file or not.
 
 @vindex VICIIColorSaturation
 @item VICIIColorSaturation
-integer specifying saturation of internal calculated palette [1250] <0-2000>
+Integer specifying saturation of internal calculated palette.
+(0..2000)
 
 @vindex VICIIColorContrast
 @item VICIIColorContrast
-integer specifying contrast of internal calculated palette [1250] <0-2000>
+Integer specifying contrast of internal calculated palette.
+(0..2000)
 
 @vindex VICIIColorBrightness
 @item VICIIColorBrightness
-integer specifying brightness of internal calculated palette [1000] <0-2000>
+Integer specifying brightness of internal calculated palette.
+(0..2000)
 
 @vindex VICIIColorGamma
 @item VICIIColorGamma
-integer specifying gamma of internal calculated palette [2200] <0-4000>
+Integer specifying gamma of internal calculated palette.
+(0..4000)
 
 @vindex VICIIColorTint
 @item VICIIColorTint
@@ -5948,19 +5992,23 @@ integer specifying tint of internal calculated palette [1000] <0-2000>
 
 @vindex VICIIPALScanLineShade
 @item VICIIPALScanLineShade
-integer specifying amount of scan line shading for the CRT emulation [750] <0-1000>
+Integer specifying amount of scan line shading for the CRT emulation.
+(0..1000)
 
 @vindex VICIIPALBlur
 @item VICIIPALBlur
-integer specifying amount of horizontal blur for the CRT emulation. [500] <0-1000>
+Integer specifying amount of horizontal blur for the CRT emulation.
+(0..1000)
 
 @vindex VICIIPALOddLinePhase
 @item VICIIPALOddLinePhase
-integer specifying phase for color carrier in odd lines [1125] <0-2000>
+Integer specifying phase for color carrier in odd lines.
+(0..2000)
 
 @vindex VICIIPALOddLineOffset
 @item VICIIPALOddLineOffset
-integer specifying phase offset for color carrier in odd lines [875] <0-2000>
+Integer specifying phase offset for color carrier in odd lines.
+(0..2000)
 
 @vindex VICIIAudioLeak
 @item VICIIAudioLeak
@@ -5968,7 +6016,8 @@ Boolean specifying whether to enable/disable video to audio leak emulation.
 
 @vindex VICIIFilter
 @item VICIIFilter
-integer specifying rendering filter, 0:none, 1:CRT emulation, 2: scale2x
+Integer specifying rendering filter.
+(0=none, 1=CRT emulation, 2=scale2x)
 
 @vindex VICIIBorderMode
 @item VICIIBorderMode
@@ -5982,49 +6031,54 @@ integer specifying border display mode (0: normal, 1: full, 2: debug, 3:none)
 
 @table @code
 
-@cindex -VICIIcheckss, +VICIIcheckss
+@findex -VICIIcheckss, +VICIIcheckss
 @item -VICIIcheckss
 @itemx +VICIIcheckss
-Enable (@code{VICIICheckSsColl=1}) and disable (@code{VICIICheckSsColl=0})
-emulation of hardware sprite-sprite collision detection, respectively.
+Enable/disable emulation of hardware sprite-sprite collision detection
+(@code{VICIICheckSsColl=1}, @code{VICIICheckSsColl=0}).
 
-@cindex -VICIIchecksb, +VICIIchecksb
+@findex -VICIIchecksb, +VICIIchecksb
 @item -VICIIchecksb
 @itemx +VICIIchecksb
-Enable (@code{VICIICheckSbColl=1}) and disable (@code{VICIICheckSbColl=0})
-emulation of hardware sprite-background collision detection,
-respectively.
+Enable/disable emulation of hardware sprite-background collision detection
+(@code{VICIICheckSbColl=1}, @code{VICIICheckSbColl=0}).
 
-@cindex -VICIIvcache, +VICIIvcache
+@findex -VICIIvcache, +VICIIvcache
 @item -VICIIvcache
 @itemx +VICIIvcache
-Enable/disable the video cache (@code{VICIIVideoCache=1}, @code{VICIIVideoCache=0}).
+Enable/disable the video cache
+(@code{VICIIVideoCache=1}, @code{VICIIVideoCache=0}).
 
-@cindex -VICIIdsize, +VICIIdsize
+@findex -VICIIdsize, +VICIIdsize
 @item -VICIIdsize
 @itemx +VICIIdsize
-Enable/disable the double size mode (@code{VICIIDoubleSize=1},
-@code{VICIIDoubleSize=0}).
+Enable/disable the double size mode
+(@code{VICIIDoubleSize=1}, @code{VICIIDoubleSize=0}).
 
-@cindex -VICIIdscan, +VICIIdscan
+@findex -VICIIdscan, +VICIIdscan
 @item -VICIIdscan
 @itemx +VICIIdscan
-Enable/disable the double scan mode (@code{VICIIDoubleScan=1},
-@code{VICIIDoubleScan=0}).
+Enable/disable the double scan mode
+(@code{VICIIDoubleScan=1}, @code{VICIIDoubleScan=0}).
 
-@cindex -VICIIfilter
+@findex -VICIIfilter
 @item -VICIIfilter <Mode>
-Select rendering filter, 0:none, 1:CRT emulation, 2: scale2x
-@cindex -VICIIintpal
+Select rendering filter
+(@code{VICIIFilter}).
+(0=none, 1=CRT emulation, 2=scale2x)
+@findex -VICIIintpal
 @item -VICIIintpal
 Use an internal calculated palette
-@cindex -VICIIextpal
+(@code{VICIIExternalPalette=0}).
+@findex -VICIIextpal
 @item -VICIIextpal
 Use an external palette (file)
+(@code{VICIIExternalPalette=1}).
 
-@cindex -VICIIpalette
+@findex -VICIIpalette
 @item -VICIIpalette <Name>
-Specify <Name> as the palette file (@code{VICIIPaletteFile}).
+Specify the name of the palette file
+(@code{VICIIPaletteFile}).
 
 @cindex -VICIIXRANDRfullmode
 @item -VICIIXRANDRfullmode <mode>
@@ -6035,43 +6089,53 @@ Select fullscreen mode
 @cindex -VICIIborders
 @item -VICIIborders <mode>
 Set VIC-II border display mode (0: normal, 1: full, 2: debug, 3:none)
-@cindex -VICIImodel
+@findex -VICIImodel
 @item -VICIImodel <model>
-Set VIC-II model (6569/6569r1/8565/6567/8562/6567r56a). This setting is
-only available in @code{x64sc}.
+Set VIC-II model (x64sc only)
+(@code{VICIIModel}).
+(6569/6569r1/8565/6567/8562/6567r56a/6572)
 
-@cindex -VICIInewluminance, +VICIInewluminance
+@findex -VICIInewluminance, +VICIInewluminance
 @item -VICIInewluminance
 @item +VICIInewluminance
-Enable/Disable new luminances.
+Enable/Disable new luminances
+(@code{VICIINewLuminances=1}, @code{VICIINewLuminances=0}).
 
-@cindex -VICIIsaturation
+@findex -VICIIsaturation
 @item -VICIIsaturation <0-2000>
 Set saturation of internal calculated palette
-@cindex -VICIIcontrast
+(@code{VICIIColorSaturation}).
+@findex -VICIIcontrast
 @item -VICIIcontrast <0-2000>
 Set contrast of internal calculated palette
-@cindex -VICIIbrightness
+(@code{VICIIColorContrast}).
+@findex -VICIIbrightness
 @item -VICIIbrightness <0-2000>
 Set brightness of internal calculated palette
-@cindex -VICIIgamma
+(@code{VICIIColorBrightness}).
+@findex -VICIIgamma
 @item -VICIIgamma <0-4000>
 Set gamma of internal calculated palette
+(@code{VICIIColorGamma}).
 @cindex -VICIItint
 @item -VICIItint <0-2000>
 Set tint of internal calculated palette
-@cindex -VICIIoddlinesphase
+@findex -VICIIoddlinesphase
 @item -VICIIoddlinesphase <0-2000>
 Set phase for color carrier in odd lines
-@cindex -VICIIoddlinesoffset
+(@code{VICIIPALOddLinePhase}).
+@findex -VICIIoddlinesoffset
 @item -VICIIoddlinesoffset <0-2000>
 Set phase offset for color carrier in odd lines
-@cindex -VICIIcrtblur
+(@code{VICIIPALOddLineOffset}).
+@findex -VICIIcrtblur
 @item -VICIIcrtblur <0-1000>
 Amount of horizontal blur for the CRT emulation
-@cindex -VICIIcrtscanlineshade
+(@code{VICIIPALBlur}).
+@findex -VICIIcrtscanlineshade
 @item -VICIIcrtscanlineshade <0-1000>
 Amount of scan line shading for the CRT emulation
+(@code{VICIIPALScanLineShade}).
 
 @cindex -VICIIaudioleak, +VICIIaudioleak
 @item -VICIIaudioleak
@@ -6170,8 +6234,8 @@ almost 20kHz).
 
 @vindex SidStereo
 @item SidStereo
-Integer specifying the amount of emulated extra SIDs. (0=off, 1=1 extra sid, 
-2=2 extra sids.
+Integer specifying the amount of emulated extra SIDs.
+(0=off, 1=1 extra sid, 2=2 extra sids)
 
 @vindex SidStereoAddressStart
 @item SidStereoAddressStart
@@ -6187,14 +6251,13 @@ Boolean specifying whether the built-in SID filters must be emulated.
 
 @vindex SidModel
 @item SidModel
-Integer specifying what model of the SID must be emulated (@code{0}: 6581
-, @code{1}: 8580, @code{2}: 8580D, @code{3}: 6581R4, @code{4}: DTVSID).
+Integer specifying what model of the SID must be emulated.
+(0=6581, 1=8580, 2=8580D, 3=6581R4, 4=DTVSID)
 
 @vindex SidEngine
 @item SidEngine
-Integer specifying what SID engine will be used (@code{0}: FASTSID, @code{1}: RESID
-, @code{2}: CATWEASELMKIII, @code{3}: HARDSID, @code{4}: PARSID_PORT1, @code{5}: PARSID_PORT2
-, @code{6}: PARSID_PORT3).
+Integer specifying what SID engine will be used.
+(0=FastSID, 1=ReSID, 2=Catweasel MKIII, 3=HardSID, 4=ParSID Port 1, 5=ParSID Port 2, 6=ParSID Port 3)
 
 @vindex SidResidSampling
 @item SidResidSampling
@@ -6222,9 +6285,10 @@ in millivolts. [0] (-5000..5000)
 
 @table @code
 
-@cindex -sidstereo
+@findex -sidstereo
 @item -sidstereo
-Specifies the amount of extra SID chips to emulate (@code{SidStereo}).
+Specify the amount of extra SID chips to emulate
+(@code{SidStereo}).
 
 @cindex -sidstereoaddress
 @item -sidstereoaddress @code{ADDRESS}
@@ -6236,23 +6300,27 @@ Specifies the start address for the second SID chip
 Specifies the start address for the third SID chip
 (@code{SidTripleAddressStart}).
 
-@cindex -sidenginemodel
+@findex -sidenginemodel
 @item -sidenginemodel <engine and model>
-Specify @code{SID engine} and @code{MODEL} for the emulated SID chip (
-0: FastSID 6581,
-1: FastSID 8580,
-256: ReSID 6581,
-257: ReSID 8580,
-258: ReSID 8580 + digiboost,
-1024: ParSID in par port 1,
-1280: ParSID in par port 2,
-1536: ParSID in par port 3).
+Specify engine and model for the emulated SID chip
+(@code{SidEngine}, @code{SidModel}).
+(FastSID 6581: 0/fast/fastold/fast6581,
+FastSID 8580: 1/fastnew/fast8580,
+ReSID 6581: 256/resid/residold/resid6581,
+ReSID 8580: 257/residnew/resid8580,
+ReSID 8580 + digiboost: 258/residdigital/residd/residnewd/resid8580d,
+DTVSID: 260/dtv/c64dtv/dtvsid,
+Catweasel MKIII: 512/catweaselmkiii/catweasel3/catweasel/cwmkiii/cw3/cw,
+HardSID: 768/hardsid/hard/hs,
+ParSID Port 1: 1024/parsid/parsid1/par1/lpt1,
+ParSID Port 2: 1280/parsid2/par2/lpt2
+ParSID Port 3: 1536/parsid3/par3/lpt3)
 
-@cindex -sidfilters, +sidfilters
+@findex -sidfilters, +sidfilters
 @item -sidfilters
 @itemx +sidfilters
-Enable (@code{SidFilters=1}) or disable (@code{SidFilters=0}) emulation
-of the built-in SID filters.
+Enable/disable emulation of the built-in SID filters
+(@code{SidFilters=1}, @code{SidFilters=0}).
 
 @cindex -residsamp
 @item -residsamp @code{METHOD}
@@ -6733,7 +6801,8 @@ Set the C64 model
 
 @vindex VDC64KB
 @item VDC64KB
-Boolean, enabled full 64k video ram.
+Boolean to enabled/disable full 64k video ram.
+
 @vindex VDCRevision
 @item VDCRevision
 Integer specifying the VDC hardware revision. (0: Rev 0, 1: Rev 1, 2: Rev 2)
@@ -6756,7 +6825,7 @@ Boolean specifying whether vertical stretching is turned on.
 
 @vindex VDCPaletteFile
 @item VDCPaletteFile
-String specifying the name of the palette file being used.  The
+String specifying the name of the palette file being used. The
 @file{.vpl} extension is optional.
 
 @vindex VDCExternalPalette
@@ -6765,19 +6834,23 @@ Boolean specifying whether to use external palette file or not.
 
 @vindex VDCColorSaturation
 @item VDCColorSaturation
-integer specifying saturation of internal calculated palette [1250] <0-2000>
+Integer specifying saturation of internal calculated palette.
+(0..2000)
 
 @vindex VDCColorContrast
 @item VDCColorContrast
-integer specifying contrast of internal calculated palette [1250] <0-2000>
+Integer specifying contrast of internal calculated palette.
+(0..2000)
 
 @vindex VDCColorBrightness
 @item VDCColorBrightness
-integer specifying brightness of internal calculated palette [1000] <0-2000>
+Integer specifying brightness of internal calculated palette.
+(0..2000)
 
 @vindex VDCColorGamma
 @item VDCColorGamma
-integer specifying gamma of internal calculated palette [2200] <0-4000>
+Integer specifying gamma of internal calculated palette.
+(0..4000)
 
 @vindex VDCColorTint
 @item VDCColorTint
@@ -6785,19 +6858,23 @@ integer specifying tint of internal calculated palette [1000] <0-2000>
 
 @vindex VDCPALScanLineShade
 @item VDCPALScanLineShade
-integer specifying amount of scan line shading for the CRT emulation [750] <0-1000>
+Integer specifying amount of scan line shading for the CRT emulation.
+(0..1000)
 
 @vindex VDCPALBlur
 @item VDCPALBlur
-integer specifying amount of horizontal blur for the CRT emulation. [500] <0-1000>
+Integer specifying amount of horizontal blur for the CRT emulation.
+(0..1000)
 
 @vindex VDCPALOddLinePhase
 @item VDCPALOddLinePhase
-integer specifying phase for color carrier in odd lines [1125] <0-2000>
+Integer specifying phase for color carrier in odd lines.
+(0..2000)
 
 @vindex VDCPALOddLineOffset
 @item VDCPALOddLineOffset
-integer specifying phase offset for color carrier in odd lines [875] <0-2000>
+Integer specifying phase offset for color carrier in odd lines.
+(0..2000)
 
 @vindex VDCAudioLeak
 @item VDCAudioLeak
@@ -6816,70 +6893,84 @@ integer specifying rendering filter, 0:none, 1:CRT emulation, 2: scale2x
 @item -VDCvcache
 @itemx +VDCvcache
 Enable/Disable the video cache
-@cindex -VDCdsize, +VDCdsize
+@findex -VDCdsize, +VDCdsize
 @item -VDCdsize
 @itemx +VDCdsize
 Enable/Disable double size
-@cindex -VDCstretchvertical, +VDCstretchvertical
+(@code{VDCDoubleSize=1}, @code{VDCDoubleSize=0}).
+@findex -VDCstretchvertical, +VDCstretchvertical
 @item -VDCstretchvertical
 @itemx +VDCstretchvertical
 Enable/Disable vertical stretching
-@cindex -VDCdscan, +VDCdscan
+(@code{VDCStretchVertical=1}, @code{VDCStretchVertical=0}).
+@findex -VDCdscan, +VDCdscan
 @item -VDCdscan
 @itemx +VDCdscan
 Enable/Disable double scan
+(@code{VDCDoubleScan=1}, @code{VDCDoubleScan=0}).
 @cindex -VDCintpal
 @item -VDCintpal
 Use an internal calculated palette
 @cindex -VDCextpal
 @item -VDCextpal
 Use an external palette (file)
-@cindex -VDCpalette
+@findex -VDCpalette
 @item -VDCpalette <name>
 Specify name of file of external palette
+(@code{VDCPaletteFile}).
 @cindex -VDCXRANDRfullmode
 @item -VDCXRANDRfullmode <mode>
 Select fullscreen mode
 @cindex -VDCVidmodefullmode
 @item -VDCVidmodefullmode <mode>
 Select fullscreen mode
-@cindex -VDC16KB
+@findex -VDC16KB
 @item -VDC16KB
 Set the VDC memory size to 16KB
-@cindex -VDC64KB
+(@code{VDC64KB=0}).
+@findex -VDC64KB
 @item -VDC64KB
 Set the VDC memory size to 64KB
+(@code{VDC64KB=1}).
 @cindex -VDCRevision
 @item -VDCRevision <number>
 Set VDC revision (0..2)
 
-@cindex -VDCsaturation
+@findex -VDCsaturation
 @item -VDCsaturation <0-2000>
-Set saturation of internal calculated palette [1250]
-@cindex -VDCcontrast
+Set saturation of internal calculated palette
+(@code{VDCColorSaturation}).
+@findex -VDCcontrast
 @item -VDCcontrast <0-2000>
-Set contrast of internal calculated palette [1250]
-@cindex -VDCbrightness
+Set contrast of internal calculated palette
+(@code{VDCColorContrast}).
+@findex -VDCbrightness
 @item -VDCbrightness <0-2000>
-Set brightness of internal calculated palette [1000]
-@cindex -VDCgamma
+Set brightness of internal calculated palette
+(@code{VDCColorBrightness}).
+@findex -VDCgamma
 @item -VDCgamma <0-4000>
-Set gamma of internal calculated palette [2200]
+Set gamma of internal calculated palette
+(@code{VDCColorGamma}).
 @cindex -VDCtint
 @item -VDCtint <0-2000>
 Set tint of internal calculated palette [1000]
-@cindex -VDCoddlinesphase
+@findex -VDCoddlinesphase
 @item -VDCoddlinesphase <0-2000>
-Set phase for color carrier in odd lines [1125]
-@cindex -VDCoddlinesoffset
+Set phase for color carrier in odd lines
+(@code{VDCPALOddLinePhase}).
+@findex -VDCoddlinesoffset
 @item -VDCoddlinesoffset <0-2000>
-Set phase offset for color carrier in odd lines [875]
-@cindex -VDCcrtblur
+Set phase offset for color carrier in odd lines
+(@code{VDCPALOddLineOffset}).
+@findex -VDCcrtblur
 @item -VDCcrtblur <0-1000>
-Amount of horizontal blur for the CRT emulation. [500]
-@cindex -VDCcrtscanlineshade
+Amount of horizontal blur for the CRT emulation
+(@code{VDCPALBlur}).
+@findex -VDCcrtscanlineshade
 @item -VDCcrtscanlineshade <0-1000>
-Amount of scan line shading for the CRT emulation [750]
+Amount of scan line shading for the CRT emulation
+(@code{VDCPALScanLineShade}).
 
 @cindex -VDCaudioleak, +VDCaudioleak
 @item -VDCaudioleak
@@ -7383,6 +7474,30 @@ Use NTSC sync factor
 
 @section SCPU64-specific commands and settings
 
+@c @node FIXME
+@subsection SCPU64 resources
+
+@table @code
+
+@vindex ChargenName
+@item ChargenName
+String specifying the name of the character generator ROM (default
+@file{chargen}).
+
+@end table
+
+'@c @node FIXME
+@subsection SCPU64 command-line options
+
+@table @code
+
+@findex -chargen
+@item -chargen <name>
+Specify filename of the character generator ROM file
+(@code{ChargenName}).
+
+@end table
+
 @c -----------------------------------------------------------------------------
 
 @node VIC20-specific, PLUS4-specific, SCPU64-specific, Machine-specific features
@@ -7535,13 +7650,15 @@ Boolean, swap/don't swap  io mapping (map cart I/O-1 to VIC20 I/O-3 and cart I/O
 
 @vindex SidCart
 @item SidCart
-Boolean, enables SID cart emulation.
+Boolean specifying whether SID-Cart emulation is enabled or not.
 @vindex SidAddress
 @item SidAddress
 Integer that specifies the base address of the emulated SID chip.
+(0x9800/0x9C00)
 @vindex SidClock
 @item SidClock
-Integer specifying the clock rate used for the emulated SID chip (0: C64, 1: VIC-20)
+Integer specifying the clock rate used for the emulated SID chip
+(0=C64, 1=VIC20)
 
 @vindex DIGIMAX
 @item DIGIMAX
@@ -7582,39 +7699,56 @@ Specify generic extension ROM name
 @cindex -cartmega
 @item -cartmega <name>
 Specify Mega-Cart extension ROM name
-@cindex -mcnvramfile
+@findex -mcnvramfile
 @item -mcnvramfile <name>
 Set Mega-Cart NvRAM filename
-@cindex -mcnvramwriteback, +mcnvramwriteback
+(@code{MegaCartNvRAMfilename}).
+@findex -mcnvramwriteback, +mcnvramwriteback
 @item -mcnvramwriteback
 @itemx +mcnvramwriteback
 Enable/Disable Mega-Cart NvRAM writeback
+(@code{MegaCartNvRAMWriteBack=1}, @code{MegaCartNvRAMWriteBack=0}).
 
 @cindex -cartfe
 @item -cartfe <name>
 Specify Final Expansion extension ROM name
-@cindex -fewriteback, +fewriteback
+@findex -fewriteback, +fewriteback
 @item -fewriteback
 @itemx +fewriteback
 Enable/Disable Final Expansion write back to ROM file
+(@code{FinalExpansionWriteBack=1}, @code{FinalExpansionWriteBack=0}).
 
 @cindex -cartfp
 @item -cartfp <name>
 Specify Vic Flash Plugin extension ROM name
-@cindex -fpwriteback, +fpwriteback
+@findex -fpwriteback, +fpwriteback
 @item -fpwriteback
 @itemx +fpwriteback
 Enable/Disable Vic Flash Plugin write back to ROM file
+(@code{VicFlashPluginWriteBack=1}, @code{VicFlashPluginWriteBack=0}).
 
 @cindex -ieee488, +ieee488
 @item -ieee488
 @itemx +ieee488
 Enable/Disable VIC-1112 IEEE488 interface
 
-@cindex -sidcart, +sidcart
+@findex -sidcart, +sidcart
 @item -sidcart
 @item +sidcart
 Enable/Disable SID Cartridge
+(@code{SidCart=1}, @code{SidCart=0}).
+
+@findex -sidcartaddress
+@item -sidcartaddress <address>
+Specify address of the SID Cartridge
+(@code{SidAddress}).
+(0x9800/0x9C00)
+
+@findex -sidcartclock
+@item -sidcartclock <clock>
+Specify clock of the SID Cartridge
+(@code{SidClock}).
+(0=C64, 1=VIC20)
 
 @cindex -tfeioswap, +tfeioswap
 @item -tfeioswap
@@ -7714,7 +7848,7 @@ Boolean specifying whether double-scan mode is turned on.
 
 @vindex VICPaletteFile
 @item VICPaletteFile
-String specifying the name of the palette file being used.  The
+String specifying the name of the palette file being used. The
 @file{.vpl} extension is optional.
 
 @vindex VICExternalPalette
@@ -7723,19 +7857,23 @@ Boolean specifying whether to use external palette file or not.
 
 @vindex VICColorSaturation
 @item VICColorSaturation
-integer specifying saturation of internal calculated palette [1250] <0-2000>
+Integer specifying saturation of internal calculated palette.
+(0..2000)
 
 @vindex VICColorContrast
 @item VICColorContrast
-integer specifying contrast of internal calculated palette [1250] <0-2000>
+Integer specifying contrast of internal calculated palette,
+(0..2000)
 
 @vindex VICColorBrightness
 @item VICColorBrightness
-integer specifying brightness of internal calculated palette [1000] <0-2000>
+Integer specifying brightness of internal calculated palette.
+(0..2000)
 
 @vindex VICColorGamma
 @item VICColorGamma
-integer specifying gamma of internal calculated palette [2200] <0-4000>
+Integer specifying gamma of internal calculated palette.
+(0..4000)
 
 @vindex VICColorTint
 @item VICColorTint
@@ -7743,19 +7881,23 @@ integer specifying tint of internal calculated palette [1000] <0-2000>
 
 @vindex VICPALScanLineShade
 @item VICPALScanLineShade
-integer specifying amount of scan line shading for the CRT emulation [750] <0-1000>
+Integer specifying amount of scan line shading for the CRT emulation.
+(0..1000)
 
 @vindex VICPALBlur
 @item VICPALBlur
-integer specifying amount of horizontal blur for the CRT emulation. [500] <0-1000>
+Integer specifying amount of horizontal blur for the CRT emulation.
+(0..1000)
 
 @vindex VICPALOddLinePhase
 @item VICPALOddLinePhase
-integer specifying phase for color carrier in odd lines [1125] <0-2000>
+Integer specifying phase for color carrier in odd lines.
+(0..2000)
 
 @vindex VICPALOddLineOffset
 @item VICPALOddLineOffset
-integer specifying phase offset for color carrier in odd lines [875] <0-2000>
+Integer specifying phase offset for color carrier in odd lines.
+(0..2000)
 
 @vindex VICAudioLeak
 @item VICAudioLeak
@@ -7763,7 +7905,8 @@ Boolean specifying whether to enable/disable video to audio leak emulation.
 
 @vindex VICFilter
 @item VICFilter
-integer specifying rendering filter, 0:none, 1:CRT emulation, 2: scale2x
+Integer specifying the rendering filter.
+(0=none, 1=CRT emulation, 2=scale2x)
 
 @vindex VICBorderMode
 @item VICBorderMode
@@ -7776,37 +7919,43 @@ integer specifying border display mode (0: normal, 1: full, 2: debug, 3:none)
 
 @table @code
 
-@cindex -VICvcache, +VICvcache
+@findex -VICvcache, +VICvcache
 @item -VICvcache
 @itemx +VICvcache
-Enable/disable the video cache (@code{VICVideoCache=1}, @code{VICVideoCache=0}).
+Enable/disable the video cache
+(@code{VICVideoCache=1}, @code{VICVideoCache=0}).
 
-@cindex -VICdsize, +VICdsize
+@findex -VICdsize, +VICdsize
 @item -VICdsize
 @itemx +VICdsize
-Enable/disable the double size mode (@code{VICDoubleSize=1},
-@code{VICDoubleSize=0}).
+Enable/disable the double size mode
+(@code{VICDoubleSize=1}, @code{VICDoubleSize=0}).
 
-@cindex -VICdscan, +VICdscan
+@findex -VICdscan, +VICdscan
 @item -VICdscan
 @itemx +VICdscan
-Enable/disable the double scan mode (@code{VICDoubleScan=1},
-@code{VICDoubleScan=0}).
+Enable/disable the double scan mode
+(@code{VICDoubleScan=1}, @code{VICDoubleScan=0}).
 
-@cindex -VICfilter
+@findex -VICfilter
 @item -VICfilter <Mode>
-Select rendering filter, 0:none, 1:CRT emulation, 2: scale2x
+Select rendering filter
+(@code{VICFilter}).
+(0=none, 1=CRT emulation, 2=scale2x)
 
-@cindex -VICpalette
+@findex -VICpalette
 @item -VICpalette NAME
-Specify @code{NAME} as the palette file (@code{VICPaletteFile}).
+Specify the name of the palette file
+(@code{VICPaletteFile}).
 
-@cindex -VICintpal
+@findex -VICintpal
 @item -VICintpal
 Use an internal calculated palette
-@cindex -VICextpal
+(@code{VICExternalPalette=0}).
+@findex -VICextpal
 @item -VICextpal
 Use an external palette (file)
+(@code{VICExternalPalette=1}).
 @cindex -VICXRANDRfullmode
 @item -VICXRANDRfullmode <mode>
 Select fullscreen mode
@@ -7817,33 +7966,41 @@ Select fullscreen mode
 @item -VICborders <mode>
 Set VIC border display mode (0: normal, 1: full, 2: debug, 3:none)
 
-@cindex -VICsaturation
+@findex -VICsaturation
 @item -VICsaturation <0-2000>
-Set saturation of internal calculated palette [1250]
-@cindex -VICcontrast
+Set saturation of internal calculated palette
+(@code{VICColorSaturation}).
+@findex -VICcontrast
 @item -VICcontrast <0-2000>
-Set contrast of internal calculated palette [1250]
-@cindex -VICbrightness
+Set contrast of internal calculated palette
+(@code{VICColorContrast}).
+@findex -VICbrightness
 @item -VICbrightness <0-2000>
-Set brightness of internal calculated palette [1000]
-@cindex -VICgamma
+Set brightness of internal calculated palette
+(@code{VICColorBrightness}).
+@findex -VICgamma
 @item -VICgamma <0-4000>
-Set gamma of internal calculated palette [2200]
+Set gamma of internal calculated palette
+(@code{VICColorGamma}).
 @cindex -VICtint
 @item -VICtint <0-2000>
 Set tint of internal calculated palette [1000]
-@cindex -VICoddlinesphase
+@findex -VICoddlinesphase
 @item -VICoddlinesphase <0-2000>
-Set phase for color carrier in odd lines [1125]
-@cindex -VICoddlinesoffset
+Set phase for color carrier in odd lines
+(@code{VICPALOddLinePhase}).
+@findex -VICoddlinesoffset
 @item -VICoddlinesoffset <0-2000>
-Set phase offset for color carrier in odd lines [875]
-@cindex -VICcrtblur
+Set phase offset for color carrier in odd lines.
+(@code{VICPALOddLineOffset}).
+@findex -VICcrtblur
 @item -VICcrtblur <0-1000>
-Amount of horizontal blur for the CRT emulation. [500]
-@cindex -VICcrtscanlineshade
+Amount of horizontal blur for the CRT emulation
+(@code{VICPALBlur}).
+@findex -VICcrtscanlineshade
 @item -VICcrtscanlineshade <0-1000>
-Amount of scan line shading for the CRT emulation [750]
+Amount of scan line shading for the CRT emulation
+(@code{VICPALScanLineShade}).
 
 @cindex -VICaudioleak, +VICaudioleak
 @item -VICaudioleak
@@ -8006,8 +8163,7 @@ String specifying the name of the Basic ROM (default @file{basic}).
 
 @vindex ChargenName
 @item ChargenName
-String specifying the name of the character generator ROM (default
-@file{chargen}).
+String specifying the name of the character generator ROM (default @file{chargen}).
 
 @end table
 
@@ -8016,17 +8172,19 @@ String specifying the name of the character generator ROM (default
 
 @table @code
 
-@cindex -kernal
-@item -kernal NAME
-Specify @file{NAME} as the Kernal ROM file (@code{KernalName}).
+@findex -kernal
+@item -kernal <name>
+Specify the filename of the Kernal ROM file
+(@code{KernalName}).
 
-@cindex -basic
-@item -basic NAME
-Specify @file{NAME} as the Basic ROM file (@code{BasicName}).
+@findex -basic
+@item -basic <name>
+Specify the filename of the Basic ROM file
+(@code{BasicName}).
 
-@cindex -chargen
-@item -chargen NAME
-Specify @file{NAME} as the character generator ROM file
+@findex -chargen
+@item -chargen <name>
+Specify the filename of the character generator ROM file
 (@code{ChargenName}).
 
 @cindex -cart2
@@ -8081,7 +8239,7 @@ Boolean specifying whether double-scan mode is turned on.
 
 @vindex TEDPaletteFile
 @item TEDPaletteFile
-String specifying the name of the palette file being used.  The
+String specifying the name of the palette file being used. The
 @file{.vpl} extension is optional.
 
 @vindex TEDExternalPalette
@@ -8090,39 +8248,47 @@ Boolean specifying whether to use external palette file or not.
 
 @vindex TEDColorSaturation
 @item TEDColorSaturation
-integer specifying saturation of internal calculated palette [1250] <0-2000>
+Integer specifying saturation of internal calculated palette.
+(0..2000)
 
 @vindex TEDColorContrast
 @item TEDColorContrast
-integer specifying contrast of internal calculated palette [1250] <0-2000>
+Integer specifying contrast of internal calculated palette.
+(0..2000)
 
 @vindex TEDColorBrightness
 @item TEDColorBrightness
-integer specifying brightness of internal calculated palette [1000] <0-2000>
+Integer specifying brightness of internal calculated palette.
+(0..2000)
 
 @vindex TEDColorGamma
 @item TEDColorGamma
-integer specifying gamma of internal calculated palette [2200] <0-4000>
+Integer specifying gamma of internal calculated palette.
+(0..4000)
 
 @vindex TEDColorTint
 @item TEDColorTint
-integer specifying tint of internal calculated palette [1000] <0-2000>
+Integer specifying tint of internal calculated palette [1000] <0-2000>
 
 @vindex TEDPALScanLineShade
 @item TEDPALScanLineShade
-integer specifying amount of scan line shading for the CRT emulation [750] <0-1000>
+Integer specifying amount of scan line shading for the CRT emulation.
+(0..1000)
 
 @vindex TEDPALBlur
 @item TEDPALBlur
-integer specifying amount of horizontal blur for the CRT emulation. [500] <0-1000>
+Integer specifying amount of horizontal blur for the CRT emulation.
+(0..1000)
 
 @vindex TEDPALOddLinePhase
 @item TEDPALOddLinePhase
-integer specifying phase for color carrier in odd lines [1125] <0-2000>
+Integer specifying phase for color carrier in odd lines.
+(0..2000)
 
 @vindex TEDPALOddLineOffset
 @item TEDPALOddLineOffset
-integer specifying phase offset for color carrier in odd lines [875] <0-2000>
+Integer specifying phase offset for color carrier in odd lines.
+(0..2000)
 
 @vindex TEDAudioLeak
 @item TEDAudioLeak
@@ -8130,7 +8296,8 @@ Boolean specifying whether to enable/disable video to audio leak emulation.
 
 @vindex TEDFilter
 @item TEDFilter
-integer specifying rendering filter, 0:none, 1:CRT emulation, 2: scale2x
+Integer specifying rendering filter.
+(0=none, 1=CRT emulation, 2=scale2x)
 
 @vindex TEDBorderMode
 @item TEDBorderMode
@@ -8142,30 +8309,38 @@ integer specifying border display mode (0: normal, 1: full, 2: debug, 3:none)
 @subsubsection TED command-line options
 
 @table @code
-@cindex -TEDvcache, +TEDvcache
+@findex -TEDvcache, +TEDvcache
 @item -TEDvcache
 @itemx +TEDvcache
 Enable/Disable the video cache
-@cindex -TEDdsize, +TEDdsize
+(@code{TEDVideoCache=1}, @code{TEDVideoCache=0}).
+@findex -TEDdsize, +TEDdsize
 @item -TEDdsize
 @itemx +TEDdsize
 Enable/Disable double size
-@cindex -TEDdscan, +TEDdscan
+(@code{TEDDoubleSize=1}, @code{TEDDoubleSize=0}).
+@findex -TEDdscan, +TEDdscan
 @item -TEDdscan
 @itemx +TEDdscan
 Enable/Disable double scan
-@cindex -TEDfilter
+(@code{TEDDoubleScan=1}, @code{TEDDoubleScan=0}).
+@findex -TEDfilter
 @item -TEDfilter <Mode>
-Select rendering filter, 0:none, 1:CRT emulation, 2: scale2x
-@cindex -TEDintpal
+Select rendering filter
+(@code{TEDFilter}).
+(0=none, 1=CRT emulation, 2=scale2x)
+@findex -TEDintpal
 @item -TEDintpal
 Use an internal calculated palette
-@cindex -TEDextpal
+(@code{TEDExternalPalette=0}).
+@findex -TEDextpal
 @item -TEDextpal
 Use an external palette (file)
-@cindex -TEDpalette
+(@code{TEDExternalPalette=1}).
+@findex -TEDpalette
 @item -TEDpalette <name>
-Specify name of file of external palette
+Specify name of the external palette file
+(@code{TEDPaletteFile}).
 @cindex -TEDXRANDRfullmode
 @item -TEDXRANDRfullmode <mode>
 Select fullscreen mode
@@ -8176,33 +8351,41 @@ Select fullscreen mode
 @item -TEDborders <mode>
 Set TED border display mode (0: normal, 1: full, 2: debug, 3:none)
 
-@cindex -TEDsaturation
+@findex -TEDsaturation
 @item -TEDsaturation <0-2000>
-Set saturation of internal calculated palette [1250]
-@cindex -TEDcontrast
+Set saturation of internal calculated palette
+(@code{TEDColorSaturation}).
+@findex -TEDcontrast
 @item -TEDcontrast <0-2000>
-Set contrast of internal calculated palette [1250]
-@cindex -TEDbrightness
+Set contrast of internal calculated palette
+(@code{TEDColorContrast}).
+@findex -TEDbrightness
 @item -TEDbrightness <0-2000>
-Set brightness of internal calculated palette [1000]
-@cindex -TEDgamma
+Set brightness of internal calculated palette
+(@code{TEDColorBrightness}).
+@findex -TEDgamma
 @item -TEDgamma <0-4000>
-Set gamma of internal calculated palette [2200]
+Set gamma of internal calculated palette
+(@code{TEDColorGamma}).
 @cindex -TEDtint
 @item -TEDtint <0-2000>
 Set tint of internal calculated palette [1000]
-@cindex -TEDoddlinesphase
+@findex -TEDoddlinesphase
 @item -TEDoddlinesphase <0-2000>
-Set phase for color carrier in odd lines [1125]
-@cindex -TEDoddlinesoffset
+Set phase for color carrier in odd lines
+(@code{TEDPALOddLinePhase}).
+@findex -TEDoddlinesoffset
 @item -TEDoddlinesoffset <0-2000>
-Set phase offset for color carrier in odd lines [875]
-@cindex -TEDcrtblur
+Set phase offset for color carrier in odd lines
+(@code{TEDPALOddLineOffset}).
+@findex -TEDcrtblur
 @item -TEDcrtblur <0-1000>
-Amount of horizontal blur for the CRT emulation. [500]
-@cindex -TEDcrtscanlineshade
+Amount of horizontal blur for the CRT emulation
+(@code{TEDPALBlur}).
+@findex -TEDcrtscanlineshade
 @item -TEDcrtscanlineshade <0-1000>
-Amount of scan line shading for the CRT emulation [750]
+Amount of scan line shading for the CRT emulation
+(@code{TEDPALScanLineShade}).
 
 @cindex -TEDaudioleak, +TEDaudioleak
 @item -TEDaudioleak
@@ -8226,27 +8409,29 @@ changed.
 
 @vindex DIGIBLASTER
 @item DIGIBLASTER
-Boolean, enables Digiblaster emulation.
+Boolean to enable/disable the Digiblaster emulation.
 
 @vindex SpeechEnabled
 @item SpeechEnabled
-Boolean, enables emulation of the V364 speech chip.
+Boolean to enable/disable the emulation of the V364 speech chip.
 @vindex SpeechImage
 @item SpeechImage
 String specifying the filename of the speech ROM image.
 
 @vindex SidCart
 @item SidCart
-Boolean, enables emulation of the SID-Cart
+Boolean specifying whether SID-Cart emulation is enabled or not.
 @vindex SidAddress
 @item SidAddress
 Integer that specifies the base address of the emulated SID chip.
+(0xFD40/0xFE80)
 @vindex SidClock
 @item SidClock
-Integer specifying the clock rate used for the emulated SID chip (0: C64, 1: Plus4)
+Integer specifying the clock rate used for the emulated SID chip
+(0=C64, 1=Plus4)
 @vindex SIDCartJoy
 @item SIDCartJoy
-Boolean, enables emulation of the SID-Cart joystick
+Boolean to enable/disable the emulation of the SID-Cart joystick.
 
 @end table
 
@@ -8255,10 +8440,11 @@ Boolean, enables emulation of the SID-Cart joystick
 
 @table @code
 
-@cindex -cartreset, +cartreset
+@findex -cartreset, +cartreset
 @item -cartreset
 @itemx +cartreset
 Do/don't reset machine if a cartridge is attached or detached
+(@code{CartridgeReset=1}, @code{CartridgeReset}).
 @cindex -cart
 @item -cart <Name>
 Smart-attach cartridge image
@@ -8266,29 +8452,46 @@ Smart-attach cartridge image
 @item +cart
 Disable default cartridge
 
-@cindex -digiblaster, +digiblaster
+@findex -digiblaster, +digiblaster
 @item -digiblaster
 @itemx +digiblaster
 Enable/Disable the digiblaster add-on
+(@code{DIGIBLASTER=1}, @code{DIGIBLASTER=0}).
 
-@cindex -sidcart, +sidcart
+@findex -sidcart, +sidcart
 @item -sidcart
 @item +sidcart
 Enable/Disable SID Cartridge
+(@code{SidCart=1}, @code{SidCart=0}).
 
-@cindex -sidcartjoy, +sidcartjoy
+@findex -sidcartjoy, +sidcartjoy
 @item -sidcartjoy
 @item +sidcartjoy
 Enable/Disable SID cartridge joystick
+(@code{SIDCartJoy=1}, @code{SIDCartJoy=0}).
 
-@cindex -speech, +speech
+@findex -sidcartaddress
+@item -sidcartaddress <address>
+Specify address of the SID Cartridge
+(@code{SidAddress}).
+(0xFD40/0xFE80)
+
+@findex -sidcartclock
+@item -sidcartclock <clock>
+Specify clock of the SID Cartridge
+(@code{SidClock}).
+(0=C64, 1=Plus4)
+
+@findex -speech, +speech
 @item -speech
 @itemx +speech
 Enable/Disable the v364 speech add-on
+(@code{SpeechEnabled=1}, @code{SpeechEnabled=0}).
 
-@cindex -speechrom
+@findex -speechrom
 @item -speechrom <name>
 Attach Speech ROM image
+(@code{SpeechImage}, @code{SpeechEnabled}).
 
 @end table
 
@@ -8299,6 +8502,14 @@ Attach Speech ROM image
 @subsubsection PLUS4 system ROM resources
 
 @table @code
+
+@vindex KernalName
+@item KernalName
+String specifying the name of the Kernal ROM (default @file{kernal}).
+
+@vindex BasicName
+@item BasicName
+String specifying the name of the Basic ROM (default @file{basic}).
 
 @vindex FunctionLowName
 @item FunctionLowName
@@ -8326,6 +8537,16 @@ String specifying the filenames of cartridge 2 High ROM.
 @subsubsection PLUS4 system ROM command-line options
 
 @table @code
+
+@findex -kernal <Name>
+@item -kernal <Name>
+Specify name of the Kernal ROM image
+(@code{KernalName}).
+
+@findex -basic <Name>
+@item -basic <Name>
+Specify name of the BASIC ROM image
+(@code{BasicName}).
 
 @cindex -functionlo
 @item -functionlo <name>
@@ -8801,9 +9022,11 @@ Specify name of PET Ram and Expansion Unit image
 @item -petreuramsize <size in KB>
 Size of the PET Ram and Expansion Unit
 
-@cindex -userportdac, +userportdac
-@item -userportdac, +userportdac
-Enable or disable the userport DAC.
+@findex -userportdac, +userportdac
+@item -userportdac
+@itemx +userportdac
+Enable or disable the userport DAC
+(@code{UserportDAC=1}, @code{UserportDAC=0}).
 
 @findex -petdww, +petdww
 @item -petdww

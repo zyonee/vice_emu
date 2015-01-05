@@ -10089,20 +10089,20 @@ translate_t string_table[] = {
 #endif
 
 /* viciisc/vicii-cmdline-options.c */
-/* en */ {IDCLS_SET_VICII_MODEL,    N_("Set VIC-II model (6569/6569r1/8565/6567/8562/6567r56a)")},
+/* en */ {IDCLS_SET_VICII_MODEL,    N_("Set VIC-II model (6569/6569r1/8565/6567/8562/6567r56a/6572)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_VICII_MODEL_DA, "Vælg VIC-II model (6569/6569r1/8565/6567/8562/6567r56a)"},
-/* de */ {IDCLS_SET_VICII_MODEL_DE, "Wähle VIC-II Modell (6569/6569r1/8565/6567/8562/6567r56a)"},
-/* es */ {IDCLS_SET_VICII_MODEL_ES, "Seleccionar modelo VIC-II (6569/6569r1/8565/6567/8562/6567r56a)"},
-/* fr */ {IDCLS_SET_VICII_MODEL_FR, "Définir le modèle VIC-II (6569/6569r1/8565/6567/8562/6567r56a)"},
+/* da */ {IDCLS_SET_VICII_MODEL_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_SET_VICII_MODEL_DE, ""},  /* fuzzy */
+/* es */ {IDCLS_SET_VICII_MODEL_ES, ""},  /* fuzzy */
+/* fr */ {IDCLS_SET_VICII_MODEL_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_VICII_MODEL_HU, ""},  /* fuzzy */
-/* it */ {IDCLS_SET_VICII_MODEL_IT, "Imposta modello VIC-II (6569/6569r1/8565/6567/8562/6567r56a)"},
+/* it */ {IDCLS_SET_VICII_MODEL_IT, ""},  /* fuzzy */
 /* ko */ {IDCLS_SET_VICII_MODEL_KO, ""},  /* fuzzy */
-/* nl */ {IDCLS_SET_VICII_MODEL_NL, "Zet VIC-II model (6569/6569r1/8565/6567/8562/6567r56a)"},
-/* pl */ {IDCLS_SET_VICII_MODEL_PL, "Ustaw model VIC-II (6569/6569r1/8565/6567/8562/6567r56a)"},
-/* ru */ {IDCLS_SET_VICII_MODEL_RU, "Set VIC-II model (6569/6569r1/8565/6567/8562/6567r56a)"},
-/* sv */ {IDCLS_SET_VICII_MODEL_SV, "Välj VIC-II-modell (6569/6569r1/8565/6567/8562/6567r56a)"},
-/* tr */ {IDCLS_SET_VICII_MODEL_TR, "VIC-II modelini ayarla (6569/6569r1/8565/6567/8562/6567r56a)"},
+/* nl */ {IDCLS_SET_VICII_MODEL_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_SET_VICII_MODEL_PL, ""},  /* fuzzy */
+/* ru */ {IDCLS_SET_VICII_MODEL_RU, ""},  /* fuzzy */
+/* sv */ {IDCLS_SET_VICII_MODEL_SV, ""},  /* fuzzy */
+/* tr */ {IDCLS_SET_VICII_MODEL_TR, ""},  /* fuzzy */
 #endif
 
 /* printerdrv/driver-select.c */
@@ -11085,6 +11085,40 @@ translate_t string_table[] = {
 #endif
 
 /* sid/sid-cmdline-options.c */
+/* en */ {IDCLS_PLUS4_SIDCART_ADDRESS,    N_("SID cartridge address (0xFD40/0xFE80)")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_PLUS4_SIDCART_ADDRESS_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_PLUS4_SIDCART_ADDRESS_DE, ""},  /* fuzzy */
+/* es */ {IDCLS_PLUS4_SIDCART_ADDRESS_ES, ""},  /* fuzzy */
+/* fr */ {IDCLS_PLUS4_SIDCART_ADDRESS_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_PLUS4_SIDCART_ADDRESS_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_PLUS4_SIDCART_ADDRESS_IT, ""},  /* fuzzy */
+/* ko */ {IDCLS_PLUS4_SIDCART_ADDRESS_KO, ""},  /* fuzzy */
+/* nl */ {IDCLS_PLUS4_SIDCART_ADDRESS_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_PLUS4_SIDCART_ADDRESS_PL, ""},  /* fuzzy */
+/* ru */ {IDCLS_PLUS4_SIDCART_ADDRESS_RU, ""},  /* fuzzy */
+/* sv */ {IDCLS_PLUS4_SIDCART_ADDRESS_SV, ""},  /* fuzzy */
+/* tr */ {IDCLS_PLUS4_SIDCART_ADDRESS_TR, ""},  /* fuzzy */
+#endif
+
+/* sid/sid-cmdline-options.c */
+/* en */ {IDCLS_VIC20_SIDCART_ADDRESS,    N_("SID cartridge address (0x9800/0x9C00)")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_VIC20_SIDCART_ADDRESS_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_VIC20_SIDCART_ADDRESS_DE, ""},  /* fuzzy */
+/* es */ {IDCLS_VIC20_SIDCART_ADDRESS_ES, ""},  /* fuzzy */
+/* fr */ {IDCLS_VIC20_SIDCART_ADDRESS_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_VIC20_SIDCART_ADDRESS_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_VIC20_SIDCART_ADDRESS_IT, ""},  /* fuzzy */
+/* ko */ {IDCLS_VIC20_SIDCART_ADDRESS_KO, ""},  /* fuzzy */
+/* nl */ {IDCLS_VIC20_SIDCART_ADDRESS_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_VIC20_SIDCART_ADDRESS_PL, ""},  /* fuzzy */
+/* ru */ {IDCLS_VIC20_SIDCART_ADDRESS_RU, ""},  /* fuzzy */
+/* sv */ {IDCLS_VIC20_SIDCART_ADDRESS_SV, ""},  /* fuzzy */
+/* tr */ {IDCLS_VIC20_SIDCART_ADDRESS_TR, ""},  /* fuzzy */
+#endif
+
+/* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_PET_SIDCART_CLOCK,    N_("SID cartridge address (0: C64 clock, 1: PET clock)")},
 #ifdef HAS_TRANSLATION
 /* da */ {IDCLS_PET_SIDCART_CLOCK_DA, ""},  /* fuzzy */
@@ -11099,6 +11133,40 @@ translate_t string_table[] = {
 /* ru */ {IDCLS_PET_SIDCART_CLOCK_RU, ""},  /* fuzzy */
 /* sv */ {IDCLS_PET_SIDCART_CLOCK_SV, ""},  /* fuzzy */
 /* tr */ {IDCLS_PET_SIDCART_CLOCK_TR, ""},  /* fuzzy */
+#endif
+
+/* sid/sid-cmdline-options.c */
+/* en */ {IDCLS_PLUS4_SIDCART_CLOCK,    N_("SID cartridge address (0: C64 clock, 1: PLUS4 clock)")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_PLUS4_SIDCART_CLOCK_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_PLUS4_SIDCART_CLOCK_DE, ""},  /* fuzzy */
+/* es */ {IDCLS_PLUS4_SIDCART_CLOCK_ES, ""},  /* fuzzy */
+/* fr */ {IDCLS_PLUS4_SIDCART_CLOCK_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_PLUS4_SIDCART_CLOCK_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_PLUS4_SIDCART_CLOCK_IT, ""},  /* fuzzy */
+/* ko */ {IDCLS_PLUS4_SIDCART_CLOCK_KO, ""},  /* fuzzy */
+/* nl */ {IDCLS_PLUS4_SIDCART_CLOCK_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_PLUS4_SIDCART_CLOCK_PL, ""},  /* fuzzy */
+/* ru */ {IDCLS_PLUS4_SIDCART_CLOCK_RU, ""},  /* fuzzy */
+/* sv */ {IDCLS_PLUS4_SIDCART_CLOCK_SV, ""},  /* fuzzy */
+/* tr */ {IDCLS_PLUS4_SIDCART_CLOCK_TR, ""},  /* fuzzy */
+#endif
+
+/* sid/sid-cmdline-options.c */
+/* en */ {IDCLS_VIC20_SIDCART_CLOCK,    N_("SID cartridge address (0: C64 clock, 1: VIC20 clock)")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_VIC20_SIDCART_CLOCK_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_VIC20_SIDCART_CLOCK_DE, ""},  /* fuzzy */
+/* es */ {IDCLS_VIC20_SIDCART_CLOCK_ES, ""},  /* fuzzy */
+/* fr */ {IDCLS_VIC20_SIDCART_CLOCK_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_VIC20_SIDCART_CLOCK_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_VIC20_SIDCART_CLOCK_IT, ""},  /* fuzzy */
+/* ko */ {IDCLS_VIC20_SIDCART_CLOCK_KO, ""},  /* fuzzy */
+/* nl */ {IDCLS_VIC20_SIDCART_CLOCK_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_VIC20_SIDCART_CLOCK_PL, ""},  /* fuzzy */
+/* ru */ {IDCLS_VIC20_SIDCART_CLOCK_RU, ""},  /* fuzzy */
+/* sv */ {IDCLS_VIC20_SIDCART_CLOCK_SV, ""},  /* fuzzy */
+/* tr */ {IDCLS_VIC20_SIDCART_CLOCK_TR, ""},  /* fuzzy */
 #endif
 
 /* sid/sid-cmdline-options.c, c64/plus60k, c64/c64_256k.c */
@@ -13474,20 +13542,20 @@ translate_t string_table[] = {
 #endif
 
 /* sound.c */
-/* en */ {IDCLS_SET_SOUND_FRAGMENT_SIZE,    N_("Set sound fragment size (0 = small, 1 = medium, 2 = large)")},
+/* en */ {IDCLS_SET_SOUND_FRAGMENT_SIZE,    N_("Set sound fragment size (0: very small, 1: small, 2: medium, 3: large, 4: very large)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_DA, "Sæt størrelse på lydfragmenter (0 = lille, 1 = medium, 2 = stor)"},
-/* de */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_DE, "Setze Sound Fragmentgröße (0 = klein, 1 = mittel, 2 = groß)"},
-/* es */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_ES, "Seleccionar tamaño fragmento  (0 = pequeño, 1 = medio, 2 = grande)"},
-/* fr */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_FR, "Régler la taille du fragment de son (0:petite, 1:moyenne, 2:large)"},
+/* da */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_DE, ""},  /* fuzzy */
+/* es */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_ES, ""},  /* fuzzy */
+/* fr */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_HU, ""},  /* fuzzy */
-/* it */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_IT, "Imposta la dimensione dei frammenti audio (0 = piccola, 1 = media, 2 = grande)"},
+/* it */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_IT, ""},  /* fuzzy */
 /* ko */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_KO, ""},  /* fuzzy */
-/* nl */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_NL, "Zet geluidsfragment grootte (0 = klein, 1 = matig, 2 = groot)"},
-/* pl */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_PL, "Ustaw rozmiar fragmentu d¼wiêku (0 = ma³y, 1 = ¶redni, 2 = du¿y)"},
-/* ru */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_RU, "Set sound fragment size (0 = small, 1 = medium, 2 = large)"},
-/* sv */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_SV, "Välj storlek för ljudfragment (0 = liten, 1= medium, 2 = stor)"},
-/* tr */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_TR, "Ses parça boyutunu ayarla (0 = küçük, 1 = orta, 2 = büyük)"},
+/* nl */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_PL, ""},  /* fuzzy */
+/* ru */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_RU, ""},  /* fuzzy */
+/* sv */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_SV, ""},  /* fuzzy */
+/* tr */ {IDCLS_SET_SOUND_FRAGMENT_SIZE_TR, ""},  /* fuzzy */
 #endif
 
 /* sound.c */
