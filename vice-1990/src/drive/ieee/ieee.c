@@ -188,6 +188,11 @@ int ieee_drive_image_detach(struct disk_image_s *image, unsigned int unit)
     return fdc_detach_image(image, unit);
 }
 
+int ieee_drive_type_change(unsigned int type, unsigned int dnr)
+{
+    return 0;
+}
+
 void ieee_drive_parallel_set_atn(int state, drive_context_t *drv)
 {
     via1d2031_set_atn(drv->via1d2031, state);

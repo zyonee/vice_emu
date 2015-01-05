@@ -231,6 +231,7 @@ scsi_drive_t *scsi_init(int drive)
 
 void scsi_shutdown(scsi_drive_t *drv)
 {
+    scsi_image_detach(drv);
     if (drv->filename) {
         lib_free(drv->filename);
         drv->filename = NULL;

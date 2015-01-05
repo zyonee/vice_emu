@@ -51,6 +51,7 @@ extern int machine_drive_snapshot_read(struct drive_context_s *ctxptr, struct sn
 extern int machine_drive_snapshot_write(struct drive_context_s *ctxptr, struct snapshot_s *s);
 extern int machine_drive_image_attach(struct disk_image_s *image, unsigned int unit);
 extern int machine_drive_image_detach(struct disk_image_s *image, unsigned int unit);
+extern int machine_drive_type_change(unsigned int type, unsigned int dnr);
 extern void machine_drive_port_default(struct drive_context_s *drv);
 extern void machine_drive_flush(void);
 extern void machine_drive_stub(void);

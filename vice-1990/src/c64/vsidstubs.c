@@ -77,6 +77,10 @@ int machine_drive_image_detach(struct disk_image_s *image, unsigned int unit)
     return -1;
 }
 
+int machine_drive_type_change(unsigned int type, unsigned int dnr) {
+    return -1;
+}
+
 void machine_drive_stub(void)
 {
 }

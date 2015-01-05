@@ -182,6 +182,10 @@ int machine_drive_image_detach(struct disk_image_s *image, unsigned int unit)
     return iec_drive_image_detach(image, unit) & ieee_drive_image_detach(image, unit);
 }
 
+int machine_drive_type_change(unsigned int type, unsigned int dnr) {
+    return iec_drive_type_change(type, dnr) & ieee_drive_type_change(type, dnr);
+}
+
 void machine_drive_port_default(struct drive_context_s *drv)
 {
     iec_drive_port_default(drv);

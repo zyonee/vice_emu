@@ -157,7 +157,6 @@ void iec_drive_setup_context(struct drive_context_s *drv)
     ppi1990_setup_context(drv);
     pc8477_setup_context(drv);
     drv->scsi_drive = scsi_init(8 * drv->mynumber);
-    scsi_image_attach(drv->scsi_drive, "/tmp/image", SCSI_DRIVE_HDD); /* FOR TESTING ONLY */
 }
 
 void iec_drive_shutdown(struct drive_context_s *drv)
@@ -172,7 +171,6 @@ void iec_drive_shutdown(struct drive_context_s *drv)
     ppi1990_shutdown(drv->ppi1990);
     wd1770_shutdown(drv->wd1770);
     pc8477_shutdown(drv->pc8477);
-    scsi_image_detach(drv->scsi_drive); /* FOR TESTING ONLY */
     scsi_shutdown(drv->scsi_drive);
 }
 
@@ -327,6 +325,22 @@ int iec_drive_image_attach(struct disk_image_s *image, unsigned int unit)
 int iec_drive_image_detach(struct disk_image_s *image, unsigned int unit)
 {
     return wd1770_detach_image(image, unit) & pc8477_detach_image(image, unit);
+}
+
+int iec_drive_type_change(unsigned int type, unsigned int dnr)
+{
+    drive_t *drive = drive_context[dnr]->drive;
+
+    if (type == DRIVE_TYPE_1990) {
+        if (drive->type != DRIVE_TYPE_1990) {
+            scsi_image_attach(drive_context[dnr]->scsi_drive, drive->scsi_image_name, SCSI_DRIVE_HDD);
+        }
+    } else {
+        if (drive->type == DRIVE_TYPE_1990) {
+            scsi_image_detach(drive_context[dnr]->scsi_drive);
+        }
+    }
+    return 0;
 }
 
 void iec_drive_port_default(struct drive_context_s *drv)

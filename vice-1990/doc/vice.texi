@@ -3537,6 +3537,16 @@ not for drives 8 to 11 respectively.
 @itemx Drive11WriteProtectButton
 Booleans controlling the front side panel buttons for drives 8 to 11.
 
+@vindex Drive8SCSI0Image
+@vindex Drive9SCSI0Image
+@vindex Drive10SCSI0Image
+@vindex Drive11SCSI0Image
+@item Drive8SCSI0Image
+@itemx Drive9SCSI0Image
+@itemx Drive10SCSI0Image
+@itemx Drive11SCSI0Image
+Strings specifying the names of the disk images for the 1990 SCSI drive emulation.
+
 @vindex Drive8ExtendImagePolicy
 @vindex Drive9ExtendImagePolicy
 @vindex Drive10ExtendImagePolicy

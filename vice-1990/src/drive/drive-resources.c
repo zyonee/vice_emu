@@ -186,6 +186,10 @@ static int drive_resources_type(int val, void *param)
         }
     }
 
+    if (machine_drive_type_change(type, dnr) < 0) {
+        return -1;
+    }
+
     switch (type) {
         case DRIVE_TYPE_1541:
         case DRIVE_TYPE_1541II:

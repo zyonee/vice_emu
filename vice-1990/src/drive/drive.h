@@ -260,6 +260,9 @@ typedef struct drive_s {
     /* Front panel buttons  */
     int swap8_button, swap9_button, write_protect_button;
 
+    /* SCSI image name */
+    char *scsi_image_name;
+
     /* Is the Professional DOS extension enabled?  */
     int profdos;
     /* Is the Supercard+ extension enabled? */

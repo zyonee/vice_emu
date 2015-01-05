@@ -54,6 +54,8 @@ extern int ieee_drive_image_attach(struct disk_image_s *image,
                                    unsigned int unit);
 extern int ieee_drive_image_detach(struct disk_image_s *image,
                                    unsigned int unit);
+extern int ieee_drive_type_change(unsigned int type,
+                                  unsigned int dnr);
 
 extern void ieee_drive_parallel_set_atn(int state, struct drive_context_s *drv);
 

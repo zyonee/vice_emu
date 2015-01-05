@@ -39,6 +39,8 @@
 #include "traps.h"
 #include "util.h"
 #include "via.h"
+#include "scsi.h"
+#include "drivecpu65c02.h"
 
 static char *dos_rom_name_1541 = NULL;
 static char *dos_rom_name_1541ii = NULL;
@@ -210,7 +212,32 @@ static int set_drive_write_protect(int val, void *param)
     return 0;
 }
 
-static const resource_string_t resources_string[] = {
+static int set_drive_scsi_image_name(const char *val, void *param)
+{
+    unsigned int dnr = vice_ptr_to_uint(param);
+    drive_t *drive = drive_context[dnr]->drive;
+
+    util_string_set(&drive->scsi_image_name, val);
+
+    if (drive_context[dnr]->scsi_drive) {
+        if (scsi_image_change(drive_context[dnr]->scsi_drive, drive->scsi_image_name, SCSI_DRIVE_HDD)) {
+            scsi_image_detach(drive_context[dnr]->scsi_drive);
+            scsi_image_attach(drive_context[dnr]->scsi_drive, drive->scsi_image_name, SCSI_DRIVE_HDD);
+            drivecpu65c02_trigger_reset(dnr);
+        }
+    }
+    return 0;
+}
+
+static resource_string_t resources_string[] = {
+    { "Drive8SCSI0Image", "drive8_scsi0.hdd", RES_EVENT_NO, NULL,
+      NULL, set_drive_scsi_image_name, NULL },
+    { "Drive9SCSI0Image", "drive9_scsi0.hdd", RES_EVENT_NO, NULL,
+      NULL, set_drive_scsi_image_name, NULL },
+    { "Drive10SCSI0Image", "drive10_scsi0.hdd", RES_EVENT_NO, NULL,
+      NULL, set_drive_scsi_image_name, NULL },
+    { "Drive11SCSI0Image", "drive11_scsi0.hdd", RES_EVENT_NO, NULL,
+      NULL, set_drive_scsi_image_name, NULL },
     { "DosName1541", "dos1541", RES_EVENT_NO, NULL,
       /* FIXME: should be same but names may differ */
       &dos_rom_name_1541, set_dos_rom_name_1541, NULL },
@@ -258,6 +285,9 @@ int iec_resources_init(void)
 
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         drive = drive_context[dnr]->drive;
+
+        resources_string[dnr].value_ptr = &(drive->scsi_image_name);
+        resources_string[dnr].param = uint_to_void_ptr(dnr);
 
         res_drive[0].name = lib_msprintf("Drive%iRAM2000", dnr + 8);
         res_drive[0].value_ptr = &(drive->drive_ram2_enabled);
