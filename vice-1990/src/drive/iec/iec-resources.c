@@ -40,7 +40,6 @@
 #include "util.h"
 #include "via.h"
 #include "scsi.h"
-#include "drivecpu65c02.h"
 
 static char *dos_rom_name_1541 = NULL;
 static char *dos_rom_name_1541ii = NULL;
@@ -223,7 +222,7 @@ static int set_drive_scsi_image_name(const char *val, void *param)
         if (scsi_image_change(drive_context[dnr]->scsi_drive, drive->scsi_image_name, SCSI_DRIVE_HDD)) {
             scsi_image_detach(drive_context[dnr]->scsi_drive);
             scsi_image_attach(drive_context[dnr]->scsi_drive, drive->scsi_image_name, SCSI_DRIVE_HDD);
-            drivecpu65c02_trigger_reset(dnr);
+            drive_cpu_trigger_reset(dnr);
         }
     }
     return 0;
