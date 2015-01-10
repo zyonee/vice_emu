@@ -1,5 +1,5 @@
 /*
- * ppi1990.c - ppi emulation for the 1990 disk drive.
+ * ppi1990.c - PPI 8255 emulation for the 1990 disk drive.
  *
  * Written by
  *  Kajtar Zsolt <soci@c64.rulez.org>
@@ -30,6 +30,7 @@
 
 #include "drivetypes.h"
 #include "ppi1990.h"
+#include "snapshot.h"
 
 #define PPI_ACTIVE   0x80
 #define PPI_MODE_A   0x60
@@ -55,12 +56,13 @@ bit 3 - write protect button (low active)
 */
 
 struct ppi1990_s {
+    char *myname;
     struct drive_context_s *mycontext;
-    unsigned char port_a;
-    unsigned char port_b;
-    unsigned char port_lc;
-    unsigned char port_hc;
-    unsigned char control;
+    BYTE port_a;
+    BYTE port_b;
+    BYTE port_lc;
+    BYTE port_hc;
+    BYTE control;
 };
 
 BYTE ppi1990_read(drive_context_t *drv, WORD address)
@@ -139,11 +141,13 @@ void ppi1990_init(drive_context_t *drv)
 void ppi1990_setup_context(drive_context_t *drv)
 {
     drv->ppi1990 = lib_calloc(1, sizeof(ppi1990_t));
+    drv->ppi1990->myname = lib_msprintf("PPI1770%d", drv->mynumber);
     drv->ppi1990->mycontext = drv;
 }
 
 void ppi1990_shutdown(ppi1990_t *ppi)
 {
+    lib_free(ppi->myname);
     lib_free(ppi);
 }
 
@@ -159,4 +163,54 @@ int ppi1990_is_shift(drive_context_t *drv)
     ppi1990_t *ppi = drv->ppi1990;
 
     return !(((ppi->control & PPI_INPUT_LC) ? 0x0f : ppi->port_lc) & 2);
+}
+
+#define PPI1990_SNAP_MAJOR 1
+#define PPI1990_SNAP_MINOR 0
+
+int ppi1990_snapshot_write_module(ppi1990_t *drv, struct snapshot_s *s)
+{
+    snapshot_module_t *m;
+    int res = -1;
+
+    m = snapshot_module_create(s, drv->myname,
+                               PPI1990_SNAP_MAJOR, PPI1990_SNAP_MINOR);
+    if (m) {
+        res  = SMW_B(m, drv->port_a);
+        res |= SMW_B(m, drv->port_b);
+        res |= SMW_B(m, drv->port_lc);
+        res |= SMW_B(m, drv->port_hc);
+        res |= SMW_B(m, drv->control);
+
+        if (snapshot_module_close(m) < 0) {
+            res = -1;
+        }
+    }
+
+    return res;
+}
+
+int ppi1990_snapshot_read_module(ppi1990_t *drv, struct snapshot_s *s)
+{
+    BYTE vmajor, vminor;
+    snapshot_module_t *m;
+    int res = -1;
+
+    m = snapshot_module_open(s, drv->myname, &vmajor, &vminor);
+
+    if (m) {
+        if (vmajor == PPI1990_SNAP_MAJOR && vminor == PPI1990_SNAP_MINOR) {
+            res  = SMR_B(m, &drv->port_a);
+            res |= SMR_B(m, &drv->port_b);
+            res |= SMR_B(m, &drv->port_lc);
+            res |= SMR_B(m, &drv->port_hc);
+            res |= SMR_B(m, &drv->control);
+        }
+
+        if (snapshot_module_close(m) < 0) {
+            res = -1;
+        }
+    }
+
+    return res;
 }

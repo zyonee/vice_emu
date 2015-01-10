@@ -30,6 +30,7 @@
 #include "types.h"
 
 struct drive_context_s;
+struct snapshot_s;
 typedef struct gpio1990_s gpio1990_t;
 
 extern void gpio1990_init(struct drive_context_s *drv);
@@ -40,4 +41,6 @@ extern void gpio1990_store(struct drive_context_s *drv, WORD addr, BYTE byte);
 extern BYTE gpio1990_read(struct drive_context_s *drv, WORD addr);
 extern void gpio1990_reset(gpio1990_t *drv);
 
+extern int gpio1990_snapshot_write_module(gpio1990_t *drv, struct snapshot_s *s);
+extern int gpio1990_snapshot_read_module(gpio1990_t *drv, struct snapshot_s *s);
 #endif

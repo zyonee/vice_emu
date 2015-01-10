@@ -262,6 +262,12 @@ int iec_drive_snapshot_read(struct drive_context_s *ctxptr,
         if (viacore_snapshot_read_module(ctxptr->via2d1990, s) < 0) {
             return -1;
         }
+        if (gpio1990_snapshot_read_module(ctxptr->gpio1990, s) < 0) {
+            return -1;
+        }
+        if (ppi1990_snapshot_read_module(ctxptr->ppi1990, s) < 0) {
+            return -1;
+        }
         if (scsi_snapshot_read_module(ctxptr->scsi_drive, s) < 0) {
             return -1;
         }
@@ -313,6 +319,12 @@ int iec_drive_snapshot_write(struct drive_context_s *ctxptr,
             return -1;
         }
         if (viacore_snapshot_write_module(ctxptr->via2d1990, s) < 0) {
+            return -1;
+        }
+        if (gpio1990_snapshot_write_module(ctxptr->gpio1990, s) < 0) {
+            return -1;
+        }
+        if (ppi1990_snapshot_write_module(ctxptr->ppi1990, s) < 0) {
             return -1;
         }
         if (scsi_snapshot_write_module(ctxptr->scsi_drive, s) < 0) {

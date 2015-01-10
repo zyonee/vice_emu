@@ -28,8 +28,10 @@
 
 #include "drivetypes.h"
 #include "gpio1990.h"
+#include "snapshot.h"
 
 struct gpio1990_s {
+    char *myname;
     struct drive_context_s *mycontext;
     unsigned char reg;
 };
@@ -60,10 +62,53 @@ void gpio1990_init(drive_context_t *drv)
 void gpio1990_setup_context(drive_context_t *drv)
 {
     drv->gpio1990 = lib_calloc(1, sizeof(gpio1990_t));
+    drv->gpio1990->myname = lib_msprintf("GPIO1770%d", drv->mynumber);
     drv->gpio1990->mycontext = drv;
 }
 
 void gpio1990_shutdown(gpio1990_t *gpio)
 {
+    lib_free(gpio->myname);
     lib_free(gpio);
+}
+
+#define GPIO1990_SNAP_MAJOR 1
+#define GPIO1990_SNAP_MINOR 0
+
+int gpio1990_snapshot_write_module(gpio1990_t *drv, struct snapshot_s *s)
+{
+    snapshot_module_t *m;
+    int res = -1;
+
+    m = snapshot_module_create(s, drv->myname,
+                               GPIO1990_SNAP_MAJOR, GPIO1990_SNAP_MINOR);
+    if (m) {
+        res = SMW_B(m, drv->reg);
+        if (snapshot_module_close(m) < 0) {
+            res = -1;
+        }
+    }
+
+    return res;
+}
+
+int gpio1990_snapshot_read_module(gpio1990_t *drv, struct snapshot_s *s)
+{
+    BYTE vmajor, vminor;
+    snapshot_module_t *m;
+    int res = -1;
+
+    m = snapshot_module_open(s, drv->myname, &vmajor, &vminor);
+
+    if (m) {
+        if (vmajor == GPIO1990_SNAP_MAJOR && vminor == GPIO1990_SNAP_MINOR) {
+            res = SMR_B(m, &drv->reg);
+            gpio1990_store(drv->mycontext, 0, drv->reg);
+        }
+        if (snapshot_module_close(m) < 0) {
+            res = -1;
+        }
+    }
+
+    return res;
 }

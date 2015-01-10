@@ -30,6 +30,7 @@
 #include "types.h"
 
 struct drive_context_s;
+struct snapshot_s;
 typedef struct ppi1990_s ppi1990_t;
 
 extern void ppi1990_init(struct drive_context_s *drv);
@@ -43,4 +44,6 @@ extern void ppi1990_reset(ppi1990_t *drv);
 extern int ppi1990_is_rom(struct drive_context_s *drv);
 extern int ppi1990_is_shift(struct drive_context_s *drv);
 
+extern int ppi1990_snapshot_write_module(ppi1990_t *drv, struct snapshot_s *s);
+extern int ppi1990_snapshot_read_module(ppi1990_t *drv, struct snapshot_s *s);
 #endif
