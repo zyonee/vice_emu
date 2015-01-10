@@ -33,6 +33,8 @@
 #include "c64acia.h"
 #include "c64cart.h"
 #include "c64cia.h"
+#include "c64mem.h"
+#include "c64memrom.h"
 #include "c64rom.h"
 #include "cartio.h"
 #include "cartridge.h"
@@ -41,6 +43,7 @@
 #include "keyboard.h"
 #include "lib.h"
 #include "machine.h"
+#include "patchrom.h"
 #include "resources.h"
 #include "reu.h"
 #include "georam.h"
@@ -69,10 +72,11 @@ static char *basic_rom_name = NULL;
 /* Name of the Kernal ROM.  */
 static char *kernal_rom_name = NULL;
 
-int cia1_model;
-int cia2_model;
+/* Kernal revision for ROM patcher.  */
+int kernal_revision = C64_KERNAL_REV3;
 
-static int board_type = 0;
+int cia1_model = CIA_MODEL_6526;
+int cia2_model = CIA_MODEL_6526;
 
 static int set_chargen_rom_name(const char *val, void *param)
 {
@@ -102,57 +106,17 @@ static int set_basic_rom_name(const char *val, void *param)
     return c64rom_load_basic(basic_rom_name);
 }
 
-static int set_board_type(int val, void *param)
+static int set_kernal_revision(int val, void *param)
 {
-    int old_board_type = board_type;
-
-    if ((val < 0) || (val > 1)) {
-        return -1;
+    if(!c64rom_isloaded()) {
+        return 0;
     }
-    board_type = val;
-    if (old_board_type != board_type) {
-        machine_trigger_reset(MACHINE_RESET_MODE_HARD);
+    if ((val != -1) && (patch_rom_idx(val) < 0)) {
+        kernal_revision = -1;
+    } else {
+        kernal_revision = val;
     }
-    return 0;
-}
-
-static int set_cia1_model(int val, void *param)
-{
-    int old_cia_model = cia1_model;
-
-    switch (val) {
-        case CIA_MODEL_6526:
-        case CIA_MODEL_6526A:
-            cia1_model = val;
-            break;
-        default:
-            return -1;
-    }
-
-    if (old_cia_model != cia1_model) {
-        cia1_update_model();
-    }
-
-    return 0;
-}
-
-static int set_cia2_model(int val, void *param)
-{
-    int old_cia_model = cia2_model;
-
-    switch (val) {
-        case CIA_MODEL_6526:
-        case CIA_MODEL_6526A:
-            cia2_model = val;
-            break;
-        default:
-            return -1;
-    }
-
-    if (old_cia_model != cia2_model) {
-        cia2_update_model();
-    }
-
+    memcpy(c64memrom_kernal64_trap_rom, c64memrom_kernal64_rom, C64_KERNAL_ROM_SIZE);
     return 0;
 }
 
@@ -207,33 +171,14 @@ static const resource_string_t resources_string[] = {
     { "BasicName", "basic", RES_EVENT_NO, NULL,
       /* FIXME: should be same but names may differ */
       &basic_rom_name, set_basic_rom_name, NULL },
-#ifdef COMMON_KBD
-    { "KeymapSymFile", KBD_C64_SYM_US, RES_EVENT_NO, NULL,
-      &machine_keymap_file_list[0],
-      keyboard_set_keymap_file, (void *)0 },
-    { "KeymapPosFile", KBD_C64_POS, RES_EVENT_NO, NULL,
-      &machine_keymap_file_list[1],
-      keyboard_set_keymap_file, (void *)1 },
-    { "KeymapSymDeFile", KBD_C64_SYM_DE, RES_EVENT_NO, NULL,
-      &machine_keymap_file_list[2],
-      keyboard_set_keymap_file, (void *)2 },
-#endif
     { NULL }
 };
 
 static const resource_int_t resources_int[] = {
     { "MachineVideoStandard", MACHINE_SYNC_PAL, RES_EVENT_SAME, NULL,
       &sync_factor, set_sync_factor, NULL },
-    { "BoardType", 0, RES_EVENT_SAME, NULL,
-      &board_type, set_board_type, NULL },
-    { "CIA1Model", CIA_MODEL_6526, RES_EVENT_SAME, NULL,
-      &cia1_model, set_cia1_model, NULL },
-    { "CIA2Model", CIA_MODEL_6526, RES_EVENT_SAME, NULL,
-      &cia2_model, set_cia2_model, NULL },
-#ifdef COMMON_KBD
-    { "KeymapIndex", KBD_INDEX_C64_DEFAULT, RES_EVENT_NO, NULL,
-      &machine_keymap_index, keyboard_set_keymap_index, NULL },
-#endif
+    { "KernalRev", C64_KERNAL_REV3, RES_EVENT_SAME, NULL,
+      &kernal_revision, set_kernal_revision, NULL },
     { "SidStereoAddressStart", 0xde00, RES_EVENT_SAME, NULL,
       (int *)&sid_stereo_address_start, sid_set_sid_stereo_address, NULL },
     { "SidTripleAddressStart", 0xdf00, RES_EVENT_SAME, NULL,
@@ -241,17 +186,19 @@ static const resource_int_t resources_int[] = {
     { NULL }
 };
 
-void c64_resources_update_cia_models(int model)
-{
-    set_cia1_model(model, NULL);
-    set_cia2_model(model, NULL);
-}
-
 int c64_resources_init(void)
 {
     if (resources_register_string(resources_string) < 0) {
         return -1;
     }
+
+#ifdef COMMON_KBD
+    /* Set defaults of keymaps */
+    keyboard_set_keymap_file(KBD_C64_SYM_US, (void *)0);
+    keyboard_set_keymap_file(KBD_C64_POS, (void *)1);
+    keyboard_set_keymap_file(KBD_C64_SYM_DE, (void *)2);
+    keyboard_set_keymap_index(KBD_INDEX_C64_DEFAULT, NULL);
+#endif
 
     return resources_register_int(resources_int);
 }

@@ -242,6 +242,9 @@ int iec_drive_snapshot_read(struct drive_context_s *ctxptr,
         if (ciacore_snapshot_read_module(ctxptr->cia1581, s) < 0) {
             return -1;
         }
+        if (wd1770_snapshot_read_module(ctxptr->wd1770, s) < 0) {
+            return -1;
+        }
     }
 
     switch (ctxptr->drive->type) {
@@ -290,6 +293,9 @@ int iec_drive_snapshot_write(struct drive_context_s *ctxptr,
 
     if (ctxptr->drive->type == DRIVE_TYPE_1581) {
         if (ciacore_snapshot_write_module(ctxptr->cia1581, s) < 0) {
+            return -1;
+        }
+        if (wd1770_snapshot_write_module(ctxptr->wd1770, s) < 0) {
             return -1;
         }
     }
