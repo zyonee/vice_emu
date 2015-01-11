@@ -72,7 +72,7 @@
 #define DRIVE_TYPE_8050   8050  /* DOS 2.7 dual floppy drive, 0.5M/disk */
 #define DRIVE_TYPE_8250   8250  /* DOS 2.7 dual floppy drive, 1M/disk */
 
-#define DRIVE_TYPE_NUM    16
+#define DRIVE_TYPE_NUM    18
 
 /* Possible colors of the drive active LED.  */
 #define DRIVE_ACTIVE_RED     0
