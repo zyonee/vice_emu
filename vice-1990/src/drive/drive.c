@@ -96,18 +96,19 @@ void drive_set_disk_memory(BYTE *id, unsigned int track, unsigned int sector,
 
     drive = drv->drive;
 
-    if (drive->type == DRIVE_TYPE_1541
+    if (drive->type == DRIVE_TYPE_1540
+        || drive->type == DRIVE_TYPE_1541
         || drive->type == DRIVE_TYPE_1541II
         || drive->type == DRIVE_TYPE_1570
         || drive->type == DRIVE_TYPE_1571
         || drive->type == DRIVE_TYPE_1571CR) {
-        drv->cpud->drive_ram[0x12] = id[0];
-        drv->cpud->drive_ram[0x13] = id[1];
-        drv->cpud->drive_ram[0x16] = id[0];
-        drv->cpud->drive_ram[0x17] = id[1];
-        drv->cpud->drive_ram[0x18] = track;
-        drv->cpud->drive_ram[0x19] = sector;
-        drv->cpud->drive_ram[0x22] = track;
+        drv->drive->drive_ram[0x12] = id[0];
+        drv->drive->drive_ram[0x13] = id[1];
+        drv->drive->drive_ram[0x16] = id[0];
+        drv->drive->drive_ram[0x17] = id[1];
+        drv->drive->drive_ram[0x18] = track;
+        drv->drive->drive_ram[0x19] = sector;
+        drv->drive->drive_ram[0x22] = track;
     }
 }
 
@@ -131,12 +132,13 @@ void drive_set_last_read(unsigned int track, unsigned int sector, BYTE *buffer,
     }
     drive_set_half_track(track * 2, side, drive);
 
-    if (drive->type == DRIVE_TYPE_1541
+    if (drive->type == DRIVE_TYPE_1540
+        || drive->type == DRIVE_TYPE_1541
         || drive->type == DRIVE_TYPE_1541II
         || drive->type == DRIVE_TYPE_1570
         || drive->type == DRIVE_TYPE_1571
         || drive->type == DRIVE_TYPE_1571CR) {
-        memcpy(&(drv->cpud->drive_ram[0x0400]), buffer, 256);
+        memcpy(&(drv->drive->drive_ram[0x0400]), buffer, 256);
     }
 }
 
@@ -188,12 +190,6 @@ int drive_init(void)
 
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         drive = drive_context[dnr]->drive;
-        drive->drive_ram_expand2 = NULL;
-        drive->drive_ram_expand4 = NULL;
-        drive->drive_ram_expand6 = NULL;
-        drive->drive_ram_expand8 = NULL;
-        drive->drive_ram_expanda = NULL;
-        drive->drive_ram_expandc = NULL;
 
         machine_drive_port_default(drive_context[dnr]);
 
@@ -295,7 +291,6 @@ void drive_shutdown(void)
         }
         if (drive_context[dnr]->drive->ds1216) {
             ds1216e_destroy(drive_context[dnr]->drive->ds1216, drive_context[dnr]->drive->rtc_save);
-            drive_context[dnr]->drive->ds1216 = NULL;
         }
     }
 
@@ -308,6 +303,7 @@ void drive_shutdown(void)
 void drive_set_active_led_color(unsigned int type, unsigned int dnr)
 {
     switch (type) {
+        case DRIVE_TYPE_1540:
         case DRIVE_TYPE_1541:
         case DRIVE_TYPE_1551:
         case DRIVE_TYPE_1570:
@@ -575,8 +571,11 @@ void drive_reset(void)
 /* Move the head to half track `num'.  */
 void drive_set_half_track(int num, int side, drive_t *dptr)
 {
-    if ((dptr->type == DRIVE_TYPE_1541 || dptr->type == DRIVE_TYPE_1541II
-         || dptr->type == DRIVE_TYPE_1551 || dptr->type == DRIVE_TYPE_1570
+    if ((dptr->type == DRIVE_TYPE_1540
+         || dptr->type == DRIVE_TYPE_1541
+         || dptr->type == DRIVE_TYPE_1541II
+         || dptr->type == DRIVE_TYPE_1551
+         || dptr->type == DRIVE_TYPE_1570
          || dptr->type == DRIVE_TYPE_2031) && num > 84) {
         num = 84;
     }

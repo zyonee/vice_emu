@@ -558,6 +558,7 @@ int drive_snapshot_read_module(snapshot_t *s)
 
     drive = drive_context[0]->drive;
     switch (drive->type) {
+        case DRIVE_TYPE_1540:
         case DRIVE_TYPE_1541:
         case DRIVE_TYPE_1541II:
         case DRIVE_TYPE_1551:
@@ -593,6 +594,7 @@ int drive_snapshot_read_module(snapshot_t *s)
 
     drive = drive_context[1]->drive;
     switch (drive->type) {
+        case DRIVE_TYPE_1540:
         case DRIVE_TYPE_1541:
         case DRIVE_TYPE_1541II:
         case DRIVE_TYPE_1551:

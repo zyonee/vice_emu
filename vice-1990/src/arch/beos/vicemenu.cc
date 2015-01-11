@@ -1217,6 +1217,7 @@ BMenuBar *menu_create(int machine_class)
     if (machine_class != VICE_MACHINE_VSID) {
         uppermenu->AddItem(menu = new BMenu("Drive ROM ..."));
         if (machine_class != VICE_MACHINE_CBM5x0 && machine_class != VICE_MACHINE_CBM6x0 && machine_class != VICE_MACHINE_PET) {
+            menu->AddItem(new BMenuItem("Select 1540 ROM file", new BMessage(MENU_DRIVE_1540_ROM_FILE)));
             menu->AddItem(new BMenuItem("Select 1541 ROM file", new BMessage(MENU_DRIVE_1541_ROM_FILE)));
             menu->AddItem(new BMenuItem("Select 1541-II ROM file", new BMessage(MENU_DRIVE_1541II_ROM_FILE)));
             if (machine_class == VICE_MACHINE_PLUS4) {
@@ -1266,6 +1267,7 @@ BMenuBar *menu_create(int machine_class)
     uppermenu->AddItem(new BMenuItem("About BeVICE...", new BMessage(MENU_ABOUT)));
     uppermenu->AddSeparatorItem();
     uppermenu->AddItem(new BMenuItem("Commandline Options", new BMessage(MENU_CMDLINE)));
+    uppermenu->AddItem(new BMenuItem("Compile Time Features", new BMessage(MENU_COMPILE_TIME_FEATURES)));
     uppermenu->AddSeparatorItem();
     uppermenu->AddItem(new BMenuItem("Contributors", new BMessage(MENU_CONTRIBUTORS)));
     uppermenu->AddItem(new BMenuItem("License", new BMessage(MENU_LICENSE)));
