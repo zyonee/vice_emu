@@ -59,7 +59,6 @@ static gfxoutputdrv_codec_t mp4_audio_codeclist[] = {
     { AV_CODEC_ID_MP3, "MP3" },
     { AV_CODEC_ID_AAC, "AAC" },
     { AV_CODEC_ID_AC3, "AC3" },
-    { AV_CODEC_ID_PCM_S16LE, "PCM uncompressed" },
     { 0, NULL }
 };
 
@@ -74,6 +73,7 @@ static gfxoutputdrv_codec_t avi_video_codeclist[] = {
 
 static gfxoutputdrv_codec_t mp4_video_codeclist[] = {
     { AV_CODEC_ID_H264, "H264" },
+    { AV_CODEC_ID_H265, "H265" },
     { 0, NULL }
 };
 
@@ -362,7 +362,7 @@ static int ffmpegdrv_open_audio(AVFormatContext *oc, AVStream *st)
         return -1;
     }
     
-    ffmpegdrv_audio_in.size = audio_inbuf_samples;
+    ffmpegdrv_audio_in.size = audio_inbuf_samples * c->channels;
     ffmpegdrv_audio_in.buffer = (SWORD*)audio_st.tmp_frame->data[0];
     return 0;
 }
@@ -425,7 +425,7 @@ static int ffmpegmovie_init_audio(int speed, int channels, soundmovie_buffer_t *
                 c->sample_rate = speed;
         }
     }
-    c->channel_layout = avcodecaudio->channel_layouts ? avcodecaudio->channel_layouts[0] : (channels == 1 ? AV_CH_LAYOUT_MONO : AV_CH_LAYOUT_STEREO);
+    c->channel_layout = (channels == 1 ? AV_CH_LAYOUT_MONO : AV_CH_LAYOUT_STEREO);
     c->channels = (*ffmpeglib.p_av_get_channel_layout_nb_channels)(c->channel_layout);
 
     st->time_base = (AVRational){ 1, c->sample_rate };
