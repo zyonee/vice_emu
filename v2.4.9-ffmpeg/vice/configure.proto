@@ -1614,6 +1614,7 @@ if test x"$enable_ffmpeg" != "xno"; then
   if test x"$is_win32" = "xyes" -o x"$is_unix" = "xyes" -a x"$dynlib_support" = "xyes" ; then
     dnl --- archs supporting ffmpeg ---
     dnl --- try to extract the source archives for the ffmpeg lib ---
+    AC_CONFIG_SUBDIRS(src/lib/liblame)
     FFMPEG_DIR="$FFMPEG_DIR liblame"
     if test ! -d src/lib/libx264; then
       $TAR -xjf src/lib/archives/*x264*.bz2 -C src/lib

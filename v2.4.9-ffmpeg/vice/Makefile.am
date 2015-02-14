@@ -1,6 +1,3 @@
-
-.SILENT:
-
 # Process this file with automake to produce Makefile.in
 
 SUBDIRS = $(POSUB) src build data man doc
