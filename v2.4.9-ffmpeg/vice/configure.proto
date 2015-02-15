@@ -1616,12 +1616,8 @@ if test x"$enable_ffmpeg" != "xno"; then
     dnl --- try to extract the source archives for the ffmpeg lib ---
     AC_CONFIG_SUBDIRS(src/lib/liblame)
     FFMPEG_DIR="$FFMPEG_DIR liblame"
-    if test ! -d src/lib/libx264; then
-      $TAR -xjf src/lib/archives/*x264*.bz2 -C src/lib
-      mv src/lib/x264* src/lib/libx264 && FFMPEG_DIR="$FFMPEG_DIR libx264"
-    else
-      FFMPEG_DIR="$FFMPEG_DIR libx264"
-    fi
+    AC_CONFIG_SUBDIRS(src/lib/libx264)
+    FFMPEG_DIR="$FFMPEG_DIR libx264"
     if test ! -d src/lib/libffmpeg; then
       $TAR -xjf src/lib/archives/ffmpeg*.tar.bz2 -C src/lib
       mv src/lib/ffmpeg* src/lib/libffmpeg && FFMPEG_DIR="$FFMPEG_DIR libffmpeg"
