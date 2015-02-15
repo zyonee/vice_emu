@@ -1,4 +1,4 @@
-SUBDIRS = archives p64 liblame libx264
+SUBDIRS = archives p64 liblame libx264 libffmpeg
 
 ffmpeglibs: $(FFMPEG_DIR)
 
