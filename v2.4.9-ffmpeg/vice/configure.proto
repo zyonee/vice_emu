@@ -1614,7 +1614,6 @@ if test x"$enable_ffmpeg" != "xno"; then
   if test x"$is_win32" = "xyes" -o x"$is_unix" = "xyes" -a x"$dynlib_support" = "xyes" ; then
     ac_configure_args="$ac_configure_args --enable-shared-ffmpeg --enable-make-command=${MAKE-make}"
     AC_CONFIG_SUBDIRS(src/lib/ffmpeg)
-dnl AC_CONFIG_SUBDIRS(src/lib/liblame)
     FFMPEG_DIR="$FFMPEG_DIR liblame libx264 libffmpeg"
     if test -f "src/lib/libffmpeg/libavformat/avformat.h" ; then
       AC_DEFINE([HAVE_FFMPEG],,[Have FFMPEG av* libs available])

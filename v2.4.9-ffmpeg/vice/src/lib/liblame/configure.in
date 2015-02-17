@@ -393,9 +393,7 @@ CONFIG_MATH_LIB="${USE_LIBM}"
 
 dnl configure use of features
 
-dnl AM_PATH_GTK(1.2.0, HAVE_GTK="yes", HAVE_GTK="no")
-
-HAVE_GTK="no"
+AM_PATH_GTK(1.2.0, HAVE_GTK="yes", HAVE_GTK="no")
 
 dnl ElectricFence malloc debugging
 AC_MSG_CHECKING(use of ElectricFence malloc debugging)
