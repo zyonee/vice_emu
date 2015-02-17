@@ -32,8 +32,7 @@ fi
 cd ../liblame
 cur=`pwd`
 if test x"$shared" = "xyes"; then
-  $srcdir/../liblame/configure -v --enable-shared --disable-frontend --prefix=$cur/../libffmpeg --disable-dependency-tracking
-  $makecommand
+  $srcdir/../liblame/configure -v --enable-shared --disable-frontend --prefix=$cur/../libffmpeg
   $makecommand install
 else
   $srcdir/../liblame/configure -v --disable-shared --enable-static
@@ -63,5 +62,3 @@ if test x"$shared" = "xyes"; then
 else
   $srcdir/../libffmpeg/configure --enable-libmp3lame --enable-libx264 --disable-shared --enable-static --disable-programs --enable-gpl
 fi
-
-exit 1
