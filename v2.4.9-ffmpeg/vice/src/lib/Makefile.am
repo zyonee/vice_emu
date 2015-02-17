@@ -1,21 +1,14 @@
-SUBDIRS = archives p64 liblame libx264 libffmpeg ffmpeg
+SUBDIRS = p64 liblame libx264 libffmpeg ffmpeg
 
 ffmpeglibs: $(FFMPEG_DIR)
 
-.PHONY: libp64 libx264 liblame libffmpeg
+.PHONY: libp64 libffmpeg
 
 libp64:
 	(cd p64; $(MAKE))
 
-libx264:
-	(cd libx264; ./configure --enable-shared --enable-static --prefix=$(PWD)/libffmpeg; $(MAKE) install)
-
-liblame:
-	(cd liblame; ./configure --enable-shared --disable-frontend --prefix=$(PWD)/libffmpeg; $(MAKE) install)
-
-libffmpeg: libx264 liblame
-	(cd libffmpeg; ./configure --enable-libmp3lame --enable-libx264 --enable-shared --disable-static --disable-programs --enable-gpl --extra-cflags="-Iinclude" --extra-ldflags="-Llib" --prefix=$(VICEDIR); $(MAKE))
+libffmpeg:
+	(cd libffmpeg; $(MAKE))
 
 ffmpeglibs-install:
 	(cd libffmpeg; $(MAKE) install-libs)
-
