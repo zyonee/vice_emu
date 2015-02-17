@@ -1603,18 +1603,19 @@ fi
 LIBS="$old_LIBS"
 AC_SUBST(NETPLAY_LIBS)
 
-
 dnl ----- FFMPEG -----
 PKG_PROG_PKG_CONFIG
-FFMPEG_INCLUDES=
-FFMPEG_LIBS=
 FFMPEG_DIR=
+FFMPEG_LIBS=
+FFMPEG_INCLUDES=
+FFMPEG_DEP=
 AC_MSG_CHECKING([for FFMPEG support])
 if test x"$enable_ffmpeg" != "xno"; then
   if test x"$is_win32" = "xyes" -o x"$is_unix" = "xyes" -a x"$dynlib_support" = "xyes" ; then
     ac_configure_args="$ac_configure_args --enable-shared-ffmpeg --enable-make-command=${MAKE-make}"
     AC_CONFIG_SUBDIRS(src/lib/ffmpeg)
     FFMPEG_DIR="$FFMPEG_DIR liblame libx264 libffmpeg"
+    FFMPEG_DEP=libffmpeg
     if test -f "src/lib/libffmpeg/libavformat/avformat.h" ; then
       AC_DEFINE([HAVE_FFMPEG],,[Have FFMPEG av* libs available])
       FFMPEG_INCLUDES="-I\$(top_srcdir)/src/lib/libffmpeg"
@@ -1635,6 +1636,7 @@ fi
 AC_SUBST(FFMPEG_INCLUDES)
 AC_SUBST(FFMPEG_LIBS)
 AC_SUBST(FFMPEG_DIR)
+AC_SUBST(FFMPEG_DEP)
 
 dnl ----- Apple QuickTime -----
 QUICKTIME_INCLUDES=
