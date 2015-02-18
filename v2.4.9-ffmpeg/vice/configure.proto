@@ -3705,7 +3705,6 @@ AC_OUTPUT([Makefile
            src/iecbus/Makefile
            src/imagecontents/Makefile
            src/lib/Makefile
-           src/lib/archives/Makefile
            src/lib/p64/Makefile
            src/monitor/Makefile
            src/parallel/Makefile
