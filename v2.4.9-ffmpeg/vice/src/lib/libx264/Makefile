@@ -13,6 +13,219 @@ GENERATED =
 all: default
 default:
 
+SOURCE_FILES = \
+	x264.c \
+	x264dll.c \
+	common/bitstream.c \
+	common/cabac.c \
+	common/common.c \
+	common/cpu.c \
+	common/dct.c \
+	common/deblock.c \
+	common/frame.c \
+	common/macroblock.c \
+	common/mc.c \
+	common/mvpred.c \
+	common/opencl.c \
+	common/osdep.c \
+	common/pixel.c \
+	common/predict.c \
+	common/quant.c \
+	common/rectangle.c \
+	common/set.c \
+	common/threadpool.c \
+	common/vlc.c \
+	common/win32thread.c \
+	common/aarch64/mc-c.c \
+	common/aarch64/predict-c.c \
+	common/arm/mc-c.c \
+	common/arm/predict-c.c \
+	common/ppc/dct.c \
+	common/ppc/deblock.c \
+	common/ppc/mc.c \
+	common/ppc/pixel.c \
+	common/ppc/predict.c \
+	common/ppc/quant.c \
+	common/x86/mc-c.c \
+	common/x86/predict-c.c \
+	encoder/analyse.c \
+	encoder/cabac.c \
+	encoder/cavlc.c \
+	encoder/encoder.c \
+	encoder/lookahead.c \
+	encoder/macroblock.c \
+	encoder/me.c \
+	encoder/ratecontrol.c \
+	encoder/rdo.c \
+	encoder/set.c \
+	encoder/slicetype.c \
+	encoder/slicetype-cl.c \
+	extras/getopt.c \
+	filters/filters.c \
+	filters/video/cache.c \
+	filters/video/crop.c \
+	filters/video/depth.c
+	filters/video/fix_vfr_pts.c \
+	filters/video/internal.c \
+	filters/video/resize.c \
+	filters/video/select_every.c \
+	filters/video/source.c \
+	filters/video/video.c \
+	input/avs.c \
+	input/ffms.c \
+	input/input.c \
+	input/lavf.c \
+	input/raw.c \
+	input/thread.c \
+	input/timecode.c \
+	input/y4m.c \
+	output/flv.c \
+	output/flv_bytestream.c \
+	output/matroska.c \
+	output/matroska_ebml.c \
+	output/mp4.c \
+	output/mp4_lsmash.c \
+	output/raw.c
+	tools/checkasm.c
+
+HEADER_FILES = \
+	x264.h \
+	x264cli.h \
+	common/bitstream.h \
+	common/cabac.h \
+	common/common.h \
+	common/cpu.h \
+	common/dct.h \
+	common/frame.h \
+	common/macroblock.h \
+	common/mc.h \
+	common/opencl.h \
+	common/osdep.h \
+	common/pixel.h \
+	common/predict.h \
+	common/quant.h \
+	common/rectangle.h \
+	common/set.h \
+	common/threadpool.h \
+	common/win32thread.h \
+	common/aarch64/dct.h \
+	common/aarch64/mc.h \
+	common/aarch64/pixel.h \
+	common/aarch64/predict.h \
+	common/aarch64/quant.h \
+	common/arm/dct.h \
+	common/arm/mc.h \
+	common/arm/pixel.h \
+	common/arm/predict.h \
+	common/arm/quant.h \
+	common/opencl/x264-cl.h \
+	common/ppc/dct.h \
+	common/ppc/mc.h \
+	common/ppc/pixel.h \
+	common/ppc/ppccommon.h \
+	common/ppc/predict.h \
+	common/ppc/quant.h \
+	common/x86/dct.h \
+	common/x86/mc.h \
+	common/x86/pixel.h \
+	common/x86/predict.h \
+	common/x86/quant.h \
+	common/x86/util.h \
+	encoder/analyse.h \
+	encoder/macroblock.h \
+	encoder/me.h \
+	encoder/ratecontrol.h \
+	encoder/set.h \
+	extras/avisynth_c.h \
+	extras/avxsynth_c.h \
+	extras/cl.h \
+	extras/cl_platform.h \
+	extras/getopt.h \
+	extras/inttypes.h \
+	extras/stdint.h \
+	extras/windowsPorts/basicDataTypeConversions.h \
+	extras/windowsPorts/windows2linux.h \
+	filters/filters.h \
+	filters/video/internal.h \
+	filters/video/video.h \
+	input/input.h \
+	output/flv_bytestream.h \
+	output/matroska_ebml.h \
+	output/output.h
+
+ASM_FILES = \
+	common/aarch64/asm.S \
+	common/aarch64/dct-a.S \
+	common/aarch64/deblock-a.S \
+	common/aarch64/mc-a.S \
+	common/aarch64/pixel-a.S \
+	common/aarch64/predict-a.S \
+	common/aarch64/quant-a.S \
+	common/arm/asm.S \
+	common/arm/cpu-a.S \
+	common/arm/dct-a.S \
+	common/arm/deblock-a.S \
+	common/arm/mc-a.S \
+	common/arm/pixel-a.S \
+	common/arm/predict-a.S \
+	common/arm/quant-a.S \
+	common/x86/bitstream-a.asm \
+	common/x86/cabac-a.asm \
+	common/x86/const-a.asm \
+	common/x86/cpu-a.asm \
+	common/x86/dct-32.asm \
+	common/x86/dct-64.asm \
+	common/x86/dct-a.asm \
+	common/x86/deblock-a.asm \
+	common/x86/mc-a.asm \
+	common/x86/mc-a2.asm \
+	common/x86/pixel-32.asm \
+	common/x86/pixel-a.asm \
+	common/x86/predict-a.asm \
+	common/x86/quant-a.asm \
+	common/x86/sad16-a.asm \
+	common/x86/sad-a.asm \
+	common/x86/trellis-64.asm \
+	common/x86/x86inc.asm \
+	common/x86/x86util.asm \
+	tools/checkasm-a.asm
+
+EXTRA_FILES = \
+	AUTHORS \
+	config.guess \
+	config.sub \
+	configure \
+	COPYING \
+	Makefile \
+	version.sh \
+	x264res.rc \
+	common/opencl/bidir.cl \
+	common/opencl/downscale.cl \
+	common/opencl/intra.cl \
+	common/opencl/motionsearch.cl \
+	common/opencl/subpel.cl \
+	common/opencl/weightp.cl \
+	extras/gas-preprocessor.pl \
+	doc/ratecontrol.txt \
+	doc/regression_test.txt \
+	doc/standards.txt \
+	doc/threads.txt \
+	doc/vui.txt \
+	tools/digress/__init__.py \
+	tools/digress/cli.py \
+	tools/digress/comparers.py \
+	tools/digress/constants.py \
+	tools/digress/errors.py \
+	tools/digress/testing.py \
+	tools/digress/scm/__init__.py \
+	tools/digress/scm/dummy.py \
+	tools/digress/scm/git.py \
+	tools/cltostr.sh \
+	tools/countquant_x264.pl \
+	tools/msvsdepend.sh \
+	tools/q_matrix_jvt.cfg \
+	tools/test_x264.py
+
 SRCS = common/mc.c common/predict.c common/pixel.c common/macroblock.c \
        common/frame.c common/dct.c common/cpu.c common/cabac.c \
        common/common.c common/osdep.c common/rectangle.c \
@@ -161,6 +374,8 @@ OBJS   += $(SRCS:%.c=%.o)
 OBJCLI += $(SRCCLI:%.c=%.o)
 OBJSO  += $(SRCSO:%.c=%.o)
 
+DISTFILES = $(SOURCE_FILES) $(HEADER_FILES) $(ASM_FILES) $(EXTRA_FILES)
+
 .PHONY: all default fprofiled clean distclean install install-* uninstall cli lib-* etags
 
 cli: x264$(EXE)
@@ -298,3 +513,38 @@ etags: TAGS
 
 TAGS:
 	etags $(SRCS)
+
+srcdir = $SRCPATH
+top_srcdir = $SRCPATH
+top_builddir := $(shell pwd)
+
+distdir: $(DISTFILES)
+	@srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
+	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
+	list='$(DISTFILES)'; \
+	  dist_files=`for file in $$list; do echo $$file; done | \
+	  sed -e "s|^$$srcdirstrip/||;t" \
+	      -e "s|^$$topsrcdirstrip/|$(top_builddir)/|;t"`; \
+	case $$dist_files in \
+	  */*) $(MKDIR_P) `echo "$$dist_files" | \
+			   sed '/\//!d;s|^|$(distdir)/|;s,/[^/]*$$,,' | \
+			   sort -u` ;; \
+	esac; \
+	for file in $$dist_files; do \
+	  if test -f $$file || test -d $$file; then d=.; else d=$(srcdir); fi; \
+	  if test -d $$d/$$file; then \
+	    dir=`echo "/$$file" | sed -e 's,/[^/]*$$,,'`; \
+	    if test -d "$(distdir)/$$file"; then \
+	      find "$(distdir)/$$file" -type d ! -perm -700 -exec chmod u+rwx {} \;; \
+	    fi; \
+	    if test -d $(srcdir)/$$file && test $$d != $(srcdir); then \
+	      cp -fpR $(srcdir)/$$file "$(distdir)$$dir" || exit 1; \
+	      find "$(distdir)/$$file" -type d ! -perm -700 -exec chmod u+rwx {} \;; \
+	    fi; \
+	    cp -fpR $$d/$$file "$(distdir)$$dir" || exit 1; \
+	  else \
+	    test -f "$(distdir)/$$file" \
+	    || cp -p $$d/$$file "$(distdir)/$$file" \
+	    || exit 1; \
+	  fi; \
+	done
