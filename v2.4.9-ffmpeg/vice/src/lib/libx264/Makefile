@@ -64,7 +64,7 @@ SOURCE_FILES = \
 	filters/filters.c \
 	filters/video/cache.c \
 	filters/video/crop.c \
-	filters/video/depth.c
+	filters/video/depth.c \
 	filters/video/fix_vfr_pts.c \
 	filters/video/internal.c \
 	filters/video/resize.c \
@@ -85,7 +85,7 @@ SOURCE_FILES = \
 	output/matroska_ebml.c \
 	output/mp4.c \
 	output/mp4_lsmash.c \
-	output/raw.c
+	output/raw.c \
 	tools/checkasm.c
 
 HEADER_FILES = \
@@ -526,7 +526,7 @@ distdir: $(DISTFILES)
 	  sed -e "s|^$$srcdirstrip/||;t" \
 	      -e "s|^$$topsrcdirstrip/|$(top_builddir)/|;t"`; \
 	case $$dist_files in \
-	  */*) $(MKDIR_P) `echo "$$dist_files" | \
+	  */*) mkdir -p `echo "$$dist_files" | \
 			   sed '/\//!d;s|^|$(distdir)/|;s,/[^/]*$$,,' | \
 			   sort -u` ;; \
 	esac; \
