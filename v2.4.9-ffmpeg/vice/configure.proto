@@ -39,6 +39,7 @@ VICE_ARG_ENABLE_LIST(nls,         [  --disable-nls           disables national l
 VICE_ARG_ENABLE_LIST(vte,         [  --disable-vte           disable VTE support])
 VICE_ARG_ENABLE_LIST(realdevice,  [  --disable-realdevice    disables access to real peripheral devices (CBM4Linux/OpenCBM)])
 VICE_ARG_ENABLE_LIST(ffmpeg,      [  --disable-ffmpeg        disable FFmpeg library support])
+VICE_ARG_ENABLE_LIST(shared-ffmpeg, [  --enable-shared-ffmpeg  enable included shared FFmpeg libs])
 VICE_ARG_ENABLE_LIST(quicktime,   [  --enable-quicktime      enables Apple QuickTime support])
 VICE_ARG_ENABLE_LIST(ethernet,    [  --enable-ethernet       enables The Final Ethernet emulation])
 VICE_ARG_ENABLE_LIST(ipv6,        [  --disable-ipv6          disables the checking for IPv6 compatibility])
@@ -1614,25 +1615,25 @@ if test x"$enable_ffmpeg" != "xno"; then
   if test x"$is_win32" = "xyes" -o x"$is_unix" = "xyes" -a x"$dynlib_support" = "xyes" ; then
     ac_configure_args="$ac_configure_args --enable-shared-ffmpeg --enable-make-command=${MAKE-make}"
     AC_CONFIG_SUBDIRS(src/lib/ffmpeg)
-    FFMPEG_DIR="$FFMPEG_DIR liblame libx264 libffmpeg"
     FFMPEG_DEP=libffmpeg
     FFMPEG_LIBS="\$(top_builddir)/src/libffmpeg.a"
-    if test -f "src/lib/libffmpeg/libavformat/avformat.h" ; then
-      AC_DEFINE([HAVE_FFMPEG],,[Have FFMPEG av* libs available])
-      FFMPEG_INCLUDES="-I\$(top_srcdir)/src/lib/libffmpeg"
-      dnl --- define obsolete variables as long as they are not removed from driver code ---
-      AC_DEFINE([HAVE_FFMPEG_SWSCALE],,[Have FFMPEG swscale lib available])
-      AC_DEFINE([HAVE_FFMPEG_HEADER_SUBDIRS],,[FFMPEG uses subdirs for headers])
-      AC_MSG_RESULT([yes (internal)])
-      GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o ffmpeglib.o"
-    else
-      AC_MSG_RESULT([no])
-    fi
+    FFMPEG_DIR="$FFMPEG_DIR liblame libx264 libffmpeg"
+    AC_DEFINE([HAVE_FFMPEG],,[Have FFMPEG av* libs available])
+    FFMPEG_INCLUDES="-I\$(top_srcdir)/src/lib/libffmpeg"
+
+    dnl --- define obsolete variables as long as they are not removed from driver code ---
+    AC_DEFINE([HAVE_FFMPEG_SWSCALE],,[Have FFMPEG swscale lib available])
+    AC_DEFINE([HAVE_FFMPEG_HEADER_SUBDIRS],,[FFMPEG uses subdirs for headers])
+    AC_MSG_RESULT([yes (internal)])
+    GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o ffmpeglib.o"
+    AM_CONDITIONAL(HAVE_SHARED_FFMPEG, true)
   else
     AC_MSG_RESULT([not available])
+    AM_CONDITIONAL(HAVE_SHARED_FFMPEG, false)
   fi
 else
   AC_MSG_RESULT([disabled])
+  AM_CONDITIONAL(HAVE_SHARED_FFMPEG, false)
 fi
 AC_SUBST(FFMPEG_INCLUDES)
 AC_SUBST(FFMPEG_LIBS)
@@ -3525,7 +3526,6 @@ AC_DEFINE_UNQUOTED(VICEDIR, "$VICEDIR",
 
 # Add path with private dynamic ffmpeg libs to the search path
 LDFLAGS="$LDFLAGS -Wl,-rpath,$VICEDIR/lib"
-
 
 AC_OUTPUT([Makefile
            vice.spec

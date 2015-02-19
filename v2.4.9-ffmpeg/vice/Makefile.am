@@ -403,10 +403,18 @@ bindistzip:
 	$(SHELL) @ARCH_SRC_DIR@/make-bindist_syllable.sh $(STRIP) $(VICE_VERSION) $(prefix) @ENABLE_ARCH@ zip $(X64SC_INCLUDED) $(top_srcdir)
 endif
 
-@MAKE_BINDIST_TRUE@installvice:
-@MAKE_BINDIST_TRUE@	@echo this platform doesn\'t use \"make install\", use \"make bindist\" instead
+if HAVE_SHARED_FFMPEG
+EXTRA_INSTALLS = ffmpeglibs-install
+else
+EXTRA_INSTALLS =
+endif
 
-@MAKE_BINDIST_FALSE@installvice: install-recursive
+if MAKE_BINDIST
+installvice:
+	@echo this platform doesn\'t use \"make install\", use \"make bindist\" instead
+else
+installvice: install-recursive $(EXTRA_INSTALLS)
+endif
 
 cleantrans:
 	rm `find $(top_srcdir) -name "*.po.c"`
