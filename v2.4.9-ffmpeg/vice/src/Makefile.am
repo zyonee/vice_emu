@@ -1885,3 +1885,10 @@ xvicow$(EXEEXT): xvic$(EXEEXT)
 
 vsidow$(EXEEXT): vsid$(EXEEXT)
 	wrc -fe=vsidow$(EXEEXT) arch/win32/resvsid.res vsid$(EXEEXT)
+
+
+$(top_builddir)/src/libffmpeg.a: libffmpeg
+	touch dummy.c
+	$(CC) -o dummy.o -c dummy.c
+	$(AR) cru $(top_builddir)/src/libffmpeg.a dummy.o
+	rm dummy.o dummy.c

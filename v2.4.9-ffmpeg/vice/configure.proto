@@ -1616,6 +1616,7 @@ if test x"$enable_ffmpeg" != "xno"; then
     AC_CONFIG_SUBDIRS(src/lib/ffmpeg)
     FFMPEG_DIR="$FFMPEG_DIR liblame libx264 libffmpeg"
     FFMPEG_DEP=libffmpeg
+    FFMPEG_LIBS="\$(top_builddir)/src/libffmpeg.a"
     if test -f "src/lib/libffmpeg/libavformat/avformat.h" ; then
       AC_DEFINE([HAVE_FFMPEG],,[Have FFMPEG av* libs available])
       FFMPEG_INCLUDES="-I\$(top_srcdir)/src/lib/libffmpeg"
