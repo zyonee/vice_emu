@@ -373,7 +373,7 @@ LIBAVCODEC_SOURCE_FILES = \
 	libavcodec/avpacket.c \
 	libavcodec/avpicture.c \
 	libavcodec/avrndec.c \
-	libavcodec/libavcodec/avs.c \
+	libavcodec/avs.c \
 	libavcodec/avuidec.c \
 	libavcodec/avuienc.c \
 	libavcodec/bethsoftvideo.c \
@@ -1017,7 +1017,7 @@ LIBAVCODEC_SOURCE_FILES = \
 	libavcodec/wmv2dec.c \
 	libavcodec/wmv2dsp.c \
 	libavcodec/wmv2enc.c \
-	libavcodec/libavcodec/wnv1.c \
+	libavcodec/wnv1.c \
 	libavcodec/ws-snd1.c \
 	libavcodec/xan.c \
 	libavcodec/xbmdec.c \
