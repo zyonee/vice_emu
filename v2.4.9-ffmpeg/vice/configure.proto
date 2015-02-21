@@ -1641,11 +1641,14 @@ fi
 dnl static vice included ffmpeg
 if test x"$enable_static_ffmpeg" = "xyes"; then
   FFMPEG_DEP=libffmpeg
-  FFMPEG_LIBS="\$(top_builddir)/src/libffmpeg.a -lpthread -lrt"
+  FFMPEG_LIBS="\$(top_builddir)/src/libffmpeg.a"
   FFMPEG_DIR="$FFMPEG_DIR liblame libx264 libffmpeg"
   AC_DEFINE([HAVE_FFMPEG],,[Have FFMPEG av* libs available])
   AC_DEFINE([STATIC_FFMPEG],,[FFMPEG libraries are static])
   FFMPEG_INCLUDES="-I\$(top_srcdir)/src/lib/libffmpeg"
+
+  AC_CHECK_LIB(pthread, pthread_create,, [ AC_MSG_ERROR([Needed pthread lib missing]) ], $FFMPEG_LIBS)
+  AC_CHECK_LIB(rt, clock_gettime, , [ AC_MSG_ERROR([Needed rt lib missing]) ], $FFMPEG_LIBS)
 
   FFMPEG_DO_SUBDIRS=yes
 
