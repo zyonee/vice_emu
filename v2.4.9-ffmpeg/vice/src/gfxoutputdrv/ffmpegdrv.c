@@ -275,21 +275,22 @@ static int ffmpegdrv_cmdline_options_init(void)
 }
 
 /*---------------------------------------------------------------------*/
+
 static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AVStream *st, AVPacket *pkt)
 {
     /* rescale output packet timestamp values from codec to stream timebase */
-    (*ffmpeglib.p_av_packet_rescale_ts)(pkt, *time_base, st->time_base);
+    VICE_P_AV_PACKET_RESCALE_TS(pkt, *time_base, st->time_base);
     pkt->stream_index = st->index;
 
     /* Write the compressed frame to the media file. */
-    return (*ffmpeglib.p_av_interleaved_write_frame)(fmt_ctx, pkt);
+    return VICE_P_AV_INTERLEAVED_WRITE_FRAME(fmt_ctx, pkt);
 }
 
 static void close_stream(OutputStream *ost)
 {
-    (*ffmpeglib.p_avcodec_close)(ost->st->codec);
-    (*ffmpeglib.p_av_frame_free)(&ost->frame);
-    (*ffmpeglib.p_av_frame_free)(&ost->tmp_frame);
+    VICE_P_AVCODEC_CLOSE(ost->st->codec);
+    VICE_P_AV_FRAME_FREE(&ost->frame);
+    VICE_P_AV_FRAME_FREE(&ost->tmp_frame);
 }
 
 
@@ -301,7 +302,7 @@ static AVFrame *alloc_audio_frame(enum AVSampleFormat sample_fmt,
     uint64_t channel_layout,
     int sample_rate, int nb_samples)
 {
-    AVFrame *frame = (*ffmpeglib.p_av_frame_alloc)();
+    AVFrame *frame = VICE_P_AV_FRAME_ALLOC();
     int ret;
 
     if (!frame) {
@@ -315,7 +316,7 @@ static AVFrame *alloc_audio_frame(enum AVSampleFormat sample_fmt,
     frame->nb_samples = nb_samples;
 
     if (nb_samples) {
-        ret = (*ffmpeglib.p_av_frame_get_buffer)(frame, 0);
+        ret = VICE_P_AV_FRAME_GET_BUFFER(frame, 0);
         if (ret < 0) {
             log_debug("ffmpegdrv: Error allocating an audio buffer");
             return NULL;
@@ -338,9 +339,9 @@ static int ffmpegdrv_open_audio(AVFormatContext *oc, AVStream *st)
     c = st->codec;
     /* open codec */
     /* aac encoder ist flaged 'experimental' */
-    (*ffmpeglib.p_av_dict_set)(&opts, "strict", "experimental", 0);
-    ret = (*ffmpeglib.p_avcodec_open2)(c, avcodecaudio, &opts);
-    (*ffmpeglib.p_av_dict_free)(&opts);
+    VICE_P_AV_DICT_SET(&opts, "strict", "experimental", 0);
+    ret = VICE_P_AVCODEC_OPEN2(c, avcodecaudio, &opts);
+    VICE_P_AV_DICT_FREE(&opts);
 
     if (ret < 0) {
         log_debug("ffmpegdrv: could not open audio codec (%d)", ret);
@@ -381,10 +382,8 @@ static void ffmpegdrv_close_audio(void)
     audio_is_open = 0;
     ffmpegdrv_audio_in.buffer = NULL;
     ffmpegdrv_audio_in.size = 0;
-    (*ffmpeglib.p_swr_free)(&swr_ctx);
-
+    VICE_P_SWR_FREE(&swr_ctx);
 }
-
 
 static int ffmpegmovie_init_audio(int speed, int channels, soundmovie_buffer_t ** audio_in)
 {
@@ -407,7 +406,7 @@ static int ffmpegmovie_init_audio(int speed, int channels, soundmovie_buffer_t *
     (*audio_in)->size = 0; /* not allocated yet */
     (*audio_in)->used = 0;
 
-    st = (*ffmpeglib.p_avformat_new_stream)(ffmpegdrv_oc, avcodecaudio);
+    st = VICE_P_AVFORMAT_NEW_STREAM(ffmpegdrv_oc, avcodecaudio);
     if (!st) {
         log_debug("ffmpegdrv: Could not alloc audio stream");
         return -1;
@@ -426,7 +425,7 @@ static int ffmpegmovie_init_audio(int speed, int channels, soundmovie_buffer_t *
         }
     }
     c->channel_layout = (channels == 1 ? AV_CH_LAYOUT_MONO : AV_CH_LAYOUT_STEREO);
-    c->channels = (*ffmpeglib.p_av_get_channel_layout_nb_channels)(c->channel_layout);
+    c->channels = VICE_P_AV_GET_CHANNEL_LAYOUT_NB_CHANNELS(c->channel_layout);
 
     st->time_base = (AVRational){ 1, c->sample_rate };
     audio_st.st = st;
@@ -438,22 +437,22 @@ static int ffmpegmovie_init_audio(int speed, int channels, soundmovie_buffer_t *
         c->flags |= CODEC_FLAG_GLOBAL_HEADER;
 
     /* create resampler context */
-    swr_ctx = (*ffmpeglib.p_swr_alloc)();
+    swr_ctx = VICE_P_SWR_ALLOC();
     if (!swr_ctx) {
         log_debug("ffmpegdrv: Could not alloc resampler context");
         return -1;
     }
 
     /* set options */
-    (*ffmpeglib.p_av_opt_set_int)(swr_ctx, "in_channel_count", c->channels, 0);
-    (*ffmpeglib.p_av_opt_set_int)(swr_ctx, "in_sample_rate", speed, 0);
-    (*ffmpeglib.p_av_opt_set_sample_fmt)(swr_ctx, "in_sample_fmt", AV_SAMPLE_FMT_S16, 0);
-    (*ffmpeglib.p_av_opt_set_int)(swr_ctx, "out_channel_count", c->channels, 0);
-    (*ffmpeglib.p_av_opt_set_int)(swr_ctx, "out_sample_rate", c->sample_rate, 0);
-    (*ffmpeglib.p_av_opt_set_sample_fmt)(swr_ctx, "out_sample_fmt", c->sample_fmt, 0);
+    VICE_P_AV_OPT_SET_INT(swr_ctx, "in_channel_count", c->channels, 0);
+    VICE_P_AV_OPT_SET_INT(swr_ctx, "in_sample_rate", speed, 0);
+    VICE_P_AV_OPT_SET_SAMPLE_FMT(swr_ctx, "in_sample_fmt", AV_SAMPLE_FMT_S16, 0);
+    VICE_P_AV_OPT_SET_INT(swr_ctx, "out_channel_count", c->channels, 0);
+    VICE_P_AV_OPT_SET_INT(swr_ctx, "out_sample_rate", c->sample_rate, 0);
+    VICE_P_AV_OPT_SET_SAMPLE_FMT(swr_ctx, "out_sample_fmt", c->sample_fmt, 0);
 
     /* initialize the resampling context */
-    if ((*ffmpeglib.p_swr_init)(swr_ctx) < 0) {
+    if (VICE_P_SWR_INIT(swr_ctx) < 0) {
         log_debug("ffmpegdrv: Failed to initialize the resampling context");
         return -1;
     }
@@ -480,7 +479,7 @@ static int ffmpegmovie_encode_audio(soundmovie_buffer_t *audio_in)
         audio_st.frame->pts = audio_st.next_pts;
         audio_st.next_pts += audio_in->size;
 
-        (*ffmpeglib.p_av_init_packet)(&pkt);
+        VICE_P_AV_INIT_PACKET(&pkt);
         c = audio_st.st->codec;
 
         frame = audio_st.tmp_frame;
@@ -488,19 +487,19 @@ static int ffmpegmovie_encode_audio(soundmovie_buffer_t *audio_in)
         if (frame) {
             /* convert samples from native format to destination codec format, using the resampler */
             /* compute destination number of samples */
-            dst_nb_samples = (int)(*ffmpeglib.p_av_rescale_rnd)((*ffmpeglib.p_swr_get_delay)(swr_ctx, c->sample_rate) + frame->nb_samples,
+            dst_nb_samples = (int)VICE_P_AV_RESCALE_RND(VICE_P_SWR_GET_DELAY(swr_ctx, c->sample_rate) + frame->nb_samples,
                 c->sample_rate, c->sample_rate, AV_ROUND_UP);
 
             /* when we pass a frame to the encoder, it may keep a reference to it
             * internally;
             * make sure we do not overwrite it here
             */
-            ret = (*ffmpeglib.p_av_frame_make_writable)(audio_st.frame);
+            ret = VICE_P_AV_FRAME_MAKE_WRITABLE(audio_st.frame);
             if (ret < 0)
                 return -1;
 
             /* convert to destination format */
-            ret = (*ffmpeglib.p_swr_convert)(swr_ctx,
+            ret = VICE_P_SWR_CONVERT(swr_ctx,
                 audio_st.frame->data, dst_nb_samples,
                 (const uint8_t **)frame->data, frame->nb_samples);
             if (ret < 0) {
@@ -508,12 +507,11 @@ static int ffmpegmovie_encode_audio(soundmovie_buffer_t *audio_in)
                 return -1;
             }
             frame = audio_st.frame;
-            frame->pts = (*ffmpeglib.p_av_rescale_q)(audio_st.samples_count, (AVRational){ 1, c->sample_rate }, c->time_base);
+            frame->pts = VICE_P_AV_RESCALE_Q(audio_st.samples_count, (AVRational){ 1, c->sample_rate }, c->time_base);
             audio_st.samples_count += dst_nb_samples;
         }
 
-
-        ret = (*ffmpeglib.p_avcodec_encode_audio2)(audio_st.st->codec, &pkt, audio_st.frame, &got_packet);
+        ret = VICE_P_AVCODEC_ENCODE_AUDIO2(audio_st.st->codec, &pkt, audio_st.frame, &got_packet);
         if (got_packet) {
             if (write_frame(ffmpegdrv_oc, &c->time_base, audio_st.st, &pkt)<0)
             {
@@ -577,7 +575,7 @@ static AVFrame* ffmpegdrv_alloc_picture(enum AVPixelFormat pix_fmt, int width, i
     AVFrame *picture;
     int ret;
 
-    picture = (*ffmpeglib.p_av_frame_alloc)();
+    picture = VICE_P_AV_FRAME_ALLOC();
     if (!picture) {
         return NULL;
     }
@@ -585,7 +583,7 @@ static AVFrame* ffmpegdrv_alloc_picture(enum AVPixelFormat pix_fmt, int width, i
     picture->width = width;
     picture->height = height;
 
-    ret = (*ffmpeglib.p_av_frame_get_buffer)(picture, 32);
+    ret = VICE_P_AV_FRAME_GET_BUFFER(picture, 32);
     if (ret < 0) {
         log_debug("ffmpegdrv: Could not allocate frame data");
         return NULL;
@@ -603,7 +601,7 @@ static int ffmpegdrv_open_video(AVFormatContext *oc, AVStream *st)
     c = st->codec;
 
     /* open the codec */
-    ret = (*ffmpeglib.p_avcodec_open2)(c, avcodecvideo, NULL);
+    ret = VICE_P_AVCODEC_OPEN2(c, avcodecvideo, NULL);
     if (ret < 0) {
         log_debug("ffmpegdrv: could not open video codec");
         return -1;
@@ -656,7 +654,7 @@ static void ffmpegdrv_close_video(void)
     }
 
     if (sws_ctx != NULL) {
-        (*ffmpeglib.p_sws_freeContext)(sws_ctx);
+        VICE_P_SWS_FREECONTEXT(sws_ctx);
     }
 }
 
@@ -676,7 +674,7 @@ static void ffmpegdrv_init_video(screenshot_t *screenshot)
         return;
     }
 
-    st = (*ffmpeglib.p_avformat_new_stream)(ffmpegdrv_oc, avcodecvideo);
+    st = VICE_P_AVFORMAT_NEW_STREAM(ffmpegdrv_oc, avcodecvideo);
     if (!st) {
         log_debug("ffmpegdrv: Could not alloc video stream\n");
         return;
@@ -711,7 +709,7 @@ static void ffmpegdrv_init_video(screenshot_t *screenshot)
 #ifdef HAVE_FFMPEG_SWSCALE
     /* setup scaler */
     if (c->pix_fmt != PIX_FMT_RGB24) {
-        sws_ctx = (*ffmpeglib.p_sws_getContext)
+        sws_ctx = VICE_P_SWS_GETCONTEXT
                       (video_width, video_height, PIX_FMT_RGB24,
                       video_width, video_height, c->pix_fmt,
                       SWS_BICUBIC,
@@ -742,7 +740,7 @@ static int ffmpegdrv_init_file(void)
         return 0;
     }
 
-    (*ffmpeglib.p_av_dump_format)(ffmpegdrv_oc, 0, ffmpegdrv_oc->filename, 1);
+    VICE_P_AV_DUMP_FORMAT(ffmpegdrv_oc, 0, ffmpegdrv_oc->filename, 1);
 
     if (video_st.st && (ffmpegdrv_open_video(ffmpegdrv_oc, video_st.st) < 0)) {
         ui_error(translate_text(IDGS_FFMPEG_CANNOT_OPEN_VSTREAM));
@@ -756,7 +754,7 @@ static int ffmpegdrv_init_file(void)
     }
 
     if (!(ffmpegdrv_fmt->flags & AVFMT_NOFILE)) {
-        if ((*ffmpeglib.p_avio_open)(&ffmpegdrv_oc->pb, ffmpegdrv_oc->filename,
+        if (VICE_P_AVIO_OPEN(&ffmpegdrv_oc->pb, ffmpegdrv_oc->filename,
                             AVIO_FLAG_WRITE) < 0) {
 
             ui_error(translate_text(IDGS_FFMPEG_CANNOT_OPEN_S), ffmpegdrv_oc->filename);
@@ -765,7 +763,7 @@ static int ffmpegdrv_init_file(void)
         }
     }
 
-    (*ffmpeglib.p_avformat_write_header)(ffmpegdrv_oc,NULL);
+    VICE_P_AVFORMAT_WRITE_HEADER(ffmpegdrv_oc,NULL);
 
     log_debug("ffmpegdrv: Initialized file successfully");
 
@@ -786,10 +784,10 @@ static int ffmpegdrv_save(screenshot_t *screenshot, const char *filename)
     video_init_done = 0;
     file_init_done = 0;
 
-    ffmpegdrv_fmt = (*ffmpeglib.p_av_guess_format)(ffmpeg_format, NULL, NULL);
+    ffmpegdrv_fmt = VICE_P_AV_GUESS_FORMAT(ffmpeg_format, NULL, NULL);
 
     if (!ffmpegdrv_fmt) {
-        ffmpegdrv_fmt = (*ffmpeglib.p_av_guess_format)("mpeg", NULL, NULL);
+        ffmpegdrv_fmt = VICE_P_AV_GUESS_FORMAT("mpeg", NULL, NULL);
     }
 
     if (!ffmpegdrv_fmt) {
@@ -808,7 +806,7 @@ static int ffmpegdrv_save(screenshot_t *screenshot, const char *filename)
         ffmpegdrv_fmt->audio_codec = audio_codec;
     }
     if (ffmpegdrv_fmt->audio_codec != AV_CODEC_ID_NONE) {
-        avcodecaudio = (*ffmpeglib.p_avcodec_find_encoder)(ffmpegdrv_fmt->audio_codec);
+        avcodecaudio = VICE_P_AVCODEC_FIND_ENCODER(ffmpegdrv_fmt->audio_codec);
         if (!avcodecaudio) {
             log_debug("ffmpegdrv: Cannot find suitable audio codec");
             return -1;
@@ -820,14 +818,14 @@ static int ffmpegdrv_save(screenshot_t *screenshot, const char *filename)
         ffmpegdrv_fmt->video_codec = video_codec;
     }
     if (ffmpegdrv_fmt->video_codec != AV_CODEC_ID_NONE) {
-        avcodecvideo = (*ffmpeglib.p_avcodec_find_encoder)(ffmpegdrv_fmt->video_codec);
+        avcodecvideo = VICE_P_AVCODEC_FIND_ENCODER(ffmpegdrv_fmt->video_codec);
         if (!avcodecvideo) {
             log_debug("ffmpegdrv: Cannot find suitable video codec");
             return -1;
         }
     }
 
-    ffmpegdrv_oc = (*ffmpeglib.p_avformat_alloc_context)();
+    ffmpegdrv_oc = VICE_P_AVFORMAT_ALLOC_CONTEXT();
 
     if (!ffmpegdrv_oc) {
         log_debug("ffmpegdrv: Cannot allocate format context");
@@ -851,7 +849,7 @@ static int ffmpegdrv_close(screenshot_t *screenshot)
 
     /* write the trailer, if any */
     if (file_init_done) {
-        (*ffmpeglib.p_av_write_trailer)(ffmpegdrv_oc);
+        VICE_P_AV_WRITE_TRAILER(ffmpegdrv_oc);
     }
 
     soundmovie_stop();
@@ -865,12 +863,12 @@ static int ffmpegdrv_close(screenshot_t *screenshot)
 
     if (!(ffmpegdrv_fmt->flags & AVFMT_NOFILE)) {
         /* close the output file */
-            (*ffmpeglib.p_avio_close)(ffmpegdrv_oc->pb);
+            VICE_P_AVIO_CLOSE(ffmpegdrv_oc->pb);
     }
 
     /* free the streams */
     for (i = 0; i < ffmpegdrv_oc->nb_streams; i++) {
-        (*ffmpeglib.p_av_free)((void *)ffmpegdrv_oc->streams[i]);
+        VICE_P_AV_FREE((void *)ffmpegdrv_oc->streams[i]);
         ffmpegdrv_oc->streams[i] = NULL;
     }
 
@@ -915,7 +913,7 @@ static int ffmpegdrv_record(screenshot_t *screenshot)
         ffmpegdrv_fill_rgb_image(screenshot, video_st.tmp_frame);
 
         if (sws_ctx != NULL) {
-            (*ffmpeglib.p_sws_scale)(sws_ctx,
+            VICE_P_SWS_SCALE(sws_ctx,
                 video_st.tmp_frame->data, video_st.tmp_frame->linesize, 0, c->height,
                 video_st.frame->data, video_st.frame->linesize);
         }
@@ -927,22 +925,22 @@ static int ffmpegdrv_record(screenshot_t *screenshot)
 
     if (ffmpegdrv_oc->oformat->flags & AVFMT_RAWPICTURE) {
         AVPacket pkt;
-        (*ffmpeglib.p_av_init_packet)(&pkt);
+        VICE_P_AV_INIT_PACKET(&pkt);
         pkt.flags |= AV_PKT_FLAG_KEY;
         pkt.stream_index = video_st.st->index;
         pkt.data = (uint8_t*)video_st.frame;
         pkt.size = sizeof(AVPicture);
         pkt.pts = pkt.dts = video_st.frame->pts;
 
-        ret = (*ffmpeglib.p_av_interleaved_write_frame)(ffmpegdrv_oc, &pkt);
+        ret = VICE_P_AV_INTERLEAVED_WRITE_FRAME(ffmpegdrv_oc, &pkt);
     } else {
         AVPacket pkt = { 0 };
         int got_packet;
 
-        (*ffmpeglib.p_av_init_packet)(&pkt);
+        VICE_P_AV_INIT_PACKET(&pkt);
 
         /* encode the image */
-        ret = (*ffmpeglib.p_avcodec_encode_video2)(c, &pkt, video_st.frame, &got_packet);
+        ret = VICE_P_AVCODEC_ENCODE_VIDEO2(c, &pkt, video_st.frame, &got_packet);
         if (ret < 0) {
             log_debug("Error while encoding video frame");
             return -1;
@@ -1005,7 +1003,6 @@ void gfxoutput_init_ffmpeg(void)
 
     gfxoutput_register(&ffmpeg_drv);
 
-    (*ffmpeglib.p_av_register_all)();
+    VICE_P_AV_REGISTER_ALL();
 }
-
 #endif

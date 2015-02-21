@@ -36,6 +36,8 @@
 #include "uiapi.h"
 #include "dynlib.h"
 
+#ifdef SHARED_FFMPEG
+
 /* define major version if its not already defined */
 #ifndef LIBAVCODEC_VERSION_MAJOR
 #define LIBAVCODEC_VERSION_MAJOR  51
@@ -424,6 +426,15 @@ void ffmpeglib_close(ffmpeglib_t *lib)
     free_avutil(lib);
     free_swscale(lib);
     free_swresample(lib);
+}
+#else
+int ffmpeglib_open(ffmpeglib_t *lib)
+{
+    return 0;
+}
+
+void ffmpeglib_close(ffmpeglib_t *lib)
+{
 }
 
 #endif /* #ifdef HAVE_FFMPEG */
