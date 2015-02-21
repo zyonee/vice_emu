@@ -1886,8 +1886,22 @@ xvicow$(EXEEXT): xvic$(EXEEXT)
 vsidow$(EXEEXT): vsid$(EXEEXT)
 	wrc -fe=vsidow$(EXEEXT) arch/win32/resvsid.res vsid$(EXEEXT)
 
+if HAVE_SHARED_FFMPEG
 $(top_builddir)/src/libffmpeg.a: libffmpeg
 	touch dummy.c
 	$(CC) -o dummy.o -c dummy.c
 	$(AR) cru $(top_builddir)/src/libffmpeg.a dummy.o
 	rm dummy.o dummy.c
+endif
+
+if HAVE_STATIC_FFMPEG
+$(top_builddir)/src/libffmpeg.a: libffmpeg
+	ar cqT $(top_builddir)/src/libffmpeg.a \
+	$(top_builddir)/src/lib/libffmpeg/libavformat/libavformat.a \
+	$(top_builddir)/src/lib/libffmpeg/libavcodec/libavcodec.a \
+	$(top_builddir)/src/lib/libffmpeg/libavutil/libavutil.a \
+	$(top_builddir)/src/lib/libffmpeg/libswscale/libswscale.a \
+	$(top_builddir)/src/lib/libffmpeg/libswresample/libswresample.a \
+	$(top_builddir)/src/lib/libffmpeg/lib/libmp3lame.a \
+	$(top_builddir)/src/lib/libffmpeg/lib/libx264.a
+endif

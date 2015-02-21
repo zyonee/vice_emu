@@ -436,5 +436,5 @@ int ffmpeglib_open(ffmpeglib_t *lib)
 void ffmpeglib_close(ffmpeglib_t *lib)
 {
 }
-
+#endif
 #endif /* #ifdef HAVE_FFMPEG */
