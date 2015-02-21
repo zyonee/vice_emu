@@ -38,7 +38,7 @@ VICE_ARG_ENABLE_LIST(dingux,      [  --enable-dingux         enables Dingux (Din
 VICE_ARG_ENABLE_LIST(nls,         [  --disable-nls           disables national language support])
 VICE_ARG_ENABLE_LIST(vte,         [  --disable-vte           disable VTE support])
 VICE_ARG_ENABLE_LIST(realdevice,  [  --disable-realdevice    disables access to real peripheral devices (CBM4Linux/OpenCBM)])
-VICE_ARG_ENABLE_LIST(shared-ffmpeg, [  --enable-shared-ffmpeg  enable included shared FFmpeg support)
+VICE_ARG_ENABLE_LIST(shared-ffmpeg, [  --enable-shared-ffmpeg  enable included shared FFmpeg support])
 VICE_ARG_ENABLE_LIST(static-ffmpeg, [  --enable-static-ffmpeg  enable included static FFmpeg support])
 VICE_ARG_ENABLE_LIST(quicktime,   [  --enable-quicktime      enables Apple QuickTime support])
 VICE_ARG_ENABLE_LIST(ethernet,    [  --enable-ethernet       enables The Final Ethernet emulation])
@@ -1615,14 +1615,14 @@ AC_MSG_CHECKING([for FFMPEG support])
 dnl shared vice included ffmpeg
 if test x"$enable_shared_ffmpeg" = "xyes"; then
   if test x"$is_win32" = "xyes" -o x"$is_unix" = "xyes" -a x"$dynlib_support" = "xyes" ; then
-    ac_configure_args="$ac_configure_args --enable-make-command=${MAKE-make}"
-    AC_CONFIG_SUBDIRS(src/lib/ffmpeg)
     FFMPEG_DEP=libffmpeg
     FFMPEG_LIBS="\$(top_builddir)/src/libffmpeg.a"
     FFMPEG_DIR="$FFMPEG_DIR liblame libx264 libffmpeg"
     AC_DEFINE([HAVE_FFMPEG],,[Have FFMPEG av* libs available])
     AC_DEFINE([SHARED_FFMPEG],,[FFMPEG libraries are shared])
     FFMPEG_INCLUDES="-I\$(top_srcdir)/src/lib/libffmpeg"
+
+    FFMPEG_DO_SUBDIRS=yes
 
     dnl --- define obsolete variables as long as they are not removed from driver code ---
     AC_DEFINE([HAVE_FFMPEG_SWSCALE],,[Have FFMPEG swscale lib available])
@@ -1640,32 +1640,32 @@ fi
 
 dnl static vice included ffmpeg
 if test x"$enable_static_ffmpeg" = "xyes"; then
-  ac_configure_args="$ac_configure_args --enable-make-command=${MAKE-make}"
-    AC_CONFIG_SUBDIRS(src/lib/ffmpeg)
-    FFMPEG_DEP=libffmpeg
-    FFMPEG_LIBS="\$(top_builddir)/src/libffmpeg.a"
-    FFMPEG_DIR="$FFMPEG_DIR liblame libx264 libffmpeg"
-    AC_DEFINE([HAVE_FFMPEG],,[Have FFMPEG av* libs available])
-    AC_DEFINE([STATIC_FFMPEG],,[FFMPEG libraries are static])
-    FFMPEG_INCLUDES="-I\$(top_srcdir)/src/lib/libffmpeg"
+  FFMPEG_DEP=libffmpeg
+  FFMPEG_LIBS="\$(top_builddir)/src/libffmpeg.a"
+  FFMPEG_DIR="$FFMPEG_DIR liblame libx264 libffmpeg"
+  AC_DEFINE([HAVE_FFMPEG],,[Have FFMPEG av* libs available])
+  AC_DEFINE([STATIC_FFMPEG],,[FFMPEG libraries are static])
+  FFMPEG_INCLUDES="-I\$(top_srcdir)/src/lib/libffmpeg"
 
-    dnl --- define obsolete variables as long as they are not removed from driver code ---
-    AC_DEFINE([HAVE_FFMPEG_SWSCALE],,[Have FFMPEG swscale lib available])
-    AC_DEFINE([HAVE_FFMPEG_HEADER_SUBDIRS],,[FFMPEG uses subdirs for headers])
-    AC_MSG_RESULT([yes (static internal)])
-    GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o ffmpeglib.o"
-    AM_CONDITIONAL(HAVE_SHARED_FFMPEG, false)
-    AM_CONDITIONAL(HAVE_STATIC_FFMPEG, true)
-  else
-    AC_MSG_RESULT([shared not available])
-    AM_CONDITIONAL(HAVE_SHARED_FFMPEG, false)
-    AM_CONDITIONAL(HAVE_STATIC_FFMPEG, false)
-  fi
+  FFMPEG_DO_SUBDIRS=yes
+
+  dnl --- define obsolete variables as long as they are not removed from driver code ---
+  AC_DEFINE([HAVE_FFMPEG_SWSCALE],,[Have FFMPEG swscale lib available])
+  AC_DEFINE([HAVE_FFMPEG_HEADER_SUBDIRS],,[FFMPEG uses subdirs for headers])
+  AC_MSG_RESULT([yes (static internal)])
+  GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o ffmpeglib.o"
+  AM_CONDITIONAL(HAVE_SHARED_FFMPEG, false)
+  AM_CONDITIONAL(HAVE_STATIC_FFMPEG, true)
 fi
 AC_SUBST(FFMPEG_INCLUDES)
 AC_SUBST(FFMPEG_LIBS)
 AC_SUBST(FFMPEG_DIR)
 AC_SUBST(FFMPEG_DEP)
+
+if test x"$FFMPEG_DO_SUBDIRS" = "xyes"; then
+  ac_configure_args="$ac_configure_args --enable-make-command=${MAKE-make}"
+  AC_CONFIG_SUBDIRS(src/lib/ffmpeg)
+fi
 
 dnl ----- Apple QuickTime -----
 QUICKTIME_INCLUDES=

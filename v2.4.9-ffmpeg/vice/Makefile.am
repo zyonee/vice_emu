@@ -131,6 +131,9 @@ ffmpeglibs:
 ffmpeglibs-install:
 	(cd src/lib; $(MAKE) ffmpeglibs-install)
 
+ffmpeglibs-clean:
+	(cd src/lib; $(MAKE) clean)
+
 install: installvice
 
 # If we have no ChangeLog (which should be generated from SVN), generate a
@@ -405,8 +408,15 @@ endif
 
 if HAVE_SHARED_FFMPEG
 EXTRA_INSTALLS = ffmpeglibs-install
+EXTRA_CLEANS = ffmpeglibs-clean
+else
+if HAVE_STATIC_FFMPEG
+EXTRA_INSTALLS =
+EXTRA_CLEANS = ffmpeglibs-clean
 else
 EXTRA_INSTALLS =
+EXTRA_CLEANS =
+endif
 endif
 
 if MAKE_BINDIST
@@ -416,7 +426,7 @@ else
 installvice: install-recursive $(EXTRA_INSTALLS)
 endif
 
-cleantrans:
+clean-trans:
 	rm `find $(top_srcdir) -name "*.po.c"`
 
 # Manually define the dist targets so the correct tar usage will be used.
@@ -438,3 +448,5 @@ dist dist-all:
 
 $(top_srcdir)/configure.ac: $(top_srcdir)/configure.proto
 	$(am__cd) $(srcdir) && $(SHELL) autogen.sh
+
+clean: $(EXTRA_CLEANS) clean-recursive
