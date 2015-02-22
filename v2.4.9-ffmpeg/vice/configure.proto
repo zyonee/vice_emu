@@ -1670,6 +1670,8 @@ AC_SUBST(FFMPEG_DEP)
 if test x"$FFMPEG_DO_SUBDIRS" = "xyes"; then
   ac_configure_args="$ac_configure_args --enable-make-command=${MAKE-make}"
   AC_CONFIG_SUBDIRS(src/lib/ffmpeg)
+else
+  AC_MSG_RESULT([no])
 fi
 
 dnl ----- Apple QuickTime -----
