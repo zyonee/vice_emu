@@ -40,6 +40,7 @@ VICE_ARG_ENABLE_LIST(vte,         [  --disable-vte           disable VTE support
 VICE_ARG_ENABLE_LIST(realdevice,  [  --disable-realdevice    disables access to real peripheral devices (CBM4Linux/OpenCBM)])
 VICE_ARG_ENABLE_LIST(shared-ffmpeg, [  --enable-shared-ffmpeg  enable included shared FFmpeg support])
 VICE_ARG_ENABLE_LIST(static-ffmpeg, [  --enable-static-ffmpeg  enable included static FFmpeg support])
+VICE_ARG_ENABLE_LIST(external-ffmpeg, [ --enable-external-ffmpeg  enable external FFmpeg support])
 VICE_ARG_ENABLE_LIST(quicktime,   [  --enable-quicktime      enables Apple QuickTime support])
 VICE_ARG_ENABLE_LIST(ethernet,    [  --enable-ethernet       enables The Final Ethernet emulation])
 VICE_ARG_ENABLE_LIST(ipv6,        [  --disable-ipv6          disables the checking for IPv6 compatibility])
@@ -1610,6 +1611,11 @@ FFMPEG_DIR=
 FFMPEG_LIBS=
 FFMPEG_INCLUDES=
 FFMPEG_DEP=
+
+HAVE_SHARED_FFMPEG=no
+HAVE_STATIC_FFMPEG=no
+HAVE_EXTERNAL_FFMPEG=no
+
 AC_MSG_CHECKING([for FFMPEG support])
 
 dnl shared vice included ffmpeg
@@ -1623,18 +1629,15 @@ if test x"$enable_shared_ffmpeg" = "xyes"; then
     FFMPEG_INCLUDES="-I\$(top_srcdir)/src/lib/libffmpeg"
 
     FFMPEG_DO_SUBDIRS=yes
+    HAVE_FFMPEG_SHARED=yes
 
     dnl --- define obsolete variables as long as they are not removed from driver code ---
     AC_DEFINE([HAVE_FFMPEG_SWSCALE],,[Have FFMPEG swscale lib available])
     AC_DEFINE([HAVE_FFMPEG_HEADER_SUBDIRS],,[FFMPEG uses subdirs for headers])
     AC_MSG_RESULT([yes (shared internal)])
     GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o ffmpeglib.o"
-    AM_CONDITIONAL(HAVE_SHARED_FFMPEG, true)
-    AM_CONDITIONAL(HAVE_STATIC_FFMPEG, false)
   else
     AC_MSG_RESULT([shared not available])
-    AM_CONDITIONAL(HAVE_SHARED_FFMPEG, false)
-    AM_CONDITIONAL(HAVE_STATIC_FFMPEG, false)
   fi
 fi
 
@@ -1653,25 +1656,86 @@ if test x"$enable_static_ffmpeg" = "xyes"; then
   AC_CHECK_LIB(rt, clock_gettime, , [ AC_MSG_ERROR([Needed rt lib missing]) ])
 
   FFMPEG_DO_SUBDIRS=yes
+  HAVE_STATIC_FFMPEG=yes
 
   dnl --- define obsolete variables as long as they are not removed from driver code ---
   AC_DEFINE([HAVE_FFMPEG_SWSCALE],,[Have FFMPEG swscale lib available])
   AC_DEFINE([HAVE_FFMPEG_HEADER_SUBDIRS],,[FFMPEG uses subdirs for headers])
 
   GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o ffmpeglib.o"
-  AM_CONDITIONAL(HAVE_SHARED_FFMPEG, false)
-  AM_CONDITIONAL(HAVE_STATIC_FFMPEG, true)
 fi
+
+dnl external ffmpeg
+if test x"$enable_external_ffmpeg" = "xyes"; then
+  PKG_PROG_PKG_CONFIG
+  if test x"$is_unix" = "xyes" -a x"$dynlib_support" = "xyes" ; then
+    dnl --- unix (requires dynlib support) ---
+    AC_MSG_RESULT([via pkg-config])
+    PKG_CHECK_MODULES(FFMPEG_AV,  [libavcodec libavformat libavutil], 
+      [old_CFLAGS=$CFLAGS
+       old_CPPFLAGS=$CPPFLAGS
+       CFLAGS="$CFLAGS $FFMPEG_AV_CFLAGS"
+       CPPFLAGS="$CPPFLAGS $FFMPEG_AV_CFLAGS"
+
+       AC_CHECK_HEADER(libavformat/avformat.h,
+        [AC_DEFINE([HAVE_FFMPEG_HEADER_SUBDIRS],,[FFMPEG uses subdirs for headers])],
+        [AC_CHECK_HEADER(avformat.h,,
+          [AC_MSG_ERROR([No suitable FFMPEG header found!])])])
+
+       CFLAGS=$old_CFLAGS
+       CPPFLAGS=$old_CPPFLAGS
+
+      PKG_CHECK_MODULES(FFMPEG_SWSCALE, [libswscale],
+        [have_swscale=yes],
+        [echo "no. trying img_convert"]
+        [old_LIBS=$LIBS]
+        [AC_CHECK_LIB(avcodec, img_convert,[have_imgconvert=yes])]
+        [LIBS=$old_LIBS]
+      )
+      if (test x"${have_swscale}" = x"yes") || (test x"${have_imgconvert}" = x"yes") ; then
+        AC_DEFINE([HAVE_FFMPEG],,[Have FFMPEG av* libs available])
+        FFMPEG_INCLUDES="$FFMPEG_AV_CFLAGS"
+        GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o ffmpeglib.o"
+	dlopen_pthread=yes
+      fi
+      if (test x"${have_swscale}" = x"yes") ; then
+        AC_DEFINE([HAVE_FFMPEG_SWSCALE],,[Have FFMPEG swscale lib available])
+        FFMPEG_INCLUDES="$FFMPEG_INCLUDES $FFMPEG_SWSCALE_CFLAGS"
+	dlopen_pthread=yes
+      fi
+       ],
+      [echo "no. disabled."]
+    )
+    HAVE_EXTERNAL_FFMPEG=yes
+  else
+    AC_MSG_RESULT([not available])
+  fi
+fi
+
 AC_SUBST(FFMPEG_INCLUDES)
 AC_SUBST(FFMPEG_LIBS)
 AC_SUBST(FFMPEG_DIR)
 AC_SUBST(FFMPEG_DEP)
 
+if test x"$HAVE_SHARED_FFMPEG" != "xyes" -a x"$HAVE_STATIC_FFMPEG" != "xyes" -a x"$HAVE_EXTERNAL_FFMPEG" != "xyes"; then
+  AC_MSG_RESULT([disabled])
+fi
+
 if test x"$FFMPEG_DO_SUBDIRS" = "xyes"; then
   ac_configure_args="$ac_configure_args --enable-make-command=${MAKE-make}"
   AC_CONFIG_SUBDIRS(src/lib/ffmpeg)
+fi
+
+if test x"$HAVE_SHARED_FFMPEG" = "xyes"; then
+  AM_CONDITIONAL(HAVE_SHARED_FFMPEG, true)
 else
-  AC_MSG_RESULT([disabled])
+  AM_CONDITIONAL(HAVE_SHARED_FFMPEG, false)
+fi
+
+if test x"$HAVE_STATIC_FFMPEG" = "xyes"; then
+  AM_CONDITIONAL(HAVE_STATIC_FFMPEG, true)
+else
+  AM_CONDITIONAL(HAVE_STATIC_FFMPEG, false)
 fi
 
 dnl ----- Apple QuickTime -----
