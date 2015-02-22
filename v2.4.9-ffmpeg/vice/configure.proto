@@ -1647,15 +1647,17 @@ if test x"$enable_static_ffmpeg" = "xyes"; then
   AC_DEFINE([STATIC_FFMPEG],,[FFMPEG libraries are static])
   FFMPEG_INCLUDES="-I\$(top_srcdir)/src/lib/libffmpeg"
 
-  AC_CHECK_LIB(pthread, pthread_create,, [ AC_MSG_ERROR([Needed pthread lib missing]) ], $FFMPEG_LIBS)
-  AC_CHECK_LIB(rt, clock_gettime, , [ AC_MSG_ERROR([Needed rt lib missing]) ], $FFMPEG_LIBS)
+  AC_MSG_RESULT([yes (static internal)])
+
+  AC_CHECK_LIB(pthread, pthread_create,, [ AC_MSG_ERROR([Needed pthread lib missing]) ])
+  AC_CHECK_LIB(rt, clock_gettime, , [ AC_MSG_ERROR([Needed rt lib missing]) ])
 
   FFMPEG_DO_SUBDIRS=yes
 
   dnl --- define obsolete variables as long as they are not removed from driver code ---
   AC_DEFINE([HAVE_FFMPEG_SWSCALE],,[Have FFMPEG swscale lib available])
   AC_DEFINE([HAVE_FFMPEG_HEADER_SUBDIRS],,[FFMPEG uses subdirs for headers])
-  AC_MSG_RESULT([yes (static internal)])
+
   GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o ffmpeglib.o"
   AM_CONDITIONAL(HAVE_SHARED_FFMPEG, false)
   AM_CONDITIONAL(HAVE_STATIC_FFMPEG, true)
