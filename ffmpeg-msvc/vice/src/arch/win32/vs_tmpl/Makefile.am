@@ -37,6 +37,7 @@ EXTRA_DIST = \
 	iecieee.tmpl \
 	ieee.tmpl \
 	imagecontents.tmpl \
+	lame.tmpl \
 	mkmsvc.c \
 	mkmsvc.dsp \
 	mkmsvc.dsw \
