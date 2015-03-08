@@ -12,4 +12,6 @@ EXTRA_DIST = \
 	system.h \
 	winid_ia64.bat \
 	winid_x64.bat \
-	winid_x86.bat
+	winid_x86.bat \
+	x264-config.h \
+	x264_config.h
