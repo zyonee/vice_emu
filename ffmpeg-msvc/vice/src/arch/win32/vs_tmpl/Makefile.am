@@ -76,6 +76,8 @@ EXTRA_DIST = \
 	vsid.tmpl \
 	vsidlib.tmpl \
 	x264.tmpl \
+	x264encoder.tmpl \
+	x264filter.tmpl \
 	x264input.tmpl \
 	x264output.tmpl \
 	x128.tmpl \
