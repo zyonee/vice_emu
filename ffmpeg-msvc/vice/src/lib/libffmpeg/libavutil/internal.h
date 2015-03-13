@@ -34,7 +34,14 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <assert.h>
+
+#ifdef IDE_COMPILE
+#include "ffmpeg-config.h"
+#include "ide-config.h"
+#else
 #include "config.h"
+#endif
+
 #include "attributes.h"
 #include "timer.h"
 #include "cpu.h"

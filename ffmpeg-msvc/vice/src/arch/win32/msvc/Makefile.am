@@ -2,6 +2,7 @@ SUBDIRS = wpcap
 
 EXTRA_DIST = \
 	dirent.h \
+	ffmpeg-config.h \
 	ide-config.h \
 	ide-siddefs.h \
 	ide-siddtvdefs.h \
