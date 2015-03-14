@@ -425,19 +425,31 @@ static av_cold void uninit(AVFilterContext *ctx)
 
 static const AVFilterPad inputs[] = {
     {
-        .name         = "default",
+#ifdef IDE_COMPILE
+        "default",
+        AVMEDIA_TYPE_AUDIO,
+        0, 0, 0, 0, 0, 0, 0, filter_frame,
+#else
+		.name         = "default",
         .type         = AVMEDIA_TYPE_AUDIO,
         .filter_frame = filter_frame,
-    },
+#endif
+	},
     { NULL }
 };
 
 static const AVFilterPad outputs[] = {
     {
-        .name         = "default",
+#ifdef IDE_COMPILE
+        "default",
+        AVMEDIA_TYPE_AUDIO,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, config_output,
+#else
+		.name         = "default",
         .type         = AVMEDIA_TYPE_AUDIO,
         .config_props = config_output,
-    },
+#endif
+	},
     { NULL }
 };
 
