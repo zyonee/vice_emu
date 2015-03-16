@@ -57,7 +57,6 @@
 #define HAVE_AVX2 1
 #define HAVE_FMA3 1
 #define HAVE_FMA4 1
-#define HAVE_MMX 1
 #define HAVE_MMXEXT 1
 #define HAVE_SSE 1
 #define HAVE_SSE2 1
