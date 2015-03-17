@@ -194,14 +194,35 @@ static const AVOption options[] = {
 };
 
 static const AVClass adts_muxer_class = {
-    .class_name     = "ADTS muxer",
+#ifdef IDE_COMPILE
+    "ADTS muxer",
+    av_default_item_name,
+    options,
+    LIBAVUTIL_VERSION_INT,
+#else
+	.class_name     = "ADTS muxer",
     .item_name      = av_default_item_name,
     .option         = options,
     .version        = LIBAVUTIL_VERSION_INT,
+#endif
 };
 
 AVOutputFormat ff_adts_muxer = {
-    .name              = "adts",
+#ifdef IDE_COMPILE
+    "adts",
+    "ADTS AAC (Advanced Audio Coding)",
+    "audio/aac",
+    "aac,adts",
+    AV_CODEC_ID_AAC,
+    AV_CODEC_ID_NONE,
+    0, AVFMT_NOTIMESTAMPS,
+    0, &adts_muxer_class,
+    0, sizeof(ADTSContext),
+    adts_write_header,
+    adts_write_packet,
+    adts_write_trailer,
+#else
+	.name              = "adts",
     .long_name         = NULL_IF_CONFIG_SMALL("ADTS AAC (Advanced Audio Coding)"),
     .mime_type         = "audio/aac",
     .extensions        = "aac,adts",
@@ -213,4 +234,5 @@ AVOutputFormat ff_adts_muxer = {
     .write_trailer     = adts_write_trailer,
     .priv_class        = &adts_muxer_class,
     .flags             = AVFMT_NOTIMESTAMPS,
+#endif
 };

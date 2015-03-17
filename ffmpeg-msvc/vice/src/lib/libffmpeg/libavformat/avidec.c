@@ -82,18 +82,29 @@ typedef struct {
     int64_t dts_max;
 } AVIContext;
 
-
 static const AVOption options[] = {
-    { "use_odml", "use odml index", offsetof(AVIContext, use_odml), AV_OPT_TYPE_INT, {.i64 = 1}, -1, 1, AV_OPT_FLAG_DECODING_PARAM},
-    { NULL },
+#ifdef IDE_COMPILE
+	{ "use_odml", "use odml index", offsetof(AVIContext, use_odml), AV_OPT_TYPE_INT, {1}, -1, 1, AV_OPT_FLAG_DECODING_PARAM},
+#else
+	{ "use_odml", "use odml index", offsetof(AVIContext, use_odml), AV_OPT_TYPE_INT, {.i64 = 1}, -1, 1, AV_OPT_FLAG_DECODING_PARAM},
+#endif
+	{ NULL },
 };
 
 static const AVClass demuxer_class = {
-    .class_name = "avi",
+#ifdef IDE_COMPILE
+    "avi",
+    av_default_item_name,
+    options,
+    LIBAVUTIL_VERSION_INT,
+    0, 0, 0, 0, AV_CLASS_CATEGORY_DEMUXER,
+#else
+	.class_name = "avi",
     .item_name  = av_default_item_name,
     .option     = options,
     .version    = LIBAVUTIL_VERSION_INT,
     .category   = AV_CLASS_CATEGORY_DEMUXER,
+#endif
 };
 
 
