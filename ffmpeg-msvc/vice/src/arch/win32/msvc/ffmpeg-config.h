@@ -10,6 +10,7 @@
 #define AVCONV_DATADIR "/usr/local/share/ffmpeg"
 #define CC_IDENT "gcc 4.8.1 (GCC)"
 #define av_restrict
+#define av_export
 #define EXTERN_PREFIX "_"
 #define EXTERN_ASM _
 #define BUILDSUF ""
