@@ -1012,16 +1012,35 @@ static int config_output(AVFilterLink *outlink)
 
 static const AVFilterPad fieldmatch_outputs[] = {
     {
-        .name          = "default",
+#ifdef IDE_COMPILE
+        "default",
+        AVMEDIA_TYPE_VIDEO,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, request_frame,
+        config_output,
+#else
+		.name          = "default",
         .type          = AVMEDIA_TYPE_VIDEO,
         .request_frame = request_frame,
         .config_props  = config_output,
-    },
+#endif
+	},
     { NULL }
 };
 
 AVFilter ff_vf_fieldmatch = {
-    .name           = "fieldmatch",
+#ifdef IDE_COMPILE
+    "fieldmatch",
+    NULL_IF_CONFIG_SMALL("Field matching for inverse telecine."),
+    NULL,
+    fieldmatch_outputs,
+    &fieldmatch_class,
+    AVFILTER_FLAG_DYNAMIC_INPUTS,
+    fieldmatch_init,
+    0, fieldmatch_uninit,
+    query_formats,
+    sizeof(FieldMatchContext),
+#else
+	.name           = "fieldmatch",
     .description    = NULL_IF_CONFIG_SMALL("Field matching for inverse telecine."),
     .query_formats  = query_formats,
     .priv_size      = sizeof(FieldMatchContext),
@@ -1031,4 +1050,5 @@ AVFilter ff_vf_fieldmatch = {
     .outputs        = fieldmatch_outputs,
     .priv_class     = &fieldmatch_class,
     .flags          = AVFILTER_FLAG_DYNAMIC_INPUTS,
+#endif
 };
