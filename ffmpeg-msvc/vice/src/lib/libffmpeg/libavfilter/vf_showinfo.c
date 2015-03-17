@@ -185,24 +185,42 @@ static int filter_frame(AVFilterLink *inlink, AVFrame *frame)
 
 static const AVFilterPad avfilter_vf_showinfo_inputs[] = {
     {
-        .name         = "default",
+#ifdef IDE_COMPILE
+        "default",
+        AVMEDIA_TYPE_VIDEO,
+        0, 0, 0, 0, 0, 0, 0, filter_frame,
+#else
+		.name         = "default",
         .type         = AVMEDIA_TYPE_VIDEO,
         .filter_frame = filter_frame,
-    },
+#endif
+	},
     { NULL }
 };
 
 static const AVFilterPad avfilter_vf_showinfo_outputs[] = {
     {
-        .name = "default",
+#ifdef IDE_COMPILE
+        "default",
+        AVMEDIA_TYPE_VIDEO
+#else
+		.name = "default",
         .type = AVMEDIA_TYPE_VIDEO
-    },
+#endif
+	},
     { NULL }
 };
 
 AVFilter ff_vf_showinfo = {
-    .name        = "showinfo",
+#ifdef IDE_COMPILE
+    "showinfo",
+    NULL_IF_CONFIG_SMALL("Show textual information for each video frame."),
+    avfilter_vf_showinfo_inputs,
+    avfilter_vf_showinfo_outputs,
+#else
+	.name        = "showinfo",
     .description = NULL_IF_CONFIG_SMALL("Show textual information for each video frame."),
     .inputs      = avfilter_vf_showinfo_inputs,
     .outputs     = avfilter_vf_showinfo_outputs,
+#endif
 };
