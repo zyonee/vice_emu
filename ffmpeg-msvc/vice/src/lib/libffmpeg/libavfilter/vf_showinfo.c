@@ -84,6 +84,10 @@ static int filter_frame(AVFilterLink *inlink, AVFrame *frame)
     int64_t sum[4] = {0}, sum2[4] = {0};
     int32_t pixelcount[4] = {0};
     int i, plane, vsub = desc->log2_chroma_h;
+#ifdef IDE_COMPILE
+	char tmp1[32] = {0};
+	char tmp2[32] = {0};
+#endif
 
     for (plane = 0; plane < 4 && frame->data[plane] && frame->linesize[plane]; plane++) {
         int64_t linesize = av_image_get_linesize(frame->format, frame->width, plane);
@@ -103,7 +107,23 @@ static int filter_frame(AVFilterLink *inlink, AVFrame *frame)
         }
     }
 
-    av_log(ctx, AV_LOG_INFO,
+#ifdef IDE_COMPILE
+	av_log(ctx, AV_LOG_INFO,
+           "n:%"PRId64" pts:%s pts_time:%s pos:%"PRId64" "
+           "fmt:%s sar:%d/%d s:%dx%d i:%c iskey:%d type:%c "
+           "checksum:%08"PRIX32" plane_checksum:[%08"PRIX32,
+           inlink->frame_count,
+           av_ts_make_string(tmp1, frame->pts), av_ts_make_time_string(tmp2, frame->pts, &inlink->time_base), av_frame_get_pkt_pos(frame),
+           desc->name,
+           frame->sample_aspect_ratio.num, frame->sample_aspect_ratio.den,
+           frame->width, frame->height,
+           !frame->interlaced_frame ? 'P' :         /* Progressive  */
+           frame->top_field_first   ? 'T' : 'B',    /* Top / Bottom */
+           frame->key_frame,
+           av_get_picture_type_char(frame->pict_type),
+           checksum, plane_checksum[0]);
+#else
+	av_log(ctx, AV_LOG_INFO,
            "n:%"PRId64" pts:%s pts_time:%s pos:%"PRId64" "
            "fmt:%s sar:%d/%d s:%dx%d i:%c iskey:%d type:%c "
            "checksum:%08"PRIX32" plane_checksum:[%08"PRIX32,
@@ -117,6 +137,7 @@ static int filter_frame(AVFilterLink *inlink, AVFrame *frame)
            frame->key_frame,
            av_get_picture_type_char(frame->pict_type),
            checksum, plane_checksum[0]);
+#endif
 
     for (plane = 1; plane < 4 && frame->data[plane] && frame->linesize[plane]; plane++)
         av_log(ctx, AV_LOG_INFO, " %08"PRIX32, plane_checksum[plane]);

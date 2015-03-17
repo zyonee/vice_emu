@@ -550,7 +550,7 @@ static const AVClass *child_class_next(const AVClass *prev)
 static const AVOption scale_options[] = {
 #ifdef IDE_COMPILE
 	{ "w", "Output video width", OFFSET(w_expr), AV_OPT_TYPE_STRING, {0}, 0, 0, FLAGS },
-	{ "width", "Output video width", OFFSET(w_expr), AV_OPT_TYPE_STRING, {0}, 0, 0. FLAGS },
+	{ "width", "Output video width", OFFSET(w_expr), AV_OPT_TYPE_STRING, {0}, 0, 0, FLAGS },
 	{ "h", "Output video height", OFFSET(h_expr), AV_OPT_TYPE_STRING, {0}, 0, 0, FLAGS },
 	{ "height", "Output video height", OFFSET(h_expr), AV_OPT_TYPE_STRING, {0}, 0, 0, FLAGS },
     { "flags", "Flags to pass to libswscale", OFFSET(flags_str), AV_OPT_TYPE_STRING, {(intptr_t) "bilinear" }, 0, 0, FLAGS },
@@ -607,34 +607,66 @@ static const AVOption scale_options[] = {
 };
 
 static const AVClass scale_class = {
-    .class_name       = "scale",
+#ifdef IDE_COMPILE
+    "scale",
+    av_default_item_name,
+    scale_options,
+    LIBAVUTIL_VERSION_INT,
+    0, 0, 0, child_class_next,
+    AV_CLASS_CATEGORY_FILTER,
+#else
+	.class_name       = "scale",
     .item_name        = av_default_item_name,
     .option           = scale_options,
     .version          = LIBAVUTIL_VERSION_INT,
     .category         = AV_CLASS_CATEGORY_FILTER,
     .child_class_next = child_class_next,
+#endif
 };
 
 static const AVFilterPad avfilter_vf_scale_inputs[] = {
     {
-        .name         = "default",
+#ifdef IDE_COMPILE
+        "default",
+        AVMEDIA_TYPE_VIDEO,
+        0, 0, 0, 0, 0, 0, 0, filter_frame,
+#else
+		.name         = "default",
         .type         = AVMEDIA_TYPE_VIDEO,
         .filter_frame = filter_frame,
-    },
+#endif
+	},
     { NULL }
 };
 
 static const AVFilterPad avfilter_vf_scale_outputs[] = {
     {
-        .name         = "default",
+#ifdef IDE_COMPILE
+        "default",
+        AVMEDIA_TYPE_VIDEO,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, config_props,
+#else
+		.name         = "default",
         .type         = AVMEDIA_TYPE_VIDEO,
         .config_props = config_props,
-    },
+#endif
+	},
     { NULL }
 };
 
 AVFilter ff_vf_scale = {
-    .name          = "scale",
+#ifdef IDE_COMPILE
+    "scale",
+    NULL_IF_CONFIG_SMALL("Scale the input video size and/or convert the image format."),
+    avfilter_vf_scale_inputs,
+    avfilter_vf_scale_outputs,
+    &scale_class,
+    0, 0, init_dict,
+    uninit,
+    query_formats,
+    sizeof(ScaleContext),
+#else
+	.name          = "scale",
     .description   = NULL_IF_CONFIG_SMALL("Scale the input video size and/or convert the image format."),
     .init_dict     = init_dict,
     .uninit        = uninit,
@@ -643,4 +675,5 @@ AVFilter ff_vf_scale = {
     .priv_class    = &scale_class,
     .inputs        = avfilter_vf_scale_inputs,
     .outputs       = avfilter_vf_scale_outputs,
+#endif
 };
