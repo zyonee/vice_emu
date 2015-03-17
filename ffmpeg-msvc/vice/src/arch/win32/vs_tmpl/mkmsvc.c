@@ -128,11 +128,11 @@
 #define CP_TYPE_CONSOLE   2
 #define CP_TYPE_GUI       3
 
-#define MAX_DIRS        100
-#define MAX_DEP_NAMES   100
-#define MAX_NAMES       200
+#define MAX_DIRS        200
+#define MAX_DEP_NAMES   200
+#define MAX_NAMES       400
 #define MAX_CPU_NAMES   10
-#define MAX_LIBS        30
+#define MAX_LIBS        50
 
 /* Treat cpu sources as normal sources for indicated level and up */
 static int cpu_source_level = 70;
