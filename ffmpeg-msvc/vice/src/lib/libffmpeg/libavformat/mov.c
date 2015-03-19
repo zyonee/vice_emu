@@ -401,7 +401,11 @@ static int mov_read_chpl(MOVContext *c, AVIOContext *pb, MOVAtom atom)
     nb_chapters = avio_r8(pb);
 
     for (i = 0; i < nb_chapters; i++) {
-        if (atom.size < 9)
+#ifdef IDE_COMPILE
+		AVRational tmp;
+#endif
+
+		if (atom.size < 9)
             return 0;
 
         start = avio_rb64(pb);
@@ -412,8 +416,14 @@ static int mov_read_chpl(MOVContext *c, AVIOContext *pb, MOVAtom atom)
 
         avio_read(pb, str, str_len);
         str[str_len] = 0;
-        avpriv_new_chapter(c->fc, i, (AVRational){1,10000000}, start, AV_NOPTS_VALUE, str);
-    }
+#ifdef IDE_COMPILE
+		tmp.num = 1;
+		tmp.den = 10000000;
+		avpriv_new_chapter(c->fc, i, tmp, start, AV_NOPTS_VALUE, str);
+#else
+		avpriv_new_chapter(c->fc, i, (AVRational){1,10000000}, start, AV_NOPTS_VALUE, str);
+#endif
+	}
     return 0;
 }
 
@@ -620,8 +630,16 @@ static int mov_read_dac3(MOVContext *c, AVIOContext *pb, MOVAtom atom)
     bsmod = (ac3info >> 14) & 0x7;
     acmod = (ac3info >> 11) & 0x7;
     lfeon = (ac3info >> 10) & 0x1;
-    st->codec->channels = ((int[]){2,1,2,3,3,4,4,5})[acmod] + lfeon;
-    st->codec->channel_layout = avpriv_ac3_channel_layout_tab[acmod];
+
+#ifdef IDE_COMPILE
+    {
+		int tmpx[] = {2,1,2,3,3,4,4,5};
+		st->codec->channels = (tmpx)[acmod] + lfeon;
+	}
+#else
+	st->codec->channels = ((int[]){2,1,2,3,3,4,4,5})[acmod] + lfeon;
+#endif
+	st->codec->channel_layout = avpriv_ac3_channel_layout_tab[acmod];
     if (lfeon)
         st->codec->channel_layout |= AV_CH_LOW_FREQUENCY;
     st->codec->audio_service_type = bsmod;
