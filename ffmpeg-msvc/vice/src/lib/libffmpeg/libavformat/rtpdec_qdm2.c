@@ -309,10 +309,19 @@ static void qdm2_extradata_free(PayloadContext *qdm)
 }
 
 RTPDynamicProtocolHandler ff_qdm2_dynamic_handler = {
-    .enc_name         = "X-QDM",
+#ifdef IDE_COMPILE
+    "X-QDM",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_NONE,
+    0, 0, 0, qdm2_extradata_new,
+    qdm2_extradata_free,
+    qdm2_parse_packet,
+#else
+	.enc_name         = "X-QDM",
     .codec_type       = AVMEDIA_TYPE_AUDIO,
     .codec_id         = AV_CODEC_ID_NONE,
     .alloc            = qdm2_extradata_new,
     .free             = qdm2_extradata_free,
     .parse_packet     = qdm2_parse_packet,
+#endif
 };
