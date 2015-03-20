@@ -262,19 +262,19 @@ static av_cold int init_video(AVFormatContext *s, int st_index,
 }
 
 RTPDynamicProtocolHandler ff_mp4v_es_dynamic_handler = {
-    .enc_name           = "MP4V-ES",
+#ifdef IDE_COMPILE
+    "MP4V-ES",
+	AVMEDIA_TYPE_VIDEO,
+    AV_CODEC_ID_MPEG4,
+    0,
+    init_video,
+    parse_sdp_line,
+	0, 0, 0,
+#else
+	.enc_name           = "MP4V-ES",
     .codec_type         = AVMEDIA_TYPE_VIDEO,
     .codec_id           = AV_CODEC_ID_MPEG4,
     .init               = init_video,
     .parse_sdp_a_line   = parse_sdp_line,
-};
-
-RTPDynamicProtocolHandler ff_mpeg4_generic_dynamic_handler = {
-    .enc_name           = "mpeg4-generic",
-    .codec_type         = AVMEDIA_TYPE_AUDIO,
-    .codec_id           = AV_CODEC_ID_AAC,
-    .parse_sdp_a_line   = parse_sdp_line,
-    .alloc              = new_context,
-    .free               = free_context,
-    .parse_packet       = aac_parse_packet
+#endif
 };
