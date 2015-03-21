@@ -128,9 +128,9 @@
 #define CP_TYPE_CONSOLE   2
 #define CP_TYPE_GUI       3
 
-#define MAX_DIRS        200
-#define MAX_DEP_NAMES   200
-#define MAX_NAMES       400
+#define MAX_DIRS        400
+#define MAX_DEP_NAMES   400
+#define MAX_NAMES       800
 #define MAX_CPU_NAMES   10
 #define MAX_LIBS        50
 
