@@ -50,10 +50,17 @@ static const AVOption subfile_options[] = {
 #undef D
 
 static const AVClass subfile_class = {
-    .class_name = "subfile",
+#ifdef IDE_COMPILE
+    "subfile",
+    av_default_item_name,
+    subfile_options,
+    LIBAVUTIL_VERSION_INT,
+#else
+	.class_name = "subfile",
     .item_name  = av_default_item_name,
     .option     = subfile_options,
     .version    = LIBAVUTIL_VERSION_INT,
+#endif
 };
 
 static int slave_seek(URLContext *h)
@@ -62,11 +69,19 @@ static int slave_seek(URLContext *h)
     int64_t ret;
 
     if ((ret = ffurl_seek(c->h, c->pos, SEEK_SET)) != c->pos) {
-        if (ret >= 0)
+#ifdef IDE_COMPILE
+		char tmp0[64] = {0};
+#endif
+		if (ret >= 0)
             ret = AVERROR_BUG;
-        av_log(h, AV_LOG_ERROR, "Impossible to seek in file: %s\n",
+#ifdef IDE_COMPILE
+		av_log(h, AV_LOG_ERROR, "Impossible to seek in file: %s\n",
+               av_make_error_string(tmp0, 64, ret));
+#else
+		av_log(h, AV_LOG_ERROR, "Impossible to seek in file: %s\n",
                av_err2str(ret));
-        return ret;
+#endif
+		return ret;
     }
     return 0;
 }
@@ -142,11 +157,21 @@ static int64_t subfile_seek(URLContext *h, int64_t pos, int whence)
 }
 
 URLProtocol ff_subfile_protocol = {
-    .name                = "subfile",
+#ifdef IDE_COMPILE
+    "subfile",
+    0, subfile_open,
+    subfile_read,
+    0, subfile_seek,
+    subfile_close,
+    0, 0, 0, 0, 0, 0, sizeof(SubfileContext),
+    &subfile_class,
+#else
+	.name                = "subfile",
     .url_open2           = subfile_open,
     .url_read            = subfile_read,
     .url_seek            = subfile_seek,
     .url_close           = subfile_close,
     .priv_data_size      = sizeof(SubfileContext),
     .priv_data_class     = &subfile_class,
+#endif
 };
