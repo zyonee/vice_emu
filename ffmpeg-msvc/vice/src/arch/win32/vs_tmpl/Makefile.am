@@ -2,6 +2,7 @@ EXTRA_DIST = \
 	_vice.tmpl \
 	arch_native.tmpl \
 	arch_sdl.tmpl \
+	avcodec.tmpl \
 	avfilter.tmpl \
 	avformat.tmpl \
 	base.tmpl \
