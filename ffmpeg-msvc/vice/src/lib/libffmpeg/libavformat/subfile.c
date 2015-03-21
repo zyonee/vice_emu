@@ -36,9 +36,14 @@ typedef struct SubfileContext {
 #define D AV_OPT_FLAG_DECODING_PARAM
 
 static const AVOption subfile_options[] = {
-    { "start", "start offset", OFFSET(start), AV_OPT_TYPE_INT64, {.i64 = 0}, 0, INT64_MAX, D },
+#ifdef IDE_COMPILE
+	{ "start", "start offset", OFFSET(start), AV_OPT_TYPE_INT64, {0}, 0, INT64_MAX, D },
+    { "end", "end offset", OFFSET(end), AV_OPT_TYPE_INT64, {0}, 0, INT64_MAX, D },
+#else
+	{ "start", "start offset", OFFSET(start), AV_OPT_TYPE_INT64, {.i64 = 0}, 0, INT64_MAX, D },
     { "end",   "end offset",   OFFSET(end),   AV_OPT_TYPE_INT64, {.i64 = 0}, 0, INT64_MAX, D },
-    { NULL }
+#endif
+	{ NULL }
 };
 
 #undef OFFSET
