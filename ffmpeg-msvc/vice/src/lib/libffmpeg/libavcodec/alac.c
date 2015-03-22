@@ -562,9 +562,19 @@ static int allocate_buffers(ALACContext *alac)
 #endif
 		}
 
-        FF_ALLOC_OR_GOTO(alac->avctx, alac->extra_bits_buffer[ch],
+#ifdef IDE_COMPILE
+        {
+			alac->extra_bits_buffer[ch] = av_malloc(buf_size);
+			if (!(alac->extra_bits_buffer[ch]) && (buf_size) != 0) {
+				av_log(alac->avctx, AV_LOG_ERROR, "Cannot allocate memory.\n");
+				goto buf_alloc_fail;
+			}
+		}
+#else
+		FF_ALLOC_OR_GOTO(alac->avctx, alac->extra_bits_buffer[ch],
                          buf_size, buf_alloc_fail);
-    }
+#endif
+	}
     return 0;
 buf_alloc_fail:
     alac_decode_close(alac->avctx);
@@ -663,21 +673,45 @@ static int init_thread_copy(AVCodecContext *avctx)
 }
 
 static const AVOption options[] = {
-    { "extra_bits_bug", "Force non-standard decoding process",
+#ifdef IDE_COMPILE
+	{ "extra_bits_bug", "Force non-standard decoding process", offsetof(ALACContext, extra_bit_bug), AV_OPT_TYPE_INT, {0}, 0, 1, AV_OPT_FLAG_AUDIO_PARAM | AV_OPT_FLAG_DECODING_PARAM },
+#else
+	{ "extra_bits_bug", "Force non-standard decoding process",
       offsetof(ALACContext, extra_bit_bug), AV_OPT_TYPE_INT, { .i64 = 0 },
       0, 1, AV_OPT_FLAG_AUDIO_PARAM | AV_OPT_FLAG_DECODING_PARAM },
-    { NULL },
+#endif
+	{ NULL },
 };
 
 static const AVClass alac_class = {
-    .class_name = "alac",
+#ifdef IDE_COMPILE
+    "alac",
+    av_default_item_name,
+    options,
+    LIBAVUTIL_VERSION_INT,
+#else
+	.class_name = "alac",
     .item_name  = av_default_item_name,
     .option     = options,
     .version    = LIBAVUTIL_VERSION_INT,
+#endif
 };
 
 AVCodec ff_alac_decoder = {
-    .name           = "alac",
+#ifdef IDE_COMPILE
+    "alac",
+    "ALAC (Apple Lossless Audio Codec)",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_ALAC,
+    CODEC_CAP_DR1 | CODEC_CAP_FRAME_THREADS,
+    0, 0, 0, 0, 0, 0, &alac_class,
+    0, sizeof(ALACContext),
+    0, init_thread_copy,
+    0, 0, 0, alac_decode_init,
+    0, 0, alac_decode_frame,
+    alac_decode_close
+#else
+	.name           = "alac",
     .long_name      = NULL_IF_CONFIG_SMALL("ALAC (Apple Lossless Audio Codec)"),
     .type           = AVMEDIA_TYPE_AUDIO,
     .id             = AV_CODEC_ID_ALAC,
@@ -688,4 +722,5 @@ AVCodec ff_alac_decoder = {
     .init_thread_copy = ONLY_IF_THREADS_ENABLED(init_thread_copy),
     .capabilities   = CODEC_CAP_DR1 | CODEC_CAP_FRAME_THREADS,
     .priv_class     = &alac_class
+#endif
 };
