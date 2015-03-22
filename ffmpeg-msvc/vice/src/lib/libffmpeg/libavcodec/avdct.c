@@ -98,9 +98,15 @@ static const AVOption avdct_options[] = {
 };
 
 static const AVClass avdct_class = {
-    .class_name              = "AVDCT",
+#ifdef IDE_COMPILE
+    "AVDCT",
+    0, avdct_options,
+    LIBAVUTIL_VERSION_INT,
+#else
+	.class_name              = "AVDCT",
     .option                  = avdct_options,
     .version                 = LIBAVUTIL_VERSION_INT,
+#endif
 };
 
 const AVClass *avcodec_dct_get_class(void)
