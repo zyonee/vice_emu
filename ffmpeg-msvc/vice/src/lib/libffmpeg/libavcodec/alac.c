@@ -293,8 +293,12 @@ static int decode_element(AVCodecContext *avctx, AVFrame *frame, int ch_index,
         return AVERROR_INVALIDDATA;
     }
     if (!alac->nb_samples) {
-        ThreadFrame tframe = { .f = frame };
-        /* get output buffer */
+#ifdef IDE_COMPILE
+		ThreadFrame tframe = { frame };
+#else
+		ThreadFrame tframe = { .f = frame };
+#endif
+		/* get output buffer */
         frame->nb_samples = output_samples;
         if ((ret = ff_thread_get_buffer(avctx, &tframe, 0)) < 0)
             return ret;
@@ -529,14 +533,34 @@ static int allocate_buffers(ALACContext *alac)
     int buf_size = alac->max_samples_per_frame * sizeof(int32_t);
 
     for (ch = 0; ch < FFMIN(alac->channels, 2); ch++) {
-        FF_ALLOC_OR_GOTO(alac->avctx, alac->predict_error_buffer[ch],
+#ifdef IDE_COMPILE
+        {
+			alac->predict_error_buffer[ch] = av_malloc(buf_size);
+			if (!(alac->predict_error_buffer[ch]) && (buf_size) != 0) {
+				av_log(alac->avctx, AV_LOG_ERROR, "Cannot allocate memory.\n");
+				goto buf_alloc_fail;
+			}
+		}
+#else
+		FF_ALLOC_OR_GOTO(alac->avctx, alac->predict_error_buffer[ch],
                          buf_size, buf_alloc_fail);
+#endif
 
         alac->direct_output = alac->sample_size > 16 && av_sample_fmt_is_planar(alac->avctx->sample_fmt);
         if (!alac->direct_output) {
-            FF_ALLOC_OR_GOTO(alac->avctx, alac->output_samples_buffer[ch],
+#ifdef IDE_COMPILE
+            {
+				alac->output_samples_buffer[ch] = av_malloc(buf_size);
+				if (!(alac->output_samples_buffer[ch]) && (buf_size) != 0) {
+					av_log(alac->avctx, AV_LOG_ERROR, "Cannot allocate memory.\n");
+					goto buf_alloc_fail;
+				}
+			}
+#else
+			FF_ALLOC_OR_GOTO(alac->avctx, alac->output_samples_buffer[ch],
                              buf_size, buf_alloc_fail);
-        }
+#endif
+		}
 
         FF_ALLOC_OR_GOTO(alac->avctx, alac->extra_bits_buffer[ch],
                          buf_size, buf_alloc_fail);
