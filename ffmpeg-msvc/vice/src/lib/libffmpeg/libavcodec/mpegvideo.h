@@ -698,6 +698,15 @@ typedef struct MpegEncContext {
 
 extern const AVOption ff_mpv_generic_options[];
 
+#ifdef IDE_COMPILE
+#define FF_MPV_GENERIC_CLASS(name) \
+static const AVClass name ## _class = {\
+    #name " encoder",\
+    av_default_item_name,\
+    ff_mpv_generic_options,\
+    LIBAVUTIL_VERSION_INT,\
+};
+#else
 #define FF_MPV_GENERIC_CLASS(name) \
 static const AVClass name ## _class = {\
     .class_name = #name " encoder",\
@@ -705,6 +714,7 @@ static const AVClass name ## _class = {\
     .option     = ff_mpv_generic_options,\
     .version    = LIBAVUTIL_VERSION_INT,\
 };
+#endif
 
 /**
  * Set the given MpegEncContext to common defaults (same for encoding

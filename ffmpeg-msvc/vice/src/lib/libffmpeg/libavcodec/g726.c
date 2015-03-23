@@ -334,9 +334,16 @@ static av_cold int g726_encode_init(AVCodecContext *avctx)
 
     /* select a frame size that will end on a byte boundary and have a size of
        approximately 1024 bytes */
-    avctx->frame_size = ((int[]){ 4096, 2736, 2048, 1640 })[c->code_size - 2];
+#ifdef IDE_COMPILE
+    {
+		int tmp1[] = { 4096, 2736, 2048, 1640 };
+		avctx->frame_size = (tmp1)[c->code_size - 2];
+	}
+#else
+	avctx->frame_size = ((int[]){ 4096, 2736, 2048, 1640 })[c->code_size - 2];
+#endif
 
-    return 0;
+	return 0;
 }
 
 static int g726_encode_frame(AVCodecContext *avctx, AVPacket *avpkt,
@@ -365,15 +372,26 @@ static int g726_encode_frame(AVCodecContext *avctx, AVPacket *avpkt,
 #define OFFSET(x) offsetof(G726Context, x)
 #define AE AV_OPT_FLAG_AUDIO_PARAM | AV_OPT_FLAG_ENCODING_PARAM
 static const AVOption options[] = {
-    { "code_size", "Bits per code", OFFSET(code_size), AV_OPT_TYPE_INT, { .i64 = 4 }, 2, 5, AE },
-    { NULL },
+#ifdef IDE_COMPILE
+	{ "code_size", "Bits per code", OFFSET(code_size), AV_OPT_TYPE_INT, {4}, 2, 5, AE },
+#else
+	{ "code_size", "Bits per code", OFFSET(code_size), AV_OPT_TYPE_INT, { .i64 = 4 }, 2, 5, AE },
+#endif
+	{ NULL },
 };
 
 static const AVClass g726_class = {
-    .class_name = "g726",
+#ifdef IDE_COMPILE
+    "g726",
+    av_default_item_name,
+    options,
+    LIBAVUTIL_VERSION_INT,
+#else
+	.class_name = "g726",
     .item_name  = av_default_item_name,
     .option     = options,
     .version    = LIBAVUTIL_VERSION_INT,
+#endif
 };
 
 static const AVCodecDefault defaults[] = {
@@ -381,8 +399,26 @@ static const AVCodecDefault defaults[] = {
     { NULL },
 };
 
+#ifdef IDE_COMPILE
+static const enum AVSampleFormat tmp2[] = { AV_SAMPLE_FMT_S16,
+                                                     AV_SAMPLE_FMT_NONE };
+#endif
+
 AVCodec ff_adpcm_g726_encoder = {
-    .name           = "g726",
+#ifdef IDE_COMPILE
+    "g726",
+    "G.726 ADPCM",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_ADPCM_G726,
+    CODEC_CAP_SMALL_LAST_FRAME,
+    0, 0, 0, tmp2,
+    0, 0, &g726_class,
+    0, sizeof(G726Context),
+    0, 0, 0, defaults,
+    0, g726_encode_init,
+    0, g726_encode_frame,
+#else
+	.name           = "g726",
     .long_name      = NULL_IF_CONFIG_SMALL("G.726 ADPCM"),
     .type           = AVMEDIA_TYPE_AUDIO,
     .id             = AV_CODEC_ID_ADPCM_G726,
@@ -394,6 +430,7 @@ AVCodec ff_adpcm_g726_encoder = {
                                                      AV_SAMPLE_FMT_NONE },
     .priv_class     = &g726_class,
     .defaults       = defaults,
+#endif
 };
 #endif
 

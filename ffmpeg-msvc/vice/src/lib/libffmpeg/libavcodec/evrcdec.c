@@ -906,7 +906,17 @@ erasure:
 }
 
 AVCodec ff_evrc_decoder = {
-    .name           = "evrc",
+#ifdef IDE_COMPILE
+    "evrc",
+    "EVRC (Enhanced Variable Rate Codec)",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_EVRC,
+    CODEC_CAP_DR1,
+    0, 0, 0, 0, 0, 0, 0, 0, sizeof(EVRCContext),
+    0, 0, 0, 0, 0, evrc_decode_init,
+    0, 0, evrc_decode_frame,
+#else
+	.name           = "evrc",
     .long_name      = NULL_IF_CONFIG_SMALL("EVRC (Enhanced Variable Rate Codec)"),
     .type           = AVMEDIA_TYPE_AUDIO,
     .id             = AV_CODEC_ID_EVRC,
@@ -914,4 +924,5 @@ AVCodec ff_evrc_decoder = {
     .decode         = evrc_decode_frame,
     .capabilities   = CODEC_CAP_DR1,
     .priv_data_size = sizeof(EVRCContext),
+#endif
 };

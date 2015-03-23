@@ -8,7 +8,7 @@
 #define CONFIG_THIS_YEAR 2014
 #define FFMPEG_DATADIR "/usr/local/share/ffmpeg"
 #define AVCONV_DATADIR "/usr/local/share/ffmpeg"
-#define CC_IDENT "gcc 4.8.1 (GCC)"
+#define CC_IDENT "MSVC"
 #define av_restrict
 #define av_export
 #define EXTERN_PREFIX "_"
@@ -54,18 +54,18 @@
 #define HAVE_LDBRX 1
 #define HAVE_PPC4XX 0
 #define HAVE_VSX 0
-#define HAVE_AMD3DNOW 1
-#define HAVE_AMD3DNOWEXT 1
+#define HAVE_AMD3DNOW 0
+#define HAVE_AMD3DNOWEXT -
 #define HAVE_AVX 1
 #define HAVE_AVX2 1
 #define HAVE_FMA3 1
 #define HAVE_FMA4 1
-#define HAVE_SSE 1
-#define HAVE_SSE2 1
-#define HAVE_SSE3 1
-#define HAVE_SSE4 1
-#define HAVE_SSE42 1
-#define HAVE_SSSE3 1
+#define HAVE_SSE 0
+#define HAVE_SSE2 0
+#define HAVE_SSE3 0
+#define HAVE_SSE4 0
+#define HAVE_SSE42 0
+#define HAVE_SSSE3 0
 #define HAVE_XOP 1
 #define HAVE_YASM 0
 #define HAVE_CPUNOP 1
@@ -74,7 +74,7 @@
 #define HAVE_MIPS32R2 0
 #define HAVE_MIPSDSPR1 0
 #define HAVE_MIPSDSPR2 0
-#define HAVE_LOONGSON 1
+#define HAVE_LOONGSON 0
 #define HAVE_ARMV5TE_EXTERNAL 0
 #define HAVE_ARMV6_EXTERNAL 0
 #define HAVE_ARMV6T2_EXTERNAL 0
@@ -123,18 +123,18 @@
 #define HAVE_LDBRX_INLINE 0
 #define HAVE_PPC4XX_INLINE 0
 #define HAVE_VSX_INLINE 0
-#define HAVE_AMD3DNOW_INLINE 1
-#define HAVE_AMD3DNOWEXT_INLINE 1
+#define HAVE_AMD3DNOW_INLINE 0
+#define HAVE_AMD3DNOWEXT_INLINE 0
 #define HAVE_AVX_INLINE 1
 #define HAVE_AVX2_INLINE 1
 #define HAVE_FMA3_INLINE 1
 #define HAVE_FMA4_INLINE 1
-#define HAVE_SSE_INLINE 1
-#define HAVE_SSE2_INLINE 1
-#define HAVE_SSE3_INLINE 1
-#define HAVE_SSE4_INLINE 1
-#define HAVE_SSE42_INLINE 1
-#define HAVE_SSSE3_INLINE 1
+#define HAVE_SSE_INLINE 0
+#define HAVE_SSE2_INLINE 0
+#define HAVE_SSE3_INLINE 0
+#define HAVE_SSE4_INLINE 0
+#define HAVE_SSE42_INLINE 0
+#define HAVE_SSSE3_INLINE 0
 #define HAVE_XOP_INLINE 1
 #define HAVE_CPUNOP_INLINE 0
 #define HAVE_I686_INLINE 0
@@ -151,9 +151,9 @@
 #define HAVE_LOCAL_ALIGNED_16 1
 #define HAVE_LOCAL_ALIGNED_32 1
 #define HAVE_SIMD_ALIGN_16 1
-#define HAVE_ATOMICS_GCC 1
+#define HAVE_ATOMICS_GCC 0
 #define HAVE_ATOMICS_SUNCC 0
-#define HAVE_ATOMICS_WIN32 0
+#define HAVE_ATOMICS_WIN32 1
 #define HAVE_ATOMIC_CAS_PTR 0
 #define HAVE_MACHINE_RW_BARRIER 0
 #define HAVE_MEMORYBARRIER 0
