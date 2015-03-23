@@ -44,6 +44,7 @@
 #define HAVE_ARMV6 0
 #define HAVE_ARMV6T2 0
 #define HAVE_ARMV8 0
+#define HAVE_MMX 0
 #define HAVE_NEON 0
 #define HAVE_VFP 0
 #define HAVE_VFPV3 0
@@ -66,6 +67,7 @@
 #define HAVE_SSE42 1
 #define HAVE_SSSE3 1
 #define HAVE_XOP 1
+#define HAVE_YASM 0
 #define HAVE_CPUNOP 1
 #define HAVE_I686 1
 #define HAVE_MIPSFPU 0
