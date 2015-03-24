@@ -404,8 +404,25 @@ static int encode_frame(AVCodecContext *avctx, AVPacket *avpkt,
     return 0;
 }
 
+#ifdef IDE_COMPILE
+static const enum AVSampleFormat tmp1[] = { AV_SAMPLE_FMT_FLT,
+                                                     AV_SAMPLE_FMT_NONE };
+#endif
+
 AVCodec ff_nellymoser_encoder = {
-    .name           = "nellymoser",
+#ifdef IDE_COMPILE
+    "nellymoser",
+    "Nellymoser Asao",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_NELLYMOSER,
+    CODEC_CAP_SMALL_LAST_FRAME | CODEC_CAP_DELAY,
+    0, 0, 0, tmp1,
+    0, 0, 0, 0, sizeof(NellyMoserEncodeContext),
+    0, 0, 0, 0, 0, encode_init,
+    0, encode_frame,
+    0, encode_end,
+#else
+	.name           = "nellymoser",
     .long_name      = NULL_IF_CONFIG_SMALL("Nellymoser Asao"),
     .type           = AVMEDIA_TYPE_AUDIO,
     .id             = AV_CODEC_ID_NELLYMOSER,
@@ -416,4 +433,5 @@ AVCodec ff_nellymoser_encoder = {
     .capabilities   = CODEC_CAP_SMALL_LAST_FRAME | CODEC_CAP_DELAY,
     .sample_fmts    = (const enum AVSampleFormat[]){ AV_SAMPLE_FMT_FLT,
                                                      AV_SAMPLE_FMT_NONE },
+#endif
 };
