@@ -25,7 +25,13 @@
  * utils.
  */
 
+#ifdef IDE_COMPILE
+#include "ffmpeg-config.h"
+#include "ide-config.h"
+#else
 #include "config.h"
+#endif
+
 #include "libavutil/atomic.h"
 #include "libavutil/attributes.h"
 #include "libavutil/avassert.h"
@@ -54,6 +60,7 @@
 #include <stdarg.h>
 #include <limits.h>
 #include <float.h>
+
 #if CONFIG_ICONV
 # include <iconv.h>
 #endif
@@ -245,8 +252,13 @@ int ff_set_sar(AVCodecContext *avctx, AVRational sar)
     if (ret < 0) {
         av_log(avctx, AV_LOG_WARNING, "ignoring invalid SAR: %u/%u\n",
                sar.num, sar.den);
-        avctx->sample_aspect_ratio = (AVRational){ 0, 1 };
-        return ret;
+#ifdef IDE_COMPILE
+		avctx->sample_aspect_ratio.num = 0;
+		avctx->sample_aspect_ratio.den = 1;
+#else
+		avctx->sample_aspect_ratio = (AVRational){ 0, 1 };
+#endif
+		return ret;
     } else {
         avctx->sample_aspect_ratio = sar;
     }
@@ -801,8 +813,13 @@ int ff_init_buffer_info(AVCodecContext *avctx, AVFrame *frame)
             av_log(avctx, AV_LOG_WARNING, "ignoring invalid SAR: %u/%u\n",
                    frame->sample_aspect_ratio.num,
                    frame->sample_aspect_ratio.den);
-            frame->sample_aspect_ratio = (AVRational){ 0, 1 };
-        }
+#ifdef IDE_COMPILE
+			frame->sample_aspect_ratio.num = 0;
+			frame->sample_aspect_ratio.den = 1;
+#else
+			frame->sample_aspect_ratio = (AVRational){ 0, 1 };
+#endif
+		}
 
         break;
     case AVMEDIA_TYPE_AUDIO:
@@ -1372,8 +1389,13 @@ int attribute_align_arg avcodec_open2(AVCodecContext *avctx, const AVCodec *code
             av_log(avctx, AV_LOG_WARNING, "ignoring invalid SAR: %u/%u\n",
                    avctx->sample_aspect_ratio.num,
                    avctx->sample_aspect_ratio.den);
-            avctx->sample_aspect_ratio = (AVRational){ 0, 1 };
-        }
+#ifdef IDE_COMPILE
+			avctx->sample_aspect_ratio.num = 0;
+			avctx->sample_aspect_ratio.den = 1;
+#else
+			avctx->sample_aspect_ratio = (AVRational){ 0, 1 };
+#endif
+		}
     }
 
     /* if the decoder init function was already called previously,
@@ -2466,10 +2488,21 @@ int attribute_align_arg avcodec_decode_audio4(AVCodecContext *avctx,
                 av_samples_copy(frame->extended_data, frame->extended_data, 0, avctx->internal->skip_samples,
                                 frame->nb_samples - avctx->internal->skip_samples, avctx->channels, frame->format);
                 if(avctx->pkt_timebase.num && avctx->sample_rate) {
-                    int64_t diff_ts = av_rescale_q(avctx->internal->skip_samples,
+#ifdef IDE_COMPILE
+					int64_t diff_ts;
+					AVRational tmp;
+
+					tmp.num = 1;
+					tmp.den = avctx->sample_rate;
+					diff_ts = av_rescale_q(avctx->internal->skip_samples,
+                                                   tmp,
+                                                   avctx->pkt_timebase);
+#else
+					int64_t diff_ts = av_rescale_q(avctx->internal->skip_samples,
                                                    (AVRational){1, avctx->sample_rate},
                                                    avctx->pkt_timebase);
-                    if(frame->pkt_pts!=AV_NOPTS_VALUE)
+#endif
+					if(frame->pkt_pts!=AV_NOPTS_VALUE)
                         frame->pkt_pts += diff_ts;
                     if(frame->pkt_dts!=AV_NOPTS_VALUE)
                         frame->pkt_dts += diff_ts;
@@ -2490,10 +2523,21 @@ int attribute_align_arg avcodec_decode_audio4(AVCodecContext *avctx,
                 *got_frame_ptr = 0;
             } else {
                 if(avctx->pkt_timebase.num && avctx->sample_rate) {
-                    int64_t diff_ts = av_rescale_q(frame->nb_samples - discard_padding,
+#ifdef IDE_COMPILE
+					int64_t diff_ts;
+                    AVRational tmp;
+
+					tmp.num = 1;
+					tmp.den = avctx->sample_rate;
+					diff_ts = av_rescale_q(frame->nb_samples - discard_padding,
+                                                   tmp,
+                                                   avctx->pkt_timebase);
+#else
+					int64_t diff_ts = av_rescale_q(frame->nb_samples - discard_padding,
                                                    (AVRational){1, avctx->sample_rate},
                                                    avctx->pkt_timebase);
-                    if (av_frame_get_pkt_duration(frame) >= diff_ts)
+#endif
+					if (av_frame_get_pkt_duration(frame) >= diff_ts)
                         av_frame_set_pkt_duration(frame, av_frame_get_pkt_duration(frame) - diff_ts);
                 } else {
                     av_log(avctx, AV_LOG_WARNING, "Could not update timestamps for discarded samples.\n");
