@@ -503,7 +503,18 @@ static void g726_decode_flush(AVCodecContext *avctx)
 
 #if CONFIG_ADPCM_G726_DECODER
 AVCodec ff_adpcm_g726_decoder = {
-    .name           = "g726",
+#ifdef IDE_COMPILE
+    "g726",
+    "G.726 ADPCM",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_ADPCM_G726,
+    CODEC_CAP_DR1,
+    0, 0, 0, 0, 0, 0, 0, 0, sizeof(G726Context),
+    0, 0, 0, 0, 0, g726_decode_init,
+    0, 0, g726_decode_frame,
+    0, g726_decode_flush,
+#else
+	.name           = "g726",
     .long_name      = NULL_IF_CONFIG_SMALL("G.726 ADPCM"),
     .type           = AVMEDIA_TYPE_AUDIO,
     .id             = AV_CODEC_ID_ADPCM_G726,
@@ -512,12 +523,24 @@ AVCodec ff_adpcm_g726_decoder = {
     .decode         = g726_decode_frame,
     .flush          = g726_decode_flush,
     .capabilities   = CODEC_CAP_DR1,
+#endif
 };
 #endif
 
 #if CONFIG_ADPCM_G726LE_DECODER
 AVCodec ff_adpcm_g726le_decoder = {
-    .name           = "g726le",
+#ifdef IDE_COMPILE
+    "g726le",
+    "G.726 ADPCM little-endian",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_ADPCM_G726LE,
+    CODEC_CAP_DR1,
+    0, 0, 0, 0, 0, 0, 0, 0, sizeof(G726Context),
+    0, 0, 0, 0, 0, g726_decode_init,
+    0, 0, g726_decode_frame,
+    0, g726_decode_flush,
+#else
+	.name           = "g726le",
     .type           = AVMEDIA_TYPE_AUDIO,
     .id             = AV_CODEC_ID_ADPCM_G726LE,
     .priv_data_size = sizeof(G726Context),
@@ -526,5 +549,6 @@ AVCodec ff_adpcm_g726le_decoder = {
     .flush          = g726_decode_flush,
     .capabilities   = CODEC_CAP_DR1,
     .long_name      = NULL_IF_CONFIG_SMALL("G.726 ADPCM little-endian"),
+#endif
 };
 #endif

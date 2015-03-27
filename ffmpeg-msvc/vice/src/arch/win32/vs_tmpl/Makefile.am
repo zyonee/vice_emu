@@ -53,6 +53,7 @@ EXTRA_DIST = \
 	platform.tmpl \
 	plus4.tmpl \
 	plus4exp.tmpl \
+	postproc.tmpl \
 	printerdrv.tmpl \
 	raster.tmpl \
 	resid.tmpl \
@@ -63,6 +64,7 @@ EXTRA_DIST = \
 	serial.tmpl \
 	sid.tmpl \
 	sounddrv.tmpl \
+	swresample.tmpl \
 	tape.tmpl \
 	tcbm.tmpl \
 	userport.tmpl \
