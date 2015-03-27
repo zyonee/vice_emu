@@ -5,6 +5,7 @@ EXTRA_DIST = \
 	avcodec.tmpl \
 	avfilter.tmpl \
 	avformat.tmpl \
+	avutil.tmpl \
 	base.tmpl \
 	c128.tmpl \
 	c1541.tmpl \
