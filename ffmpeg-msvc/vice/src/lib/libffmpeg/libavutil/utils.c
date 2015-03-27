@@ -16,7 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#ifdef IDE_COMPILE
+#include "ffmpeg-config.h"
+#include "ide-config.h"
+#else
 #include "config.h"
+#endif
+
 #include "avutil.h"
 #include "avassert.h"
 #include "samplefmt.h"
@@ -116,5 +122,10 @@ unsigned av_int_list_length_for_size(unsigned elsize,
 
 AVRational av_get_time_base_q(void)
 {
-    return (AVRational){1, AV_TIME_BASE};
+#ifdef IDE_COMPILE
+    AVRational tbq = {1, AV_TIME_BASE};
+    return tbq;
+#else
+	return (AVRational){1, AV_TIME_BASE};
+#endif
 }

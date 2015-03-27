@@ -33,6 +33,10 @@
 #include "acelp_vectors.h"
 #include "lsp.h"
 
+#ifdef IDE_COMPILE
+#include "libavutil/libm.h"
+#endif
+
 #define MIN_LSP_SEP (0.05 / (2.0 * M_PI))
 #define MIN_DELAY      20
 #define MAX_DELAY     120
