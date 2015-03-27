@@ -82,40 +82,32 @@ static const AVOption options[]={
     {"filter_size", "set swr resampling filter size", OFFSET(filter_size), AV_OPT_TYPE_INT, {32}, 0, INT_MAX, PARAM },
     {"phase_shift", "set swr resampling phase shift", OFFSET(phase_shift), AV_OPT_TYPE_INT, {10}, 0, 24, PARAM },
     {"linear_interp", "enable linear interpolation", OFFSET(linear_interp), AV_OPT_TYPE_INT, {0}, 0, 1, PARAM },
-
-    {"cutoff"               , "set cutoff frequency ratio"  , OFFSET(cutoff)         , AV_OPT_TYPE_DOUBLE,{.dbl=0.                    }, 0      , 1         , PARAM },
+    {"cutoff", "set cutoff frequency ratio", OFFSET(cutoff), AV_OPT_TYPE_DOUBLE, {0}, 0, 1, PARAM },
 
 /* duplicate option in order to work with avconv */
-    {"resample_cutoff"      , "set cutoff frequency ratio"  , OFFSET(cutoff)         , AV_OPT_TYPE_DOUBLE,{.dbl=0.                    }, 0      , 1         , PARAM },
-    {"resampler"            , "set resampling Engine"       , OFFSET(engine)         , AV_OPT_TYPE_INT  , {.i64=0                     }, 0      , SWR_ENGINE_NB-1, PARAM, "resampler"},
-    {"swr"                  , "select SW Resampler"         , 0                      , AV_OPT_TYPE_CONST, {.i64=SWR_ENGINE_SWR        }, INT_MIN, INT_MAX   , PARAM, "resampler"},
-    {"soxr"                 , "select SoX Resampler"        , 0                      , AV_OPT_TYPE_CONST, {.i64=SWR_ENGINE_SOXR       }, INT_MIN, INT_MAX   , PARAM, "resampler"},
-    {"precision"            , "set soxr resampling precision (in bits)"
-                                                        , OFFSET(precision)      , AV_OPT_TYPE_DOUBLE,{.dbl=20.0                  }, 15.0   , 33.0      , PARAM },
-    {"cheby"                , "enable soxr Chebyshev passband & higher-precision irrational ratio approximation"
-                                                        , OFFSET(cheby)          , AV_OPT_TYPE_INT  , {.i64=0                     }, 0      , 1         , PARAM },
-    {"min_comp"             , "set minimum difference between timestamps and audio data (in seconds) below which no timestamp compensation of either kind is applied"
-                                                        , OFFSET(min_compensation),AV_OPT_TYPE_FLOAT ,{.dbl=FLT_MAX               }, 0      , FLT_MAX   , PARAM },
-    {"min_hard_comp"        , "set minimum difference between timestamps and audio data (in seconds) to trigger padding/trimming the data."
-                                                        , OFFSET(min_hard_compensation),AV_OPT_TYPE_FLOAT ,{.dbl=0.1                   }, 0      , INT_MAX   , PARAM },
-    {"comp_duration"        , "set duration (in seconds) over which data is stretched/squeezed to make it match the timestamps."
-                                                        , OFFSET(soft_compensation_duration),AV_OPT_TYPE_FLOAT ,{.dbl=1                     }, 0      , INT_MAX   , PARAM },
-    {"max_soft_comp"        , "set maximum factor by which data is stretched/squeezed to make it match the timestamps."
-                                                        , OFFSET(max_soft_compensation),AV_OPT_TYPE_FLOAT ,{.dbl=0                     }, INT_MIN, INT_MAX   , PARAM },
-    {"async"                , "simplified 1 parameter audio timestamp matching, 0(disabled), 1(filling and trimming), >1(maximum stretch/squeeze in samples per second)"
-                                                        , OFFSET(async)          , AV_OPT_TYPE_FLOAT ,{.dbl=0                     }, INT_MIN, INT_MAX   , PARAM },
-    {"first_pts"            , "Assume the first pts should be this value (in samples)."
-                                                        , OFFSET(firstpts_in_samples), AV_OPT_TYPE_INT64 ,{.i64=AV_NOPTS_VALUE    }, INT64_MIN,INT64_MAX, PARAM },
-    { "matrix_encoding"     , "set matrixed stereo encoding" , OFFSET(matrix_encoding), AV_OPT_TYPE_INT   ,{.i64 = AV_MATRIX_ENCODING_NONE}, AV_MATRIX_ENCODING_NONE,     AV_MATRIX_ENCODING_NB-1, PARAM, "matrix_encoding" },
-    { "none",  "select none",               0, AV_OPT_TYPE_CONST, { .i64 = AV_MATRIX_ENCODING_NONE  }, INT_MIN, INT_MAX, PARAM, "matrix_encoding" },
-    { "dolby", "select Dolby",              0, AV_OPT_TYPE_CONST, { .i64 = AV_MATRIX_ENCODING_DOLBY }, INT_MIN, INT_MAX, PARAM, "matrix_encoding" },
-    { "dplii", "select Dolby Pro Logic II", 0, AV_OPT_TYPE_CONST, { .i64 = AV_MATRIX_ENCODING_DPLII }, INT_MIN, INT_MAX, PARAM, "matrix_encoding" },
-    { "filter_type"         , "select swr filter type"      , OFFSET(filter_type)    , AV_OPT_TYPE_INT  , { .i64 = SWR_FILTER_TYPE_KAISER }, SWR_FILTER_TYPE_CUBIC, SWR_FILTER_TYPE_KAISER, PARAM, "filter_type" },
-    { "cubic"           , "select cubic"                , 0                      , AV_OPT_TYPE_CONST, { .i64 = SWR_FILTER_TYPE_CUBIC            }, INT_MIN, INT_MAX, PARAM, "filter_type" },
-    { "blackman_nuttall", "select Blackman Nuttall Windowed Sinc", 0             , AV_OPT_TYPE_CONST, { .i64 = SWR_FILTER_TYPE_BLACKMAN_NUTTALL }, INT_MIN, INT_MAX, PARAM, "filter_type" },
-    { "kaiser"          , "select Kaiser Windowed Sinc" , 0                      , AV_OPT_TYPE_CONST, { .i64 = SWR_FILTER_TYPE_KAISER           }, INT_MIN, INT_MAX, PARAM, "filter_type" },
-    { "kaiser_beta"         , "set swr Kaiser Window Beta"  , OFFSET(kaiser_beta)    , AV_OPT_TYPE_INT  , {.i64=9                     }, 2      , 16        , PARAM },
-    { "output_sample_bits"  , "set swr number of output sample bits", OFFSET(dither.output_sample_bits), AV_OPT_TYPE_INT  , {.i64=0   }, 0      , 64        , PARAM },
+    {"resample_cutoff", "set cutoff frequency ratio", OFFSET(cutoff), AV_OPT_TYPE_DOUBLE, {0}, 0, 1, PARAM },
+    {"resampler", "set resampling Engine", OFFSET(engine), AV_OPT_TYPE_INT, {0}, 0, SWR_ENGINE_NB-1, PARAM, "resampler"},
+    {"swr", "select SW Resampler", 0, AV_OPT_TYPE_CONST, {SWR_ENGINE_SWR}, INT_MIN, INT_MAX, PARAM, "resampler"},
+    {"soxr", "select SoX Resampler", 0, AV_OPT_TYPE_CONST, {SWR_ENGINE_SOXR}, INT_MIN, INT_MAX, PARAM, "resampler"},
+    {"precision", "set soxr resampling precision (in bits)", OFFSET(precision), AV_OPT_TYPE_DOUBLE,{0x4034000000000000}, 15.0, 33.0, PARAM},
+    {"cheby", "enable soxr Chebyshev passband & higher-precision irrational ratio approximation", OFFSET(cheby), AV_OPT_TYPE_INT, {0}, 0, 1, PARAM },
+    {"min_comp", "set minimum difference between timestamps and audio data (in seconds) below which no timestamp compensation of either kind is applied", OFFSET(min_compensation), AV_OPT_TYPE_FLOAT ,{0x47efffffe0000000}, 0, FLT_MAX, PARAM },
+    {"min_hard_comp", "set minimum difference between timestamps and audio data (in seconds) to trigger padding/trimming the data.", OFFSET(min_hard_compensation), AV_OPT_TYPE_FLOAT, {0x3fb999999999999a}, 0, INT_MAX, PARAM },
+    {"comp_duration", "set duration (in seconds) over which data is stretched/squeezed to make it match the timestamps.", OFFSET(soft_compensation_duration), AV_OPT_TYPE_FLOAT ,{0x3ff0000000000000}, 0, INT_MAX, PARAM },
+    {"max_soft_comp", "set maximum factor by which data is stretched/squeezed to make it match the timestamps.", OFFSET(max_soft_compensation), AV_OPT_TYPE_FLOAT, {0}, INT_MIN, INT_MAX, PARAM },
+    {"async", "simplified 1 parameter audio timestamp matching, 0(disabled), 1(filling and trimming), >1(maximum stretch/squeeze in samples per second)", OFFSET(async), AV_OPT_TYPE_FLOAT ,{0}, INT_MIN, INT_MAX, PARAM },
+    {"first_pts", "Assume the first pts should be this value (in samples).", OFFSET(firstpts_in_samples), AV_OPT_TYPE_INT64 ,{AV_NOPTS_VALUE}, INT64_MIN, INT64_MAX, PARAM },
+    { "matrix_encoding", "set matrixed stereo encoding", OFFSET(matrix_encoding), AV_OPT_TYPE_INT, {AV_MATRIX_ENCODING_NONE}, AV_MATRIX_ENCODING_NONE, AV_MATRIX_ENCODING_NB-1, PARAM, "matrix_encoding" },
+    { "none",  "select none", 0, AV_OPT_TYPE_CONST, {AV_MATRIX_ENCODING_NONE}, INT_MIN, INT_MAX, PARAM, "matrix_encoding" },
+    { "dolby", "select Dolby", 0, AV_OPT_TYPE_CONST, {AV_MATRIX_ENCODING_DOLBY}, INT_MIN, INT_MAX, PARAM, "matrix_encoding" },
+
+    { "dplii", "select Dolby Pro Logic II", 0, AV_OPT_TYPE_CONST, {AV_MATRIX_ENCODING_DPLII}, INT_MIN, INT_MAX, PARAM, "matrix_encoding" },
+    { "filter_type", "select swr filter type", OFFSET(filter_type), AV_OPT_TYPE_INT, {SWR_FILTER_TYPE_KAISER}, SWR_FILTER_TYPE_CUBIC, SWR_FILTER_TYPE_KAISER, PARAM, "filter_type" },
+    { "cubic", "select cubic", 0, AV_OPT_TYPE_CONST, {SWR_FILTER_TYPE_CUBIC}, INT_MIN, INT_MAX, PARAM, "filter_type" },
+    { "blackman_nuttall", "select Blackman Nuttall Windowed Sinc", 0, AV_OPT_TYPE_CONST, {SWR_FILTER_TYPE_BLACKMAN_NUTTALL}, INT_MIN, INT_MAX, PARAM, "filter_type" },
+    { "kaiser", "select Kaiser Windowed Sinc", 0, AV_OPT_TYPE_CONST, {SWR_FILTER_TYPE_KAISER}, INT_MIN, INT_MAX, PARAM, "filter_type" },
+    { "kaiser_beta", "set swr Kaiser Window Beta", OFFSET(kaiser_beta), AV_OPT_TYPE_INT, {9}, 2, 16, PARAM },
+    { "output_sample_bits", "set swr number of output sample bits", OFFSET(dither.output_sample_bits), AV_OPT_TYPE_INT, {0}, 0, 64, PARAM },
 #else
 {"ich"                  , "set input channel count"     , OFFSET( in.ch_count   ), AV_OPT_TYPE_INT  , {.i64=0                     }, 0      , SWR_CH_MAX, PARAM},
 {"in_channel_count"     , "set input channel count"     , OFFSET( in.ch_count   ), AV_OPT_TYPE_INT  , {.i64=0                     }, 0      , SWR_CH_MAX, PARAM},
@@ -214,13 +206,23 @@ static const char* context_to_name(void* ptr) {
 }
 
 static const AVClass av_class = {
-    .class_name                = "SWResampler",
+#ifdef IDE_COMPILE
+    "SWResampler",
+    context_to_name,
+    options,
+    LIBAVUTIL_VERSION_INT,
+    OFFSET(log_level_offset),
+    OFFSET(log_ctx),
+    0, 0, AV_CLASS_CATEGORY_SWRESAMPLER,
+#else
+	.class_name                = "SWResampler",
     .item_name                 = context_to_name,
     .option                    = options,
     .version                   = LIBAVUTIL_VERSION_INT,
     .log_level_offset_offset   = OFFSET(log_level_offset),
     .parent_log_context_offset = OFFSET(log_ctx),
     .category                  = AV_CLASS_CATEGORY_SWRESAMPLER,
+#endif
 };
 
 const AVClass *swr_get_class(void)

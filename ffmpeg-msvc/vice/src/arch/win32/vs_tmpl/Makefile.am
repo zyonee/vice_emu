@@ -65,6 +65,7 @@ EXTRA_DIST = \
 	sid.tmpl \
 	sounddrv.tmpl \
 	swresample.tmpl \
+	swscale.tmpl \
 	tape.tmpl \
 	tcbm.tmpl \
 	userport.tmpl \

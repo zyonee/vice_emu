@@ -28,6 +28,10 @@
 #include "libavutil/avassert.h"
 #include "resample.h"
 
+#ifdef IDE_COMPILE
+#include "libavutil/cpu.h"
+#endif
+
 /**
  * 0th order modified bessel function of the first kind.
  */
