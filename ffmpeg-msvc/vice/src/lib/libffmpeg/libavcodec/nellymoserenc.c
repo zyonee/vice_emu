@@ -35,6 +35,10 @@
  * http://wiki.multimedia.cx/index.php?title=Nellymoser
  */
 
+#ifdef IDE_COMPILE
+#include "libavutil/libm.h"
+#endif
+
 #include "libavutil/common.h"
 #include "libavutil/float_dsp.h"
 #include "libavutil/mathematics.h"

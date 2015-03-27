@@ -23,6 +23,7 @@
 
 #ifdef IDE_COMPILE
 #include "libavutil/libm.h"
+#include "libavutil/internal.h"
 #endif
 
 /* To allow switching to double. */

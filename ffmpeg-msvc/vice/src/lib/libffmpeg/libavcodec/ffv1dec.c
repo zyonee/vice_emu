@@ -25,6 +25,10 @@
  * FF Video Codec 1 (a lossless codec) decoder
  */
 
+#ifdef IDE_COMPILE
+#include "libavutil/internal.h"
+#endif
+
 #include "libavutil/avassert.h"
 #include "libavutil/crc.h"
 #include "libavutil/opt.h"

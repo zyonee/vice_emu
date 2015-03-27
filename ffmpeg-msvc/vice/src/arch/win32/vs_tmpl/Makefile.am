@@ -24,6 +24,7 @@ EXTRA_DIST = \
 	cbm2.tmpl \
 	cbm2common.tmpl \
 	cbm5x0.tmpl \
+	compat.tmpl \
 	core.tmpl \
 	crtc.tmpl \
 	diskimage.tmpl \

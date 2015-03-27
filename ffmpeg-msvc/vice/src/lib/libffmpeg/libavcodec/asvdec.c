@@ -23,6 +23,10 @@
  * ASUS V1/V2 decoder.
  */
 
+#ifdef IDE_COMPILE
+#include "libavutil/internal.h"
+#endif
+
 #include "libavutil/attributes.h"
 #include "libavutil/mem.h"
 

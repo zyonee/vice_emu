@@ -30,6 +30,8 @@
 
 #ifdef IDE_COMPILE
 #include "libavutil/cpu.h"
+#include "libavutil/libm.h"
+#include "libavutil/internal.h"
 #endif
 
 /**

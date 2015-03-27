@@ -32,6 +32,10 @@
 
 #define UNCHECKED_BITSTREAM_READER 1
 
+#ifdef IDE_COMPILE
+#include "libavutil/internal.h"
+#endif
+
 #include "avcodec.h"
 #include "get_bits.h"
 #include "huffyuv.h"
