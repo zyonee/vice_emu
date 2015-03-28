@@ -985,21 +985,46 @@ static int open_msvc10_11_12_main_project(int msvc11, int msvc12, int sdl)
 
     if (msvc12) {
         if (sdl) {
-            mainfile = fopen("../../sdl/win32-msvc12/vice.sln", "wb");
+            if (ffmpeg) {
+                mainfile = fopen("../../sdl/win32-msvc12-ffmpeg/vice.sln", "wb");
+            } else {
+                mainfile = fopen("../../sdl/win32-msvc12/vice.sln", "wb");
+            }
         } else {
-            mainfile = fopen("../vs12/vice.sln", "wb");
+            if (ffmpeg) {
+                mainfile = fopen("../vs12-ffmpeg/vice.sln", "wb");
+            } else {
+                mainfile = fopen("../vs12/vice.sln", "wb");
+
+			}
         }
-    } else if (msvc11) {
+	} else if (msvc11) {
         if (sdl) {
-            mainfile = fopen("../../sdl/win32-msvc11/vice.sln", "wb");
+            if (ffmpeg) {
+                mainfile = fopen("../../sdl/win32-msvc11-ffmpeg/vice.sln", "wb");
+            } else {
+                mainfile = fopen("../../sdl/win32-msvc11/vice.sln", "wb");
+            }
         } else {
-            mainfile = fopen("../vs11/vice.sln", "wb");
+            if (ffmpeg) {
+                mainfile = fopen("../vs11-ffmpeg/vice.sln", "wb");
+            } else {
+                mainfile = fopen("../vs11/vice.sln", "wb");
+            }
         }
     } else {
         if (sdl) {
-            mainfile = fopen("../../sdl/win32-msvc10/vice.sln", "wb");
+            if (ffmpeg) {
+                mainfile = fopen("../../sdl/win32-msvc10-ffmpeg/vice.sln", "wb");
+            } else {
+                mainfile = fopen("../../sdl/win32-msvc10/vice.sln", "wb");
+            }
         } else {
-            mainfile = fopen("../vs10/vice.sln", "wb");
+            if (ffmpeg) {
+                mainfile = fopen("../vs10-ffmpeg/vice.sln", "wb");
+            } else {
+                mainfile = fopen("../vs10/vice.sln", "wb");
+            }
         }
     }
 
@@ -1063,27 +1088,59 @@ static int output_msvc10_11_12_file(char *fname, int filelist, int msvc11, int m
             pi_insert_deps(cp_dep_names, index);
         }
         if (sdl) {
-            filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc10/.vcxproj"));
+            if (ffmpeg) {
+                filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc10-ffmpeg/.vcxproj"));
+            } else {
+                filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc10/.vcxproj"));
+            }
         } else {
-            filename = malloc(strlen(rfname) + sizeof("../vs10/.vcxproj"));
+            if (ffmpeg) {
+                filename = malloc(strlen(rfname) + sizeof("../vs10-ffmpeg/.vcxproj"));
+            } else {
+                filename = malloc(strlen(rfname) + sizeof("../vs10/.vcxproj"));
+            }
         }
         if (msvc12) {
             if (sdl) {
-                sprintf(filename, "../../sdl/win32-msvc12/%s.vcxproj", rfname);
+                if (ffmpeg) {
+                    sprintf(filename, "../../sdl/win32-msvc12-ffmpeg/%s.vcxproj", rfname);
+                } else {
+                    sprintf(filename, "../../sdl/win32-msvc12/%s.vcxproj", rfname);
+                }
             } else {
-                sprintf(filename, "../vs12/%s.vcxproj", rfname);
+                if (ffmpeg) {
+                    sprintf(filename, "../vs12-ffmpeg/%s.vcxproj", rfname);
+                } else {
+                    sprintf(filename, "../vs12/%s.vcxproj", rfname);
+                }
             }
         } else if (msvc11) {
             if (sdl) {
-                sprintf(filename, "../../sdl/win32-msvc11/%s.vcxproj", rfname);
+                if (ffmpeg) {
+                    sprintf(filename, "../../sdl/win32-msvc11-ffmpeg/%s.vcxproj", rfname);
+                } else {
+                    sprintf(filename, "../../sdl/win32-msvc11/%s.vcxproj", rfname);
+                }
             } else {
-                sprintf(filename, "../vs11/%s.vcxproj", rfname);
+                if (ffmpeg) {
+                    sprintf(filename, "../vs11-ffmpeg/%s.vcxproj", rfname);
+                } else {
+                    sprintf(filename, "../vs11/%s.vcxproj", rfname);
+                }
             }
         } else {
             if (sdl) {
-                sprintf(filename, "../../sdl/win32-msvc10/%s.vcxproj", rfname);
+                if (ffmpeg) {
+                    sprintf(filename, "../../sdl/win32-msvc10-ffmpeg/%s.vcxproj", rfname);
+                } else {
+                    sprintf(filename, "../../sdl/win32-msvc10/%s.vcxproj", rfname);
+                }
             } else {
-                sprintf(filename, "../vs10/%s.vcxproj", rfname);
+                if (ffmpeg) {
+                    sprintf(filename, "../vs10-ffmpeg/%s.vcxproj", rfname);
+                } else {
+                    sprintf(filename, "../vs10/%s.vcxproj", rfname);
+                }
             }
         }
     } else {
@@ -1798,9 +1855,17 @@ static int open_msvc9_main_project(int sdl)
     pi_init();
 
     if (sdl) {
-        mainfile = fopen("../../sdl/win32-msvc9/vice.sln", "wb");
+        if (ffmpeg) {
+            mainfile = fopen("../../sdl/win32-msvc9-ffmpeg/vice.sln", "wb");
+        } else {
+            mainfile = fopen("../../sdl/win32-msvc9/vice.sln", "wb");
+        }
     } else {
-        mainfile = fopen("../vs9/vice.sln", "wb");
+        if (ffmpeg) {
+            mainfile = fopen("../vs9-ffmpeg/vice.sln", "wb");
+        } else {
+            mainfile = fopen("../vs9/vice.sln", "wb");
+        }
     }
 
     if (!mainfile) {
@@ -1849,11 +1914,21 @@ static int output_msvc9_file(char *fname, int filelist, int sdl)
             pi_insert_deps(cp_dep_names, i);
         }
         if (sdl) {
-            filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc9/.vcproj"));
-            sprintf(filename, "../../sdl/win32-msvc9/%s.vcproj", rfname);
+            if (ffmpeg) {
+                filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc9-ffmpeg/.vcproj"));
+                sprintf(filename, "../../sdl/win32-msvc9-ffmpeg/%s.vcproj", rfname);
+            } else {
+                filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc9/.vcproj"));
+                sprintf(filename, "../../sdl/win32-msvc9/%s.vcproj", rfname);
+            }
         } else {
-            filename = malloc(strlen(rfname) + sizeof("../vs9/.vcproj"));
-            sprintf(filename, "../vs9/%s.vcproj", rfname);
+            if (ffmpeg) {
+                filename = malloc(strlen(rfname) + sizeof("../vs9-ffmpeg/.vcproj"));
+                sprintf(filename, "../vs9-ffmpeg/%s.vcproj", rfname);
+            } else {
+                filename = malloc(strlen(rfname) + sizeof("../vs9/.vcproj"));
+                sprintf(filename, "../vs9/%s.vcproj", rfname);
+            }
         }
     } else {
         filename = malloc(strlen(rfname) + sizeof(".vcproj"));
@@ -2519,9 +2594,17 @@ static int open_msvc8_main_project(int sdl)
     pi_init();
 
     if (sdl) {
-        mainfile = fopen("../../sdl/win32-msvc8/vice.sln", "wb");
+        if (ffmpeg) {
+            mainfile = fopen("../../sdl/win32-msvc8-ffmpeg/vice.sln", "wb");
+        } else {
+            mainfile = fopen("../../sdl/win32-msvc8/vice.sln", "wb");
+        }
     } else {
-        mainfile = fopen("../vs8/vice.sln", "wb");
+        if (ffmpeg) {
+            mainfile = fopen("../vs8-ffmpeg/vice.sln", "wb");
+        } else {
+            mainfile = fopen("../vs8/vice.sln", "wb");
+        }
     }
 
     if (!mainfile) {
@@ -2569,11 +2652,21 @@ static int output_msvc8_file(char *fname, int filelist, int sdl)
             pi_insert_deps(cp_dep_names, i);
         }
         if (sdl) {
-            filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc8/.vcproj"));
-            sprintf(filename, "../../sdl/win32-msvc8/%s.vcproj", rfname);
+            if (ffmpeg) {
+                filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc8-ffmpeg/.vcproj"));
+                sprintf(filename, "../../sdl/win32-msvc8-ffmpeg/%s.vcproj", rfname);
+            } else {
+                filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc8/.vcproj"));
+                sprintf(filename, "../../sdl/win32-msvc8/%s.vcproj", rfname);
+            }
         } else {
-            filename = malloc(strlen(rfname) + sizeof("../vs8/.vcproj"));
-            sprintf(filename, "../vs8/%s.vcproj", rfname);
+            if (ffmpeg) {
+                filename = malloc(strlen(rfname) + sizeof("../vs8-ffmpeg/.vcproj"));
+                sprintf(filename, "../vs8-ffmpeg/%s.vcproj", rfname);
+            } else {
+                filename = malloc(strlen(rfname) + sizeof("../vs8/.vcproj"));
+                sprintf(filename, "../vs8/%s.vcproj", rfname);
+            }
         }
     } else {
         filename = malloc(strlen(rfname) + sizeof(".vcproj"));
@@ -2949,9 +3042,17 @@ static int open_msvc71_main_project(int sdl)
     pi_init();
 
     if (sdl) {
-        mainfile = fopen("../../sdl/win32-msvc71/vice.sln", "wb");
+        if (ffmpeg) {
+            mainfile = fopen("../../sdl/win32-msvc71-ffmpeg/vice.sln", "wb");
+        } else {
+            mainfile = fopen("../../sdl/win32-msvc71/vice.sln", "wb");
+        }
     } else {
-        mainfile = fopen("../vs71/vice.sln", "wb");
+        if (ffmpeg) {
+            mainfile = fopen("../vs71-ffmpeg/vice.sln", "wb");
+        } else {
+            mainfile = fopen("../vs71/vice.sln", "wb");
+        }
     }
 
     if (!mainfile) {
@@ -3299,9 +3400,17 @@ static int open_msvc70_main_project(int sdl)
     pi_init();
 
     if (sdl) {
-        mainfile = fopen("../../sdl/win32-msvc70/vice.sln", "wb");
+        if (ffmpeg) {
+            mainfile = fopen("../../sdl/win32-msvc70-ffmpeg/vice.sln", "wb");
+        } else {
+            mainfile = fopen("../../sdl/win32-msvc70/vice.sln", "wb");
+        }
     } else {
-        mainfile = fopen("../vs70/vice.sln", "wb");
+        if (ffmpeg) {
+            mainfile = fopen("../vs70-ffmpeg/vice.sln", "wb");
+        } else {
+            mainfile = fopen("../vs70/vice.sln", "wb");
+        }
     }
 
     if (!mainfile) {
@@ -3345,18 +3454,36 @@ static int output_msvc7_file(char *fname, int filelist, int version, int sdl)
             pi_insert_deps(cp_dep_names, i);
         }
         if (sdl) {
-            filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc70/.vcproj"));
-            if (version == 70) {
-                sprintf(filename, "../../sdl/win32-msvc70/%s.vcproj", rfname);
+            if (ffmpeg) {
+                filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc70-ffmpeg/.vcproj"));
+                if (version == 70) {
+                    sprintf(filename, "../../sdl/win32-msvc70-ffmpeg/%s.vcproj", rfname);
+                } else {
+                    sprintf(filename, "../../sdl/win32-msvc71-ffmpeg/%s.vcproj", rfname);
+                }
             } else {
-                sprintf(filename, "../../sdl/win32-msvc71/%s.vcproj", rfname);
+                filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc70/.vcproj"));
+                if (version == 70) {
+                    sprintf(filename, "../../sdl/win32-msvc70/%s.vcproj", rfname);
+                } else {
+                    sprintf(filename, "../../sdl/win32-msvc71/%s.vcproj", rfname);
+                }
             }
         } else {
-            filename = malloc(strlen(rfname) + sizeof("../vs70/.vcproj"));
-            if (version == 70) {
-                sprintf(filename, "../vs70/%s.vcproj", rfname);
+            if (ffmpeg) {
+                filename = malloc(strlen(rfname) + sizeof("../vs70-ffmpeg/.vcproj"));
+                if (version == 70) {
+                    sprintf(filename, "../vs70-ffmpeg/%s.vcproj", rfname);
+                } else {
+                    sprintf(filename, "../vs71-ffmpeg/%s.vcproj", rfname);
+                }
             } else {
-                sprintf(filename, "../vs71/%s.vcproj", rfname);
+                filename = malloc(strlen(rfname) + sizeof("../vs70/.vcproj"));
+                if (version == 70) {
+                    sprintf(filename, "../vs70/%s.vcproj", rfname);
+                } else {
+                    sprintf(filename, "../vs71/%s.vcproj", rfname);
+                }
             }
         }
     } else {
@@ -3962,9 +4089,17 @@ static char *msvc6_res_source_part3 = "!ENDIF\r\n"
 static int open_msvc6_main_project(int sdl)
 {
     if (sdl) {
-        mainfile = fopen("../../sdl/win32-msvc6/vice.dsw", "wb");
+        if (ffmpeg) {
+            mainfile = fopen("../../sdl/win32-msvc6-ffmpeg/vice.dsw", "wb");
+        } else {
+            mainfile = fopen("../../sdl/win32-msvc6/vice.dsw", "wb");
+        }
     } else {
-        mainfile = fopen("../vs6/vice.dsw", "wb");
+        if (ffmpeg) {
+            mainfile = fopen("../vs6-ffmpeg/vice.dsw", "wb");
+        } else {
+            mainfile = fopen("../vs6/vice.dsw", "wb");
+        }
     }
 
     if (!mainfile) {
@@ -4009,11 +4144,21 @@ static int output_msvc6_file(char *fname, int filelist, int sdl)
 
     if (filelist) {
         if (sdl) {
-            filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc6/.dsp"));
-            sprintf(filename, "../../sdl/win32-msvc6/%s.dsp", rfname);
+            if (ffmpeg) {
+                filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc6-ffmpeg/.dsp"));
+                sprintf(filename, "../../sdl/win32-msvc6-ffmpeg/%s.dsp", rfname);
+            } else {
+                filename = malloc(strlen(rfname) + sizeof("../../sdl/win32-msvc6/.dsp"));
+                sprintf(filename, "../../sdl/win32-msvc6/%s.dsp", rfname);
+            }
         } else {
-            filename = malloc(strlen(rfname) + sizeof("../vs6/.dsp"));
-            sprintf(filename, "../vs6/%s.dsp", rfname);
+            if (ffmpeg) {
+                filename = malloc(strlen(rfname) + sizeof("../vs6-ffmpeg/.dsp"));
+                sprintf(filename, "../vs6-ffmpeg/%s.dsp", rfname);
+            } else {
+                filename = malloc(strlen(rfname) + sizeof("../vs6/.dsp"));
+                sprintf(filename, "../vs6/%s.dsp", rfname);
+            }
         }
     } else {
         filename = malloc(strlen(rfname) + sizeof(".dsp"));
