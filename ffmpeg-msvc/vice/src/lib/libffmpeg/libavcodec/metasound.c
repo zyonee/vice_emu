@@ -25,6 +25,10 @@
 #include <math.h>
 #include <stdint.h>
 
+#ifdef IDE_COMPILE
+#include "libavutil/libm.h"
+#endif
+
 #define BITSTREAM_READER_LE
 #include "libavutil/channel_layout.h"
 #include "libavutil/float_dsp.h"

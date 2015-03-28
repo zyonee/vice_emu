@@ -3,9 +3,11 @@ EXTRA_DIST = \
 	arch_native.tmpl \
 	arch_sdl.tmpl \
 	avcodec.tmpl \
+	avcodec-x86.tmpl \
 	avfilter.tmpl \
 	avformat.tmpl \
 	avutil.tmpl \
+	avutil-x86.tmpl \
 	base.tmpl \
 	c128.tmpl \
 	c1541.tmpl \
@@ -67,7 +69,9 @@ EXTRA_DIST = \
 	sid.tmpl \
 	sounddrv.tmpl \
 	swresample.tmpl \
+	swresample-x86.tmpl \
 	swscale.tmpl \
+	swscale-x86.tmpl \
 	tape.tmpl \
 	tcbm.tmpl \
 	userport.tmpl \

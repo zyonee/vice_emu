@@ -26,6 +26,11 @@
  */
 
 #include <string.h>
+
+#ifdef IDE_COMPILE
+#include <assert.h>
+#endif
+
 #include "libavutil/avassert.h"
 #include "libavutil/intreadwrite.h"
 #include "libavcodec/avcodec.h"

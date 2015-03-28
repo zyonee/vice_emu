@@ -26,6 +26,10 @@
  * see http://joe.hotchkiss.com/programming/eval/eval.html
  */
 
+#ifdef IDE_COMPILE
+#include "libavutil/libm.h"
+#endif
+
 #include <float.h>
 #include "attributes.h"
 #include "avutil.h"

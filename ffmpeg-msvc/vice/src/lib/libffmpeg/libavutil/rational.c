@@ -25,6 +25,10 @@
  * @author Michael Niedermayer <michaelni@gmx.at>
  */
 
+#ifdef IDE_COMPILE
+#include "libavutil/libm.h"
+#endif
+
 #include "avassert.h"
 #include <limits.h>
 

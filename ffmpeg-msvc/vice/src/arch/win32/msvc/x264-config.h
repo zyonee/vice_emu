@@ -1,4 +1,4 @@
-#define HAVE_MMX 1
+#define HAVE_MMX 0
 #define ARCH_X86 1
 #define SYS_WINDOWS 1
 #define STACK_ALIGNMENT 32
