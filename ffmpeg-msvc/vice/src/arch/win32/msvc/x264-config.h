@@ -4,12 +4,10 @@
 #define STACK_ALIGNMENT 32
 #define HAVE_WIN32THREAD 1
 #define HAVE_THREAD 1
-#define HAVE_LOG2F 1
+#define HAVE_LOG2F 0
 #define HAVE_AVS 1
 #define USE_AVXSYNTH 0
 #define HAVE_VECTOREXT 1
-#define fseek fseeko64
-#define ftell ftello64
 #define HAVE_GPL 1
 #define HAVE_INTERLACED 1
 #define HAVE_OPENCL 1

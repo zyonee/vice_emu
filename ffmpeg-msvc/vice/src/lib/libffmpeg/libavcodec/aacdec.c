@@ -81,6 +81,10 @@
            Parametric Stereo.
  */
 
+#ifdef IDE_COMPILE
+#include "libavutil/libm.h"
+#endif
+
 #include "libavutil/float_dsp.h"
 #include "libavutil/opt.h"
 #include "avcodec.h"

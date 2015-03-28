@@ -194,6 +194,10 @@ static void update_predictor( predictor_t *p, float q, float var, float bits );
     }\
 }
 
+#ifdef IDE_COMPILE
+#define isfinite _finite
+#endif
+
 /* Terminology:
  * qp = h.264's quantizer
  * qscale = linearized quantizer = Lagrange multiplier
