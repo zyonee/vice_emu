@@ -25,15 +25,8 @@
 
 #include "vice.h"
 
-#include "maincpu.h"
+#include "main4510cpu.h"
 #include "mem.h"
-
-#include "cpmcart.h"
-
-#ifdef FEATURE_CPUMEMHISTORY
-#include "monitor.h"
-#include "c64pla.h"
-#endif
 
 /* ------------------------------------------------------------------------- */
 
@@ -54,56 +47,4 @@
 
 */
 
-#ifdef FEATURE_CPUMEMHISTORY
-void memmap_mem_store(unsigned int addr, unsigned int value)
-{
-    if ((addr >= 0xd000) && (addr <= 0xdfff)) {
-        monitor_memmap_store(addr, MEMMAP_I_O_W);
-    } else {
-        monitor_memmap_store(addr, MEMMAP_RAM_W);
-    }
-    (*_mem_write_tab_ptr[(addr) >> 8])((WORD)(addr), (BYTE)(value));
-}
-
-void memmap_mark_read(unsigned int addr)
-{
-    switch (addr >> 12) {
-        case 0xa:
-        case 0xb:
-        case 0xe:
-        case 0xf:
-            memmap_state |= MEMMAP_STATE_IGNORE;
-            if (pport.data_read & (1 << ((addr >> 14) & 1))) {
-                monitor_memmap_store(addr, (memmap_state & MEMMAP_STATE_OPCODE) ? MEMMAP_ROM_X : (memmap_state & MEMMAP_STATE_INSTR) ? 0 : MEMMAP_ROM_R);
-            } else {
-                monitor_memmap_store(addr, (memmap_state & MEMMAP_STATE_OPCODE) ? MEMMAP_RAM_X : (memmap_state & MEMMAP_STATE_INSTR) ? 0 : MEMMAP_RAM_R);
-            }
-            memmap_state &= ~(MEMMAP_STATE_IGNORE);
-            break;
-        case 0xd:
-            monitor_memmap_store(addr, MEMMAP_I_O_R);
-            break;
-        default:
-            monitor_memmap_store(addr, (memmap_state & MEMMAP_STATE_OPCODE) ? MEMMAP_RAM_X : (memmap_state & MEMMAP_STATE_INSTR) ? 0 : MEMMAP_RAM_R);
-            break;
-    }
-    memmap_state &= ~(MEMMAP_STATE_OPCODE);
-}
-
-BYTE memmap_mem_read(unsigned int addr)
-{
-    memmap_mark_read(addr);
-    return (*_mem_read_tab_ptr[(addr) >> 8])((WORD)(addr));
-}
-#endif
-
-static void check_and_run_alternate_cpu(void)
-{
-    cpmcart_check_and_run_z80();
-}
-
-#define CHECK_AND_RUN_ALTERNATE_CPU check_and_run_alternate_cpu();
-
-#define HAVE_Z80_REGS
-
-#include "../maincpu.c"
+#include "../main4510cpu.c"
