@@ -1,0 +1,668 @@
+------------------------------------------------------------------------------
+
+2016-07-24  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* ChangeLog, ChangeLog.1, ChangeLog.2, ChangeLog.3, ChangeLog.4,
+	Makefile.am, build/android/build-android.sh, configure.proto,
+	doc/vice.chm, doc/vice.hlp, doc/vice.pdf, po/da.po, po/de.po,
+	po/es.po, po/fr.po, po/hu.po, po/it.po, po/ko.po, po/nl.po, po/pl.po,
+	po/ru.po, po/sv.po, po/tr.po,
+	src/arch/android/AnVICE/AndroidManifest.xml,
+	src/arch/win32/vice-version.bat, src/version.h: VICE 2.4.29
+
+2016-07-24  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/Makefile.am: Fixed.
+
+2016-07-23  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* po/da.po, po/de.po, po/es.po, po/fr.po, po/hu.po, po/it.po,
+	po/ko.po, po/nl.po, po/pl.po, po/ru.po, po/sv.po, po/tr.po,
+	po/translations-status.txt: Did a 'make update-po'.
+
+2016-07-23  Kajtar Zsolt <soci@c64.rulez.org>
+
+	* src/65c02core.c: BBR/BBS has the same extra cycles as normal
+	branches. This was verified today for both WDC and R65C02.
+
+2016-07-23  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/unix/cw-pci.c, src/arch/unix/hs-isa.c,
+	src/arch/unix/hs-pci.c, src/arch/unix/ps-file.c,
+	src/arch/unix/ps-io.c, src/arch/unix/ssi2001-drv.c: Fixed and
+	simplified.
+
+2016-07-23  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/beos/catweaselmkiii-drv.c, src/arch/beos/hs-isa.c,
+	src/arch/beos/hs-pci.c, src/arch/beos/parsid-drv.c,
+	src/arch/beos/ssi2001-drv.c: Fixed and simplified.
+
+2016-07-23  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/cw-pci.c, src/arch/win32/hs-isa.c,
+	src/arch/win32/hs-pci.c, src/arch/win32/ps-dll.c,
+	src/arch/win32/ssi2001-drv.c: Fixed and simplified.
+
+2016-07-23  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/vicefeatures.c: Added some previously missing items to the
+	'vicefeatures.c' file.
+
+2016-07-23  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* configure.proto: Added some items to the configure summary.
+
+2016-07-23  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/generate_msvc10_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc10_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc10_sdl1x.bat,
+	src/arch/sdl/generate_msvc10_sdl2x.bat,
+	src/arch/sdl/generate_msvc11_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc11_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc11_sdl1x.bat,
+	src/arch/sdl/generate_msvc11_sdl2x.bat,
+	src/arch/sdl/generate_msvc12_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc12_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc12_sdl1x.bat,
+	src/arch/sdl/generate_msvc12_sdl2x.bat,
+	src/arch/sdl/generate_msvc14_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc14_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc14_sdl1x.bat,
+	src/arch/sdl/generate_msvc14_sdl2x.bat,
+	src/arch/sdl/generate_msvc6_sdl1x.bat,
+	src/arch/sdl/generate_msvc6_sdl2x.bat,
+	src/arch/sdl/generate_msvc70_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc70_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc70_sdl1x.bat,
+	src/arch/sdl/generate_msvc70_sdl2x.bat,
+	src/arch/sdl/generate_msvc71_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc71_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc71_sdl1x.bat,
+	src/arch/sdl/generate_msvc71_sdl2x.bat,
+	src/arch/sdl/generate_msvc8_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc8_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc8_sdl1x.bat,
+	src/arch/sdl/generate_msvc8_sdl2x.bat,
+	src/arch/sdl/generate_msvc9_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc9_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc9_sdl1x.bat,
+	src/arch/sdl/generate_msvc9_sdl2x.bat,
+	src/arch/sdl/msvc-files/Makefile.am,
+	src/arch/sdl/msvc-files/make-bindist-sdl1x.bat.proto,
+	src/arch/sdl/msvc-files/make-bindist-sdl2x.bat.proto,
+	src/arch/sdl/msvc-files/make-bindist.bat.proto: Improved sdl make
+	bindist.
+
+2016-07-22  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* doc/readmes/Makefile.am, doc/readmes/Readme-SDL2.txt: Added SDL2
+	readme file.
+
+2016-07-22  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/catweaselmkiii-drv.c, src/arch/win32/cw-pci.c,
+	src/arch/win32/hs-isa.c, src/arch/win32/hs-pci.c,
+	src/arch/win32/ps-dll.c, src/arch/win32/ssi2001-drv.c: Some warning
+	fixes.
+
+2016-07-22  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/video.c: Order fix.
+
+2016-07-21  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/msvc-files/ide-config-sdl2.h,
+	src/arch/sdl/msvc-files/ide-config.h: Fixed.
+
+2016-07-21  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl: Updated svn ignores.
+
+2016-07-21  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/generate_msvc8_sdl2x.bat: Fixed.
+
+2016-07-21  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/generate_msvc10_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc10_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc10_sdl1x.bat,
+	src/arch/sdl/generate_msvc10_sdl2x.bat,
+	src/arch/sdl/generate_msvc11_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc11_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc11_sdl1x.bat,
+	src/arch/sdl/generate_msvc11_sdl2x.bat,
+	src/arch/sdl/generate_msvc12_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc12_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc12_sdl1x.bat,
+	src/arch/sdl/generate_msvc12_sdl2x.bat,
+	src/arch/sdl/generate_msvc14_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc14_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc14_sdl1x.bat,
+	src/arch/sdl/generate_msvc14_sdl2x.bat,
+	src/arch/sdl/generate_msvc6_sdl1x.bat,
+	src/arch/sdl/generate_msvc6_sdl2x.bat,
+	src/arch/sdl/generate_msvc70_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc70_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc70_sdl1x.bat,
+	src/arch/sdl/generate_msvc70_sdl2x.bat,
+	src/arch/sdl/generate_msvc71_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc71_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc71_sdl1x.bat,
+	src/arch/sdl/generate_msvc71_sdl2x.bat,
+	src/arch/sdl/generate_msvc8_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc8_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc8_sdl1x.bat,
+	src/arch/sdl/generate_msvc8_sdl2x.bat,
+	src/arch/sdl/generate_msvc9_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc9_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc9_sdl1x.bat,
+	src/arch/sdl/generate_msvc9_sdl2x.bat,
+	src/arch/win32/vs_tmpl/mkmsvc.c, src/arch/win32/vs_tmpl/mkmsvc.exe:
+	Updated to generate win32-sdl1x-* directories for SDL1, and
+	win32-sdl2x-* directories for SDL2.
+
+2016-07-21  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/archdep.h, src/arch/sdl/archdep_unix.c,
+	src/arch/sdl/archdep_win32.c, src/arch/sdl/video.c: Added
+	'SDL2Renderer' resource and '-sdl2renderer' cmdline option to the sdl2
+	port, to be used to set the preferred sdl2 renderer.
+
+2016-07-21  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* vice: Added new sdl2 bindist generated directory to the svn ignore.
+
+2016-07-21  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/uifilereq.c: Fixed warning.
+
+2016-07-21  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/make-bindist_win32.sh: Fixed.
+
+2016-07-21  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/video.c: Applied sdl2 x128 crash fix patch by
+	AreaScout.
+
+2016-07-20  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* Makefile.am, configure.proto, src/arch/sdl/make-bindist_win32.sh:
+	Added bindist support for win32 sdl2.
+
+2016-07-20  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/amigaos/cw_device.c, src/arch/amigaos/cw_openpci.c,
+	src/arch/amigaos/cw_os4.c, src/arch/amigaos/hs_openpci.c,
+	src/arch/amigaos/hs_os4.c: Some amiga hardware sid improvements.
+
+2016-07-20  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/beos/pci-drv.c: Better beos pci detection.
+
+2016-07-20  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/menu_help.c: Use 'SDL2' in the help/about text when
+	using the sdl2 ui.
+
+2016-07-20  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* configure.proto: Slight order change to make win32 sdl show up as
+	sdl2 in the configure summary.
+
+2016-07-20  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/vice_sdl.h: Fixed.
+
+2016-07-20  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/vice_sdl.h: The same for non-prefixed sdl headers.
+
+2016-07-20  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/vice_sdl.h: Added conditional includes of sdl2 renderer headers.
+
+2016-07-20  Kajtar Zsolt <soci@c64.rulez.org>
+
+	* src/c64/cart/reu.c: This is likely needed for swap as well
+
+2016-07-20  Kajtar Zsolt <soci@c64.rulez.org>
+
+	* src/c64/c64memsc.c, src/c64/cart/reu.c, src/viciisc/vicii-cycle.c,
+	src/viciisc/vicii-cycle.h: Improve x64sc REU write timing
+
+2016-07-19  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/beos/catweaselmkiii-drv.c, src/arch/beos/parsid-drv.c:
+	Added missing functions.
+
+2016-07-19  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/beos/catweaselmkiii-drv.c, src/arch/beos/hs-isa.c,
+	src/arch/beos/hs-pci.c: Use 'snooze' instead of 'usleep'.
+
+2016-07-19  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/beos/io-access.c: Fixed.
+
+2016-07-19  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/beos/catweaselmkiii-drv.c, src/arch/beos/hs-isa.c,
+	src/arch/beos/hs-pci.c, src/arch/beos/hs.h, src/arch/beos/io-access.c,
+	src/arch/beos/parsid-drv.c, src/arch/beos/pci-drv.c,
+	src/arch/beos/ssi2001-drv.c: Some fixes.
+
+2016-07-19  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* configure.proto, src/arch/beos/Makefile.am,
+	src/arch/beos/catweaselmkiii-drv.c, src/arch/beos/hardsid-drv.c,
+	src/arch/beos/hs-isa.c, src/arch/beos/hs-pci.c, src/arch/beos/hs.h,
+	src/arch/beos/io-access.c, src/arch/beos/io-access.h,
+	src/arch/beos/parsid-drv.c, src/arch/beos/pci-drv.c,
+	src/arch/beos/pci-drv.h, src/arch/beos/ssi2001-drv.c,
+	src/arch/sdl/catweaselmkiii-drv.c, src/arch/sdl/hardsid-drv.c,
+	src/arch/sdl/hs-isa.c, src/arch/sdl/hs-pci.c,
+	src/arch/sdl/io-access.c, src/arch/sdl/parsid-drv.c,
+	src/arch/sdl/pci-drv.c, src/arch/sdl/ssi2001-drv.c: Added catweasel,
+	hardsid, ssi2001 and parsid support to the beos port.
+
+2016-07-19  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* doc/hardware-sids.txt: Updated.
+
+2016-07-19  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/resid, src/resid-dtv: Added the resid/resid-dtv 'COPYING' and
+	'INSTALL' files to the svn ignore list.
+
+2016-07-19  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/resid/COPYING, src/resid/INSTALL, src/resid-dtv/COPYING,
+	src/resid-dtv/INSTALL: Removed 'COPYING' and 'INSTALL' from the
+	resid/resid-dtv subdirs.
+
+2016-07-19  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* configure.proto, src/arch/unix/pci-drv.c: Added pciutils support to
+	the unix port.
+
+2016-07-19  groepaz <groepaz@gmx.net>
+
+	* doc/vice.pdf: plop
+
+2016-07-19  groepaz <groepaz@gmx.net>
+
+	* src/c64/c64memsnapshot.c: read old value of 'VirtualDevices' before
+	checking snapshot version, else a random undefined value will be
+	restored on failure
+
+2016-07-19  groepaz <groepaz@gmx.net>
+
+	* src/arch/sdl/lightpendrv.c: fix warning
+
+2016-07-19  groepaz <groepaz@gmx.net>
+
+	* src/arch/sdl/archdep_win32.c: reverting previous hack, see comments.
+	stdout can not work unless SUBSYSTEM:CONSOLE is used. in newer MSVC
+	versions _CONSOLE has to be defined manually to make it work
+
+2016-07-19  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/msvc-files/ide-config-mips.h,
+	src/arch/sdl/msvc-files/ide-config-sdl2.h,
+	src/arch/sdl/msvc-files/ide-config.h: Fixed 'snprintf' macros.
+
+2016-07-19  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/Makefile.am,
+	src/arch/sdl/generate_msvc14_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc14_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc14_sdl1x.bat,
+	src/arch/sdl/generate_msvc14_sdl2x.bat: Added msvc14 project file
+	generation to the sdl(2) port.
+
+2016-07-19  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/Makefile.am,
+	src/arch/sdl/generate_msvc10_ffmpeg_project.bat,
+	src/arch/sdl/generate_msvc10_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc10_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc10_project.bat,
+	src/arch/sdl/generate_msvc10_sdl1x.bat,
+	src/arch/sdl/generate_msvc10_sdl2x.bat,
+	src/arch/sdl/generate_msvc11_ffmpeg_project.bat,
+	src/arch/sdl/generate_msvc11_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc11_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc11_project.bat,
+	src/arch/sdl/generate_msvc11_sdl1x.bat,
+	src/arch/sdl/generate_msvc11_sdl2x.bat,
+	src/arch/sdl/generate_msvc12_ffmpeg_project.bat,
+	src/arch/sdl/generate_msvc12_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc12_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc12_project.bat,
+	src/arch/sdl/generate_msvc12_sdl1x.bat,
+	src/arch/sdl/generate_msvc12_sdl2x.bat,
+	src/arch/sdl/generate_msvc6_project.bat,
+	src/arch/sdl/generate_msvc6_sdl1x.bat,
+	src/arch/sdl/generate_msvc6_sdl2x.bat,
+	src/arch/sdl/generate_msvc70_ffmpeg_project.bat,
+	src/arch/sdl/generate_msvc70_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc70_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc70_project.bat,
+	src/arch/sdl/generate_msvc70_sdl1x.bat,
+	src/arch/sdl/generate_msvc70_sdl2x.bat,
+	src/arch/sdl/generate_msvc71_ffmpeg_project.bat,
+	src/arch/sdl/generate_msvc71_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc71_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc71_project.bat,
+	src/arch/sdl/generate_msvc71_sdl1x.bat,
+	src/arch/sdl/generate_msvc71_sdl2x.bat,
+	src/arch/sdl/generate_msvc8_ffmpeg_project.bat,
+	src/arch/sdl/generate_msvc8_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc8_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc8_project.bat,
+	src/arch/sdl/generate_msvc8_sdl1x.bat,
+	src/arch/sdl/generate_msvc8_sdl2x.bat,
+	src/arch/sdl/generate_msvc9_ffmpeg_project.bat,
+	src/arch/sdl/generate_msvc9_ffmpeg_sdl1x.bat,
+	src/arch/sdl/generate_msvc9_ffmpeg_sdl2x.bat,
+	src/arch/sdl/generate_msvc9_project.bat,
+	src/arch/sdl/generate_msvc9_sdl1x.bat,
+	src/arch/sdl/generate_msvc9_sdl2x.bat,
+	src/arch/sdl/generate_msvcmips_project.bat,
+	src/arch/sdl/generate_msvcmips_sdl1x.bat,
+	src/arch/sdl/msvc-files/Makefile.am,
+	src/arch/sdl/msvc-files/ide-config-sdl2.h,
+	src/arch/win32/vs_tmpl/mkmsvc.c, src/arch/win32/vs_tmpl/mkmsvc.exe:
+	Added SDL2 support to the msvc project files generator.
+
+2016-07-19  groepaz <groepaz@gmx.net>
+
+	* src/arch/sdl/archdep_win32.c: log to stdout by default, not
+	vice.log - someone needs to confirm it still works on SDL1
+
+2016-07-19  groepaz <groepaz@gmx.net>
+
+	* src/arch/sdl/menu_video.c: fix warning
+
+2016-07-19  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/video.c: fix codestyle
+
+2016-07-19  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/video.c, src/vice_sdl.h: Cosmetic fixes by AreaScout.
+
+2016-07-19  groepaz <groepaz@gmx.net>
+
+	* src/lib.c: properly exclude code for LIB_DEBUG_CALLER
+
+2016-07-19  groepaz <groepaz@gmx.net>
+
+	* src/lib.c: remove pointless MSC 'fix' - whatever the problem was,
+	this certainly isnt the proper fix for it.
+
+2016-07-18  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/vsyncarch.c: Fix sdl2 sreen update issues.
+
+2016-07-18  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/lib.c: Some msvc exclusions.
+
+2016-07-18  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/cw-pci.c, src/arch/win32/hs-pci.c: Use 'int' instead
+	of 'bool'.
+
+2016-07-18  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/menu_video.c, src/arch/sdl/video.c, src/vice_sdl.h:
+	Some SDL2 'fixes' by AreaScout.
+
+2016-07-17  groepaz <groepaz@gmx.net>
+
+	* src/c64/cart/kcs.c: re-revert to socis changes again, it seems to be
+	correct afterall (verified against freeze from real KCS made by
+	fierman) cheers!
+
+2016-07-17  groepaz <groepaz@gmx.net>
+
+	* src/c64/cart/kcs.c: reverted r31406, it breaks (at least)
+	freeze/bload. yawn
+
+2016-07-17  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/c64/cart/kcs.c: This cartridge is not rocket science. Really ;)
+
+2016-07-16  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/unix/hs-pci.c: Added missing include.
+
+2016-07-16  groepaz <groepaz@gmx.net>
+
+	* src/sid/catweaselmkiii.c: fix typo
+
+2016-07-15  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/unix/parsid-drv.c, src/arch/unix/ps-io.c,
+	src/arch/unix/ssi2001-drv.c: Updated.
+
+2016-07-15  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/unix/pci-drv.c: Fixed.
+
+2016-07-15  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/hs-pci.c, src/arch/unix/Makefile.am,
+	src/arch/unix/hardsid-drv.c, src/arch/unix/hs-isa.c,
+	src/arch/unix/hs-pci.c, src/arch/unix/hs.h: Added unix direct pci io
+	access for pci hardsid.
+
+2016-07-15  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/unix/pci-drv.c: Fixed.
+
+2016-07-15  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/unix/Makefile.am, src/arch/unix/catweaselmkiii-drv.c,
+	src/arch/unix/cw-pci.c: Fixed.
+
+2016-07-15  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* configure.proto, src/arch/unix/catweaselmkiii-drv.c,
+	src/arch/unix/cw-device.c, src/arch/unix/cw-pci.c: Proper detection
+	and separation of driver and direct pci i/o access based catweasel
+	code.
+
+2016-07-15  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* configure.proto, src/arch/unix/hardsid-drv.c,
+	src/arch/unix/hs-isa.c: Changed 'HAVE_HARDSID_ISA' to
+	'HAVE_HARDSID_IO', since the future PCI hardsid access will use the
+	same define.
+
+2016-07-15  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/unix/pci-drv.c: Fixed.
+
+2016-07-14  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* doc/hardware-sids.txt, src/arch/sdl/cw-device.c,
+	src/arch/sdl/cw-pci.c, src/arch/unix/catweaselmkiii-drv.c,
+	src/arch/unix/cw-device.c, src/arch/unix/cw-pci.c, src/arch/unix/cw.h,
+	src/arch/unix/pci-drv.c: Added unix direct pci io access for cw3/4.
+
+2016-07-14  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/unix/io-access.c: Added svr4 style io permission calls,
+	should make io access work on things like solaris,
+	sco unix/openserver/unixware...etc
+
+2016-07-14  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* configure.proto, src/Makefile.am, src/arch/amigaos/Makefile.am,
+	src/arch/amigaos/genintl_h.sh, src/arch/amigaos/genintl_h.sh.in,
+	src/gentranslate_h.sh, src/gentranslate_h.sh.in: Removed
+	autogeneration of genintl_h.sh (amiga) and gentranslate_h.sh
+	(generic).
+
+2016-07-14  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/Makefile.am, src/arch/sdl/pci-drv.c,
+	src/arch/unix/Makefile.am, src/arch/unix/pci-drv.c,
+	src/arch/unix/pci-drv.h: Added unix pci-drv.* files to be used for pci
+	configuration space access, currently not used yet.
+
+2016-07-13  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/msdos/pci-drv.h: Updated comment.
+
+2016-07-13  groepaz <groepaz@gmx.net>
+
+	* configure.proto, src/memcmp.c: deleted memcmp.c - if that make VICE
+	fail on your sunOS4 machine, bad luck
+
+2016-07-13  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* doc/Makefile.am, doc/hardware-sids.txt: Added a document detailing
+	the 'hardware sid' support.
+
+2016-07-13  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/unix/io-access.c: Simplified and fixed.
+
+2016-07-13  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/unix/catweaselmkiii-drv.c: Updated.
+
+2016-07-11  groepaz <groepaz@gmx.net>
+
+	* src/arch/unix/vsyncarch.c, src/sound.c, src/vsync.c: massaged vsync
+	code a bit, this should solve the problem that the emulator can not
+	recover from a drop in frame rate other than by interacting with the
+	UI
+
+2016-07-10  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/hardsid-drv.c, src/arch/win32/hs-isa.c,
+	src/arch/win32/parsid-drv.c, src/arch/win32/ps-dll.c,
+	src/arch/win32/ssi2001-drv.c: Updated.
+
+2016-07-10  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/hs-pci.c: Simplified.
+
+2016-07-10  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/cw-pci.c: Simplified.
+
+2016-07-09  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/catweaselmkiii-drv.c, src/arch/win32/cw-dll.c,
+	src/arch/win32/cw-pci.c, src/arch/win32/hardsid-drv.c,
+	src/arch/win32/hs-dll.c, src/arch/win32/hs-isa.c,
+	src/arch/win32/hs-pci.c, src/arch/win32/parsid-drv.c,
+	src/arch/win32/ps-dll.c, src/arch/win32/ssi2001-drv.c: Updated.
+
+2016-07-08  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/hardsid-drv.c, src/arch/win32/hs-dll.c,
+	src/arch/win32/hs-isa.c, src/arch/win32/hs-pci.c,
+	src/arch/win32/parsid-drv.c, src/arch/win32/ps-io.c,
+	src/arch/win32/ssi2001-drv.c: Updated.
+
+2016-07-08  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/ps-dll.c: Added default lpt addresses in case the
+	windows registry doesn't keep track of them.
+
+2016-07-08  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/hs-pci.c: Added winio32 PCI I/O access support to the
+	windows pci hardsid driver.
+
+2016-07-08  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/cw-pci.c: Added winio support to the windows cw
+	driver, makes it able for windows nt4/2000/xp/server/vista/7/8/10 to
+	access the cw without any cw drivers.
+
+2016-07-06  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* doc/readmes/Readme-DOS.txt: Updated dos readme with hardware sids
+	information.
+
+2016-07-06  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/catweaselmkiii-drv.c, src/arch/win32/cw-dll.c,
+	src/arch/win32/cw-pci.c, src/arch/win32/hardsid-drv.c,
+	src/arch/win32/hs-dll.c, src/arch/win32/hs-isa.c,
+	src/arch/win32/hs-pci.c, src/arch/win32/parsid-drv.c: Updated.
+
+2016-07-06  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/ps-dll.c: Added winio support to the windows parsid
+	driver.
+
+2016-07-06  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/ssi2001-drv.c: Slight fix.
+
+2016-07-05  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/ssi2001-drv.c: Added winio support to the windows
+	ssi2001 driver.
+
+2016-07-05  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/catweaselmkiii-drv.c, src/arch/win32/cw-dll.c,
+	src/arch/win32/cw-pci.c, src/arch/win32/hardsid-drv.c,
+	src/arch/win32/hs-dll.c, src/arch/win32/hs-pci.c,
+	src/arch/win32/ps-dll.c: Updated.
+
+2016-07-05  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/hs-isa.c: Added winio support to the windows isa
+	hardsid driver.
+
+2016-07-05  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/Makefile.am, src/arch/sdl/cw-device.c,
+	src/arch/sdl/cw-pci.c, src/arch/sdl/win32-watcom/arch.tgt,
+	src/arch/sdl/win32-watcom/vice.wpj, src/arch/win32/Makefile.am,
+	src/arch/win32/catweaselmkiii-drv.c, src/arch/win32/cw-dll.c,
+	src/arch/win32/cw-pci.c, src/arch/win32/cw.h,
+	src/arch/win32/vs_tmpl/arch_native.tmpl,
+	src/arch/win32/vs_tmpl/arch_sdl.tmpl, src/arch/win32/watcom/arch.tgt,
+	src/arch/win32/watcom/vice.wpj: Added direct PCI I/O support to the
+	windows cw3 driver.
+
+2016-07-05  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/win32/hardsid-drv.c, src/arch/win32/hs-pci.c: Changed pci
+	hardsid support to use winio instead of inpout.
+
+2016-07-05  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* configure.proto: Fixed.
+
+2016-07-05  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* configure.proto: Disable catweasel, hardsid, ssi2001 and parsid for
+	non-x86 platforms.
+
+2016-07-03  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/arch/sdl/Makefile.am, src/arch/sdl/hs-pci.c,
+	src/arch/sdl/win32-watcom/arch.tgt,
+	src/arch/sdl/win32-watcom/vice.wpj, src/arch/win32/Makefile.am,
+	src/arch/win32/hardsid-drv.c, src/arch/win32/hs-pci.c,
+	src/arch/win32/hs.h, src/arch/win32/vs_tmpl/arch_native.tmpl,
+	src/arch/win32/vs_tmpl/arch_sdl.tmpl, src/arch/win32/watcom/arch.tgt,
+
+
+See `ChangeLog.1' for earlier changes.
