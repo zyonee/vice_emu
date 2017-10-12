@@ -63,14 +63,14 @@
     bit 7     exrom (1 = cart disabled)
 */
 
-#define MAXBANKS 16
+#define MAXBANKS 128
 
 static uint8_t regval = 0;
 
 static void magicdesk_io1_store(uint16_t addr, uint8_t value)
 {
-    regval = value & 0x8f;
-    cart_romlbank_set_slotmain(value & 0x0f);
+    regval = value;
+    cart_romlbank_set_slotmain(value);
     cart_set_port_game_slotmain(0);
     if (value & 0x80) {
         /* turn off cart ROM */
@@ -143,10 +143,16 @@ static int magicdesk_common_attach(void)
 
 int magicdesk_bin_attach(const char *filename, uint8_t *rawcart)
 {
-    if (util_file_load(filename, rawcart, 0x20000, UTIL_FILE_LOAD_SKIP_ADDRESS) < 0) {
-        if (util_file_load(filename, rawcart, 0x10000, UTIL_FILE_LOAD_SKIP_ADDRESS) < 0) {
-            if (util_file_load(filename, rawcart, 0x8000, UTIL_FILE_LOAD_SKIP_ADDRESS) < 0) {
-                return -1;
+    if (util_file_load(filename, rawcart, 0x100000, UTIL_FILE_LOAD_SKIP_ADDRESS) < 0) {
+        if (util_file_load(filename, rawcart, 0x80000, UTIL_FILE_LOAD_SKIP_ADDRESS) < 0) {
+            if (util_file_load(filename, rawcart, 0x40000, UTIL_FILE_LOAD_SKIP_ADDRESS) < 0) {
+                if (util_file_load(filename, rawcart, 0x20000, UTIL_FILE_LOAD_SKIP_ADDRESS) < 0) {
+                    if (util_file_load(filename, rawcart, 0x10000, UTIL_FILE_LOAD_SKIP_ADDRESS) < 0) {
+                        if (util_file_load(filename, rawcart, 0x8000, UTIL_FILE_LOAD_SKIP_ADDRESS) < 0) {
+                            return -1;
+                        }
+                    }
+                }
             }
         }
     }
