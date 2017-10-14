@@ -4270,14 +4270,20 @@ elif test x"$is_win32" = "xyes" -a x"$enable_sdlui" != "xyes" -a x"$enable_sdlui
                    [Is DWORD defined as long or int in the Windows header files?])
                    AC_MSG_RESULT(unsigned long) ], AC_MSG_RESULT(unsigned int))
 
-  vsid_LDFLAGS="-mwindows"
-  x64_LDFLAGS="-mwindows"
-  x128_LDFLAGS="-mwindows"
-  xscpu64_LDFLAGS="-mwindows"
-  xvic_LDFLAGS="-mwindows"
-  xpet_LDFLAGS="-mwindows"
-  xplus4_LDFLAGS="-mwindows"
-  xcbm2_LDFLAGS="-mwindows"
+  vsid_LDFLAGS="-static -mwindows"
+  x128_LDFLAGS="-static -mwindows"
+  x64_LDFLAGS="-static -mwindows"
+  xcbm2_LDFLAGS="-static -mwindows"
+  xpet_LDFLAGS="-static -mwindows"
+  xplus4_LDFLAGS="-static -mwindows"
+  xscpu64_LDFLAGS="-static -mwindows"
+  xvic_LDFLAGS="-static -mwindows"
+  x64sc_LDFLAGS="-static -mwindows"
+  x64dtv_LDFLAGS="-static -mwindows"
+  xcbm5x0_LDFLAGS="-static -mwindows"
+  c1541_LDFLAGS="-static -mwindows"
+  cartconv_LDFLAGS="-static -mwindows"
+  petcat_LDFLAGS="-static -mwindows"
 
   if test x"$CC" != "xowcc"; then
     VSID_WINRES="\$(top_builddir)/src/arch/win32/resvsid.o"
