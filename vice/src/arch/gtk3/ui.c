@@ -63,6 +63,8 @@
 #include "uiabout.h"
 #include "selectdirectorydialog.h"
 #include "jamdialog.h"
+#include "uicmdline.h"
+#include "uicompiletimefeatures.h"
 
 #include "ui.h"
 
@@ -127,6 +129,10 @@ static void machine_reset_callback(GtkWidget *widget, gpointer user_data);
 static void drive_reset_callback(GtkWidget *widget, gpointer user_data);
 static void ui_close_callback(GtkWidget *widget, gpointer user_data);
 static void ui_window_destroy_callback(GtkWidget *widget, gpointer user_data);
+static void ui_fullscreen_callback(GtkWidget *widget, gpointer user_data);
+static gboolean ui_warp_callback(GtkWidget *widget, gpointer user_data);
+
+static void ui_fullscreen_decorations_callback(GtkWidget *widget, gpointer user_data);
 static int set_html_browser_command(const char *val, void *param);
 static int set_save_resources_on_exit(int val, void *param);
 static int set_confirm_on_exit(int val, void *param);
@@ -255,16 +261,16 @@ static ui_menu_item_t detach_submenu[] = {
 static ui_menu_item_t fliplist_submenu[] = {
     { "Add current image (Unit #8)", UI_MENU_TYPE_ITEM_ACTION,
       ui_fliplist_add_current_cb, GINT_TO_POINTER(8),
-      0, 0 },
+      GDK_KEY_I, GDK_MOD1_MASK },
     { "Remove current image (Unit #8)", UI_MENU_TYPE_ITEM_ACTION,
       ui_fliplist_remove_current_cb, GINT_TO_POINTER(8),
-      0, 0 },
+      GDK_KEY_K, GDK_MOD1_MASK },
     { "Attach next image (Unit #8)", UI_MENU_TYPE_ITEM_ACTION,
       ui_fliplist_next_cb, GINT_TO_POINTER(8),
-      0, 0 },
+      GDK_KEY_N, GDK_MOD1_MASK },
     { "Attach previous image (Unit #8)", UI_MENU_TYPE_ITEM_ACTION,
       ui_fliplist_prev_cb, GINT_TO_POINTER(8),
-      0, 0 },
+      GDK_KEY_N, GDK_SHIFT_MASK | GDK_MOD1_MASK },
     { "Load flip list file...", UI_MENU_TYPE_ITEM_ACTION,
       ui_fliplist_load_callback, GINT_TO_POINTER(8),
       0, 0 },
@@ -310,7 +316,7 @@ static ui_menu_item_t reset_submenu[] = {
         GDK_KEY_F9, GDK_MOD1_MASK },
     { "Hard reset", UI_MENU_TYPE_ITEM_ACTION,
         machine_reset_callback, GINT_TO_POINTER(MACHINE_RESET_MODE_HARD),
-        0,0 },
+        GDK_KEY_F12, GDK_MOD1_MASK },
 
     UI_MENU_SEPARATOR,
 
@@ -336,14 +342,14 @@ static ui_menu_item_t reset_submenu[] = {
 static ui_menu_item_t file_menu[] = {
     { "Smart attach disk/tape ...", UI_MENU_TYPE_ITEM_ACTION,
         ui_smart_attach_callback, NULL,
-        0, 0 },
+        GDK_KEY_A, GDK_MOD1_MASK },
 
     UI_MENU_SEPARATOR,
 
     /* disk */
     { "Attach disk image ...", UI_MENU_TYPE_ITEM_ACTION,
         ui_disk_attach_callback, GINT_TO_POINTER(8),
-        0, 0 },
+        GDK_KEY_8, GDK_MOD1_MASK },
     { "Create and attach an empty disk ...", UI_MENU_TYPE_ITEM_ACTION,
         NULL, NULL,
         0, 0 },
@@ -362,7 +368,7 @@ static ui_menu_item_t file_menu[] = {
         0, 0 },
     { "Attach tape image ...", UI_MENU_TYPE_ITEM_ACTION,
         ui_tape_attach_callback, NULL,
-        0, 0 },
+        GDK_KEY_T, GDK_MOD1_MASK },
     { "Detach tape image", UI_MENU_TYPE_ITEM_ACTION,
         ui_tape_detach_callback, NULL,
         0, 0 },
@@ -375,20 +381,20 @@ static ui_menu_item_t file_menu[] = {
     /* cart */
     { "Attach cartridge image ...", UI_MENU_TYPE_ITEM_ACTION,
         NULL, NULL,
-        0, 0 },
+        GDK_KEY_C, GDK_MOD1_MASK },
     { "Detach cartridge image(s)", UI_MENU_TYPE_ITEM_ACTION,
         NULL, NULL,
         0, 0 },
     { "Cartridge freeze", UI_MENU_TYPE_ITEM_ACTION,
         NULL, NULL,
-        0, 0 },
+        GDK_KEY_Z, GDK_MOD1_MASK },
 
     UI_MENU_SEPARATOR,
 
     /* monitor */
     { "Activate monitor", UI_MENU_TYPE_ITEM_ACTION,
         ui_monitor_activate_callback, NULL,
-        0, 0 },
+        GDK_KEY_H, GDK_MOD1_MASK },
     { "Monitor settings ...", UI_MENU_TYPE_ITEM_ACTION,
         NULL, NULL,
         0, 0 },
@@ -412,7 +418,7 @@ static ui_menu_item_t file_menu[] = {
 
     { "Exit emulator", UI_MENU_TYPE_ITEM_ACTION,
         ui_close_callback, NULL,
-        0, 0 },
+        GDK_KEY_Q, GDK_MOD1_MASK },
 
     UI_MENU_TERMINATOR
 };
@@ -437,19 +443,19 @@ static ui_menu_item_t edit_menu[] = {
 static ui_menu_item_t snapshot_menu[] = {
     { "Load snapshot image ...", UI_MENU_TYPE_ITEM_ACTION,
         NULL, NULL,
-        0, 0 },
+        GDK_KEY_L, GDK_MOD1_MASK },
     { "Save snapshot image ...", UI_MENU_TYPE_ITEM_ACTION,
         NULL, NULL,
-        0, 0 },
+        GDK_KEY_S, GDK_MOD1_MASK },
 
     UI_MENU_SEPARATOR,
 
     { "Quickload snapshot", UI_MENU_TYPE_ITEM_ACTION,
         NULL, NULL,
-        0, 0 },
+        GDK_KEY_F10, GDK_MOD1_MASK },
     { "Quicksave snapshot", UI_MENU_TYPE_ITEM_ACTION,
         NULL, NULL,
-        0, 0 },
+        GDK_KEY_F11, GDK_MOD1_MASK },
 
     UI_MENU_SEPARATOR,
 
@@ -470,10 +476,10 @@ static ui_menu_item_t snapshot_menu[] = {
         0, 0 },
     { "Set recording milestone", UI_MENU_TYPE_ITEM_ACTION,
         NULL, NULL,
-        0, 0 },
+        GDK_KEY_E, GDK_MOD1_MASK },
     { "Return to milestone", UI_MENU_TYPE_ITEM_ACTION,
         NULL, NULL,
-        0, 0 },
+        GDK_KEY_U, GDK_MOD1_MASK },
 
     UI_MENU_SEPARATOR,
 
@@ -509,12 +515,12 @@ static ui_menu_item_t help_menu[] = {
         NULL, NULL,
         0, 0 },
     { "Commandline options ...", UI_MENU_TYPE_ITEM_ACTION,
-        NULL, NULL,
+        uicmdline_dialog_show, NULL,
         0, 0 },
     { "Compiletime features ...", UI_MENU_TYPE_ITEM_ACTION,
-        NULL, NULL,
+        uicompiletimefeatures_dialog_show, NULL,
         0, 0 },
-    { "_About VICE", UI_MENU_TYPE_ITEM_ACTION,
+    { "About VICE", UI_MENU_TYPE_ITEM_ACTION,
         ui_about_dialog_callback, NULL,
         0, 0 },
 
@@ -525,6 +531,18 @@ static ui_menu_item_t help_menu[] = {
 /** \brief  'Settings' menu items
  */
 static ui_menu_item_t settings_menu[] = {
+   { "Toggle fullscreen", UI_MENU_TYPE_ITEM_ACTION,
+        ui_fullscreen_callback, NULL,
+        GDK_KEY_D, GDK_MOD1_MASK },
+    { "Toggle menu/status in fullscreen", UI_MENU_TYPE_ITEM_ACTION,
+        ui_fullscreen_decorations_callback, NULL,
+        GDK_KEY_B, GDK_MOD1_MASK },
+    { "Toggle warp mode", UI_MENU_TYPE_ITEM_ACTION,
+        (void*)(ui_warp_callback), NULL,
+        GDK_KEY_W, GDK_MOD1_MASK },
+
+    UI_MENU_SEPARATOR,
+
     { "Settings", UI_MENU_TYPE_ITEM_ACTION,
         ui_settings_dialog_create, NULL,
         0, 0 },
@@ -585,6 +603,13 @@ static int is_paused = 0;
  */
 static int html_browser_command_set = 0;
 
+/** \brief  Flag indicating whether we're supposed to be in fullscreen
+ */
+static int is_fullscreen = 0;
+
+/** \brief  Flag inidicating whether fullscreen mode shows the decorations. 
+ */
+static int fullscreen_has_decorations = 0;
 
 
 /******************************************************************************
@@ -689,7 +714,64 @@ static void ui_window_destroy_callback(GtkWidget *widget, gpointer user_data)
     ui_exit();
 }
 
+/** \brief Show or hide the window decorations as needed
+ */
 
+static void ui_update_fullscreen_decorations(void)
+{
+    /* TODO: This needs to handle any window that is triggered */
+    int has_decorations = (!is_fullscreen) || fullscreen_has_decorations;
+    GtkWidget *window = ui_resources.window_widget[PRIMARY_WINDOW];
+    GtkWidget *grid = gtk_bin_get_child(GTK_BIN(window));
+    GtkWidget *menu_bar = gtk_grid_get_child_at(GTK_GRID(grid), 0, 0);
+    GtkWidget *status_bar = gtk_grid_get_child_at(GTK_GRID(grid), 0, 2);
+    if (has_decorations) {
+        gtk_widget_show(menu_bar);
+        gtk_widget_show(status_bar);
+    } else {
+        gtk_widget_hide(menu_bar);
+        gtk_widget_hide(status_bar);
+    }
+}
+
+/** \brief Returns if we're in fullscreen mode. */
+int ui_is_fullscreen(void)
+{
+    return is_fullscreen;
+}
+
+void ui_trigger_resize(void)
+{
+    int i;
+    for (i = 0; i < NUM_WINDOWS; ++i) {
+        if (ui_resources.canvas[i]) {
+            video_canvas_adjust_aspect_ratio(ui_resources.canvas[i]);
+        }
+        if (ui_resources.window_widget[i]) {
+            gtk_widget_queue_resize(ui_resources.window_widget[i]);
+        }
+    }
+}
+
+/** \brief Callback for the "fullscreen" action */
+static void ui_fullscreen_callback(GtkWidget *widget, gpointer user_data)
+{
+    /* TODO: We need to know which window asked for this. */
+    GtkWindow *window = GTK_WINDOW(ui_resources.window_widget[PRIMARY_WINDOW]);
+    is_fullscreen = !is_fullscreen;
+    if (is_fullscreen) {
+        gtk_window_fullscreen(window);
+    } else {
+        gtk_window_unfullscreen(window);
+    }
+    ui_update_fullscreen_decorations();
+}
+
+static void ui_fullscreen_decorations_callback(GtkWidget *widget, gpointer user_data)
+{
+    fullscreen_has_decorations = !fullscreen_has_decorations;
+    ui_update_fullscreen_decorations();
+}
 
 /*****************************************************************************
  *                  Temporary windows atexit() crash workaround              *
@@ -911,11 +993,14 @@ void ui_create_toplevel_window(struct video_canvas_s *canvas) {
     grid = gtk_grid_new();
     new_drawing_area = gtk_drawing_area_new();
     status_bar = ui_statusbar_create();
+    gtk_widget_show_all(status_bar);
+    gtk_widget_set_no_show_all(status_bar, TRUE);
 
     /* I'm pretty sure when running x128 we get two menu instances, so this
      * should go somewhere else: call ui_menu_bar_create() once and attach the
      * result menu to each GtkWindow instance
      */
+    /* DANGER: This could make the VDC screen unfullscreenable */
     menu_bar = ui_menu_bar_create();
 
     /* generate File menu */
@@ -1249,6 +1334,21 @@ void ui_pause_emulation(int flag)
         ui_display_paused(0);
         is_paused = 0;
     }
+}
+
+
+/** \brief  Switch warp mode
+ *
+ * \param[in]   widget      widget triggering the event (invalid)
+ * \param[in]   user_data   extra data for event (unused)
+ */
+static gboolean ui_warp_callback(GtkWidget *widget, gpointer user_data)
+{
+    int state;
+
+    resources_get_int("WarpMode", &state);
+    resources_set_int("WarpMode", state ? 0 : 1);
+    return TRUE;
 }
 
 

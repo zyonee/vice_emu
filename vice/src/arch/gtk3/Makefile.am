@@ -60,7 +60,6 @@ libarch_a_SOURCES = \
 	ui.c \
 	uiabout.c \
 	uiautostart.c \
-	uiaccelerators.c \
 	uidatasette.c \
 	uidiskattach.c \
 	uidrivesettings.c \
@@ -85,7 +84,11 @@ libarch_a_SOURCES = \
 	uivideo.c \
 	uivideosettings.c \
 	uisamplersettings.c \
-	uiprintersettings.c
+	uiprintersettings.c \
+	uicmdline.c \
+	uicompiletimefeatures.c \
+	uicontrolport.c \
+	uijoystick.c
 
 EXTRA_DIST = \
 	archdep.h \
@@ -115,7 +118,6 @@ EXTRA_DIST = \
 	ui.h \
 	uiabout.h \
 	uiautostart.h \
-	uiaccelerators.h \
 	uidatasette.h \
 	uidiskattach.h \
 	uidrivesettings.h \
@@ -135,4 +137,8 @@ EXTRA_DIST = \
 	uivideo.h \
 	uivideosettings.h \
 	uisamplersettings.h \
-	uiprintersettings.h
+	uiprintersettings.h \
+	uicmdline.h \
+	uicompiletimefeatures.h \
+	uicontrolport.h \
+	uijoystick.h

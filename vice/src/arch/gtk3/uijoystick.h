@@ -1,10 +1,10 @@
-/**
- * \brief   Custom keyboard shortcuts - header
- *
- * \file    uiaccelerators.h
+/** \file   src/arch/gtk3/uijoystick.h
+ * \brief   Widget to control settings for joysticks - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
+ *
+ * Controls the following resource(s):
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -26,13 +26,13 @@
  *
  */
 
-#ifndef VICE_UIACCELERATORS_H
-#define VICE_UIACCELERATORS_H
+#ifndef HAVE_UIJOYSTICK_H
+#define HAVE_UIJOYSTICK_H
 
+#include "vice.h"
 #include <gtk/gtk.h>
 
-void add_accelerators_to_window(GtkWidget *window);
+GtkWidget *uijoystick_widget_create(GtkWidget *parent);
 
-
-#endif  /* ifndef VICE_UIACCELERATORS_H */
+#endif
 
