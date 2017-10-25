@@ -1,5 +1,7 @@
 ## Makefile.am for the native GTK3 version of `libwidgets.a'.
 
+SUBDIRS = base
+
 AM_CPPFLAGS = \
 	@ARCH_INCLUDES@ \
 	-I$(top_builddir)/src \
@@ -18,7 +20,10 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src/pet \
 	-I$(top_srcdir)/src/plus4 \
 	-I$(top_srcdir)/src/scpu64 \
-	-I$(top_srcdir)/src/vic20
+	-I$(top_srcdir)/src/vic20 \
+	-I$(top_srcdir)/src/userport \
+	-I$(top_srcdir)/src/arch/gtk3/widgets \
+	-I$(top_srcdir)/src/arch/gtk3/widgets/base
 
 noinst_LIBRARIES = libwidgets.a
 
@@ -44,7 +49,6 @@ libwidgets_a_SOURCES = \
 	filechooserhelpers.c \
 	drivewidgethelpers.c \
 	driveunitwidget.c \
-	drivetypewidget.c \
 	driveextendpolicywidget.c \
 	driveexpansionwidget.c \
 	driveidlemethodwidget.c \
@@ -79,7 +83,11 @@ libwidgets_a_SOURCES = \
 	printerdriverwidget.c \
 	printeroutputwidget.c \
 	userportprinterwidget.c \
-	joystickdevicewidget.c
+	joystickdevicewidget.c \
+	joystickuserportadapterwidget.c \
+	sidsoundwidget.c \
+	driverpmwidget.c \
+	drivetypewidget_new.c
 
 EXTRA_DIST = \
 	widgethelpers.h \
@@ -103,7 +111,6 @@ EXTRA_DIST = \
 	filechooserhelpers.h \
 	drivewidgethelpers.h \
 	driveunitwidget.h \
-	drivetypewidget.h \
 	driveextendpolicywidget.h \
 	driveexpansionwidget.h \
 	driveidlemethodwidget.h \
@@ -138,4 +145,8 @@ EXTRA_DIST = \
 	printerdrivewidget.h \
 	printeroutputwidget.h \
 	userportprinterwidget.h \
-	joystickdevicewidget.h
+	joystickdevicewidget.h \
+	joystickuserportadapterwidget.h \
+	sidsoundwidget.h \
+	driverpmwidget.h \
+	drivetypewidget_new.h

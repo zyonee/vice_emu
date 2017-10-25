@@ -28,14 +28,14 @@
  *
  */
 
-#ifndef HAVE_DRIVEPARALLELCABLEWIDGET_H
-#define HAVE_DRIVEPARALLELCABLEWIDGET_H
+#ifndef VICE_DRIVEPARALLELCABLEWIDGET_H
+#define VICE_DRIVEPARALLELCABLEWIDGET_H
 
 #include "vice.h"
 
 #include <gtk/gtk.h>
 
 GtkWidget * drive_parallel_cable_widget_create(int unit);
-void        drive_parallel_cable_widget_update(GtkWidget *widget, int unit);
+void        drive_parallel_cable_widget_update(GtkWidget *widget);
 
 #endif

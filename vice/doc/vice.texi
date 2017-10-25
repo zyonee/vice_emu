@@ -834,7 +834,7 @@ at a time out of 64k into the @code{$9***} area.  Also it has an ACIA
 SuperPET is now emulated, since release 2.4, including the 6702 dongle
 chip.
 
-The Super-OS/9 MMU expansion, developed by TPUG (Toronto PET Users
+The Super-OS-9 MMU expansion, developed by TPUG (Toronto PET Users
 Group) is also emulated.
 
 The PET computers came with three major ROM revisions, so-called BASIC
@@ -2937,6 +2937,10 @@ Set the device attached to:
 userport joystick adapter port 2 (x64/x64sc/xscpu/x128/xcbm2/xpet/xvic)
 (x64/x64sc/xscpu/x128/xcbm2/xpet/xvic: 0: None, 1: Joystick, 6: Mouse (CX-22), 17: Sampler (2bit))
 
+@vindex BBRTCSave
+@item BBRTCSave
+Enable saving of the battery-backed real time clock data.
+
 @end table
 
 
@@ -2978,6 +2982,16 @@ Set the device attached to:
 userport joystick adapter port 2 (x64/x64sc/xscpu/x128/xcbm2/xpet/xvic)
 (@code{JoyPort4Device}).
 (x64/x64sc/xscpu/x128/xcbm2/xpet/xvic: 0: None, 1: Joystick, 6: Mouse (CX-22), 17: Sampler (2bit))
+
+@findex -bbrtcsave
+@item -bbrtcsave
+Enable saving of the battery-backed real time clock data
+(@code{BBRTCSave}).
+
+@findex +bbrtcsave
+@item +bbrtcsave
+Disable saving of the battery-backed real time clock data
+(@code{BBRTCSave}).
 
 @end table
 
@@ -3025,6 +3039,11 @@ Integer specifying the type of adapter used for the extra joysticks
 @vindex Mouse
 @item Mouse
 Boolean, enables mouse emulation
+
+@vindex SmartMouseRTCSave
+@item SmartMouseRTCSave
+Boolean, specified whether to save real time clock data for the SmartMouse
+
 
 @vindex KeySet1NorthWest
 @vindex KeySet1North
@@ -3834,8 +3853,8 @@ Integers specifying the idling method for the drive CPU.
 @itemx Drive9RPM
 @itemx Drive10RPM
 @itemx Drive11RPM
-Integers specifying the rotation speed of the drive, multiplied by 100 so 300rpm
-equal 30000.
+Integers specifying the rotation speed of the drive, multiplied by 100, so
+300rpm equals 30000.
 
 @vindex Drive8Wobble
 @vindex Drive9Wobble
@@ -3845,8 +3864,8 @@ equal 30000.
 @itemx Drive9Wobble
 @itemx Drive10Wobble
 @itemx Drive11Wobble
-Integers specifying the random deviation of the rotation speed, multiplied by 100
-so 100 equals +/- 1rpm.
+Integers specifying the random deviation of the rotation speed, multiplied by
+100 so 100 equals +/- 1rpm.
 
 @vindex DosName1540
 @vindex DosName1541
@@ -7306,7 +7325,7 @@ almost 20kHz).
 @vindex SidStereo
 @item SidStereo
 Integer specifying the amount of emulated extra SIDs.
-(0: off, 1: 1 extra sid, 2: 2 extra sids)
+(0: off, 1: 1 extra sid, 2: 2 extra sids, 3: three extra sids)
 
 @vindex SidStereoAddressStart
 @item SidStereoAddressStart
@@ -7339,6 +7358,23 @@ Integer specifying the base address of the third SID
 0xD7C0, 0xD7E0, 0xDE00, 0xDE20, 0xDE40, 0xDE60, 0xDE80, 0xDEA0,
 0xDEC0, 0xDEE0, 0xDF00, 0xDF20, 0xDF40, 0xDF60, 0xDF80, 0xDFA0,
 0xDFC0, 0xDFE0)
+
+@vindex SidQuadAddressStart
+@item SidQuadAddressStart
+Integer specifying the base address of the third SID
+(x64, x64sc, xscpu64, x128 and vsid only).
+(x128: 0xD420, 0xD440, 0xD460, 0xD480, 0xD4A0, 0xD4C0, 0xD4E0,
+0xD700, 0xD720, 0xD740, 0xD760, 0xD780, 0xD7A0, 0xD7C0, 0xD7E0,
+0xDE00, 0xDE20, 0xDE40, 0xDE60, 0xDE80, 0xDEA0, 0xDEC0, 0xDEE0,
+0xDF00, 0xDF20, 0xDF40, 0xDF60, 0xDF80, 0xDFA0, 0xDFC0, 0xDFE0)
+(x64/x64sc/xscpu64/vsid: 0xD420, 0xD440, 0xD460, 0xD480, 0xD4A0,
+0xD4C0, 0xD4E0, 0xD500, 0xD520, 0xD540, 0xD560, 0xD580, 0xD5A0,
+0xD5C0, 0xD5E0, 0xD600, 0xD620, 0xD640, 0xD660, 0xD680, 0xD6A0,
+0xD6C0, 0xD6E0, 0xD700, 0xD720, 0xD740, 0xD760, 0xD780, 0xD7A0,
+0xD7C0, 0xD7E0, 0xDE00, 0xDE20, 0xDE40, 0xDE60, 0xDE80, 0xDEA0,
+0xDEC0, 0xDEE0, 0xDF00, 0xDF20, 0xDF40, 0xDF60, 0xDF80, 0xDFA0,
+0xDFC0, 0xDFE0)
+
 
 @vindex SidFilters
 @item SidFilters
@@ -10381,8 +10417,8 @@ thus are not present in the other emulators.
 * PET settings::
 * Colour PET::
 * PET colors::
-* PET DWW high resolution grapics::
-* PET HRE (HiRes Emulator) high resolution grapics::
+* PET DWW high resolution graphics::
+* PET HRE (HiRes Emulator) high resolution graphics::
 @end menu
 
 @node PET model
@@ -11128,9 +11164,9 @@ feeling;
 @code{white.vpl} (``white''), simple white-on-black palette.
 @end itemize
 
-@node PET DWW high resolution grapics
+@node PET DWW high resolution graphics
 
-@subsection DWW high resolution grapics
+@subsection DWW high resolution graphics
 @cindex DWW
 The DWW, or Double-W
 @footnote{Dubbel-W bord, designed by Ben de Winter and Pieter
@@ -11208,9 +11244,9 @@ when memory mapped to $EC00:
 Unfortunately there is no logical means of expanding the memory
 to 16 K, so even in an 80 columns PET the resolution will be the same.
 
-@node PET HRE (HiRes Emulator) high resolution grapics
+@node PET HRE (HiRes Emulator) high resolution graphics
 
-@subsection HRE high resolution grapics
+@subsection HRE high resolution graphics
 
 This information comes from @email{kontakt@@michau.name, Michal Pleban},
 @uref{http://www.cbm-ii.com}.
@@ -16015,8 +16051,8 @@ Version numbers: Major 1, Minor 3
 @tab SHIFT
 @item BYTE
 @tab SuperPET config 2
-@tab Extra bits due to the Super-OS/9 MMU. Bit 5: FIRQ disabled. Bit 6:
-expansion memory in OS/9 flat mode.
+@tab Extra bits due to the Super-OS-9 MMU. Bit 5: FIRQ disabled. Bit 6:
+expansion memory in OS-9 flat mode.
 
 @end multitable
 

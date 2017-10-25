@@ -14,6 +14,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src/rs232drv \
 	-I$(top_srcdir)/src/sid \
 	-I$(top_srcdir)/src/arch/gtk3/widgets \
+	-I$(top_srcdir)/src/arch/gtk3/widgets/base \
 	-I$(top_srcdir)/src/c64 \
 	-I$(top_srcdir)/src/c64dtv \
 	-I$(top_srcdir)/src/c128 \
@@ -62,7 +63,6 @@ libarch_a_SOURCES = \
 	uiautostart.c \
 	uidatasette.c \
 	uidiskattach.c \
-	uidrivesettings.c \
 	uiedit.c \
 	uifliplist.c \
 	uimenu.c \
@@ -88,7 +88,11 @@ libarch_a_SOURCES = \
 	uicmdline.c \
 	uicompiletimefeatures.c \
 	uicontrolport.c \
-	uijoystick.c
+	uijoystick.c \
+	uicommands.c \
+	uimousesettings.c \
+	uisoundchipsettings.c \
+	uidrivesettings_new.c
 
 EXTRA_DIST = \
 	archdep.h \
@@ -120,7 +124,6 @@ EXTRA_DIST = \
 	uiautostart.h \
 	uidatasette.h \
 	uidiskattach.h \
-	uidrivesettings.h \
 	uifliplist.h \
 	uikeyboard.h \
 	uiedit.h \
@@ -141,4 +144,8 @@ EXTRA_DIST = \
 	uicmdline.h \
 	uicompiletimefeatures.h \
 	uicontrolport.h \
-	uijoystick.h
+	uijoystick.h \
+	uicommands.h \
+	uimousesettings.h \
+	uisoundchipsettings.h \
+	uidrivesettings_new.h

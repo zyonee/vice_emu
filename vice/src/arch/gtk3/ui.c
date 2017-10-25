@@ -50,6 +50,7 @@
 
 #include "basedialogs.h"
 #include "uiapi.h"
+#include "uicommands.h"
 #include "uidatasette.h"
 #include "uiedit.h"
 #include "uifliplist.h"
@@ -130,9 +131,9 @@ static void drive_reset_callback(GtkWidget *widget, gpointer user_data);
 static void ui_close_callback(GtkWidget *widget, gpointer user_data);
 static void ui_window_destroy_callback(GtkWidget *widget, gpointer user_data);
 static void ui_fullscreen_callback(GtkWidget *widget, gpointer user_data);
-static gboolean ui_warp_callback(GtkWidget *widget, gpointer user_data);
 
-static void ui_fullscreen_decorations_callback(GtkWidget *widget, gpointer user_data);
+static void ui_fullscreen_decorations_callback(GtkWidget *widget,
+                                               gpointer user_data);
 static int set_html_browser_command(const char *val, void *param);
 static int set_save_resources_on_exit(int val, void *param);
 static int set_confirm_on_exit(int val, void *param);
@@ -528,21 +529,65 @@ static ui_menu_item_t help_menu[] = {
 };
 
 
-/** \brief  'Settings' menu items
+/** \brief  'Settings' menu items - head section
  */
-static ui_menu_item_t settings_menu[] = {
+static ui_menu_item_t settings_menu_head[] = {
    { "Toggle fullscreen", UI_MENU_TYPE_ITEM_ACTION,
         ui_fullscreen_callback, NULL,
         GDK_KEY_D, GDK_MOD1_MASK },
     { "Toggle menu/status in fullscreen", UI_MENU_TYPE_ITEM_ACTION,
         ui_fullscreen_decorations_callback, NULL,
         GDK_KEY_B, GDK_MOD1_MASK },
-    { "Toggle warp mode", UI_MENU_TYPE_ITEM_ACTION,
-        (void*)(ui_warp_callback), NULL,
+
+    UI_MENU_SEPARATOR,
+
+    { "Toggle warp mode", UI_MENU_TYPE_ITEM_CHECK,
+        (void*)(ui_warp_callback), (void*)"WarpMode",
         GDK_KEY_W, GDK_MOD1_MASK },
 
     UI_MENU_SEPARATOR,
 
+    UI_MENU_TERMINATOR
+};
+
+/** \brief  'Settings' menu "swap joysticks" item
+ *
+ * Only valid for x64/x64sc/xscpu64/x128/xplus4/xcbm5x0
+ */
+static ui_menu_item_t settings_menu_swap_joy[] = {
+
+    { "Swap joysticks", UI_MENU_TYPE_ITEM_ACTION,
+        (void*)(ui_swap_joysticks_callback), NULL,
+        GDK_KEY_J, GDK_MOD1_MASK },
+    UI_MENU_TERMINATOR
+};
+
+/** \brief  'Settings' menu "swap userport joysticks" item
+ *
+ * Only valid for x64/x64sc/xscpu64/x128/xplus4/xvic/xpet/xcbm2
+ */
+static ui_menu_item_t settings_menu_swap_userport_joy[] = {
+    { "Swap userport joysticks", UI_MENU_TYPE_ITEM_ACTION,
+        (void*)(ui_swap_userport_joysticks_callback), NULL,
+        GDK_KEY_U, GDK_MOD1_MASK|GDK_SHIFT_MASK },
+    UI_MENU_TERMINATOR
+};
+
+/** \brief  'Settings' menu tail section
+ */
+static ui_menu_item_t settings_menu_tail[] = {
+    /* continue with joystick item(s) here */
+    { "Allow keyset joystick", UI_MENU_TYPE_ITEM_CHECK,
+        (void*)(ui_allow_keyset_joystick_callback), (void*)"KeySetEnable",
+        GDK_KEY_J, GDK_MOD1_MASK|GDK_SHIFT_MASK },
+
+    { "Enable mouse grab", UI_MENU_TYPE_ITEM_CHECK,
+        (void*)ui_mouse_grab_callback, (void*)"Mouse",
+        GDK_KEY_M, GDK_MOD1_MASK },
+
+    UI_MENU_SEPARATOR,
+
+    /* the settings dialog */
     { "Settings", UI_MENU_TYPE_ITEM_ACTION,
         ui_settings_dialog_create, NULL,
         0, 0 },
@@ -991,7 +1036,11 @@ void ui_create_toplevel_window(struct video_canvas_s *canvas) {
     ui_menu_init_accelerators(new_window);
 
     grid = gtk_grid_new();
-    new_drawing_area = gtk_drawing_area_new();
+    if (canvas->renderer == VICE_GTK3_RENDERER_CAIRO) {
+        new_drawing_area = gtk_drawing_area_new();
+    } else {
+        new_drawing_area = gtk_gl_area_new();
+    }
     status_bar = ui_statusbar_create();
     gtk_widget_show_all(status_bar);
     gtk_widget_set_no_show_all(status_bar, TRUE);
@@ -1009,8 +1058,38 @@ void ui_create_toplevel_window(struct video_canvas_s *canvas) {
     ui_menu_edit_add(edit_menu);
     /* generate Snapshot menu */
     ui_menu_snapshot_add(snapshot_menu);
+
     /* settings menu */
-    ui_menu_settings_add(settings_menu);
+    ui_menu_settings_add(settings_menu_head);
+
+    /* determine which joystick swap menu items should be added */
+    switch (machine_class) {
+        case VICE_MACHINE_C64:      /* fall through */
+        case VICE_MACHINE_C64SC:    /* fall through */
+        case VICE_MACHINE_SCPU64:   /* fall through */
+        case VICE_MACHINE_C128:     /* fall through */
+        case VICE_MACHINE_PLUS4:
+            /* add both swap-joy and swap-userport-joy */
+            ui_menu_settings_add(settings_menu_swap_joy);
+            ui_menu_settings_add(settings_menu_swap_userport_joy);
+            break;
+        case VICE_MACHINE_C64DTV:   /* fall through */
+        case VICE_MACHINE_CBM5x0:
+            /* only add swap-joy */
+            ui_menu_settings_add(settings_menu_swap_joy);
+            break;
+        case VICE_MACHINE_PET:      /* fall through */
+        case VICE_MACHINE_VIC20:    /* fall through */
+        case VICE_MACHINE_CBM6x0:
+            ui_menu_settings_add(settings_menu_swap_userport_joy);
+            break;
+        case VICE_MACHINE_VSID:
+            break;
+        default:
+            break;
+    }
+    ui_menu_settings_add(settings_menu_tail);
+
     /* generate Help menu */
     ui_menu_help_add(help_menu);
 #ifdef DEBUG
@@ -1336,20 +1415,6 @@ void ui_pause_emulation(int flag)
     }
 }
 
-
-/** \brief  Switch warp mode
- *
- * \param[in]   widget      widget triggering the event (invalid)
- * \param[in]   user_data   extra data for event (unused)
- */
-static gboolean ui_warp_callback(GtkWidget *widget, gpointer user_data)
-{
-    int state;
-
-    resources_get_int("WarpMode", &state);
-    resources_set_int("WarpMode", state ? 0 : 1);
-    return TRUE;
-}
 
 
 /** \brief  Check if emulation is paused

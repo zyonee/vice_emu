@@ -57,6 +57,7 @@
 #include "vsync.h"
 
 #include "debug_gtk3.h"
+#include "resourcecheckbutton.h"
 #include "widgethelpers.h"
 #include "openfiledialog.h"
 #include "savefiledialog.h"
@@ -65,7 +66,7 @@
 #include "uikeyboard.h"
 #include "uisound.h"
 #include "uiautostart.h"
-#include "uidrivesettings.h"
+#include "uidrivesettings_new.h"
 #include "uimodel.h"
 #include "uimisc.h"
 #include "ramresetwidget.h"
@@ -74,6 +75,8 @@
 #include "uiprintersettings.h"
 #include "uicontrolport.h"
 #include "uijoystick.h"
+#include "uimousesettings.h"
+#include "uisoundchipsettings.h"
 
 #include "uisettings.h"
 
@@ -93,6 +96,14 @@ enum {
 };
 
 
+static ui_settings_tree_node_t subnodes[] = {
+    { "Compyx", NULL, NULL },
+    { "Fucking", NULL, NULL },
+    { "Rules!!", NULL, NULL },
+    { NULL, NULL, NULL }
+};
+
+
 /** \brief  Main tree nodes
  *
  *
@@ -107,18 +118,26 @@ static ui_settings_tree_node_t main_nodes[] = {
     { "Speed settings", uispeed_create_central_widget, NULL },
     { "Keyboard settings", uikeyboard_create_central_widget, NULL },
     { "Sound settings", uisound_create_central_widget, NULL },
-    { "Samper settings", uisamplersettings_widget_create, NULL },
+    { "Sampler settings", uisamplersettings_widget_create, NULL },
     { "Autostart settings", uiautostart_create_central_widget, NULL },
-    { "Drive settings", uidrivesettings_create_central_widget, NULL },
+    { "Drive settings", uidrivesettings_widget_create, NULL },
     { "Printer settings", uiprintersettings_widget_create, NULL },
     { "Control port settings", uicontrolport_widget_create, NULL },
     { "Joystick settings", uijoystick_widget_create, NULL },
+    { "Mouse settings", uimousesettings_widget_create, NULL },
     { "Model settings", uimodel_create_central_widget, NULL },
     { "RAM reset pattern", create_ram_reset_central_widget, NULL },
     { "Miscellaneous", uimisc_create_central_widget, NULL },
     { "Video settings", uivideosettings_widget_create, NULL },
+    /* TODO: only enable this item when a SID is supported or can be supported
+     *       through an I/O extension
+     */
+    { "SID settings", uisoundchipsettings_widget_create, NULL },
+    { "Subitem test", NULL, subnodes },
     { NULL, NULL, NULL }
 };
+
+
 
 
 /** \brief  Reference to the current 'central' widget in the settings dialog
@@ -175,9 +194,8 @@ static void on_tree_selection_changed(
  */
 static GtkWidget *create_save_on_exit_checkbox(void)
 {
-    return uihelpers_create_resource_checkbox(
-            "Save settings on exit",
-            "SaveResourcesOnExit");
+    return resource_check_button_create("SaveResourcesOnExit",
+            "Save settings on exit");
 }
 
 
@@ -189,11 +207,46 @@ static GtkWidget *create_save_on_exit_checkbox(void)
  */
 static GtkWidget *create_confirm_on_exit_checkbox(void)
 {
-    return uihelpers_create_resource_checkbox(
-            "Confirm on exit",
-            "ConfirmOnExit");
+    return resource_check_button_create("ConfirmOnExit", "Confirm on exit");
 }
 
+
+/** \brief  Create tree store containing settings items and children
+ *
+ * \return  GtkTreeStore
+ */
+static GtkTreeStore *create_tree_store(void)
+{
+    GtkTreeStore *store;
+    GtkTreeIter iter;
+    GtkTreeIter child;
+    int i;
+
+    store = gtk_tree_store_new(NUM_COLUMNS, G_TYPE_STRING, G_TYPE_POINTER);
+
+    for (i = 0; main_nodes[i].name != NULL; i++) {
+        gtk_tree_store_append(store, &iter, NULL);
+        gtk_tree_store_set(store, &iter,
+                0, main_nodes[i].name,
+                1, main_nodes[i].callback,
+                -1);
+        /* this bit will need proper recursion if we need more than two
+         * levels of subitems */
+        if (main_nodes[i].children != NULL) {
+            int c;
+            ui_settings_tree_node_t *list = main_nodes[i].children;
+
+            for (c = 0; list[c].name != NULL; c++) {
+                gtk_tree_store_append(store, &child, &iter);
+                gtk_tree_store_set(store, &child,
+                        0, list[c].name,
+                        1, list[c].callback,
+                        -1);
+            }
+        }
+    }
+    return store;
+}
 
 
 /** \brief  Create treeview for settings side-menu
@@ -212,29 +265,8 @@ static GtkWidget *create_treeview(void)
     GtkCellRenderer *text_renderer;
     GtkTreeViewColumn *text_column;
 
-    GtkTreeIter iter;   /* parent iter */
-    size_t i;
-#if 0
-    GtkTreeIter child;  /* child iter */
-#endif
-
-    /* create the model */
-    store = gtk_tree_store_new(NUM_COLUMNS, G_TYPE_STRING, G_TYPE_POINTER);
-
-    /* add root node */
-    /*    gtk_tree_store_append(store, &iter, NULL); */
-
-    for (i = 0; main_nodes[i].name != NULL; i++) {
-        gtk_tree_store_append(store, &iter, NULL);
-        gtk_tree_store_set(
-                store, &iter,
-                0, main_nodes[i].name,
-                1, main_nodes[i].callback,
-                -1);
-    }
-
+    store = create_tree_store();
     tree = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store));
-
 
     text_renderer = gtk_cell_renderer_text_new();
     text_column = gtk_tree_view_column_new_with_attributes(
@@ -242,12 +274,6 @@ static GtkWidget *create_treeview(void)
             text_renderer,
             "text", 0,
             NULL);
-/*    obj_column = gtk_tree_view_column_new_with_attributes(
-            NULL,
-            NULL,
-            "text", 0,
-            NULL);
-*/
     /*    gtk_tree_view_append_column(GTK_TREE_VIEW(tree), obj_column); */
     gtk_tree_view_append_column(GTK_TREE_VIEW(tree), text_column);
     return tree;
@@ -316,8 +342,8 @@ static GtkWidget *create_content_widget(GtkWidget *widget)
     gtk_widget_show(settings_grid);
     gtk_widget_show(tree);
 
-    gtk_widget_set_size_request(tree, 150, 630);
-    gtk_widget_set_size_request(settings_grid, 800, 680);
+    gtk_widget_set_size_request(tree, 180, 630);
+    gtk_widget_set_size_request(settings_grid, 800, 720);
 
     selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tree));
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);

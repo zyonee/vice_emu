@@ -1,5 +1,5 @@
-/*
- * archdep_win32.h - Architecture dependant defines.
+/** \file   src/arch/gtk3/archdep_win32.h
+ * \brief   Windows-specific stuff - header
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -116,6 +116,6 @@ void archdep_signals_init(int do_coredumps);
 /* Keyword to use for a static prototype */
 #define STATIC_PROTOTYPE static
 
-void vice_usleep(__int64 waitTime);
+void vice_usleep(uint64_t waitTime);
 
 #endif
