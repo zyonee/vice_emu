@@ -1,5 +1,5 @@
-/** \file   src/arch/gtk3/widgets/drivetypewidget.h
- * \brief   Drive settings dialog - header
+/** \file   src/arch/gtk3/widgets/drivedoswidget.h
+ * \brief   Drive DOS expansions widget - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -21,22 +21,14 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  *  02111-1307  USA.
- *
  */
 
-
-#ifndef VICE_UIDRIVETYPEWIDGET_H
-#define VICE_UIDRIVETYPEWIDGET_H
+#ifndef VICE_DRIVEDOSWIDGET_H
+#define VICE_DRIVEDOSWIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-
-GtkWidget * drive_type_widget_create(int unit);
-void        drive_type_widget_update(GtkWidget *widget);
-
-void drive_type_widget_add_callback(GtkWidget *widget,
-                                    void (*cb_func)(GtkWidget *, gpointer),
-                                    gpointer cb_data);
+GtkWidget *drive_dos_widget_create(int unit);
 
 #endif

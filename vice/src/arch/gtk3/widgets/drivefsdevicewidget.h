@@ -1,5 +1,5 @@
-/** \file   src/arch/gtk3/widgets/printeroutputwidget.h
- * \brief   Widget to control printer output settings - header
+/** \file   src/arch/gtk3/widgets/drivefsdevicewidget.h
+ * \brief   Drive file system device widget - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -21,15 +21,14 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  *  02111-1307  USA.
- *
  */
 
-#ifndef VICE_PRINTEROUTPUT_WIDGET_H
-#define VICE_PRINTEROUTPUT_WIDGET_H
+#ifndef VICE_DRIVEFSDEVICEWIDGET_H
+#define VICE_DRIVEFSDEVICEWIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-GtkWidget  *printer_output_widget_create(int device);
+GtkWidget *drive_fsdevice_widget_create(int unit);
 
 #endif

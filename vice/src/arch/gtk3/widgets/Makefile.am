@@ -14,6 +14,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src/rs232drv \
 	-I$(top_srcdir)/src/sid \
 	-I$(top_srcdir)/src/c64 \
+	-I$(top_srcdir)/src/c64/cart \
 	-I$(top_srcdir)/src/c64dtv \
 	-I$(top_srcdir)/src/c128 \
 	-I$(top_srcdir)/src/cbm2 \
@@ -50,7 +51,6 @@ libwidgets_a_SOURCES = \
 	drivewidgethelpers.c \
 	driveunitwidget.c \
 	driveextendpolicywidget.c \
-	driveexpansionwidget.c \
 	driveidlemethodwidget.c \
 	driveparallelcablewidget.c \
 	driveoptionswidget.c \
@@ -81,13 +81,21 @@ libwidgets_a_SOURCES = \
 	videobordermodewidget.c \
 	printeremulationtypewidget.c \
 	printerdriverwidget.c \
-	printeroutputwidget.c \
 	userportprinterwidget.c \
 	joystickdevicewidget.c \
 	joystickuserportadapterwidget.c \
 	sidsoundwidget.c \
 	driverpmwidget.c \
-	drivetypewidget_new.c
+	drivemodelwidget.c \
+	driveramwidget.c \
+	drivedoswidget.c \
+	drivefsdevicewidget.c \
+	printeroutputmodewidget.c \
+	printeroutputdevicewidget.c \
+	c64memoryexpansionhackswidget.c \
+	georamwidget.c \
+	reuwidget.c \
+	ramcartwidget.c
 
 EXTRA_DIST = \
 	widgethelpers.h \
@@ -112,7 +120,6 @@ EXTRA_DIST = \
 	drivewidgethelpers.h \
 	driveunitwidget.h \
 	driveextendpolicywidget.h \
-	driveexpansionwidget.h \
 	driveidlemethodwidget.h \
 	driveparallelcablewidget.h \
 	driveoptionswidget.h \
@@ -143,10 +150,18 @@ EXTRA_DIST = \
 	videobordermodewidget.h \
 	printeremulationtypewidget.h \
 	printerdrivewidget.h \
-	printeroutputwidget.h \
 	userportprinterwidget.h \
 	joystickdevicewidget.h \
 	joystickuserportadapterwidget.h \
 	sidsoundwidget.h \
 	driverpmwidget.h \
-	drivetypewidget_new.h
+	drivemodelwidget.h \
+	driveramwidget.h \
+	drivedoswidget.h \
+	drivefsdevicewidget.h \
+	printeroutputmodewidget.h \
+	printeroutputdevicewidget.h \
+	c64memoryexpansionhackswidget.h \
+	georamwidget.h \
+	reuwidget.h \
+	ramcartwidget.h

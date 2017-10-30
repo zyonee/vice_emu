@@ -1,5 +1,5 @@
-/** \file   src/arch/gtk3/widgets/drivetypewidget.h
- * \brief   Drive settings dialog - header
+/** \file   src/arch/gtk3/widgets/c64memoryexpansionhackswidget.h
+ * \brief   Widget to control C64 memory expansion hacks - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -24,19 +24,12 @@
  *
  */
 
-
-#ifndef VICE_UIDRIVETYPEWIDGET_H
-#define VICE_UIDRIVETYPEWIDGET_H
+#ifndef VICE_C64MEMORYEXPANSIONHACKSWIDGET_H
+#define VICE_C64MEMORYEXPANSIONHACKSWIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-
-GtkWidget * drive_type_widget_create(int unit);
-void        drive_type_widget_update(GtkWidget *widget);
-
-void drive_type_widget_add_callback(GtkWidget *widget,
-                                    void (*cb_func)(GtkWidget *, gpointer),
-                                    gpointer cb_data);
+GtkWidget *c64_memory_expansion_hacks_widget_create(GtkWidget *parent);
 
 #endif

@@ -1,5 +1,5 @@
-/** \file   src/arch/gtk3/widgets/base/basewidgets.h
- * \brief   Header file for the base widgets
+/** \file   src/arch/gtk3/widgets/printeroutputdevicewidget.h
+ * \brief   Widget to control printer output device settings
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -24,19 +24,12 @@
  *
  */
 
-#ifndef VICE_BASEWIDGETS_H
-#define VICE_BASEWIDGETS_H
+#ifndef VICE_PRINTEROUTPUTDEVICEWIDGET_H
+#define VICE_PRINTEROUTPUTDEVICEWIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-#include "basewidget_types.h"
-
-#include "resourcecheckbutton.h"
-#include "resourcecombobox.h"
-#include "resourceentry.h"
-#include "resourceradiogroup.h"
-#include "resourcescale.h"
-#include "resourcespinbutton.h"
+GtkWidget *printer_output_device_widget_create(int device);
 
 #endif

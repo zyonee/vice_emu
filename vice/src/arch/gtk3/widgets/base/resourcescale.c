@@ -27,11 +27,13 @@
 #include "vice.h"
 
 #include <gtk/gtk.h>
+#include <stdarg.h>
 
 #include "basewidget_types.h"
 #include "debug_gtk3.h"
 #include "lib.h"
 #include "resources.h"
+#include "resourcehelpers.h"
 
 #include "resourcescale.h"
 
@@ -43,12 +45,9 @@
  * \param[in]   scale       integer scale widget
  * \param[in]   user_data   extra event data (unused)
  */
-static void on_scale_int_destroy(GtkScale *scale, gpointer user_data)
+static void on_scale_int_destroy(GtkWidget *scale, gpointer user_data)
 {
-    char *resource;
-
-    resource = (char*)g_object_get_data(G_OBJECT(scale), "ResourceName");
-    lib_free(resource);
+    resource_widget_free_resource_name(scale);
 }
 
 
@@ -59,13 +58,13 @@ static void on_scale_int_destroy(GtkScale *scale, gpointer user_data)
  * \param[in]   scale       integer scale widget
  * \param[in]   user_data   extra event data (unused)
  */
-static void on_scale_int_changed(GtkScale *scale, gpointer user_data)
+static void on_scale_int_changed(GtkWidget *scale, gpointer user_data)
 {
     const char *resource;
     int old_val;
     int new_val;
 
-    resource = (const char*)g_object_get_data(G_OBJECT(scale), "ResourceName");
+    resource = resource_widget_get_resource_name(scale);
     resources_get_int(resource, &old_val);
     new_val = (int)gtk_range_get_value(GTK_RANGE(scale));
     /* only update resource when required */
@@ -75,6 +74,37 @@ static void on_scale_int_changed(GtkScale *scale, gpointer user_data)
     }
 }
 
+
+/** \brief  Create a scale for an integer resource - helper
+ *
+ * \param[in]   scale       scale widget
+ * \param[in]   orientation scale orientation (\see GtkOrientation)
+ * \param[in]   low         lowest value for scale
+ * \param[in]   high        highest value for scale
+ * \param[in]   step        value to incr/decr value with cursor keys
+ *
+ * \return  GtkScale
+ */
+static GtkWidget *resource_scale_int_create_helper(GtkWidget *scale)
+{
+    int value;
+    const char *resource;
+
+    resource = resource_widget_get_resource_name(scale);
+
+    gtk_scale_set_digits(GTK_SCALE(scale), 0);
+
+    /* set current value */
+    resources_get_int(resource, &value);
+    gtk_range_set_value(GTK_RANGE(scale), (gdouble)value);
+
+    g_signal_connect(scale, "value-changed", G_CALLBACK(on_scale_int_changed),
+            NULL);
+    g_signal_connect(scale, "destroy", G_CALLBACK(on_scale_int_destroy), NULL);
+
+    gtk_widget_show(scale);
+    return scale;
+}
 
 /** \brief  Create a scale for an integer resource
  *
@@ -91,27 +121,46 @@ GtkWidget *resource_scale_int_create(const char *resource,
                                      int low, int high, int step)
 {
     GtkWidget *scale;
-    int value;
 
     scale = gtk_scale_new_with_range(orientation,
             (gdouble)low, (gdouble)high, (gdouble)step);
-    gtk_scale_set_digits(GTK_SCALE(scale), 0);
-
     /* store copy of resource name */
-    g_object_set_data(G_OBJECT(scale), "ResourceName",
-            (gpointer)lib_stralloc(resource));
+    resource_widget_set_resource_name(scale, resource);
 
-    /* set current value */
-    resources_get_int(resource, &value);
-    gtk_range_set_value(GTK_RANGE(scale), (gdouble)value);
-
-    g_signal_connect(scale, "value-changed", G_CALLBACK(on_scale_int_changed),
-            NULL);
-    g_signal_connect(scale, "destroy", G_CALLBACK(on_scale_int_destroy), NULL);
-
-    gtk_widget_show(scale);
-    return scale;
+    return resource_scale_int_create_helper(scale);
 }
+
+
+/** \brief  Create a scale for an integer resource
+ *
+ * \param[in]   fmt         resource name format string
+ * \param[in]   orientation scale orientation (\see GtkOrientation)
+ * \param[in]   low         lowest value for scale
+ * \param[in]   high        highest value for scale
+ * \param[in]   step        value to incr/decr value with cursor keys
+ *
+ * \return  GtkScale
+ */
+GtkWidget *resource_scale_int_create_sprintf(const char *fmt,
+                                             GtkOrientation orientation,
+                                             int low, int high, int step,
+                                             ...)
+{
+    GtkWidget *scale;
+    char *resource;
+    va_list args;
+
+    scale = gtk_scale_new_with_range(orientation,
+            (gdouble)low, (gdouble)high, (gdouble)step);
+
+    va_start(args, step);
+    resource = lib_mvsprintf(fmt, args);
+    g_object_set_data(G_OBJECT(scale), "ResourceName", (gpointer)resource);
+    va_end(args);
+
+    return resource_scale_int_create_helper(scale);
+}
+
 
 
 /** \brief  Add marks to integer \a scale widget at each \a step increment
@@ -159,7 +208,7 @@ void resource_scale_int_reset(GtkWidget *scale)
     const char *resource;
     int value;
 
-    resource = (const char*)g_object_get_data(G_OBJECT(scale), "ResourceName");
+    resource = resource_widget_get_resource_name(scale);
     resources_get_default_value(resource, &value);
     debug_gtk3("resetting %s to factory value %d\n", resource, value);
     resource_scale_int_update(scale, value);

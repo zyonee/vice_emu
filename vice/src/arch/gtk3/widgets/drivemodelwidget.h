@@ -1,5 +1,5 @@
-/** \file   src/arch/gtk3/widgets/driveexpansionwidget.h
- * \brief   Drive expansions widget - header
+/** \file   src/arch/gtk3/widgets/drivemodelwidget.h
+ * \brief   Drive model selection widget - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -24,14 +24,19 @@
  *
  */
 
-#ifndef VICE_DRIVEEXPANSIONWIDGET_H
-#define VICE_DRIVEEXPANSIONWIDGET_H
+
+#ifndef VICE_DRIVEMODELWIDGET_H
+#define VICE_DRIVEMODELWIDGET_H
 
 #include "vice.h"
-
 #include <gtk/gtk.h>
 
-GtkWidget * drive_expansion_widget_create(int unit);
-void        drive_expansion_widget_update(GtkWidget *widget);
+
+GtkWidget * drive_model_widget_create(int unit);
+void        drive_model_widget_update(GtkWidget *widget);
+
+void drive_model_widget_add_callback(GtkWidget *widget,
+                                     void (*cb_func)(GtkWidget *, gpointer),
+                                     gpointer cb_data);
 
 #endif

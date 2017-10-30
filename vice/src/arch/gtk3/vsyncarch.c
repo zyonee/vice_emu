@@ -66,8 +66,9 @@ static int pause_pending = 0;
 #define TICKSPERUSEC    1L
 #endif
 
+/* FIXME: this function should be a constant */
 /* Number of timer units per second. */
-signed long vsyncarch_frequency(void)
+unsigned long vsyncarch_frequency(void)
 {
     return TICKSPERSECOND;
 }
@@ -75,6 +76,7 @@ signed long vsyncarch_frequency(void)
 /* Get time in timer units. */
 unsigned long vsyncarch_gettime(void)
 {
+/* FIXME: configure checks for clock_gettime need to be added */
 #ifdef HAVE_NANOSLEEP
  #ifdef MACOSX_SUPPORT
     static uint64_t factor = 0;
@@ -112,26 +114,42 @@ void vsyncarch_display_speed(double speed, double frame_rate, int warp_enabled)
 }
 
 /* Sleep a number of timer units. */
-void vsyncarch_sleep(signed long delay)
+void vsyncarch_sleep(unsigned long delay)
 {
 #ifdef HAVE_NANOSLEEP
     struct timespec ts;
 #endif
-
+    unsigned long thistime, targettime, timewait;
+#if 0
     /* HACK: to prevent any multitasking stuff getting in the way, we return
              immediately on delays up to 0.1ms */
     if (delay < (TICKSPERMSEC / 10)) {
         return;
     }
-
-#ifdef HAVE_NANOSLEEP
-    ts.tv_sec = delay / TICKSPERSECOND;
-    ts.tv_nsec = (delay % TICKSPERSECOND);
-    /* wait until whole interval has elapsed */
-    while (nanosleep(&ts, &ts));
-#else
-    usleep(delay);
 #endif
+    targettime = vsyncarch_gettime() + delay;
+
+    /* repeatedly sleep until the requested delay is over. we do this so we get
+       a somewhat accurate delay even if the sleep function itself uses the
+       wall clock, which under certain circumstance may wait less than the
+       requested time */
+    while ((thistime = vsyncarch_gettime()) < targettime) {
+        /* we use increasingly smaller delays, and for the last 100 steps just
+           poll the current time */
+        timewait = (targettime - thistime) / 10;
+        if (timewait > 100) {
+            /* FIXME: this should use a sleep function with monotonous clock
+                      source, eg clock_nanosleep */
+#ifdef HAVE_NANOSLEEP
+            ts.tv_sec = timewait / TICKSPERSECOND;
+            ts.tv_nsec = (timewait % TICKSPERSECOND);
+            /* wait until whole interval has elapsed */
+            while (nanosleep(&ts, &ts));
+#else
+            usleep(timewait);
+#endif
+        }
+    }
 }
 
 void vsyncarch_presync(void)

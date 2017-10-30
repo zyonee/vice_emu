@@ -1,8 +1,10 @@
-/** \file   src/arch/gtk3/widgets/base/basewidgets.h
- * \brief   Header file for the base widgets
+/** \file   src/arch/gtk3/widgets/georamwidget.h
+ * \brief   Widget to control GEO-RAM resources - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
+ *
+ * Controls the following resource(s):
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,19 +26,13 @@
  *
  */
 
-#ifndef VICE_BASEWIDGETS_H
-#define VICE_BASEWIDGETS_H
+#ifndef VICE_GEORAMWIDGET_H
+#define VICE_GEORAMWIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-#include "basewidget_types.h"
-
-#include "resourcecheckbutton.h"
-#include "resourcecombobox.h"
-#include "resourceentry.h"
-#include "resourceradiogroup.h"
-#include "resourcescale.h"
-#include "resourcespinbutton.h"
+GtkWidget *georam_widget_create(GtkWidget *parent);
+void georam_widget_set_save_handler(int (*func)(int, const char *));
 
 #endif

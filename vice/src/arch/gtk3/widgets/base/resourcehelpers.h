@@ -1,5 +1,5 @@
-/** \file   src/arch/gtk3/widgets/base/basewidgets.h
- * \brief   Header file for the base widgets
+/** \file   src/arch/gtk3/widgets/base/resourcehelpers.h
+ * \brief   Helper functions for resource widgets - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -21,22 +21,23 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  *  02111-1307  USA.
- *
  */
 
-#ifndef VICE_BASEWIDGETS_H
-#define VICE_BASEWIDGETS_H
+#ifndef VICE_RESOURCEHELPERS_H
+#define VICE_RESOURCEHELPERS_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-#include "basewidget_types.h"
+void resource_widget_set_int(GtkWidget *widget, const char *key, int value);
+int resource_widget_get_int(GtkWidget *widget, const char *key);
+void resource_widget_set_string(GtkWidget *widget, const char *key,
+                                const char *value);
+const char *resource_widget_get_string(GtkWidget *widget, const char *key);
+void resource_widget_free_string(GtkWidget *widget, const char *key);
 
-#include "resourcecheckbutton.h"
-#include "resourcecombobox.h"
-#include "resourceentry.h"
-#include "resourceradiogroup.h"
-#include "resourcescale.h"
-#include "resourcespinbutton.h"
+void resource_widget_set_resource_name(GtkWidget *widget, const char *resource);
+const char *resource_widget_get_resource_name(GtkWidget *widget);
+void resource_widget_free_resource_name(GtkWidget *widget);
 
 #endif

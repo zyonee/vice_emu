@@ -49,8 +49,9 @@
 /* SDL_Delay & GetTicks have 1ms resolution, while VICE needs 1us */
 #define VICE_SDL_TICKS_SCALE 1000
 
+/* FIXME: this function should be a constant */
 /* Number of timer units per second. */
-signed long vsyncarch_frequency(void)
+unsigned long vsyncarch_frequency(void)
 {
     /* Milliseconds resolution. */
     return 1000 * VICE_SDL_TICKS_SCALE;
@@ -76,7 +77,7 @@ void vsyncarch_display_speed(double speed, double frame_rate, int warp_enabled)
 }
 
 /* Sleep a number of timer units. */
-void vsyncarch_sleep(signed long delay)
+void vsyncarch_sleep(unsigned long delay)
 {
     SDL_Delay(delay / VICE_SDL_TICKS_SCALE);
 }

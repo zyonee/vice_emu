@@ -27,10 +27,12 @@
 #include "vice.h"
 
 #include <gtk/gtk.h>
+#include <stdarg.h>
 
 #include "debug_gtk3.h"
 #include "lib.h"
 #include "resources.h"
+#include "resourcehelpers.h"
 
 #include "resourcecheckbutton.h"
 
@@ -44,10 +46,7 @@
  */
 static void on_check_button_destroy(GtkWidget *check, gpointer user_data)
 {
-    char *resource;
-
-    resource = (char *)(g_object_get_data(G_OBJECT(check), "ResourceName"));
-    lib_free(resource);
+    resource_widget_free_resource_name(check);
 }
 
 
@@ -62,9 +61,13 @@ static void on_check_button_toggled(GtkWidget *check, gpointer user_data)
     int state;
     int current;
 
-    resource = (const char *)g_object_get_data(G_OBJECT(check), "ResourceName");
+    resource = resource_widget_get_resource_name(check);
     state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(check));
-    resources_get_int(resource, &current);
+    if (resources_get_int(resource, &current) < 0) {
+        /* invalid resource, exit */
+        debug_gtk3("warning: invalid resource '%s'\n", resource);
+        return;
+    }
 
     /* make sure we don't update a resource when the UI happens to be out of
      * sync for some reason */
@@ -73,6 +76,43 @@ static void on_check_button_toggled(GtkWidget *check, gpointer user_data)
         resources_set_int(resource, state ? 1 : 0);
     }
 }
+
+
+/** \brief  Check button setup helper
+ *
+ * Called by either resource_check_button_create() or
+ * resource_check_button_create_printf() to finish setting up the resource
+ * check button \a check
+ *
+ * \param[in]   check   check button
+ *
+ * \return  new check button
+ */
+static GtkWidget *resource_check_button_create_helper(GtkWidget *check)
+{
+    int state;
+    const char *resource;
+
+    /* get current resource value */
+    resource = resource_widget_get_resource_name(check);
+    if (resources_get_int(resource, &state) < 0) {
+        /* invalid resource, set state to off */
+        debug_gtk3("warning: invalid resource '%s'\n", resource);
+        state = 0;
+    }
+
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check),
+            state ? TRUE : FALSE);
+
+    g_signal_connect(check, "toggled", G_CALLBACK(on_check_button_toggled),
+            (gpointer)resource);
+    g_signal_connect(check, "destroy", G_CALLBACK(on_check_button_destroy),
+            NULL);
+
+    gtk_widget_show(check);
+    return check;
+}
+
 
 
 /** \brief  Create check button to toggle \a resource
@@ -92,42 +132,71 @@ GtkWidget *resource_check_button_create(const char *resource,
                                         const char *label)
 {
     GtkWidget *check;
-    int state;
-
-    /* get current resource value */
-    resources_get_int(resource, &state);
 
     check = gtk_check_button_new_with_label(label);
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check),
-            state ? TRUE : FALSE);
 
     /* make a copy of the resource name and store the pointer in the propery
      * "ResourceName" */
-    g_object_set_data(G_OBJECT(check), "ResourceName",
-            (gpointer)lib_stralloc(resource));
+    resource_widget_set_resource_name(check, resource);
 
-    g_signal_connect(check, "toggled", G_CALLBACK(on_check_button_toggled),
-            (gpointer)resource);
-    g_signal_connect(check, "destroy", G_CALLBACK(on_check_button_destroy),
-            NULL);
-
-    gtk_widget_show(check);
-    return check;
+    return resource_check_button_create_helper(check);
 }
 
 
+/** \brief  Create check button to toggle a resource
+ *
+ * Creates a check button to toggle a resource. Makes a heap-allocated copy
+ * of the resource name so initializing this widget with a constructed/temporary
+ * resource name works as well. The resource name can be constructed with a
+ * printf() format string.
+ *
+ * \param[in]   fmt         resource name format string
+ * \param[in]   label       label of the check button
+ *
+ * \note    The resource name is stored in the "ResourceName" property.
+ *
+ * \return  new check button
+ */
+GtkWidget *resource_check_button_create_sprintf(const char *fmt,
+                                                const char *label,
+                                                ...)
+{
+    GtkWidget *check;
+    va_list args;
+    char *resource;
+
+    check = gtk_check_button_new_with_label(label);
+
+    va_start(args, label);
+    resource = lib_mvsprintf(fmt, args);
+    g_object_set_data(G_OBJECT(check), "ResourceName", (gpointer)resource);
+    va_end(args);
+
+    return resource_check_button_create_helper(check);
+}
+
+
+/** \brief  Set new \a value for \a check button
+ *
+ * \param[in,out]   check   check button
+ * \param[in]       value   new value
+ */
 void resource_check_button_update(GtkWidget *check, gboolean value)
 {
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check), value);
 }
 
 
+/** \brief  Reset check button to factory state
+ *
+ * \param[in,out]   check   check button
+ */
 void resource_check_button_reset(GtkWidget *check)
 {
     const char *resource;
     int value;
 
-    resource = (const char*)g_object_get_data(G_OBJECT(check), "ResourceName");
+    resource = resource_widget_get_resource_name(check);
     resources_get_default_value(resource, &value);
     debug_gtk3("resetting %s to factory value %s\n",
             resource, value ? "True" : "False");

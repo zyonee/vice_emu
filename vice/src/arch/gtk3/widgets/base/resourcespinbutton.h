@@ -33,10 +33,13 @@
 
 GtkWidget * resource_spin_button_int_create(const char *resource,
                                             int lower, int upper, int step);
+GtkWidget * resource_spin_button_int_create_sprintf(const char *fmt,
+                                                    int lower, int upper, int step,
+                                                    ...);
 
 void        resource_spin_button_int_update(GtkWidget *widget, int value);
 
-void        resource_spin_button_int_set_fake_digits(GtkSpinButton *spin,
+void        resource_spin_button_int_set_fake_digits(GtkWidget *spin,
                                                      int digits);
 
 #endif

@@ -25,8 +25,10 @@ AM_CPPFLAGS = \
 noinst_LIBRARIES = libbasewidgets.a
 
 libbasewidgets_a_SOURCES = \
+	resourcehelpers.c \
 	resourcecheckbutton.c \
 	resourcecombobox.c \
+	resourceentry.c \
 	resourceradiogroup.c \
 	resourcescale.c \
 	resourcespinbutton.c
@@ -34,8 +36,10 @@ libbasewidgets_a_SOURCES = \
 EXTRA_DIST = \
 	basewidgets.h \
 	basewidget_types.h \
+	resourcehelpers.h \
 	resourcecheckbutton.h \
 	resourcecombobox.h \
+	resourceentry.h \
 	resourceradiogroup.h \
 	resourcescale.h \
 	resourcespinbutton.h

@@ -1,12 +1,11 @@
-/** \file   src/arch/gtk3/widgets/driveidlemethodwidget.c
- * \brief   Drive expansions widget
+/** \file   src/arch/gtk3/widgets/printeroutputdevicewidget.c
+ * \brief   Widget to control printer output device settings
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
  *
  * Controls the following resource(s):
- *  Drive[8-11]IdleMethod
- *
+ *  Printer[4-6]TextDevice
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -31,47 +30,46 @@
 #include "vice.h"
 
 #include <gtk/gtk.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "basewidgets.h"
+#include "resourcehelpers.h"
 #include "widgethelpers.h"
 #include "debug_gtk3.h"
 #include "resources.h"
-#include "drive.h"
-#include "drive-check.h"
+#include "printer.h"
 
-#include "driveidlemethodwidget.h"
-
+#include "printeroutputdevicewidget.h"
 
 
-/** \brief  Idle method (name,id) tuples
+/** \brief  List of text output devices
  */
-static ui_combo_entry_int_t idle_methods[] = {
-    { "None", 0 },
-    { "Skip cycles", 1 },
-    { "Trap idle", 2 },
+static ui_radiogroup_entry_t device_list[] = {
+    { "#1 (file dump)", 0 },
+    { "#2 (exec)", 1 },
+    { "#3 (exec)", 2 },
     { NULL, -1 }
 };
 
 
-/** \brief  Create widget to set the drive idle method
+/** \brief  Create widget to control the "Printer[4-6]TextDevice resource
  *
- * \param[in]   unit    current drive unit number
+ * \param[in]   device number (4-6)
  *
  * \return  GtkGrid
  */
-GtkWidget *drive_idle_method_widget_create(int unit)
+GtkWidget *printer_output_device_widget_create(int device)
 {
     GtkWidget *grid;
-    GtkWidget *combo;
+    GtkWidget *radio_group;
 
-    grid = uihelpers_create_grid_with_label("Idle method", 1);
-    g_object_set_data(G_OBJECT(grid), "UnitNumber", GINT_TO_POINTER(unit));
+    grid = uihelpers_create_grid_with_label("Output device", 1);
+    radio_group = resource_radiogroup_create_sprintf("Printer%dTextDevice",
+            device_list, GTK_ORIENTATION_VERTICAL, device);
+    gtk_grid_attach(GTK_GRID(grid), radio_group, 0, 1, 1, 1);
 
-    combo = resource_combo_box_int_create_sprintf("Drive%dIdleMethod",
-            idle_methods, unit);
-    gtk_widget_set_hexpand(combo, TRUE);
-    g_object_set(combo, "margin-left", 16, NULL);
-    gtk_grid_attach(GTK_GRID(grid), combo, 0, 1, 1, 1);
     gtk_widget_show_all(grid);
     return grid;
 }

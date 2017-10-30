@@ -37,6 +37,13 @@
 #include "sampler.h"
 #include "uisamplersettings.h"
 
+#include "cartridge.h"
+#include "georam.h"
+#include "georamwidget.h"
+#include "reu.h"
+#include "reuwidget.h"
+#include "ramcartwidget.h"
+
 #include "scpu64ui.h"
 
 
@@ -75,6 +82,11 @@ int scpu64ui_init(void)
     video_model_widget_set_models(c64scpu_vicii_models);
 
     uisamplersettings_set_devices_getter(sampler_get_devices);
+
+    /* I/O extension function pointers */
+    georam_widget_set_save_handler(cartridge_bin_save);
+    reu_widget_set_save_handler(reu_bin_save);
+    ramcart_widget_set_save_handler(cartridge_bin_save);
 
     INCOMPLETE_IMPLEMENTATION();
     return 0;
