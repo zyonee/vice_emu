@@ -20,20 +20,31 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src/plus4 \
 	-I$(top_srcdir)/src/scpu64 \
 	-I$(top_srcdir)/src/vic20 \
-	-I$(top_srcdir)/src/userport
+	-I$(top_srcdir)/src/userport \
+	-I$(top_srcdir)/src/c64/cart
 
 noinst_LIBRARIES = libbasewidgets.a
 
 libbasewidgets_a_SOURCES = \
+	basedialogs.c \
+	widgethelpers.c \
 	resourcehelpers.c \
 	resourcecheckbutton.c \
 	resourcecombobox.c \
 	resourceentry.c \
 	resourceradiogroup.c \
 	resourcescale.c \
-	resourcespinbutton.c
+	resourcespinbutton.c \
+	cartimagewidget.c \
+	openfiledialog.c \
+	savefiledialog.c \
+	selectdirectorydialog.c \
+	filechooserhelpers.c \
+	clockportdevicewidget.c
 
 EXTRA_DIST = \
+	basedialogs.h \
+	widgethelpers.h \
 	basewidgets.h \
 	basewidget_types.h \
 	resourcehelpers.h \
@@ -42,4 +53,10 @@ EXTRA_DIST = \
 	resourceentry.h \
 	resourceradiogroup.h \
 	resourcescale.h \
-	resourcespinbutton.h
+	resourcespinbutton.h \
+	cartimagewidget.h \
+	openfiledialog.h \
+	savefiledialog.h \
+	selectdirectorydialog.h \
+	filechooserhelpers.h \
+	clockportdevicewidget.h

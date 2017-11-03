@@ -1,5 +1,5 @@
-/** \file   src/arch/gtk3/widgets/ramcartwidget.h
- * \brief   Widget to control RAMCART resources - header
+/** \file   src/arch/gtk3/widgets/mmcrwidget.h
+ * \brief   Widget to control MMC Replay resources - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -24,14 +24,14 @@
  *
  */
 
-#ifndef VICE_RAMCARTWIDGET_H
-#define VICE_RAMCARTWIDGET_H
+#ifndef VICE_MMCRWIDGET_H
+#define VICE_MMCRWIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-GtkWidget * ramcart_widget_create(GtkWidget *parent);
-void        ramcart_widget_set_save_handler(int (*func)(int, const char *));
-void        ramcart_widget_set_flush_handler(int (*func)(int));
+GtkWidget * mmcr_widget_create(GtkWidget *parent);
+void        mmcr_widget_set_eeprom_save_func(int (*func)(int, const char *));
+void        mmcr_widget_set_eeprom_flush_func(int (*func)(int));
 
 #endif

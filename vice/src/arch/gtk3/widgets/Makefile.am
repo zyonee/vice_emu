@@ -29,16 +29,11 @@ AM_CPPFLAGS = \
 noinst_LIBRARIES = libwidgets.a
 
 libwidgets_a_SOURCES = \
-	widgethelpers.c \
-	basedialogs.c \
 	jamdialog.c \
 	refreshratewidget.c \
 	speedwidget.c \
 	kbdmappingwidget.c \
 	kbdlayoutwidget.c \
-	openfiledialog.c \
-	savefiledialog.c \
-	selectdirectorydialog.c \
 	sounddriverwidget.c \
 	soundoutputmodewidget.c \
 	soundsyncwidget.c \
@@ -47,7 +42,6 @@ libwidgets_a_SOURCES = \
 	soundfragmentsizewidget.c \
 	soundsuspendtimewidget.c \
 	contentpreviewwidget.c \
-	filechooserhelpers.c \
 	drivewidgethelpers.c \
 	driveunitwidget.c \
 	driveextendpolicywidget.c \
@@ -95,11 +89,16 @@ libwidgets_a_SOURCES = \
 	c64memoryexpansionhackswidget.c \
 	georamwidget.c \
 	reuwidget.c \
-	ramcartwidget.c
+	ramcartwidget.c \
+	dqbbwidget.c \
+	expertwidget.c \
+	isepicwidget.c \
+	easyflashwidget.c \
+	gmod2widget.c \
+	mmcrwidget.c \
+	mmc64widget.c
 
 EXTRA_DIST = \
-	widgethelpers.h \
-	basedialogs.h \
 	jamdialog.h \
 	refreshratewidget.h \
 	speedwidget.h \
@@ -164,4 +163,11 @@ EXTRA_DIST = \
 	c64memoryexpansionhackswidget.h \
 	georamwidget.h \
 	reuwidget.h \
-	ramcartwidget.h
+	ramcartwidget.h \
+	dqbbwidget.h \
+	expertwidget.h \
+	isepicwidget.h \
+	easyflashwidget.h \
+	gmod2widget.h \
+	mmcrwidget.h \
+	mmc64widget.h

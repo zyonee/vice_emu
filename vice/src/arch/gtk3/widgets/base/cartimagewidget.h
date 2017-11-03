@@ -1,5 +1,5 @@
-/** \file   src/arch/gtk3/widgets/ramcartwidget.h
- * \brief   Widget to control RAMCART resources - header
+/** \file   src/arch/gtk3/widgets/base/cartimagewidget.h
+ * \brief   Widget to control load/save/flush for cart images - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -24,14 +24,17 @@
  *
  */
 
-#ifndef VICE_RAMCARTWIDGET_H
-#define VICE_RAMCARTWIDGET_H
+#ifndef VICE_CARTIMAGEWIDGET_H
+#define VICE_CARTIMAGEWIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-GtkWidget * ramcart_widget_create(GtkWidget *parent);
-void        ramcart_widget_set_save_handler(int (*func)(int, const char *));
-void        ramcart_widget_set_flush_handler(int (*func)(int));
+GtkWidget *cart_image_widget_create(
+        GtkWidget *parent, const char *title,
+        const char *resource_fname, const char *resource_write,
+        int (*func_save)(int, const char *),
+        int (*func_flush)(int),
+        const char *cart_name, int cart_id);
 
 #endif

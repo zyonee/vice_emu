@@ -4,8 +4,6 @@
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
  *
- * Controls the following resource(s):
- *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -32,7 +30,8 @@
 #include "vice.h"
 #include <gtk/gtk.h>
 
-GtkWidget *georam_widget_create(GtkWidget *parent);
-void georam_widget_set_save_handler(int (*func)(int, const char *));
+GtkWidget * georam_widget_create(GtkWidget *parent);
+void        georam_widget_set_save_handler(int (*func)(int, const char *));
+void        georam_widget_set_flush_handler(int (*func)(int));
 
 #endif

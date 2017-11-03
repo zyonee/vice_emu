@@ -32,6 +32,8 @@
 
 #include "basewidget_types.h"
 
+#include "cartimagewidget.h"
+#include "clockportdevicewidget.h"
 #include "resourcecheckbutton.h"
 #include "resourcecombobox.h"
 #include "resourceentry.h"

@@ -1,5 +1,5 @@
-/** \file   src/arch/gtk3/widgets/ramcartwidget.h
- * \brief   Widget to control RAMCART resources - header
+/** \file   src/arch/gtk3/widgets/isepicwidget.h
+ * \brief   Widget to control ISEPIC resources - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -24,14 +24,14 @@
  *
  */
 
-#ifndef VICE_RAMCARTWIDGET_H
-#define VICE_RAMCARTWIDGET_H
+#ifndef VICE_ISEPICWIDGET_H
+#define VICE_ISEPICWIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-GtkWidget * ramcart_widget_create(GtkWidget *parent);
-void        ramcart_widget_set_save_handler(int (*func)(int, const char *));
-void        ramcart_widget_set_flush_handler(int (*func)(int));
+GtkWidget * isepic_widget_create(GtkWidget *parent);
+void        isepic_widget_set_save_handler(int (*func)(int, const char *));
+void        isepic_widget_set_flush_handler(int (*func)(int));
 
 #endif

@@ -83,6 +83,13 @@
 #include "georamwidget.h"
 #include "reuwidget.h"
 #include "ramcartwidget.h"
+#include "dqbbwidget.h"
+#include "expertwidget.h"
+#include "isepicwidget.h"
+#include "easyflashwidget.h"
+#include "gmod2widget.h"
+#include "mmcrwidget.h"
+#include "mmc64widget.h"
 
 #include "uisettings.h"
 
@@ -111,7 +118,7 @@ enum {
 };
 
 
-/** \brief  List of C64 I/O extensions (x64, x64sc)
+/** \brief  List of C64 I/O extensions (x64, x64sc, xscpu64, x128)
  *
  * Every empty line indicates a separator in the Gtk2 UI's menu
  */
@@ -122,15 +129,15 @@ static ui_settings_tree_node_t c64_io_extensions[] = {
     { "RAM Expansion Module",       reu_widget_create, NULL },
     { "RamCart",                    ramcart_widget_create, NULL },
 
-    { "Double Quick Brown Box",     NULL, NULL },
-    { "Expert Cartridge",           NULL, NULL },
-    { "ISEPIC",                     NULL, NULL },
+    { "Double Quick Brown Box",     dqbb_widget_create, NULL },
+    { "Expert Cartridge",           expert_widget_create, NULL },
+    { "ISEPIC",                     isepic_widget_create, NULL },
 
-    { "EasyFlash",                  NULL, NULL },
-    { "GMod2",                      NULL, NULL },
+    { "EasyFlash",                  easyflash_widget_create, NULL },
+    { "GMod2",                      gmod2_widget_create, NULL },
     { "IDE64",                      NULL, NULL },
-    { "MMC64",                      NULL, NULL },
-    { "MMC Replay",                 NULL, NULL },
+    { "MMC64",                      mmc64_widget_create, NULL },
+    { "MMC Replay",                 mmcr_widget_create, NULL },
     { "Retro Replay",               NULL, NULL },
     { "Super Snapshot V5",          NULL, NULL },
 
@@ -156,6 +163,43 @@ static ui_settings_tree_node_t c64_io_extensions[] = {
     { NULL, NULL, NULL }
 };
 
+
+/** \brief  List of VIC-20 I/O extensions (x64, x64sc)
+ *
+ * Every empty line indicates a separator in the Gtk2 UI's menu
+ */
+static ui_settings_tree_node_t vic20_io_extensions[] = {
+    { "Mega Cart",                  NULL, NULL },
+    { "Final Expansion",            NULL, NULL },
+    { "Vic Flash Plugin",           NULL, NULL },
+    { "UltiMem",                    NULL, NULL },
+    { "SID Cartridge",              NULL, NULL },
+    { "VIC-1112 IEEE-488 interface", NULL, NULL },  /* checkmark in Gtk2 */
+    { "I/O RAM",                    NULL, NULL },
+    { "VFLI modification",          NULL, NULL },   /* checkmark in Gtk2 */
+
+    { "DigiMAX (MasC=uerade",       NULL, NULL },
+    { "DS12C887 Real Time Clock (MasC=uerade)", NULL, NULL },
+    { "GEO-RAM (MasC=uerade)",      georam_widget_create, NULL },
+
+    /* XXX: much more to come here */
+    { NULL, NULL, NULL }
+};
+
+
+static ui_settings_tree_node_t no_io_extensions[] = {
+    { "NOT IMPLEMENTED", NULL, NULL },
+    { NULL, NULL, NULL }
+};
+
+
+/** \brief  Index in the main nodes of the I/O extension sub nodes
+ *
+ * FIXME:   This is a hack, similar to how the gtk2 UI handled dynamic
+ *          menus. The proper way is to implement functions to build the
+ *          tree model, which is a TODO at the moment.
+ */
+#define IO_EXTENSIONS_INDEX 15
 
 /** \brief  Main tree nodes
  *
@@ -189,7 +233,6 @@ static ui_settings_tree_node_t main_nodes[] = {
     { "I/O extensions", NULL, c64_io_extensions },  /* C64 only for now */
     { NULL, NULL, NULL }
 };
-
 
 
 
@@ -290,9 +333,18 @@ static GtkTreeStore *create_tree_store(void)
             ui_settings_tree_node_t *list = main_nodes[i].children;
 
             for (c = 0; list[c].name != NULL; c++) {
+                char buffer[256];
+
+                /* mark items without callback with 'TODO' */
+                if (list[c].callback != NULL) {
+                    g_snprintf(buffer, 256, "%s", list[c].name);
+                } else {
+                    g_snprintf(buffer, 256, "TODO: %s", list[c].name);
+                }
+
                 gtk_tree_store_append(store, &child, &iter);
                 gtk_tree_store_set(store, &child,
-                        0, list[c].name,
+                        0, buffer,
                         1, list[c].callback,
                         -1);
             }
@@ -317,6 +369,25 @@ static GtkWidget *create_treeview(void)
     GtkTreeStore *store;
     GtkCellRenderer *text_renderer;
     GtkTreeViewColumn *text_column;
+
+    ui_settings_tree_node_t *io_nodes = NULL;
+
+    /* hack: set I/O extension sub-nodes */
+    switch (machine_class) {
+        case VICE_MACHINE_C64:
+        case VICE_MACHINE_C64SC:
+        case VICE_MACHINE_SCPU64:
+        case VICE_MACHINE_C128:
+            io_nodes = c64_io_extensions;
+            break;
+        case VICE_MACHINE_VIC20:
+            io_nodes = vic20_io_extensions;
+            break;
+        default:
+            io_nodes = no_io_extensions;
+    }
+    main_nodes[IO_EXTENSIONS_INDEX].children = io_nodes;
+
 
     store = create_tree_store();
     tree = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store));
@@ -348,6 +419,8 @@ static void ui_settings_set_central_widget(GtkWidget *widget)
         gtk_widget_destroy(child);
     }
     gtk_grid_attach(GTK_GRID(settings_grid), widget, 1, 0, 1, 1);
+    /* add a little space around the widget */
+    g_object_set(widget, "margin", 16, NULL);
 }
 
 

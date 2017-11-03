@@ -1,5 +1,5 @@
-/** \file   src/arch/gtk3/widgets/ramcartwidget.h
- * \brief   Widget to control RAMCART resources - header
+/** \file   src/arch/gtk3/widgets/gmod2widget.h
+ * \brief   Widget to control GMod2 resources - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -24,14 +24,14 @@
  *
  */
 
-#ifndef VICE_RAMCARTWIDGET_H
-#define VICE_RAMCARTWIDGET_H
+#ifndef VICE_GMOD2WIDGET_H
+#define VICE_GMOD2WIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-GtkWidget * ramcart_widget_create(GtkWidget *parent);
-void        ramcart_widget_set_save_handler(int (*func)(int, const char *));
-void        ramcart_widget_set_flush_handler(int (*func)(int));
+GtkWidget * gmod2_widget_create(GtkWidget *parent);
+void        gmod2_widget_set_save_handler(int (*func)(int, const char *));
+void        gmod2_widget_set_flush_handler(int (*func)(int));
 
 #endif

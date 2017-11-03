@@ -1,5 +1,5 @@
-/** \file   src/arch/gtk3/widgets/ramcartwidget.h
- * \brief   Widget to control RAMCART resources - header
+/** \file   src/arch/gtk3/widgets/clockportdevicewidget.h
+ * \brief   Widget to select ClockPort device - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -24,14 +24,13 @@
  *
  */
 
-#ifndef VICE_RAMCARTWIDGET_H
-#define VICE_RAMCARTWIDGET_H
+#ifndef VICE_CLOCKPORTDEVICEWIDGET_H
+#define VICE_CLOCKPORTDEVICEWIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-GtkWidget * ramcart_widget_create(GtkWidget *parent);
-void        ramcart_widget_set_save_handler(int (*func)(int, const char *));
-void        ramcart_widget_set_flush_handler(int (*func)(int));
+GtkWidget *clockport_device_widget_create(const char *resource);
+void clockport_device_widget_set_devices(void *devices);
 
 #endif

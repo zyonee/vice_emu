@@ -1,5 +1,5 @@
-/** \file   src/arch/gtk3/widgets/ramcartwidget.h
- * \brief   Widget to control RAMCART resources - header
+/** \file   src/arch/gtk3/widgets/mmc64widget.h
+ * \brief   Widget to control MMC64 resources - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -24,14 +24,14 @@
  *
  */
 
-#ifndef VICE_RAMCARTWIDGET_H
-#define VICE_RAMCARTWIDGET_H
+#ifndef VICE_MMC64WIDGET_H
+#define VICE_MMC64WIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-GtkWidget * ramcart_widget_create(GtkWidget *parent);
-void        ramcart_widget_set_save_handler(int (*func)(int, const char *));
-void        ramcart_widget_set_flush_handler(int (*func)(int));
+GtkWidget * mmc64_widget_create(GtkWidget *parent);
+void        mmc64_widget_set_eeprom_save_func(int (*func)(int, const char *));
+void        mmc64_widget_set_eeprom_flush_func(int (*func)(int));
 
 #endif

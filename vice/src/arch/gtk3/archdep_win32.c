@@ -195,6 +195,11 @@ void archdep_shutdown(void)
         argv0 = NULL;
     }
 
+    if (program_name != NULL) {
+        lib_free(program_name);
+        program_name = NULL;
+    }
+
     /* archdep_network_shutdown(); */
 
     /* partially implemented */
@@ -266,7 +271,6 @@ int archdep_file_is_chardev(const char *name)
 
 int archdep_file_is_blockdev(const char *name)
 {
-    NOT_IMPLEMENTED();
     return 0;
 }
 

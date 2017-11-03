@@ -37,12 +37,21 @@
 #include "videomodelwidget.h"
 #include "uisamplersettings.h"
 
+#include "clockportdevicewidget.h"
+#include "clockport.h"
+
 #include "georam.h"
 #include "georamwidget.h"
 #include "reu.h"
 #include "reuwidget.h"
 #include "cartridge.h"
 #include "ramcartwidget.h"
+#include "dqbbwidget.h"
+#include "expertwidget.h"
+#include "isepicwidget.h"
+#include "gmod2widget.h"
+#include "mmcrwidget.h"
+#include "mmc64widget.h"
 
 #include "c64ui.h"
 
@@ -84,10 +93,29 @@ int c64ui_init(void)
 
     uisamplersettings_set_devices_getter(sampler_get_devices);
 
+    /* work around VSID again */
+    clockport_device_widget_set_devices((void *)clockport_supported_devices);
+
     /* I/O extension function pointers */
-    georam_widget_set_save_handler(cartridge_bin_save);
-    reu_widget_set_save_handler(reu_bin_save);
-    ramcart_widget_set_save_handler(cartridge_bin_save);
+    georam_widget_set_save_handler(cartridge_save_image);
+    georam_widget_set_flush_handler(cartridge_flush_image);
+    reu_widget_set_save_handler(cartridge_save_image);
+    reu_widget_set_flush_handler(cartridge_flush_image);
+    ramcart_widget_set_save_handler(cartridge_save_image);
+    ramcart_widget_set_flush_handler(cartridge_flush_image);
+    dqbb_widget_set_save_handler(cartridge_save_image);
+    dqbb_widget_set_flush_handler(cartridge_flush_image);
+    expert_widget_set_save_handler(cartridge_save_image);
+    expert_widget_set_flush_handler(cartridge_flush_image);
+    isepic_widget_set_save_handler(cartridge_save_image);
+    isepic_widget_set_flush_handler(cartridge_flush_image);
+    gmod2_widget_set_save_handler(cartridge_save_image);
+    gmod2_widget_set_flush_handler(cartridge_flush_image);
+    mmcr_widget_set_eeprom_save_func(cartridge_save_image);
+    mmcr_widget_set_eeprom_flush_func(cartridge_flush_image);
+    mmc64_widget_set_eeprom_save_func(cartridge_save_image);
+    mmc64_widget_set_eeprom_flush_func(cartridge_flush_image);
+
 
     INCOMPLETE_IMPLEMENTATION();
     return 0;
