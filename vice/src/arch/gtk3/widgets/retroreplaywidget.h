@@ -1,5 +1,5 @@
-/** \file   src/arch/gtk3/uidrivesettings.h
- * \brief   Drive settings dialog - header
+/** \file   src/arch/gtk3/widgets/retroreplaywidget.h
+ * \brief   Widget to control Retro Replay resources - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -24,12 +24,14 @@
  *
  */
 
-#ifndef VICE_UIDRIVESETTINGS_H
-#define VICE_UIDRIVESETTINGS_H
+#ifndef VICE_RETROREPLAYWIDGET_H
+#define VICE_RETROREPLAYWIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-GtkWidget *uidrivesettings_widget_create(GtkWidget *parent);
+GtkWidget *retroreplay_widget_create(GtkWidget *parent);
+void retroreplay_widget_set_save_func(int (*func)(int, const char *));
+void retroreplay_widget_set_flush_func(int (*func)(int));
 
 #endif

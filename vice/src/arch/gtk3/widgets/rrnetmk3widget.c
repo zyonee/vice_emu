@@ -1,15 +1,13 @@
-/** \file   src/arch/gtk3/widgets/easyflashwidget.c
- * \brief   Widget to control Easy Flash resources
+/** \file   src/arch/gtk3/widgets/rrnetmk3widget.c
+ * \brief   Widget to control RRNet MK3 resourcs
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
  *
  * Controls the following resource(s):
- *  EasyFlashJumper
- *  EasyFlashWriteCRT
- *  EasyFlashOptimizeCRT
+ *  RRNETMK3_flashjumper
+ *  RRNETMK3_bios_write
  *
- * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -26,11 +24,11 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  *  02111-1307  USA.
- *
  */
 
 #include "vice.h"
 #include <gtk/gtk.h>
+#include <stdlib.h>
 
 #include "machine.h"
 #include "resources.h"
@@ -38,11 +36,10 @@
 #include "basewidgets.h"
 #include "widgethelpers.h"
 #include "basedialogs.h"
-#include "openfiledialog.h"
 #include "savefiledialog.h"
 #include "cartridge.h"
 
-#include "easyflashwidget.h"
+#include "rrnetmk3widget.h"
 
 
 static int (*save_func)(int, const char *) = NULL;
@@ -60,9 +57,9 @@ static void on_save_clicked(GtkWidget *widget, gpointer user_data)
 
     filename = ui_save_file_dialog(widget, "Save image as", NULL, TRUE, NULL);
     if (filename != NULL) {
-        debug_gtk3("writing EF image file as '%s'\n", filename);
-        if (save_func(CARTRIDGE_EASYFLASH, filename) < 0) {
-            /* ui_error("Failed to save EF image '%s'", filename); */
+        debug_gtk3("writing RRNetMk3 image file as '%s'\n", filename);
+        if (save_func(CARTRIDGE_RRNETMK3, filename) < 0) {
+            /* ui_error("Failed to save RRNetMk3 image '%s'", filename); */
         }
         g_free(filename);
     }
@@ -76,52 +73,49 @@ static void on_save_clicked(GtkWidget *widget, gpointer user_data)
  */
 static void on_flush_clicked(GtkWidget *widget, gpointer user_data)
 {
-    debug_gtk3("flushing EF image\n");
-    if (flush_func(CARTRIDGE_EASYFLASH) < 0) {
+    debug_gtk3("flushing RRNetMk3 image\n");
+    if (flush_func(CARTRIDGE_RRNETMK3) < 0) {
         /* TODO: report error */
     }
 }
 
 
-/** \brief  Create Easy Flash widget
+/** \brief  Create widget to control RRNet Mk3 resources
  *
  * \param[in]   parent  parent widget
  *
  * \return  GtkGrid
  */
-GtkWidget *easyflash_widget_create(GtkWidget *parent)
+GtkWidget *rrnetmk3_widget_create(GtkWidget *parent)
 {
     GtkWidget *grid;
-    GtkWidget *jumper;
-    GtkWidget *write_crt;
-    GtkWidget *optimize_crt;
+    GtkWidget *flash_jumper;
+    GtkWidget *bios_write;
     GtkWidget *save_button;
     GtkWidget *flush_button;
 
     grid = gtk_grid_new();
-    gtk_grid_set_column_spacing(GTK_GRID(grid), 16);
+    gtk_grid_set_column_spacing(GTK_GRID(grid), 8);
     gtk_grid_set_row_spacing(GTK_GRID(grid), 8);
 
-    jumper = resource_check_button_create("EasyFlashJumper",
-            "Set Easy Flash jumper");
-    write_crt = resource_check_button_create("EasyFlashWriteCRT",
-            "Save image when changed");
-    optimize_crt = resource_check_button_create("EasyFlashOptimizeCRT",
-            "Optimize image when saving");
+    flash_jumper = resource_check_button_create("RRNETMK3_flashjumper",
+            "Enable flash jumper");
+    gtk_grid_attach(GTK_GRID(grid), flash_jumper, 0, 0, 1, 1);
 
-    gtk_grid_attach(GTK_GRID(grid), jumper, 0, 0, 1, 1);
-    gtk_grid_attach(GTK_GRID(grid), write_crt, 0, 1, 1, 1);
-    gtk_grid_attach(GTK_GRID(grid), optimize_crt, 0, 2, 1, 1);
+    /* RRBiosWrite */
+    bios_write = resource_check_button_create("RRNETMK3_bios_write",
+            "Write back RRNetMk3 Flash ROM image automatically");
+    gtk_grid_attach(GTK_GRID(grid), bios_write, 0, 1, 1, 1);
 
     /* Save image as... */
     save_button = gtk_button_new_with_label("Save image as ...");
-    gtk_grid_attach(GTK_GRID(grid), save_button, 1, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), save_button, 1, 1, 1, 1);
     g_signal_connect(save_button, "clicked", G_CALLBACK(on_save_clicked),
             NULL);
 
     /* Flush image now */
     flush_button = gtk_button_new_with_label("Flush image now");
-    gtk_grid_attach(GTK_GRID(grid), flush_button, 1, 1, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), flush_button, 1, 2, 1, 1);
     g_signal_connect(flush_button, "clicked", G_CALLBACK(on_flush_clicked),
             NULL);
 
@@ -130,21 +124,21 @@ GtkWidget *easyflash_widget_create(GtkWidget *parent)
 }
 
 
-/** \brief  Set function to save EF image to disk
+/** \brief  Set function to save RRNetMk3 image to disk
  *
  * \param[in]   func    function to save image
  */
-void easyflash_widget_set_save_func(int (*func)(int, const char *))
+void rrnetmk3_widget_set_save_func(int (*func)(int, const char *))
 {
     save_func = func;
 }
 
 
-/** \brief  Set function to flush EF image to disk
+/** \brief  Set function to flush RRNetMk3 image to disk
  *
  * \param[in]   func    function to flush image
  */
-void easyflash_widget_set_flush_func(int (*func)(int))
+void rrnetmk3_widget_set_flush_func(int (*func)(int))
 {
     flush_func = func;
 }

@@ -1,8 +1,10 @@
-/** \file   src/arch/gtk3/uidrivesettings_new.h
- * \brief   Drive settings dialog, new version - header
+/** \file   src/arch/gtk3/widgets/ide64widget.h
+ * \brief   Widget to control IDE64 resources - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
+ *
+ * Controls the following resource(s):
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,12 +26,12 @@
  *
  */
 
-#ifndef VICE_UIDRIVESETTINGS_H
-#define VICE_UIDRIVESETTINGS_H
+#ifndef VICE_IDE64WIDGET_H
+#define VICE_IDE64WIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-GtkWidget *uidrivesettings_widget_create(GtkWidget *parent);
+GtkWidget *ide64_widget_create(GtkWidget *parent);
 
 #endif

@@ -36,6 +36,7 @@ libarch_a_SOURCES = \
 	c64dtvui.c \
 	c64scui.c \
 	c64ui.c \
+	cairo_renderer.c \
 	cbm2ui.c \
 	cbm5x0ui.c \
 	console.c \
@@ -93,7 +94,7 @@ libarch_a_SOURCES = \
 	uicommands.c \
 	uimousesettings.c \
 	uisoundchipsettings.c \
-	uidrivesettings_new.c
+	uidrivesettings.c
 
 EXTRA_DIST = \
 	archdep.h \
@@ -101,6 +102,7 @@ EXTRA_DIST = \
 	archdep_unix.h \
 	archdep_win32.c \
 	archdep_win32.h \
+	cairo_renderer.h \
 	coproc.h \
 	debug_gtk3.h \
 	dynlib-unix.c \
@@ -149,4 +151,4 @@ EXTRA_DIST = \
 	uicommands.h \
 	uimousesettings.h \
 	uisoundchipsettings.h \
-	uidrivesettings_new.h
+	uidrivesettings.h

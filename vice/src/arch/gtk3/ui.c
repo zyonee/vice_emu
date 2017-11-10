@@ -515,10 +515,10 @@ static ui_menu_item_t help_menu[] = {
     { "Browse manual", UI_MENU_TYPE_ITEM_ACTION,
         NULL, NULL,
         0, 0 },
-    { "Commandline options ...", UI_MENU_TYPE_ITEM_ACTION,
+    { "Command line options ...", UI_MENU_TYPE_ITEM_ACTION,
         uicmdline_dialog_show, NULL,
         0, 0 },
-    { "Compiletime features ...", UI_MENU_TYPE_ITEM_ACTION,
+    { "Compile time features ...", UI_MENU_TYPE_ITEM_ACTION,
         uicompiletimefeatures_dialog_show, NULL,
         0, 0 },
     { "About VICE", UI_MENU_TYPE_ITEM_ACTION,
@@ -1036,15 +1036,7 @@ void ui_create_toplevel_window(struct video_canvas_s *canvas) {
     ui_menu_init_accelerators(new_window);
 
     grid = gtk_grid_new();
-#if GTK_CHECK_VERSION(3,16,0)
-    if (canvas->renderer == VICE_GTK3_RENDERER_CAIRO) {
-        new_drawing_area = gtk_drawing_area_new();
-    } else {
-        new_drawing_area = gtk_gl_area_new();
-    }
-#else
-    new_drawing_area = gtk_drawing_area_new();
-#endif
+    new_drawing_area = vice_renderer_backend->create_widget(canvas);
     status_bar = ui_statusbar_create();
     gtk_widget_show_all(status_bar);
     gtk_widget_set_no_show_all(status_bar, TRUE);

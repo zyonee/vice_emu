@@ -1,5 +1,5 @@
-/** \file   src/arch/gtk3/uidrivesettings.h
- * \brief   Drive settings dialog - header
+/** \file   src/arch/gtk3/widgets/ethernetcartwidget.h
+ * \brief   Widget to control ethernet cartridge settings - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -24,12 +24,12 @@
  *
  */
 
-#ifndef VICE_UIDRIVESETTINGS_H
-#define VICE_UIDRIVESETTINGS_H
+#ifndef VICE_ETHERNETCARTWIDGET_H
+#define VICE_ETHERNETCARTWIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-GtkWidget *uidrivesettings_widget_create(GtkWidget *parent);
+GtkWidget *ethernet_cart_widget_create(GtkWidget *parent);
 
 #endif

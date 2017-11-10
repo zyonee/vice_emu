@@ -1,8 +1,7 @@
-/** \file   src/arch/gtk3/uidrivesettings.h
- * \brief   Drive settings dialog - header
+/** \file   src/arch/gtk3/cairo_renderer.h
+ * \brief   Cairo-based renderer for the GTK3 backend.
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
+ *  Michael C. Martin <mcmartin@gmail.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -23,13 +22,11 @@
  *  02111-1307  USA.
  *
  */
+#ifndef VICE_CAIRO_RENDERER_H
+#define VICE_CAIRO_RENDERER_H
 
-#ifndef VICE_UIDRIVESETTINGS_H
-#define VICE_UIDRIVESETTINGS_H
+#include "videoarch.h"
 
-#include "vice.h"
-#include <gtk/gtk.h>
-
-GtkWidget *uidrivesettings_widget_create(GtkWidget *parent);
+extern vice_renderer_backend_t vice_cairo_backend;
 
 #endif

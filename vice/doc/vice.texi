@@ -6170,6 +6170,11 @@ Boolean, if true the SD-Card image is mounted read-only.
 Integer that specifies the reported type for the emulated SD-Card.
 (0: Auto, 1: MMC, 2: SD, 3: SDHC)
 
+@vindex MMC64ClockPort
+@item MMC64ClockPort
+Integer that specifies the clockport device used.
+(0: None, 1: ETH64-II, 2: RRNet, 3: Silver Surfer, 4: MP3@@64, 5: Catweasel MkIII SID)
+
 @vindex MMCRCardImage
 @item MMCRCardImage
 String specifying the filename of the SD-Card image used by the MMCR emulation.
@@ -6204,7 +6209,7 @@ Boolean specifying if the MMCR EEPROM image is writeable.
 @vindex MMCRClockPort
 @item MMCRClockPort
 Integer that specifies the clockport device.
-(0: None, 1: RRNet, 2: MP3@@64, 3: ETH64-II, 4: Silver Surfer, 5: Catweasel MkIII SID)
+(0: None, 1: ETH64-II, 2: RRNet, 3: Silver Surfer, 4: MP3@@64, 5: Catweasel MkIII SID)
 
 @vindex RAMCART
 @item RAMCART
@@ -6245,6 +6250,12 @@ Boolean specifying whether the RR bank jumper is set or not.
 @item RRBiosWrite
 Boolean, if true write back the RR Flash ROM image file automatically, incase the
 contents changed, when detaching or quitting the emulator.
+
+@vindex RRClockPort
+@item RRClockPort
+Integer that specifies the clockport device.
+(0: None, 1: ETH64-II, 2: RRNet, 3: Silver Surfer, 4: MP3@@64, 5: Catweasel MkIII SID)
+
 
 @vindex SSRamExpansion
 @item SSRamExpansion
@@ -6671,6 +6682,12 @@ Specify MMC64 SD type
 (@code{MMC64_sd_type}).
 (0: Auto, 1: MMC, 2: SD, 3: SDHC)
 
+@findex -mmc64clockportdevice
+@item -mmc64clockportdevice <device>
+Set MMC64 clockport device
+(@code{MMC64ClockPort})
+(0: None, 1: ETH64-II, 2: RRNet, 3: Silver Surfer, 4: MP3@@64, 5: Catweasel MkIII SID)
+
 @findex -cartmmcr
 @item -cartmmcr <name>
 Attach raw 512kB MMC Replay cartridge image.
@@ -6719,7 +6736,7 @@ Allow/disallow writes to MMC Replay EEPROM image
 @item -mmcrclockportdevice <id>
 Set MMC Replay clockport device
 (@code{MMCRClockPort}).
-(0: None, 1: RRNet, 2: MP3@@64, 3: ETH64-II, 4: Silver Surfer, 5: Catweasel MkIII SID)
+(0: None, 1: ETH64-II, 2: RRNet, 3: Silver Surfer, 4: MP3@@64, 5: Catweasel MkIII SID)
 
 @findex -cartmv
 @item -cartmv <name>
@@ -6828,6 +6845,13 @@ Set/unset RR Flash Jumper
 Set the RR revision
 (@code{RRrevision}).
 (0: Retro Replay, 1: Nordic Replay)
+
+@findex -rrclockportdevice
+@item -rrclockportdevice <device>
+Set the RR clockport device
+(@code{RRClockPort})
+(0: None, 1: ETH64-II, 2: RRNet, 3: Silver Surfer, 4: MP3@@64, 5: Catweasel MkIII SID)
+
 
 @findex -cartru
 @item -cartru <name>
@@ -7967,6 +7991,10 @@ Integer that specifies the base address of the 256K RAM expansion.
 Integer that specifies the video standard of the emulated machine
 (0: PAL, 1: Old PAL, 2: NTSC, 3: Old NTSC, 4: PAL-N).
 
+@vindex CPMCart
+@item CPMCart
+Boolean that specifies if a CP/M cartridge is attached.
+
 @end table
 
 @c @node FIXME
@@ -8047,6 +8075,13 @@ Set the C64 model
 @code{ChargenName}, @code{SidEngine}, @code{SidModel})
 (x64 and x64sc only).
 (c64/c64c/c64old, ntsc/newntsc/oldntsc, drean, jap, c64gs, pet64, ultimax)
+
+@findex -cpmcart
+@item -cpmcart
+@itemx +cpmcart
+Enable/disable the CP/M cartridge
+(@code{CPMCart=1}. @code{CPMCart=0})
+
 
 @end table
 
@@ -9186,6 +9221,10 @@ Boolean specifying whether the I/O-2 ($9800-$9BFF) RAM cartridge should be emula
 @item IO3RAM
 Boolean specifying whether the I/O-3 ($9C00-$9FFF) RAM cartridge should be emulated or not.
 
+@vindex VFLImod
+@item VFLImod
+Boolean specifying whether the VFLI modification should be enabled.
+
 @vindex TFEIOSwap
 @item TFEIOSwap
 Boolean, swap/don't swap io mapping (map cart I/O to VIC20 I/O-2)
@@ -9385,6 +9424,12 @@ Enable/disable the I/O-3 ($9C00-$9FFF) RAM cartridge
 @itemx +ieee488
 Enable/disable VIC-1112 IEEE488 interface
 (@code{IEEE488=1}, @code{IEEE488=0}).
+
+@findex -vflimod, +vflimod
+@item -vflimod
+@itemx +vflimod
+Enable/disable VIC-20 VFLI modification
+(@code{VFLImod=1}, @code{VFLImod=0})
 
 @findex -sidcart, +sidcart
 @item -sidcart
@@ -10408,6 +10453,13 @@ Set active memory expansion hack
 @item -acia
 @itemx +acia
 Enable/Disable the ACIA emulation
+
+@findex -userportdac, +userportdac
+@item -userportdac
+@itemx +userportdac
+Enable/disable the userport DAC
+(@code{UserportDAC=1}, @code{UserportDAC=0}).
+
 
 @end table
 

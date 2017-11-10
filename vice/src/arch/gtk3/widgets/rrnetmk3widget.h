@@ -1,10 +1,9 @@
-/** \file   src/arch/gtk3/uidrivesettings.h
- * \brief   Drive settings dialog - header
+/** \file   src/arch/gtk3/widgets/rrnetmk3widget.h
+ * \brief   Widget to control RRNet MK3 resources - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
  *
- * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -21,15 +20,17 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  *  02111-1307  USA.
- *
  */
 
-#ifndef VICE_UIDRIVESETTINGS_H
-#define VICE_UIDRIVESETTINGS_H
+#ifndef VICE_RRNETMK3WIDGET_H
+#define VICE_RRNETMK3WIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-GtkWidget *uidrivesettings_widget_create(GtkWidget *parent);
+GtkWidget *rrnetmk3_widget_create(GtkWidget *parent);
+
+void rrnetmk3_widget_set_save_func(int (*func)(int, const char *));
+void rrnetmk3_widget_set_flush_func(int (*func)(int));
 
 #endif

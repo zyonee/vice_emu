@@ -1,8 +1,10 @@
-/** \file   src/arch/gtk3/uidrivesettings.h
- * \brief   Drive settings dialog - header
+/** \file   src/arch/gtk3/widgets/ioextensionswidget.h
+ * \brief   I/O extension settings that don't go/fit into subwidgets - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
+ *
+ * Controls the following resource(s):
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,12 +26,12 @@
  *
  */
 
-#ifndef VICE_UIDRIVESETTINGS_H
-#define VICE_UIDRIVESETTINGS_H
+#ifndef VICE_IOEXTENSIONSWIDGET_H
+#define VICE_IOEXTENSIONSWIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-GtkWidget *uidrivesettings_widget_create(GtkWidget *parent);
+GtkWidget *ioextensions_widget_create(GtkWidget *parent);
 
 #endif

@@ -66,7 +66,7 @@
 #include "uikeyboard.h"
 #include "uisound.h"
 #include "uiautostart.h"
-#include "uidrivesettings_new.h"
+#include "uidrivesettings.h"
 #include "uimodel.h"
 #include "uimisc.h"
 #include "ramresetwidget.h"
@@ -79,6 +79,7 @@
 #include "uisoundchipsettings.h"
 
 /* I/O extension widgets */
+#include "ioextensionswidget.h"
 #include "c64memoryexpansionhackswidget.h"
 #include "georamwidget.h"
 #include "reuwidget.h"
@@ -90,6 +91,10 @@
 #include "gmod2widget.h"
 #include "mmcrwidget.h"
 #include "mmc64widget.h"
+#include "ide64widget.h"
+#include "retroreplaywidget.h"
+#include "ethernetcartwidget.h"
+#include "rrnetmk3widget.h"
 
 #include "uisettings.h"
 
@@ -121,6 +126,9 @@ enum {
 /** \brief  List of C64 I/O extensions (x64, x64sc, xscpu64, x128)
  *
  * Every empty line indicates a separator in the Gtk2 UI's menu
+ *
+ * TODO: x128 needs its own separate list of extensions, and perhaps xscpu64
+ *       as well -- compyx
  */
 static ui_settings_tree_node_t c64_io_extensions[] = {
     { "Memory Expansions Hack",     c64_memory_expansion_hacks_widget_create, NULL },
@@ -135,14 +143,15 @@ static ui_settings_tree_node_t c64_io_extensions[] = {
 
     { "EasyFlash",                  easyflash_widget_create, NULL },
     { "GMod2",                      gmod2_widget_create, NULL },
-    { "IDE64",                      NULL, NULL },
+    { "IDE64",                      ide64_widget_create, NULL },
     { "MMC64",                      mmc64_widget_create, NULL },
     { "MMC Replay",                 mmcr_widget_create, NULL },
-    { "Retro Replay",               NULL, NULL },
-    { "Super Snapshot V5",          NULL, NULL },
+    { "Retro Replay",               retroreplay_widget_create, NULL },
 
-    { "Ethernet Cartridge",         NULL, NULL },
-    { "RR-Net Mk3",                 NULL, NULL },
+#ifdef HAVE_RAWNET
+    { "Ethernet Cartridge",         ethernet_cart_widget_create, NULL },
+    { "RR-Net Mk3",                 rrnetmk3_widget_create, NULL },
+#endif
 
     { "IEEE-448 Interface",         NULL, NULL },
     { "Burst Mode Modification",    NULL, NULL },
@@ -151,15 +160,51 @@ static ui_settings_tree_node_t c64_io_extensions[] = {
     { "Magic Voice",                NULL, NULL },
     { "MIDI emulation",             NULL, NULL },
     { "SFX Sound Expander",         NULL, NULL },
-    { "SFX Sound Sampler",          NULL, NULL },   /* checkmark in Gtk2 */
-    { "CP/M Cartridge",             NULL, NULL },   /* checkmark in Gtk2 */
 
     { "DS12C887 Real Time Clock",   NULL, NULL },
     { "Userport devices",           NULL, NULL },
     { "Tape port devices",          NULL, NULL },
 
-    { "I/O collision handling ($d800-$d8ff)", NULL, NULL },
-    { "Reset on cart change",       NULL, NULL },   /* checkmark in Gtk2 */
+    { NULL, NULL, NULL }
+};
+
+
+/** \brief  I/O extensions for C128
+ */
+static ui_settings_tree_node_t c128_io_extensions[] = {
+    { "Function ROM",               NULL, NULL },
+    { "GEO-RAM",                    georam_widget_create, NULL },
+    { "RAM Expansion Module",       reu_widget_create, NULL },
+    { "RamCart",                    ramcart_widget_create, NULL },
+
+    { "Double Quick Brown Box",     dqbb_widget_create, NULL },
+    { "Expert Cartridge",           expert_widget_create, NULL },
+    { "ISEPIC",                     isepic_widget_create, NULL },
+
+    { "EasyFlash",                  easyflash_widget_create, NULL },
+    { "GMod2",                      gmod2_widget_create, NULL },
+    { "IDE64",                      ide64_widget_create, NULL },
+    { "MMC64",                      mmc64_widget_create, NULL },
+    { "MMC Replay",                 mmcr_widget_create, NULL },
+    { "Retro Replay",               retroreplay_widget_create, NULL },
+
+#ifdef HAVE_RAWNET
+    { "Ethernet Cartridge",         ethernet_cart_widget_create, NULL },
+    { "RR-Net Mk3",                 rrnetmk3_widget_create, NULL },
+#endif
+
+    { "IEEE-448 Interface",         NULL, NULL },
+    { "Burst Mode Modification",    NULL, NULL },
+
+    { "DigiMAX",                    NULL, NULL },
+    { "Magic Voice",                NULL, NULL },
+    { "MIDI emulation",             NULL, NULL },
+    { "SFX Sound Expander",         NULL, NULL },
+
+    { "DS12C887 Real Time Clock",   NULL, NULL },
+    { "Userport devices",           NULL, NULL },
+    { "Tape port devices",          NULL, NULL },
+
     { NULL, NULL, NULL }
 };
 
@@ -170,21 +215,25 @@ static ui_settings_tree_node_t c64_io_extensions[] = {
  */
 static ui_settings_tree_node_t vic20_io_extensions[] = {
     { "Mega Cart",                  NULL, NULL },
-    { "Final Expansion",            NULL, NULL },
-    { "Vic Flash Plugin",           NULL, NULL },
-    { "UltiMem",                    NULL, NULL },
     { "SID Cartridge",              NULL, NULL },
-    { "VIC-1112 IEEE-488 interface", NULL, NULL },  /* checkmark in Gtk2 */
-    { "I/O RAM",                    NULL, NULL },
-    { "VFLI modification",          NULL, NULL },   /* checkmark in Gtk2 */
 
     { "DigiMAX (MasC=uerade",       NULL, NULL },
     { "DS12C887 Real Time Clock (MasC=uerade)", NULL, NULL },
     { "GEO-RAM (MasC=uerade)",      georam_widget_create, NULL },
+    { "SFX Sound Expander (MasC=uerade)", NULL, NULL },
+    { "SFX Sound Sampler (MasC=uerade)", NULL, NULL },
 
-    /* XXX: much more to come here */
+#ifdef HAVE_RAWNET
+    { "Ethernet Cartridge (MasC=uerade)", ethernet_cart_widget_create, NULL },
+#endif
+
+    { "MIDI emulation",             NULL, NULL },
+    { "Userport devices",           NULL, NULL },
+    { "Tapeport devices",           NULL, NULL },
+
     { NULL, NULL, NULL }
 };
+
 
 
 static ui_settings_tree_node_t no_io_extensions[] = {
@@ -226,11 +275,13 @@ static ui_settings_tree_node_t main_nodes[] = {
     { "RAM reset pattern", create_ram_reset_central_widget, NULL },
     { "Miscellaneous", uimisc_create_central_widget, NULL },
     { "Video settings", uivideosettings_widget_create, NULL },
-    /* TODO: only enable this item when a SID is supported or can be supported
-     *       through an I/O extension
-     */
     { "SID settings", uisoundchipsettings_widget_create, NULL },
-    { "I/O extensions", NULL, c64_io_extensions },  /* C64 only for now */
+
+    /* the `c64_io_extensions` is a placeholder: it will get replaced by the
+     * proper per-machine list. Unfortunately with a fixed index into this list
+     * until I refactor the tree model code into something more flexible
+     * -- compyx*/
+    { "I/O extensions", ioextensions_widget_create, c64_io_extensions },
     { NULL, NULL, NULL }
 };
 
@@ -377,11 +428,19 @@ static GtkWidget *create_treeview(void)
         case VICE_MACHINE_C64:
         case VICE_MACHINE_C64SC:
         case VICE_MACHINE_SCPU64:
-        case VICE_MACHINE_C128:
             io_nodes = c64_io_extensions;
             break;
+
+        case VICE_MACHINE_C128:
+            io_nodes = c128_io_extensions;
+            break;
+
         case VICE_MACHINE_VIC20:
             io_nodes = vic20_io_extensions;
+            break;
+
+        case VICE_MACHINE_C64DTV:
+            io_nodes = NULL;
             break;
         default:
             io_nodes = no_io_extensions;
