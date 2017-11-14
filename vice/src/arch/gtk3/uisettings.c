@@ -95,6 +95,13 @@
 #include "retroreplaywidget.h"
 #include "ethernetcartwidget.h"
 #include "rrnetmk3widget.h"
+#include "c128functionromwidget.h"
+#include "ieee488widget.h"
+#include "digimaxwidget.h"
+#include "magicvoicewidget.h"
+#include "midiwidget.h"
+#include "sfxsoundexpanderwidget.h"
+#include "ds12c887widget.h"
 
 #include "uisettings.h"
 
@@ -153,15 +160,14 @@ static ui_settings_tree_node_t c64_io_extensions[] = {
     { "RR-Net Mk3",                 rrnetmk3_widget_create, NULL },
 #endif
 
-    { "IEEE-448 Interface",         NULL, NULL },
-    { "Burst Mode Modification",    NULL, NULL },
+    { "IEEE-448 Interface",         ieee488_widget_create, NULL },
 
-    { "DigiMAX",                    NULL, NULL },
-    { "Magic Voice",                NULL, NULL },
-    { "MIDI emulation",             NULL, NULL },
-    { "SFX Sound Expander",         NULL, NULL },
+    { "DigiMAX",                    digimax_widget_create, NULL },
+    { "Magic Voice",                magic_voice_widget_create, NULL },
+    { "MIDI emulation",             midi_widget_create, NULL },
+    { "SFX Sound Expander",         sfx_sound_expander_widget_create, NULL },
 
-    { "DS12C887 Real Time Clock",   NULL, NULL },
+    { "DS12C887 Real Time Clock",   ds12c887_widget_create, NULL },
     { "Userport devices",           NULL, NULL },
     { "Tape port devices",          NULL, NULL },
 
@@ -172,7 +178,7 @@ static ui_settings_tree_node_t c64_io_extensions[] = {
 /** \brief  I/O extensions for C128
  */
 static ui_settings_tree_node_t c128_io_extensions[] = {
-    { "Function ROM",               NULL, NULL },
+    { "Function ROM",               c128_function_rom_widget_create, NULL },
     { "GEO-RAM",                    georam_widget_create, NULL },
     { "RAM Expansion Module",       reu_widget_create, NULL },
     { "RamCart",                    ramcart_widget_create, NULL },
@@ -193,13 +199,12 @@ static ui_settings_tree_node_t c128_io_extensions[] = {
     { "RR-Net Mk3",                 rrnetmk3_widget_create, NULL },
 #endif
 
-    { "IEEE-448 Interface",         NULL, NULL },
-    { "Burst Mode Modification",    NULL, NULL },
+    { "IEEE-448 Interface",         ieee488_widget_create, NULL },
 
-    { "DigiMAX",                    NULL, NULL },
-    { "Magic Voice",                NULL, NULL },
-    { "MIDI emulation",             NULL, NULL },
-    { "SFX Sound Expander",         NULL, NULL },
+    { "DigiMAX",                    digimax_widget_create, NULL },
+    { "Magic Voice",                magic_voice_widget_create, NULL },
+    { "MIDI emulation",             midi_widget_create, NULL },
+    { "SFX Sound Expander",         sfx_sound_expander_widget_create, NULL },
 
     { "DS12C887 Real Time Clock",   NULL, NULL },
     { "Userport devices",           NULL, NULL },
@@ -217,8 +222,8 @@ static ui_settings_tree_node_t vic20_io_extensions[] = {
     { "Mega Cart",                  NULL, NULL },
     { "SID Cartridge",              NULL, NULL },
 
-    { "DigiMAX (MasC=uerade",       NULL, NULL },
-    { "DS12C887 Real Time Clock (MasC=uerade)", NULL, NULL },
+    { "DigiMAX (MasC=uerade",       digimax_widget_create, NULL },
+    { "DS12C887 Real Time Clock (MasC=uerade)", ds12c887_widget_create, NULL },
     { "GEO-RAM (MasC=uerade)",      georam_widget_create, NULL },
     { "SFX Sound Expander (MasC=uerade)", NULL, NULL },
     { "SFX Sound Sampler (MasC=uerade)", NULL, NULL },
@@ -227,7 +232,7 @@ static ui_settings_tree_node_t vic20_io_extensions[] = {
     { "Ethernet Cartridge (MasC=uerade)", ethernet_cart_widget_create, NULL },
 #endif
 
-    { "MIDI emulation",             NULL, NULL },
+    { "MIDI emulation",             midi_widget_create, NULL },
     { "Userport devices",           NULL, NULL },
     { "Tapeport devices",           NULL, NULL },
 

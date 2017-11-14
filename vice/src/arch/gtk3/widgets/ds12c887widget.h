@@ -1,8 +1,8 @@
-/** \file   src/arch/gtk3/uistatusbar.h
- * \brief   Gtk3 status bar - header
+/** \file   src/arch/gtk3/widgets/ds12c887widget.h
+ * \brief   DS12C887 RTC widget - header
  *
  * Written by
- *  Michael C. Martin <mcmartin@gmail.com>
+ *  Bas Wassink <b.wassink@ziggo.nl>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,17 +24,12 @@
  *
  */
 
-#ifndef VICE_UISTATUSBAR_H
-#define VICE_UISTATUSBAR_H
+#ifndef VICE_DS12C887WIDGET_H
+#define VICE_DS12C887WIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-void ui_statusbar_init(void);
-void ui_statusbar_shutdown(void);
-
-GtkWidget *ui_statusbar_create(void);
-
-void ui_display_statustext(const char *text, int fadeout);
+GtkWidget *ds12c887_widget_create(GtkWidget *parent);
 
 #endif

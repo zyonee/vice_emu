@@ -44,8 +44,15 @@
 #include "translate.h"
 #include "ui.h"
 #include "videoarch.h"
+#include "cairo_renderer.h"
+#include "opengl_renderer.h"
 
-
+/* TODO: Make the rendering process transparent enough that this can be selected and altered as-needed */
+#ifdef HAVE_GTK3_OPENGL
+vice_renderer_backend_t *vice_renderer_backend = &vice_opengl_backend;
+#else
+vice_renderer_backend_t *vice_renderer_backend = &vice_cairo_backend;
+#endif
 
 #define VICE_DEBUG_NATIVE_GTK3
 

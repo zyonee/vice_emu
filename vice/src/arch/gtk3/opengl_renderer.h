@@ -1,7 +1,6 @@
-/** \file   src/arch/gtk3/uistatusbar.h
- * \brief   Gtk3 status bar - header
+/** \file   src/arch/gtk3/opengl_renderer.h
+ * \brief   OpenGL-based renderer for the GTK3 backend.
  *
- * Written by
  *  Michael C. Martin <mcmartin@gmail.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -23,18 +22,13 @@
  *  02111-1307  USA.
  *
  */
+#ifndef VICE_OPENGL_RENDERER_H
+#define VICE_OPENGL_RENDERER_H
 
-#ifndef VICE_UISTATUSBAR_H
-#define VICE_UISTATUSBAR_H
+#include "videoarch.h"
 
-#include "vice.h"
-#include <gtk/gtk.h>
-
-void ui_statusbar_init(void);
-void ui_statusbar_shutdown(void);
-
-GtkWidget *ui_statusbar_create(void);
-
-void ui_display_statustext(const char *text, int fadeout);
+#ifdef HAVE_GTK3_OPENGL
+extern vice_renderer_backend_t vice_opengl_backend;
+#endif
 
 #endif

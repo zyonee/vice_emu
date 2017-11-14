@@ -1,8 +1,8 @@
-/** \file   src/arch/gtk3/uistatusbar.h
- * \brief   Gtk3 status bar - header
+/** \file   src/arch/gtk3/widgets/sfxsoundexpanderwidget.h
+ * \brief   SFX Sound Expander widget - header
  *
  * Written by
- *  Michael C. Martin <mcmartin@gmail.com>
+ *  Bas Wassink <b.wassink@ziggo.nl>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,17 +24,12 @@
  *
  */
 
-#ifndef VICE_UISTATUSBAR_H
-#define VICE_UISTATUSBAR_H
+#ifndef VICE_SFXSOUNDEXPANDERWIDGET_H
+#define VICE_SFXSOUNDEXPANDERWIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-void ui_statusbar_init(void);
-void ui_statusbar_shutdown(void);
-
-GtkWidget *ui_statusbar_create(void);
-
-void ui_display_statustext(const char *text, int fadeout);
+GtkWidget *sfx_sound_expander_widget_create(GtkWidget *parent);
 
 #endif

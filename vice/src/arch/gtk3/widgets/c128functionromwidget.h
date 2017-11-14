@@ -1,8 +1,10 @@
-/** \file   src/arch/gtk3/uistatusbar.h
- * \brief   Gtk3 status bar - header
+/** \file   src/arch/gtk3/widgets/c128functionromwidget.h
+ * \brief   Widget to control C128 function roms - header
  *
  * Written by
- *  Michael C. Martin <mcmartin@gmail.com>
+ *  Bas Wassink <b.wassink@ziggo.nl>
+ *
+ * Controls the following resource(s):
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -21,20 +23,15 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  *  02111-1307  USA.
- *
  */
 
-#ifndef VICE_UISTATUSBAR_H
-#define VICE_UISTATUSBAR_H
+
+#ifndef VICE_C128FUNCTIONROMWIDGET_H
+#define VICE_C128FUNCTIONROMWIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-void ui_statusbar_init(void);
-void ui_statusbar_shutdown(void);
-
-GtkWidget *ui_statusbar_create(void);
-
-void ui_display_statustext(const char *text, int fadeout);
+GtkWidget *c128_function_rom_widget_create(GtkWidget *parent);
 
 #endif

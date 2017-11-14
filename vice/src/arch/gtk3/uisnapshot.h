@@ -1,8 +1,8 @@
-/** \file   src/arch/gtk3/uistatusbar.h
- * \brief   Gtk3 status bar - header
+/** \file   src/arch/gtk3/uisnapshot.h
+ * \brief   Snapshot dialogs and menu item handlers - header
  *
  * Written by
- *  Michael C. Martin <mcmartin@gmail.com>
+ *  Bas Wassink <b.wassink@ziggo.nl>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,17 +24,17 @@
  *
  */
 
-#ifndef VICE_UISTATUSBAR_H
-#define VICE_UISTATUSBAR_H
+#ifndef VICE_UISNAPSHOT_H
+#define VICE_UISNAPSHOT_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-void ui_statusbar_init(void);
-void ui_statusbar_shutdown(void);
 
-GtkWidget *ui_statusbar_create(void);
+void uisnapshot_open_file(GtkWidget *parent, gpointer user_data);
+void uisnapshot_save_file(GtkWidget *parent, gpointer user_data);
 
-void ui_display_statustext(const char *text, int fadeout);
+void uisnapshot_quickload_snapshot(GtkWidget *parent, gpointer user_data);
+void uisnapshot_quicksave_snapshot(GtkWidget *parent, gpointer user_data);
 
 #endif

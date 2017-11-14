@@ -1,8 +1,8 @@
-/** \file   src/arch/gtk3/uistatusbar.h
- * \brief   Gtk3 status bar - header
+/** \file   src/arch/gtk3/widgets/ieee488widget.h
+ * \brief   IEEE-488 adapter widget - header
  *
  * Written by
- *  Michael C. Martin <mcmartin@gmail.com>
+ *  Bas Wassink <b.wassink@ziggo.nl>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -21,20 +21,14 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  *  02111-1307  USA.
- *
  */
 
-#ifndef VICE_UISTATUSBAR_H
-#define VICE_UISTATUSBAR_H
+#ifndef VICE_IEEE488WIDGET_H
+#define VICE_IEEE488WIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-void ui_statusbar_init(void);
-void ui_statusbar_shutdown(void);
-
-GtkWidget *ui_statusbar_create(void);
-
-void ui_display_statustext(const char *text, int fadeout);
+GtkWidget *ieee488_widget_create(GtkWidget *parent);
 
 #endif

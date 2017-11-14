@@ -54,6 +54,7 @@ libarch_a_SOURCES = \
 	joy-win32-dinput-handle.c \
 	kbd.c \
 	mousedrv.c \
+	opengl_renderer.c \
 	petui.c \
 	plus4ui.c \
 	rawnetarch.c \
@@ -94,7 +95,8 @@ libarch_a_SOURCES = \
 	uicommands.c \
 	uimousesettings.c \
 	uisoundchipsettings.c \
-	uidrivesettings.c
+	uidrivesettings.c \
+	uisnapshot.c
 
 EXTRA_DIST = \
 	archdep.h \
@@ -118,6 +120,7 @@ EXTRA_DIST = \
 	make-bindist_win32.sh \
 	mousedrv.h \
 	not_implemented.h \
+	opengl_renderer.h \
 	rawnetarch_unix.c \
 	rawnetarch_win32.c \
 	rs232-unix-dev.c \
@@ -151,4 +154,5 @@ EXTRA_DIST = \
 	uicommands.h \
 	uimousesettings.h \
 	uisoundchipsettings.h \
-	uidrivesettings.h
+	uidrivesettings.h \
+	uisnapshot.h
