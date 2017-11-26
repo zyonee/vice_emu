@@ -29,11 +29,15 @@
 
 #include <string.h>
 
-#define GL_GLEXT_PROTOTYPES
 #ifdef MACOSX_SUPPORT
 #include <OpenGL/gl3.h>
 #else
+#ifdef HAVE_GTK3_GLEW
+#include <GL/glew.h>
+#else
+#define GL_GLEXT_PROTOTYPES
 #include <GL/gl.h>
+#endif
 #endif
 
 #include "lib.h"
@@ -41,11 +45,18 @@
 #include "ui.h"
 #include "video.h"
 
+#define RENDER_MODE_STATIC      0
+#define RENDER_MODE_NEW_TEXTURE 1
+#define RENDER_MODE_DIRTY_RECT  2
+
 typedef struct vice_opengl_renderer_context_s {
     GLuint program, position_index, tex_coord_index;
     GLuint vbo, vao, texture;
     unsigned int width, height;
     unsigned char *backbuffer;
+    float scale_x, scale_y;
+    unsigned int dirty_x, dirty_y, dirty_w, dirty_h;
+    unsigned int render_mode;
 } context_t;
 
 static float vertexData[] = {
@@ -140,6 +151,7 @@ static void realize_opengl_cb (GtkGLArea *area, gpointer user_data)
     video_canvas_t *canvas = (video_canvas_t *)user_data;
     context_t *ctx = NULL;
     GError *err = NULL;
+    GLenum glErr;
     
     gtk_gl_area_make_current(area);
     err = gtk_gl_area_get_error(area);
@@ -153,6 +165,17 @@ static void realize_opengl_cb (GtkGLArea *area, gpointer user_data)
     ctx = lib_malloc(sizeof(context_t));
     memset(ctx, 0, sizeof(context_t));
     canvas->renderer_context = ctx;
+#ifdef HAVE_GTK3_GLEW
+    glewExperimental = GL_TRUE;
+    glErr = glewInit();
+    if (glErr != GLEW_OK) {
+        fprintf(stderr, "GTKGL: Could not initialize GLEW\n");
+    }
+    if (!GLEW_VERSION_3_2) {
+        fprintf(stderr, "GTKGL: OpenGL version 3.2 not supported in this context\n");
+    }
+#endif
+    
     create_shader_program(ctx);
     glGenBuffers(1, &ctx->vbo);
     glBindBuffer(GL_ARRAY_BUFFER, ctx->vbo);
@@ -174,7 +197,37 @@ static gboolean render_opengl_cb (GtkGLArea *area, GdkGLContext *unused, gpointe
     }
     glClear (GL_COLOR_BUFFER_BIT);
 
-    if (ctx && ctx->program) {
+    if (!ctx) {
+        /* Nothing else to do */
+        return TRUE;
+    }
+    glActiveTexture(GL_TEXTURE0);
+    if (ctx->render_mode == RENDER_MODE_NEW_TEXTURE) {
+        if (ctx->texture == 0) {
+            fprintf(stderr, "GTKGL CRITICAL: No texture generated!\n");
+        }
+        glBindTexture(GL_TEXTURE_2D, ctx->texture);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ctx->width, ctx->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, ctx->backbuffer);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        /* These should be selectable as GL_LINEAR or GL_NEAREST */
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    } else if (ctx->render_mode == RENDER_MODE_DIRTY_RECT) {
+        glBindTexture(GL_TEXTURE_2D, ctx->texture);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glPixelStorei(GL_UNPACK_ROW_LENGTH, ctx->width);
+        glTexSubImage2D(GL_TEXTURE_2D, 0, ctx->dirty_x, ctx->dirty_y, ctx->dirty_w, ctx->dirty_h, GL_RGBA, GL_UNSIGNED_BYTE, ctx->backbuffer + 4 * (ctx->width * ctx->dirty_y + ctx->dirty_x));
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+    ctx->render_mode = RENDER_MODE_STATIC;
+    if (ctx->program) {
+        GLuint scale_uniform, sampler_uniform;
+
         glUseProgram(ctx->program);
 
         glBindVertexArray(ctx->vao);
@@ -184,7 +237,11 @@ static gboolean render_opengl_cb (GtkGLArea *area, GdkGLContext *unused, gpointe
         glVertexAttribPointer(ctx->position_index, 4, GL_FLOAT, GL_FALSE, 0, 0);
         glVertexAttribPointer(ctx->tex_coord_index, 2, GL_FLOAT, GL_FALSE, 0, (void*)64);
 
-        glActiveTexture(GL_TEXTURE0);
+        scale_uniform = glGetUniformLocation(ctx->program, "scale");
+        glUniform4f(scale_uniform, ctx->scale_x, ctx->scale_y, 1.0f, 1.0f);
+        sampler_uniform = glGetUniformLocation(ctx->program, "sampler");
+        glUniform1i(sampler_uniform, 0);
+        
         glBindTexture(GL_TEXTURE_2D, ctx->texture);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -200,8 +257,6 @@ static gboolean render_opengl_cb (GtkGLArea *area, GdkGLContext *unused, gpointe
 static void
 resize_opengl_cb (GtkGLArea *area, gint width, gint height, gpointer user_data)
 {
-    GLuint scale_uniform, sampler_uniform;
-    float scale_x = 1.0f, scale_y = 1.0f;
     video_canvas_t *canvas = (video_canvas_t *)user_data;
     context_t *ctx = canvas ? (context_t *)canvas->renderer_context : NULL;
     int keepaspect = 1, trueaspect = 0;
@@ -228,18 +283,13 @@ resize_opengl_cb (GtkGLArea *area, gint width, gint height, gpointer user_data)
             canvas_aspect *= canvas->geometry->pixel_aspect_ratio;
         }
         if (canvas_aspect < viewport_aspect) {
-            scale_x = canvas_aspect / viewport_aspect;
+            ctx->scale_x = canvas_aspect / viewport_aspect;
+            ctx->scale_y = 1.0f;
         } else {
-            scale_y = viewport_aspect / canvas_aspect;
+            ctx->scale_x = 1.0f;
+            ctx->scale_y = viewport_aspect / canvas_aspect;
         }
     }
-
-    glUseProgram(ctx->program);
-    scale_uniform = glGetUniformLocation(ctx->program, "scale");
-    glUniform4f(scale_uniform, scale_x, scale_y, 1.0f, 1.0f);
-    sampler_uniform = glGetUniformLocation(ctx->program, "sampler");
-    glUniform1i(sampler_uniform, 0);
-    glUseProgram(0);
 }
 
 static GtkWidget *vice_opengl_create_widget(video_canvas_t *canvas)
@@ -259,11 +309,15 @@ static void vice_opengl_destroy_context(video_canvas_t *canvas)
 {
     if (canvas) {
         context_t *ctx = (context_t *)canvas->renderer_context;
-        if (!ctx) {
+        if (ctx == NULL) {
             return;
         }
-        lib_free(ctx);
+        /* TODO: delete textures, shaders, backbuffers, etc */
+        if (ctx->backbuffer != NULL) {
+            lib_free(ctx->backbuffer);
+        }
         canvas->renderer_context = NULL;
+        lib_free(ctx);
     }
 }
 
@@ -301,22 +355,7 @@ static void vice_opengl_update_context(video_canvas_t *canvas, unsigned int widt
         ctx->width = width;
         ctx->height = height;
         ctx->backbuffer = lib_malloc(width * height * 4);
-        gtk_gl_area_make_current(GTK_GL_AREA(canvas->drawing_area));
-        glActiveTexture(GL_TEXTURE0);
-        if (ctx->texture == 0) {
-            fprintf(stderr, "CRITICAL: We have tried to update the textures before we were realized");
-        }
-        glBindTexture(GL_TEXTURE_2D, ctx->texture);
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ctx->width, ctx->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, ctx->backbuffer);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        /* These should be selectable as GL_LINEAR or GL_NEAREST */
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        ctx->render_mode = RENDER_MODE_NEW_TEXTURE;
 
         resources_get_int("KeepAspectRatio", &keepaspect);
         resources_get_int("TrueAspectRatio", &trueaspect);
@@ -344,13 +383,38 @@ static void vice_opengl_refresh_rect(video_canvas_t *canvas,
         return;
     }
     video_canvas_render(canvas, ctx->backbuffer, w, h, xs, ys, xi, yi, ctx->width * 4, 32);
-    
-    gtk_gl_area_make_current(GTK_GL_AREA(canvas->drawing_area));
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, ctx->texture);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glPixelStorei(GL_UNPACK_ROW_LENGTH, ctx->width);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, xi, yi, w, h, GL_RGBA, GL_UNSIGNED_BYTE, ctx->backbuffer + 4 * (ctx->width * yi + xi));
+
+    if (ctx->render_mode == RENDER_MODE_STATIC) {
+        ctx->render_mode = RENDER_MODE_DIRTY_RECT;
+        ctx->dirty_x = xi;
+        ctx->dirty_y = yi;
+        ctx->dirty_w = w;
+        ctx->dirty_h = h;
+    } else if (ctx->render_mode == RENDER_MODE_DIRTY_RECT) {
+        unsigned int x1 = ctx->dirty_x;
+        unsigned int y1 = ctx->dirty_y;
+        unsigned int x2 = ctx->dirty_x + ctx->dirty_w;
+        unsigned int y2 = ctx->dirty_y + ctx->dirty_h;
+        if (x1 > xi) {
+            x1 = xi;
+        }
+        if (y1 > yi) {
+            y1 = yi;
+        }
+        if (x2 < xi + w) {
+            x2 = xi + w;
+        }
+        if (y2 < yi + h) {
+            y2 = yi + h;
+        }
+        ctx->dirty_x = x1;
+        ctx->dirty_y = y1;
+        ctx->dirty_w = x2-x1;
+        ctx->dirty_h = y2-y1;
+        /* Render mode stays DIRTY_RECT */
+    }
+    /* Render mode NEW_TEXTURE has no effect; it stays just as new */
+
     gtk_widget_queue_draw(canvas->drawing_area);    
 }
 
@@ -376,26 +440,7 @@ static void vice_opengl_set_palette(video_canvas_t *canvas)
     video_render_initraw(canvas->videoconfig);
 }
 
-static int vice_opengl_backend_init(void)
-{
-    /* This *should* be a test where we try to initialize everything
-     * and do their version check, but for now we just let it slide if
-     * we could compile it in the first place */
-    /* FOR FUTURE WORK: This probably ends up being the wrong place
-     * for checking this. We can't actually tell that OpenGL will or
-     * won't work until the widget is put in place and realized. We
-     * need a mechanism for shifting backends *dynamically* without
-     * breaking. */
-    return 1;
-}
-
-static void vice_opengl_backend_shutdown(void)
-{
-}
-
 vice_renderer_backend_t vice_opengl_backend = {
-    vice_opengl_backend_init,
-    vice_opengl_backend_shutdown,
     vice_opengl_create_widget,
     vice_opengl_update_context,
     vice_opengl_destroy_context,

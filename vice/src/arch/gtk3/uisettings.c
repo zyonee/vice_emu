@@ -102,6 +102,30 @@
 #include "midiwidget.h"
 #include "sfxsoundexpanderwidget.h"
 #include "ds12c887widget.h"
+#include "userportdeviceswidget.h"
+#include "tapeportdeviceswidget.h"
+#include "sidcartwidget.h"
+#include "v364speechwidget.h"
+#include "sfxsoundsamplerwidget.h"
+#include "megacartwidget.h"
+#include "petreuwidget.h"
+#include "petcolourgraphicswidget.h"
+#include "petdwwwidget.h"
+#include "supersnapshotwidget.h"
+#include "cpmwidget.h"
+#include "burstmodewidget.h"
+#include "c128fullbankswidget.h"
+#include "plus4aciawidget.h"
+#include "plus4digiblasterwidget.h"
+#include "finalexpansionwidget.h"
+#include "vicflashwidget.h"
+#include "ultimemwidget.h"
+#include "vicieee488widget.h"
+#include "vicioramwidget.h"
+#include "vfliwidget.h"
+#include "petdiagpinwidget.h"
+#include "pethrewidget.h"
+#include "ui.h"
 
 #include "uisettings.h"
 
@@ -130,12 +154,9 @@ enum {
 };
 
 
-/** \brief  List of C64 I/O extensions (x64, x64sc, xscpu64, x128)
+/** \brief  List of C64 I/O extensions (x64, x64sc, xscpu64)
  *
  * Every empty line indicates a separator in the Gtk2 UI's menu
- *
- * TODO: x128 needs its own separate list of extensions, and perhaps xscpu64
- *       as well -- compyx
  */
 static ui_settings_tree_node_t c64_io_extensions[] = {
     { "Memory Expansions Hack",     c64_memory_expansion_hacks_widget_create, NULL },
@@ -154,6 +175,7 @@ static ui_settings_tree_node_t c64_io_extensions[] = {
     { "MMC64",                      mmc64_widget_create, NULL },
     { "MMC Replay",                 mmcr_widget_create, NULL },
     { "Retro Replay",               retroreplay_widget_create, NULL },
+    { "Super Snapshot V5",          super_snapshot_widget_create, NULL },
 
 #ifdef HAVE_RAWNET
     { "Ethernet Cartridge",         ethernet_cart_widget_create, NULL },
@@ -161,24 +183,30 @@ static ui_settings_tree_node_t c64_io_extensions[] = {
 #endif
 
     { "IEEE-448 Interface",         ieee488_widget_create, NULL },
+    { "Burst Mode Modification",    burst_mode_widget_create, NULL },
 
     { "DigiMAX",                    digimax_widget_create, NULL },
     { "Magic Voice",                magic_voice_widget_create, NULL },
     { "MIDI emulation",             midi_widget_create, NULL },
     { "SFX Sound Expander",         sfx_sound_expander_widget_create, NULL },
+    { "SFX Sound Sampler",          sfx_sound_sampler_widget_create, NULL },
+    { "CP/M Cartridge",             cpm_widget_create, NULL },
 
     { "DS12C887 Real Time Clock",   ds12c887_widget_create, NULL },
-    { "Userport devices",           NULL, NULL },
-    { "Tape port devices",          NULL, NULL },
+    { "Userport devices",           userport_devices_widget_create, NULL },
+    { "Tape port devices",          tapeport_devices_widget_create, NULL },
 
     { NULL, NULL, NULL }
 };
 
 
-/** \brief  I/O extensions for C128
+/** \brief  List of SCPU64 extensions
+ *
+ * Every empty line indicates a separator in the Gtk2 UI's menu
  */
-static ui_settings_tree_node_t c128_io_extensions[] = {
-    { "Function ROM",               c128_function_rom_widget_create, NULL },
+static ui_settings_tree_node_t scpu64_io_extensions[] = {
+    { "Memory Expansions Hack",     c64_memory_expansion_hacks_widget_create, NULL },
+
     { "GEO-RAM",                    georam_widget_create, NULL },
     { "RAM Expansion Module",       reu_widget_create, NULL },
     { "RamCart",                    ramcart_widget_create, NULL },
@@ -193,6 +221,52 @@ static ui_settings_tree_node_t c128_io_extensions[] = {
     { "MMC64",                      mmc64_widget_create, NULL },
     { "MMC Replay",                 mmcr_widget_create, NULL },
     { "Retro Replay",               retroreplay_widget_create, NULL },
+    { "Super Snapshot V5",          super_snapshot_widget_create, NULL },
+
+#ifdef HAVE_RAWNET
+    { "Ethernet Cartridge",         ethernet_cart_widget_create, NULL },
+    { "RR-Net Mk3",                 rrnetmk3_widget_create, NULL },
+#endif
+
+    { "IEEE-448 Interface",         ieee488_widget_create, NULL },
+    { "Burst Mode Modification",    burst_mode_widget_create, NULL },
+
+    { "DigiMAX",                    digimax_widget_create, NULL },
+    { "Magic Voice",                magic_voice_widget_create, NULL },
+    { "MIDI emulation",             midi_widget_create, NULL },
+    { "SFX Sound Expander",         sfx_sound_expander_widget_create, NULL },
+    { "SFX Sound Sampler",          sfx_sound_sampler_widget_create, NULL },
+
+    { "DS12C887 Real Time Clock",   ds12c887_widget_create, NULL },
+    { "Userport devices",           userport_devices_widget_create, NULL },
+    { "Tape port devices",          tapeport_devices_widget_create, NULL },
+
+    { NULL, NULL, NULL }
+};
+
+
+
+/** \brief  I/O extensions for C128
+ */
+static ui_settings_tree_node_t c128_io_extensions[] = {
+    { "Function ROM",               c128_function_rom_widget_create, NULL },
+    { "Banks 2 & 3",                c128_full_banks_widget_create, NULL },
+
+    { "GEO-RAM",                    georam_widget_create, NULL },
+    { "RAM Expansion Module",       reu_widget_create, NULL },
+    { "RamCart",                    ramcart_widget_create, NULL },
+
+    { "Double Quick Brown Box",     dqbb_widget_create, NULL },
+    { "Expert Cartridge",           expert_widget_create, NULL },
+    { "ISEPIC",                     isepic_widget_create, NULL },
+
+    { "EasyFlash",                  easyflash_widget_create, NULL },
+    { "GMod2",                      gmod2_widget_create, NULL },
+    { "IDE64",                      ide64_widget_create, NULL },
+    { "MMC64",                      mmc64_widget_create, NULL },
+    { "MMC Replay",                 mmcr_widget_create, NULL },
+    { "Retro Replay",               retroreplay_widget_create, NULL },
+    { "Super Snapshot V5",          super_snapshot_widget_create, NULL },
 
 #ifdef HAVE_RAWNET
     { "Ethernet Cartridge",         ethernet_cart_widget_create, NULL },
@@ -205,46 +279,110 @@ static ui_settings_tree_node_t c128_io_extensions[] = {
     { "Magic Voice",                magic_voice_widget_create, NULL },
     { "MIDI emulation",             midi_widget_create, NULL },
     { "SFX Sound Expander",         sfx_sound_expander_widget_create, NULL },
+    { "SFX Sound Sampler",          sfx_sound_sampler_widget_create, NULL },
 
-    { "DS12C887 Real Time Clock",   NULL, NULL },
-    { "Userport devices",           NULL, NULL },
-    { "Tape port devices",          NULL, NULL },
+    { "DS12C887 Real Time Clock",   ds12c887_widget_create, NULL },
+    { "Userport devices",           userport_devices_widget_create, NULL },
+    { "Tape port devices",          tapeport_devices_widget_create, NULL },
 
     { NULL, NULL, NULL }
 };
 
 
-/** \brief  List of VIC-20 I/O extensions (x64, x64sc)
+/** \brief  List of VIC-20 I/O extensions
  *
  * Every empty line indicates a separator in the Gtk2 UI's menu
  */
 static ui_settings_tree_node_t vic20_io_extensions[] = {
-    { "Mega Cart",                  NULL, NULL },
-    { "SID Cartridge",              NULL, NULL },
+    { "Mega Cart",                  mega_cart_widget_create, NULL },
+    { "Final Expansion",            final_expansion_widget_create, NULL },
+    { "Vic Flash Plugin",           vic_flash_widget_create, NULL },
+    { "UltiMem",                    ultimem_widget_create, NULL },
+    { "SID Cartridge",              sidcart_widget_create, NULL },
+    { "VIC-1112 IEEE-488 interface", vic_ieee488_widget_create, NULL },
+    { "I/O RAM",                    vic_ioram_widget_create, NULL },
+    { "VFLI modification",          vfli_widget_create, NULL },
 
     { "DigiMAX (MasC=uerade",       digimax_widget_create, NULL },
-    { "DS12C887 Real Time Clock (MasC=uerade)", ds12c887_widget_create, NULL },
+    { "DS12C887 RTC (MasC=uerade)", ds12c887_widget_create, NULL },
     { "GEO-RAM (MasC=uerade)",      georam_widget_create, NULL },
-    { "SFX Sound Expander (MasC=uerade)", NULL, NULL },
-    { "SFX Sound Sampler (MasC=uerade)", NULL, NULL },
+    { "SFX Sound Expander (MasC=uerade)", sfx_sound_expander_widget_create, NULL },
+    { "SFX Sound Sampler (MasC=uerade)", sfx_sound_sampler_widget_create, NULL },
 
 #ifdef HAVE_RAWNET
     { "Ethernet Cartridge (MasC=uerade)", ethernet_cart_widget_create, NULL },
 #endif
 
     { "MIDI emulation",             midi_widget_create, NULL },
-    { "Userport devices",           NULL, NULL },
-    { "Tapeport devices",           NULL, NULL },
+    { "Userport devices",           userport_devices_widget_create, NULL },
+    { "Tapeport devices",           tapeport_devices_widget_create, NULL },
 
     { NULL, NULL, NULL }
 };
 
 
+/** \brief  List of Plus4 I/O extensions
+ *
+ * Every empty line indicates a separator in the Gtk2 UI's menu
+ */
+static ui_settings_tree_node_t plus4_io_extensions[] = {
+    { "ACIA",                       plus4_acia_widget_create, NULL },
+    { "Digiblaster add-on",         plus4_digiblaster_widget_create, NULL },
+    { "SID Cartridge",              sidcart_widget_create, NULL },
+    { "V364 Speech",                v364_speech_widget_create, NULL },
 
+    { "Userport devices",           userport_devices_widget_create, NULL },
+    { "Tape port devices",          tapeport_devices_widget_create, NULL },
+
+    { NULL, NULL, NULL }
+};
+
+
+/** \brief  List of PET I/O extensions
+ *
+ * Every empty line indicates a separator in the Gtk2 UI's menu
+ */
+static ui_settings_tree_node_t pet_io_extensions[] = {
+    { "PET RAM Expansion Unit",     pet_reu_widget_create, NULL },
+    { "PET Colour graphics",        pet_colour_graphics_widget_create, NULL },
+    { "PET DWW hi-res graphics",    pet_dww_widget_create, NULL },
+    { "PET HRE hi-res graphics",    pet_hre_widget_create, NULL },
+    { "SID Cartridge",              sidcart_widget_create, NULL },
+    { "Userport devices",           userport_devices_widget_create, NULL },
+    { "Tape port devices",          tapeport_devices_widget_create, NULL },
+    { "PET userport diagnostic pin", pet_diagpin_widget_create, NULL },
+    { NULL, NULL, NULL }
+};
+
+
+/** \brief  List of CBM 5x0 I/O extensions
+ *
+ * Every empty line indicates a separator in the Gtk2 UI's menu
+ */
+static ui_settings_tree_node_t cbm5x0_io_extensions[] = {
+    { "Tape port devices",          tapeport_devices_widget_create, NULL },
+    { NULL, NULL, NULL }
+};
+
+
+/** \brief  List of CBM 6x0 I/O extensions
+ *
+ * Every empty line indicates a separator in the Gtk2 UI's menu
+ */
+static ui_settings_tree_node_t cbm6x0_io_extensions[] = {
+    { "Userport devices",           userport_devices_widget_create, NULL },
+    { "Tape port devices",          tapeport_devices_widget_create, NULL },
+    { NULL, NULL, NULL }
+};
+
+
+/** \brief  No I/O extensions (temporary)
+ */
 static ui_settings_tree_node_t no_io_extensions[] = {
     { "NOT IMPLEMENTED", NULL, NULL },
     { NULL, NULL, NULL }
 };
+
 
 
 /** \brief  Index in the main nodes of the I/O extension sub nodes
@@ -430,10 +568,13 @@ static GtkWidget *create_treeview(void)
 
     /* hack: set I/O extension sub-nodes */
     switch (machine_class) {
-        case VICE_MACHINE_C64:
+        case VICE_MACHINE_C64:      /* fall through */
         case VICE_MACHINE_C64SC:
-        case VICE_MACHINE_SCPU64:
             io_nodes = c64_io_extensions;
+            break;
+
+        case VICE_MACHINE_SCPU64:
+            io_nodes = scpu64_io_extensions;
             break;
 
         case VICE_MACHINE_C128:
@@ -447,8 +588,26 @@ static GtkWidget *create_treeview(void)
         case VICE_MACHINE_C64DTV:
             io_nodes = NULL;
             break;
+
+        case VICE_MACHINE_PLUS4:
+            io_nodes = plus4_io_extensions;
+            break;
+
+        case VICE_MACHINE_PET:
+            io_nodes = pet_io_extensions;
+            break;
+
+        case VICE_MACHINE_CBM5x0:
+            io_nodes = cbm5x0_io_extensions;
+            break;
+
+        case VICE_MACHINE_CBM6x0:
+            io_nodes = cbm6x0_io_extensions;
+            break;
+
         default:
             io_nodes = no_io_extensions;
+            break;
     }
     main_nodes[IO_EXTENSIONS_INDEX].children = io_nodes;
 
@@ -538,7 +697,7 @@ static GtkWidget *create_content_widget(GtkWidget *widget)
     gtk_widget_show(settings_grid);
     gtk_widget_show(tree);
 
-    gtk_widget_set_size_request(scroll, 180, 500);
+    gtk_widget_set_size_request(scroll, 300, 500);
     gtk_widget_set_size_request(settings_grid, DIALOG_WIDTH, DIALOG_HEIGHT);
 
     selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tree));
@@ -675,7 +834,7 @@ void ui_settings_dialog_create(GtkWidget *widget, gpointer user_data)
 
     dialog = gtk_dialog_new_with_buttons(
             title,
-            GTK_WINDOW(gtk_widget_get_toplevel(widget)),
+            ui_get_active_window(),
             GTK_DIALOG_MODAL,
             "Load", RESPONSE_LOAD,
             "Save", RESPONSE_SAVE,

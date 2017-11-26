@@ -202,6 +202,7 @@ static ui_accel_data_t *ui_accel_data_new(GtkWidget *widget, ui_menu_item_t *ite
 /** \brief  Destructor for accelerator data. */
 static void ui_accel_data_delete(gpointer data, GClosure *closure)
 {
+    debug_gtk3("called, freeing data\n");
     lib_free(data);
 }
 
@@ -251,7 +252,7 @@ GtkWidget *ui_menu_add(GtkWidget *menu, ui_menu_item_t *items)
                             item,
                             "activate",
                             G_CALLBACK(items[i].callback),
-                            NULL);
+                            items[i].data);
                     /* use `data` as the resource to determine the state of
                      * the checkmark
                      */
@@ -390,5 +391,4 @@ void ui_menu_init_accelerators(GtkWidget *window)
     accel_group = gtk_accel_group_new();
     gtk_window_add_accel_group(GTK_WINDOW(window), accel_group);
 }
-
 

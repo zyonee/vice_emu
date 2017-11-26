@@ -30,8 +30,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <gtk/gtk.h>
-/* required for g_chdir() */
-#include <glib/gstdio.h>
 
 #include "debug_gtk3.h"
 #include "not_implemented.h"
@@ -67,6 +65,8 @@
 #include "uicmdline.h"
 #include "uicompiletimefeatures.h"
 #include "uisnapshot.h"
+#include "uidebug.h"
+#include "uicart.h"
 
 #include "ui.h"
 
@@ -83,54 +83,18 @@
 #define HTML_BROWSER_COMMAND_DEFAULT    "firefox %s"
 
 
-/** \brief  Number of GtkWindow's in the ui_resources
- */
-#define NUM_WINDOWS 3
-
-
-/** \brief  Windows indici
- */
-enum {
-    PRIMARY_WINDOW,     /**< primary window, all emulators */
-    SECONDARY_WINDOW,   /**< secondary window, C128's VDC */
-    MONITOR_WINDOW      /**< optional monitor window/terminal */
-};
-
-
-/** \brief  Struct holding basic UI rescources
- */
-typedef struct ui_resources_s {
-
-    char *html_browser_command; /**< HTMLBrowserCommand (str) */
-    int save_resources_on_exit; /**< SaveResourcesOnExit (bool) */
-    int confirm_on_exit;        /**< ConfirmOnExit (bool) */
-
-    int depth;
-
-    video_canvas_t *canvas[NUM_WINDOWS];
-    GtkWidget *window_widget[NUM_WINDOWS]; /**< the toplevel GtkWidget (Window) */
-    int window_width[NUM_WINDOWS];
-    int window_height[NUM_WINDOWS];
-    int window_xpos[NUM_WINDOWS];
-    int window_ypos[NUM_WINDOWS];
-
-} ui_resource_t;
-
 
 /** \brief  Collection of UI resources
  *
  * This needs to stay here, to allow the command line and resources initializers
  * to references the ui resources
  */
-static ui_resource_t ui_resources;
+ui_resource_t ui_resources; /* public for use in uicommands.c, not ideal */
 
 
 
 /* Forward declarations of static functions */
-static void machine_reset_callback(GtkWidget *widget, gpointer user_data);
-static void drive_reset_callback(GtkWidget *widget, gpointer user_data);
-static void ui_close_callback(GtkWidget *widget, gpointer user_data);
-static void ui_window_destroy_callback(GtkWidget *widget, gpointer user_data);
+
 static void ui_fullscreen_callback(GtkWidget *widget, gpointer user_data);
 
 static void ui_fullscreen_decorations_callback(GtkWidget *widget,
@@ -142,7 +106,6 @@ static int set_window_height(int val, void *param);
 static int set_window_width(int val, void *param);
 static int set_window_xpos(int val, void *param);
 static int set_window_ypos(int val, void *param);
-
 
 
 /*****************************************************************************
@@ -339,6 +302,16 @@ static ui_menu_item_t reset_submenu[] = {
 };
 
 
+/** \brief  'File->Cartridge attach' submenu
+ */
+static ui_menu_item_t cart_attach_submenu[] = {
+    { "Smart attach cart image ... ", UI_MENU_TYPE_ITEM_ACTION,
+        (void *)uicart_smart_attach_dialog, NULL,
+        GDK_KEY_C, GDK_MOD1_MASK },
+    UI_MENU_TERMINATOR
+};
+
+
 /** \brief  'File' menu
  */
 static ui_menu_item_t file_menu[] = {
@@ -381,14 +354,14 @@ static ui_menu_item_t file_menu[] = {
     UI_MENU_SEPARATOR,
 
     /* cart */
-    { "Attach cartridge image ...", UI_MENU_TYPE_ITEM_ACTION,
-        NULL, NULL,
+    { "Attach cartridge image ...", UI_MENU_TYPE_SUBMENU,
+        NULL, cart_attach_submenu,
         GDK_KEY_C, GDK_MOD1_MASK },
     { "Detach cartridge image(s)", UI_MENU_TYPE_ITEM_ACTION,
-        NULL, NULL,
+        (void *)uicart_detach, NULL,
         0, 0 },
     { "Cartridge freeze", UI_MENU_TYPE_ITEM_ACTION,
-        NULL, NULL,
+        (void *)uicart_trigger_freeze, NULL,
         GDK_KEY_Z, GDK_MOD1_MASK },
 
     UI_MENU_SEPARATOR,
@@ -546,7 +519,7 @@ static ui_menu_item_t settings_menu_head[] = {
     UI_MENU_SEPARATOR,
 
     { "Toggle warp mode", UI_MENU_TYPE_ITEM_CHECK,
-        (void*)(ui_warp_callback), (void*)"WarpMode",
+        (void *)ui_toggle_resource, (void*)"WarpMode",
         GDK_KEY_W, GDK_MOD1_MASK },
 
     UI_MENU_SEPARATOR,
@@ -582,11 +555,11 @@ static ui_menu_item_t settings_menu_swap_userport_joy[] = {
 static ui_menu_item_t settings_menu_tail[] = {
     /* continue with joystick item(s) here */
     { "Allow keyset joystick", UI_MENU_TYPE_ITEM_CHECK,
-        (void*)(ui_allow_keyset_joystick_callback), (void*)"KeySetEnable",
+        (void*)(ui_toggle_resource), (void*)"KeySetEnable",
         GDK_KEY_J, GDK_MOD1_MASK|GDK_SHIFT_MASK },
 
     { "Enable mouse grab", UI_MENU_TYPE_ITEM_CHECK,
-        (void*)ui_mouse_grab_callback, (void*)"Mouse",
+        (void*)ui_toggle_resource, (void*)"Mouse",
         GDK_KEY_M, GDK_MOD1_MASK },
 
     UI_MENU_SEPARATOR,
@@ -604,37 +577,37 @@ static ui_menu_item_t settings_menu_tail[] = {
 #ifdef DEBUG
 static ui_menu_item_t debug_menu[] = {
     { "Trace mode ...", UI_MENU_TYPE_ITEM_ACTION,
-        NULL, NULL,
+        uidebug_trace_mode_callback, NULL,
         0, 0 },
 
     UI_MENU_SEPARATOR,
 
     { "Main CPU trace", UI_MENU_TYPE_ITEM_CHECK,
-        NULL, NULL,
+        (void *)ui_toggle_resource, (void *)"MainCPU_TRACE",
         0, 0 },
 
     UI_MENU_SEPARATOR,
 
     { "Drive #8 CPU trace", UI_MENU_TYPE_ITEM_CHECK,
-        NULL, NULL,
+        (void *)ui_toggle_resource, (void *)"Drive0CPU_TRACE",
         0, 0 },
     { "Drive #9 CPU trace", UI_MENU_TYPE_ITEM_CHECK,
-        NULL, NULL,
+        (void *)ui_toggle_resource, (void *)"Drive1CPU_TRACE",
         0, 0 },
     { "Drive #10 CPU trace", UI_MENU_TYPE_ITEM_CHECK,
-        NULL, NULL,
+        (void *)ui_toggle_resource, (void *)"Drive2CPU_TRACE",
         0, 0 },
     { "Drive #11 CPU trace", UI_MENU_TYPE_ITEM_CHECK,
-        NULL, NULL,
+        (void *)ui_toggle_resource, (void *)"Drive3CPU_TRACE",
         0, 0 },
 
     UI_MENU_SEPARATOR,
 
     { "Autoplay playback frames ...", UI_MENU_TYPE_ITEM_ACTION,
-        NULL, NULL,
+        uidebug_playback_frames_callback, NULL,
         0, 0 },
-    { "Save core dump", UI_MENU_TYPE_ITEM_ACTION,
-        NULL, NULL,
+    { "Save core dump", UI_MENU_TYPE_ITEM_CHECK,
+        (void *)ui_toggle_resource, (void *)"DoCoreDump",
         0, 0 },
 
     UI_MENU_TERMINATOR
@@ -669,104 +642,19 @@ static int fullscreen_has_decorations = 0;
  *                              Event handlers                                *
  *****************************************************************************/
 
-
-/** \brief  Callback for the soft/hard reset items
+/** \brief  Get the most recently focused main window
  *
- * \param[in]   widget      menu item triggering the event (unused)
- * \param[in]   user_data   MACHINE_RESET_MODE_SOFT/MACHINE_RESET_MODE_HARD
+ * \return  pointer to a main window
  */
-static void machine_reset_callback(GtkWidget *widget, gpointer user_data)
+GtkWindow *ui_get_active_window(void)
 {
-    vsync_suspend_speed_eval();
-    machine_trigger_reset(GPOINTER_TO_INT(user_data));
-}
-
-
-/** \brief  Callback for the drive reset items
- *
- * \param[in]   widget      menu item triggering the event (unused)
- * \param[in]   user_data   drive unit number (8-11) (int)
- */
-static void drive_reset_callback(GtkWidget *widget, gpointer user_data)
-{
-    vsync_suspend_speed_eval();
-    drive_cpu_trigger_reset(GPOINTER_TO_INT(user_data) - 8);
-}
-
-
-/** \brief  Callback for the File->Exit menu item
- *
- * This asks the user to confirm to exit the emulator if ConfirmOnExit is set.
- *
- * \param[in]   widget      menu item triggering the event (unused)
- * \param[in]   user_data   window index, optional, defaults to primary
- */
-static void ui_close_callback(GtkWidget *widget, gpointer user_data)
-{
-    int index;
-    int confirm;
-
-    if (user_data == NULL) {
-        index = PRIMARY_WINDOW;
-    } else {
-        index = GPOINTER_TO_INT(user_data);
+    if (active_win_index < 0) {
+        /* Probably should never end up here. */
+        return GTK_WINDOW(ui_resources.window_widget[PRIMARY_WINDOW]);
     }
 
-    resources_get_int("ConfirmOnExit", &confirm);
-    if (!confirm) {
-        gtk_widget_destroy(ui_resources.window_widget[index]);
-        return;
-    }
-
-    if (ui_message_confirm(ui_resources.window_widget[index], "Exit VICE",
-                "Do you really wish to exit VICE?")) {
-        debug_gtk3("Exit confirmed\n");
-        gtk_widget_destroy(ui_resources.window_widget[index]);
-    }
+    return GTK_WINDOW(ui_resources.window_widget[active_win_index]);
 }
-
-
-/** \brief  Handler for the "delete-event" of a GtkWindow
- *
- * \param[in]   widget      window triggering the event
- * \param[in]   event       event details (unused)
- * \param[in]   user_data   extra data for the event (unused)
- *
- * \return  `FALSE` to exit the emulator, `TRUE` to continue
- */
-static gboolean on_delete_event(GtkWidget *widget, GdkEvent *event,
-                                gpointer user_data)
-{
-    int confirm;
-
-    debug_gtk3("got 'delete-event'\n'");
-
-    resources_get_int("ConfirmOnExit", &confirm);
-    if (!confirm) {
-        return FALSE;
-    }
-
-    if (ui_message_confirm(widget, "Exit VICE",
-                "Do you really wish to exit VICE?")) {
-        debug_gtk3("Exit confirmed\n");
-        return FALSE;
-    }
-    return TRUE;
-}
-
-
-/** \brief  Callback for a windows' "destroy" event
- *
- * \param[in]   widget      widget triggering the event (unused)
- * \param[in]   user_data   extra data for the callback (unused)
- */
-static void ui_window_destroy_callback(GtkWidget *widget, gpointer user_data)
-{
-    debug_gtk3("called\n");
-    vsync_suspend_speed_eval();
-    ui_exit();
-}
-
 
 /** \brief  Get a window's index
  *
@@ -785,6 +673,36 @@ static int ui_get_window_index(GtkWidget *widget)
     } else {
         return -1;
     }
+}
+
+/* XXX: GtkApplication tracks the currently-active window using a similar
+        method to this handler, so we should probably remove this if we start
+        using GtkApplication. */
+/** \brief  Handler for the "focus-in-event" of a GtkWindow
+ *
+ * \param[in]   widget      window triggering the event
+ * \param[in]   event       window focus details
+ * \param[in]   user_data   extra data for the event (unused)
+ *
+ * \return  `FALSE` to continue processing
+ */
+static gboolean on_focus_in_event(GtkWidget *widget, GdkEventFocus *event,
+                                  gpointer user_data)
+{
+    int index = ui_get_window_index(widget);
+
+    if (index < 0) {
+        /* XXX: We should never end up here. */
+        fprintf(stderr, "focus-in-event: window not found\n");
+        return FALSE;
+    }
+
+    if (event->in == TRUE) {
+        /* fprintf(stderr, "window %d: focus-in\n", index); */
+        active_win_index = index;
+    }
+
+    return FALSE;
 }
 
 
@@ -832,13 +750,6 @@ static gboolean on_window_state_event(GtkWidget *widget, GdkEventWindowState *ev
         /* XXX: We should never end up here. */
         fprintf(stderr, "window-state-event: window not found\n");
         return FALSE;
-    }
-
-    /* FIXME: Trying to track the currently-focused window from here doesn't
-              work very well, or at all on some systems; perhaps handling the
-              "focus-in-event” signal would work better? */
-    if (win_state & GDK_WINDOW_STATE_FOCUSED) {
-        active_win_index = index;
     }
 
     if (win_state & GDK_WINDOW_STATE_FULLSCREEN) {
@@ -1190,6 +1101,8 @@ void ui_create_toplevel_window(struct video_canvas_s *canvas) {
     gtk_widget_set_hexpand(new_drawing_area, TRUE);
     gtk_widget_set_vexpand(new_drawing_area, TRUE);
 
+    g_signal_connect(new_window, "focus-in-event",
+                     G_CALLBACK(on_focus_in_event), NULL);
     g_signal_connect(new_window, "window-state-event",
                      G_CALLBACK(on_window_state_event), NULL);
     g_signal_connect(new_window, "delete-event",

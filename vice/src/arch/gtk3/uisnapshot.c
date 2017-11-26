@@ -46,6 +46,7 @@
 #include "vsync.h"
 #include "snapshot.h"
 #include "uistatusbar.h"
+#include "ui.h"
 
 #include "uisnapshot.h"
 
@@ -70,9 +71,12 @@ static char *quicksnap_filename(void)
 {
     char *fname;
     const char *mname;
+    char *cfg;
 
     mname = machine_class == VICE_MACHINE_C64SC ? "c64sc" : machine_name;
-    fname = util_concat(archdep_user_config_path(), "/", mname, ".vsf", NULL);
+    cfg = archdep_user_config_path();
+    fname = util_concat(cfg, "/", mname, ".vsf", NULL);
+    lib_free(cfg);
     debug_gtk3("quicksnap_filename = %s\n", fname);
     return fname;
 }
@@ -93,13 +97,12 @@ static void save_snapshot_dialog(GtkWidget *parent)
     int save_disks;
 
     dialog = gtk_file_chooser_dialog_new("Save snapshot file",
-            GTK_WINDOW(gtk_widget_get_toplevel(parent)),
+            ui_get_active_window(),
             GTK_FILE_CHOOSER_ACTION_SAVE,
             "Save", GTK_RESPONSE_ACCEPT,
             "Cancel", GTK_RESPONSE_CANCEL,
             NULL, NULL);
-    gtk_window_set_transient_for(GTK_WINDOW(dialog),
-            GTK_WINDOW(gtk_widget_get_toplevel(parent)));
+    gtk_window_set_transient_for(GTK_WINDOW(dialog), ui_get_active_window());
 
     gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog),
             create_file_chooser_filter(file_chooser_filter_snapshot, TRUE));

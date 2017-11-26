@@ -30,6 +30,8 @@
 #include "vice.h"
 #include <gtk/gtk.h>
 
+gboolean ui_toggle_resource(GtkWidget *widget, gpointer resource);
+
 gboolean ui_warp_callback(GtkWidget *widget, gpointer user_data);
 gboolean ui_swap_joysticks_callback(GtkWidget *widget, gpointer user_data);
 gboolean ui_swap_userport_joysticks_callback(GtkWidget *widget,
@@ -37,5 +39,12 @@ gboolean ui_swap_userport_joysticks_callback(GtkWidget *widget,
 gboolean ui_allow_keyset_joystick_callback(GtkWidget *widget,
                                            gpointer user_data);
 gboolean ui_mouse_grab_callback(GtkWidget *widget, gpointer user_data);
+
+void machine_reset_callback(GtkWidget *widget, gpointer user_data);
+void drive_reset_callback(GtkWidget *widget, gpointer user_data);
+void ui_close_callback(GtkWidget *widget, gpointer user_data);
+
+gboolean on_delete_event(GtkWidget *widget, GdkEvent *event, gpointer user_data);
+void ui_window_destroy_callback(GtkWidget *widget, gpointer user_data);
 
 #endif

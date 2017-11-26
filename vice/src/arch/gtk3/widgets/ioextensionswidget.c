@@ -7,23 +7,8 @@
  * Controls the following resource(s):
  *  IOCollisionHandling (all except vsid)
  *  CartridgeReset (all except vsid)
- *  SSRamExpansion (x64/x64sc/xscpu64/x128)
- *  SFXSoundSampler (x64/x64sc/xscpu64/x128)
- *  CPMCart (x64/x64sc)
- *  C128FullBanks (x128)
- *  FinalExpansionWriteBack (xvic)
- *  VicFlashPluginWriteBack (xvic)
- *  UltiMemWriteBack (xvic)
- *  IO2RAM (xvic)
- *  IO3RAM (xvic)
- *  VFLImod (xvic)
- *  IEEE488 (xvic)
- *  Acia1Enable (xplus4)
- *  DIGIBLASTER (xplus4)
- *  UserportDAC (xplus4, xpet)
  *  PETHRE (xpet)
  *  DiagPin (xpet)
- *  BurstMod (x64/x64sc/xscpu64)
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -66,14 +51,6 @@ static ui_radiogroup_entry_t io_collision_methods[] = {
     { "Detach all", IO_COLLISION_METHOD_DETACH_ALL },
     { "Detach last", IO_COLLISION_METHOD_DETACH_LAST },
     { "AND values", IO_COLLISION_METHOD_AND_WIRES },
-    { NULL, -1 }
-};
-
-
-static ui_radiogroup_entry_t burst_modes[] = {
-    { "None", 0 },
-    { "CIA1", 1 },
-    { "CIA2", 2 },
     { NULL, -1 }
 };
 
@@ -137,274 +114,6 @@ static GtkWidget *create_cart_reset_widget(void)
 }
 
 
-/** \brief  Create check button for Supersnapshot 32KB expansion
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_supersnapshot_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("SSRamExpansion",
-            "Enable 32KB Super Snapshot RAM expansion");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create check button for SFX Sound Sampler
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_sfx_sound_sampler_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("SFXSoundSampler",
-            "Enable SFX Sound Sampler");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create check button for CP/M Cartridge
- *
- * For x64/x64sc, NOT xscu64 or x128, or any others
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_cpm_cartridge_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("CPMCart",
-            "Enable CP/M Cartridge");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create check button to select C128 full banks
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_c128_full_banks_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("C128FullBanks",
-            "Enable RAM banks 2 & 3");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create check button to enable Final Expansion write back
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_final_expansion_writeback_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("FinalExpansionWriteBack",
-            "Enable Final Expansion image write back");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create check button to enable Vic Flash write back
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_vic_flash_writeback_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("VicFlashPluginWriteBack",
-            "Enable Vic Flash image write back");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create check button to enable UltiMem write back
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_ultimem_writeback_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("UltiMemWriteBack",
-            "Enable UltiMem image write back");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create check button to enable VIC-1112 IEEE-488 interface
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_vic_ieee488_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("IEEE488",
-            "Enable VIC-1112 IEEE-488 interface");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create check button to enable VIC-20 I/O-2 RAM Cartridge
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_vic_io2ram_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("IO2RAM",
-            "Enable I/O-2 RAM Cartridge ($9800-$9BFF)");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create check button to enable VIC-20 I/O-3 RAM Cartridge
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_vic_io3ram_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("IO3RAM",
-            "Enable I/O-3 RAM Cartridge ($9C00-$9FFF)");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create check button to enable VIC-20 VFLI modification
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_vic_vfli_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("VFLImod",
-            "Enable VFLI modification");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create check button to enable Plus4 ACIA
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_plus4_acia_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("Acia1Enable",
-            "Enable ACIA");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create check button to enable Plus4 DigiBlaster
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_plus4_digiblaster_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("DIGIBLASTER",
-            "Enable DigiBlaster add-on");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create check button to enable Plus4 Userport 8-bit DAC
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_plus4_8bitdac_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("UserportDAC",
-            "Enable Userport 8-bit DAC");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create check button to enable PET HRE hires
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_pet_hre_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("PETHRE",
-            "Enable HRE hi-res graphics");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create check button to enable PET diagnostic pin
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_pet_diagnostic_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("DiagPin",
-            "Enable userport diagnostic pin");
-    g_object_set(check, "margin-left", 16, NULL);
-    return check;
-}
-
-
-/** \brief  Create Burst Mode widget
- *
- * \return  GtkGrid
- */
-static GtkWidget *create_burst_mode_widget(void)
-{
-    GtkWidget *grid;
-    GtkWidget *label;
-    GtkWidget *group;
-
-    grid = gtk_grid_new();
-    gtk_grid_set_column_spacing(GTK_GRID(grid), 16);
-
-    label = gtk_label_new("Burst mode modification");
-    gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
-
-    group = resource_radiogroup_create("BurstMod", burst_modes,
-            GTK_ORIENTATION_HORIZONTAL);
-    gtk_grid_set_column_spacing(GTK_GRID(group), 16);
-    gtk_grid_attach(GTK_GRID(grid), group, 1, 0, 1, 1);
-
-    g_object_set(grid, "margin-left", 16, NULL);
-    return grid;
-}
-
-
 /** \brief  Create layout for x64/x64sc
  *
  * \param[in,out]   grid    grid to add widgets to
@@ -416,10 +125,6 @@ static void create_c64_layout(GtkWidget *grid)
     collision_widget = create_collision_widget("$D000-$DFFF");
     gtk_grid_attach(GTK_GRID(grid), collision_widget, 0, 1, 3, 1);
     gtk_grid_attach(GTK_GRID(grid), create_cart_reset_widget(), 0, 2, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_supersnapshot_widget(), 0, 3, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_sfx_sound_sampler_widget(), 0, 4, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_cpm_cartridge_widget(), 0, 5, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_burst_mode_widget(), 0, 6, 3, 1);
 }
 
 
@@ -434,9 +139,6 @@ static void create_scpu64_layout(GtkWidget *grid)
     collision_widget = create_collision_widget("$D000-$DFFF");
     gtk_grid_attach(GTK_GRID(grid), collision_widget, 0, 1, 3, 1);
     gtk_grid_attach(GTK_GRID(grid), create_cart_reset_widget(), 0, 2, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_supersnapshot_widget(), 0, 3, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_sfx_sound_sampler_widget(), 0, 4, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_burst_mode_widget(), 0, 5, 3, 1);
 }
 
 
@@ -451,9 +153,6 @@ static void create_c128_layout(GtkWidget *grid)
     collision_widget = create_collision_widget("$D000-$DFFF");
     gtk_grid_attach(GTK_GRID(grid), collision_widget, 0, 1, 3, 1);
     gtk_grid_attach(GTK_GRID(grid), create_cart_reset_widget(), 0, 2, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_c128_full_banks_widget(), 0, 3, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_supersnapshot_widget(), 0, 4, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_sfx_sound_sampler_widget(), 0, 5, 3, 1);
 }
 
 
@@ -483,21 +182,6 @@ static void create_vic20_layout(GtkWidget *grid)
     collision_widget = create_collision_widget("$9000-$93FF, $9800-$9FFF");
     gtk_grid_attach(GTK_GRID(grid), collision_widget, 0, 1, 3, 1);
     gtk_grid_attach(GTK_GRID(grid), create_cart_reset_widget(), 0, 2, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_final_expansion_writeback_widget(),
-            0, 3, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_vic_flash_writeback_widget(),
-            0, 4, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_ultimem_writeback_widget(),
-            0, 5, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_vic_ieee488_widget(),
-            0, 6, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_vic_io2ram_widget(),
-            0, 7, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_vic_io3ram_widget(),
-            0, 8, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_vic_vfli_widget(),
-            0, 9, 3, 1);
-
 }
 
 
@@ -512,12 +196,6 @@ static void create_plus4_layout(GtkWidget *grid)
     collision_widget = create_collision_widget("$FD00-$FEFF");
     gtk_grid_attach(GTK_GRID(grid), collision_widget, 0, 1, 3, 1);
     gtk_grid_attach(GTK_GRID(grid), create_cart_reset_widget(), 0, 2, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_plus4_acia_widget(), 0, 3, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_plus4_digiblaster_widget(),
-            0, 4, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_plus4_8bitdac_widget(),
-            0, 5, 3, 1);
-
 }
 
 
@@ -531,8 +209,6 @@ static void create_pet_layout(GtkWidget *grid)
 
     collision_widget = create_collision_widget("$8800-$8FFF, $E900-$EEFF");
     gtk_grid_attach(GTK_GRID(grid), collision_widget, 0, 1, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_pet_hre_widget(), 0, 2, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), create_pet_diagnostic_widget(), 0, 3, 3, 1);
 }
 
 

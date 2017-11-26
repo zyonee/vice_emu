@@ -108,7 +108,30 @@ libwidgets_a_SOURCES = \
 	magicvoicewidget.c \
 	midiwidget.c \
 	sfxsoundexpanderwidget.c \
-	ds12c887widget.c
+	ds12c887widget.c \
+	userportdeviceswidget.c \
+	tapeportdeviceswidget.c \
+	sidcartwidget.c \
+	v364speechwidget.c \
+	sfxsoundsamplerwidget.c \
+	megacartwidget.c \
+	petreuwidget.c \
+	petcolourgraphicswidget.c \
+	petdwwwidget.c \
+	supersnapshotwidget.c \
+	cpmwidget.c \
+	burstmodewidget.c \
+	c128fullbankswidget.c \
+	plus4aciawidget.c \
+	plus4digiblasterwidget.c \
+	finalexpansionwidget.c \
+	vicflashwidget.c \
+	ultimemwidget.c \
+	vicieee488widget.c \
+	vicioramwidget.c \
+	vfliwidget.c \
+	petdiagpinwidget.c \
+	pethrewidget.c
 
 EXTRA_DIST = \
 	jamdialog.h \
@@ -194,4 +217,27 @@ EXTRA_DIST = \
 	magicvoicewidget.h \
 	midiwidget.h \
 	sfxsoundexpanderwigdet.h \
-	ds12c887widget.h
+	ds12c887widget.h \
+	userportdeviceswidget.h \
+	tapeportdeviceswidget.h \
+	sidcartwidget.h \
+	v364speechwidget.h \
+	sfxsoundsamplerwidget.h \
+	megacartwidget.h \
+	petreuwidget.h \
+	petcolourgraphicswidget.h \
+	petdwwwidget.h \
+	supersnapshotwidget.h \
+	cpmwidget.h \
+	burstmodewidget.h \
+	c128fullbankswidget.h \
+	plus4aciawidget.h \
+	plus4digiblasterwidget.h \
+	finalexpansionwidget.h \
+	vicflashwidget.h \
+	ultimemwidget.h \
+	vicieee488widget.h \
+	vicioramwidget.h \
+	vfliwidget.h \
+	petdiagpinwidget.h \
+	pethrewidget.h
