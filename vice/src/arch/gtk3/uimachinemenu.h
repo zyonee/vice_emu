@@ -1,10 +1,8 @@
-/** \file   src/arch/gtk3/widgets/basedialogs.h
- * \brief   Basic dialogs (Info, Yes/No, etc)
- *
- * GTK3 basic dialogs
+/*
+ * uimachinemenu.h - Native GTK3 menus for machine emulators, (not vsid.)
  *
  * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
+ *  Marcus Sutton <loggedoubt@gmail.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -23,28 +21,16 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  *  02111-1307  USA.
+ *
  */
 
-#ifndef VICE_BASEDIALOGS_H
-#define VICE_BASEDIALOGS_H
+#ifndef VICE_UIMACHINEMENU_H
+#define VICE_UIMACHINEMENU_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-#include "openfiledialog.h"
-#include "savefiledialog.h"
-#include "selectdirectorydialog.h"
-
-gboolean ui_message_info(GtkWidget *widget,
-                         const char *title,
-                         const char *text, ...);
+GtkWidget *ui_machine_menu_bar_create(void);
 
 
-gboolean ui_message_confirm(GtkWidget *widget,
-                            const char *title,
-                            const char *fmt, ...);
-
-gboolean ui_message_error(GtkWidget *widget,
-                          const char *title,
-                          const char *fmt, ...);
-#endif
+#endif /* VICE_UIMACHINEMENU_H */

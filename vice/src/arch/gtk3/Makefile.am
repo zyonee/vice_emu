@@ -68,6 +68,7 @@ libarch_a_SOURCES = \
 	uidiskattach.c \
 	uiedit.c \
 	uifliplist.c \
+	uimachinemenu.c \
 	uimenu.c \
 	uimon.c \
 	uimon-fallback.c \
@@ -98,7 +99,8 @@ libarch_a_SOURCES = \
 	uidrivesettings.c \
 	uisnapshot.c \
 	uidebug.c \
-	uicart.c
+	uicart.c \
+	uimedia.c
 
 EXTRA_DIST = \
 	archdep.h \
@@ -135,6 +137,7 @@ EXTRA_DIST = \
 	uifliplist.h \
 	uikeyboard.h \
 	uiedit.h \
+	uimachinemenu.h \
 	uimenu.h \
 	uisettings.h \
 	uismartattach.h \
@@ -159,4 +162,5 @@ EXTRA_DIST = \
 	uidrivesettings.h \
 	uisnapshot.h \
 	uidebug.h \
-	uicart.h
+	uicart.h \
+	uimedia.h

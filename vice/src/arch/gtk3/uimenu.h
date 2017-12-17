@@ -58,8 +58,10 @@ typedef struct ui_menu_item_s {
     ui_menu_item_type_t type;   /**< menu item type, \see ui_menu_item_type_t */
 
     /* callbacks, accelerators and other things, again light on the CPP/layer
-     * stuff to keep things clean and maintainable.
-     */
+     * stuff to keep things clean and maintainable. */
+
+    /** GAction name (must be unique or NULL for no action) */
+    char *action_name;
 
     /** menu item callback function (NULL == no callback) */
     void (*callback)(GtkWidget *widget, gpointer user_data);
@@ -82,12 +84,23 @@ typedef struct ui_menu_item_s {
 
 /** \brief  Terminator of a menu items list
  */
-#define UI_MENU_TERMINATOR { NULL, UI_MENU_TYPE_GUARD, NULL, NULL, 0, 0 }
+#define UI_MENU_TERMINATOR { NULL, UI_MENU_TYPE_GUARD, NULL, NULL, NULL, 0, 0 }
 
 
 /** \brief  Menu items separator
  */
-#define UI_MENU_SEPARATOR { "---", UI_MENU_TYPE_SEPARATOR, NULL, NULL, 0, 0 }
+#define UI_MENU_SEPARATOR { "---", UI_MENU_TYPE_SEPARATOR, NULL, NULL, NULL, 0, 0 }
+
+
+/** \brief  Platform-dependent accelerator key defines
+ */
+#ifdef MACOSX_SUPPORT
+  /* Mac Command key (Windows key on PC keyboards) */
+  #define VICE_MOD_MASK GDK_META_MASK
+#else
+  /* Alt key (Option key on Mac keyboards) */
+  #define VICE_MOD_MASK GDK_MOD1_MASK
+#endif
 
 
 /*

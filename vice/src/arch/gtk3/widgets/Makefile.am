@@ -131,7 +131,9 @@ libwidgets_a_SOURCES = \
 	vicioramwidget.c \
 	vfliwidget.c \
 	petdiagpinwidget.c \
-	pethrewidget.c
+	pethrewidget.c \
+	snapshotwidget.c \
+	ffmpegwidget.c
 
 EXTRA_DIST = \
 	jamdialog.h \
@@ -240,4 +242,6 @@ EXTRA_DIST = \
 	vicioramwidget.h \
 	vfliwidget.h \
 	petdiagpinwidget.h \
-	pethrewidget.h
+	pethrewidget.h \
+	snapshotwidget.h \
+	ffmpegwidget.h

@@ -1,7 +1,5 @@
-/** \file   src/arch/gtk3/widgets/basedialogs.h
- * \brief   Basic dialogs (Info, Yes/No, etc)
- *
- * GTK3 basic dialogs
+/** \file   src/arch/gtk3/widgets/ffmpegwidget.h
+ * \brief   FFMPEG media recording options dialog - header
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -25,26 +23,14 @@
  *  02111-1307  USA.
  */
 
-#ifndef VICE_BASEDIALOGS_H
-#define VICE_BASEDIALOGS_H
+#ifndef VICE_FFMPEGWIDGET_H
+#define VICE_FFMPEGWIDGET_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
+#include <stdbool.h>
 
-#include "openfiledialog.h"
-#include "savefiledialog.h"
-#include "selectdirectorydialog.h"
-
-gboolean ui_message_info(GtkWidget *widget,
-                         const char *title,
-                         const char *text, ...);
+GtkWidget *ffmpeg_widget_create(void);
 
 
-gboolean ui_message_confirm(GtkWidget *widget,
-                            const char *title,
-                            const char *fmt, ...);
-
-gboolean ui_message_error(GtkWidget *widget,
-                          const char *title,
-                          const char *fmt, ...);
 #endif
