@@ -1,5 +1,5 @@
-/*
- * vsidui.c - Native GTK3 VSID UI.
+/** \file   src/arch/gtk3/vsidui.c
+ * \brief   Native GTK3 VSID UI
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -30,12 +30,18 @@
 
 #include "not_implemented.h"
 
+#include "machine.h"
+#include "psid.h"
+#include "ui.h"
+#include "uisidattach.h"
+#include "uivsidwindow.h"
+#include "vicii.h"
 #include "vsidui.h"
 
 
 void vsid_ui_close(void)
 {
-    NOT_IMPLEMENTED();
+    NOT_IMPLEMENTED_WARN_ONLY();
 }
 
 void vsid_ui_display_author(const char *author)
@@ -73,9 +79,11 @@ void vsid_ui_display_sync(int sync)
     NOT_IMPLEMENTED_WARN_ONLY();
 }
 
+static int count = 0;
+
 void vsid_ui_display_time(unsigned int sec)
 {
-    NOT_IMPLEMENTED_WARN_ONLY();
+    NOT_IMPLEMENTED_WARN_X_TIMES(count, 3);
 }
 
 void vsid_ui_display_tune_nr(int nr)
@@ -85,8 +93,16 @@ void vsid_ui_display_tune_nr(int nr)
 
 int vsid_ui_init(void)
 {
-    /* Some of the work here is done by video.c now, and would need to
-     * be shifted over */
+    video_canvas_t *canvas = vicii_get_canvas();
+
+    ui_vsid_window_init();
+
+    ui_create_toplevel_window(canvas);
+    ui_display_toplevel_window(canvas->window_index);
+
+    uisidattach_set_psid_init_func(psid_init_driver);
+    uisidattach_set_psid_play_func(machine_play_psid);
+
     INCOMPLETE_IMPLEMENTATION();
     return 0;
 }

@@ -64,40 +64,6 @@ static ui_radiogroup_entry_t ram_sizes[] = {
 };
 
 
-/* list of widgets, used to enable/disable depending on GEORAM resource */
-static GtkWidget *reu_enable_widget = NULL;
-static GtkWidget *reu_size = NULL;
-static GtkWidget *reu_ioswap = NULL;
-static GtkWidget *reu_image = NULL;
-
-
-/** \brief  Handler for the "toggled" event of the reu_enable widget
- *
- * \param[in]   widget      check button
- * \param[in]   user_data   unused
- */
-static void on_enable_toggled(GtkWidget *widget, gpointer user_data)
-{
-    gboolean state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-
-    gtk_widget_set_sensitive(reu_size, state);
-    if (reu_ioswap != NULL) {
-        gtk_widget_set_sensitive(reu_ioswap, state);
-    }
-    gtk_widget_set_sensitive(reu_image, state);
-}
-
-
-/** \brief  Create REU enable check button
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_reu_enable_widget(void)
-{
-    return resource_check_button_create("REU", "Enable RAM Expansion Module");
-}
-
-
 /** \brief  Create IO-swap check button (seems to be valid for xvic only)
  *
  * \return  GtkCheckButton
@@ -152,13 +118,19 @@ static GtkWidget *create_reu_image_widget(GtkWidget *parent)
 GtkWidget *reu_widget_create(GtkWidget *parent)
 {
     GtkWidget *grid;
+    GtkWidget *reu_enable_widget;   /* reu_enable is taken by reu.c, why doesn't
+                                       GCC warn about shadowing? */
+    GtkWidget *reu_size;
+    GtkWidget *reu_ioswap;
+    GtkWidget *reu_image;
 
     grid = gtk_grid_new();
     gtk_grid_set_column_spacing(GTK_GRID(grid), 8);
     gtk_grid_set_row_spacing(GTK_GRID(grid), 8);
 
-    reu_enable_widget = create_reu_enable_widget();
-    gtk_grid_attach(GTK_GRID(grid), reu_enable_widget, 0, 0, 1, 1);
+    reu_enable_widget = carthelpers_create_enable_check_button(
+            CARTRIDGE_NAME_REU, CARTRIDGE_REU);
+    gtk_grid_attach(GTK_GRID(grid), reu_enable_widget, 0, 0, 2, 1);
 
     if (machine_class == VICE_MACHINE_VIC20) {
         reu_ioswap = create_reu_ioswap_widget();
@@ -170,12 +142,6 @@ GtkWidget *reu_widget_create(GtkWidget *parent)
 
     reu_image = create_reu_image_widget(parent);
     gtk_grid_attach(GTK_GRID(grid), reu_image, 1, 1, 1, 1);
-
-    g_signal_connect(reu_enable_widget, "toggled", G_CALLBACK(on_enable_toggled),
-            NULL);
-
-    /* enable/disable widget based on reu-enable (dirty trick, I know) */
-    on_enable_toggled(reu_enable_widget, NULL);
 
     gtk_widget_show_all(grid);
     return grid;

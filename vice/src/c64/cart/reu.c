@@ -691,6 +691,15 @@ int reu_enable(void)
     return set_reu_enabled(1, NULL);
 }
 
+
+int reu_disable(void)
+{
+    set_reu_enabled(0, NULL);
+    reu_deactivate();
+    return 0;
+}
+
+
 int reu_bin_attach(const char *filename, uint8_t *rawcart)
 {
     FILE *fd;

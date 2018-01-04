@@ -51,11 +51,62 @@
 #include "uimedia.h"
 #include "uimenu.h"
 #include "uimonarch.h"
+
+#ifdef HAVE_NETWORK
+# include "uinetplay.h"
+#endif
+
 #include "uisettings.h"
 #include "uismartattach.h"
 #include "uisnapshot.h"
 #include "uitapeattach.h"
 
+
+/*
+ * The following are translation unit local so we can create functions that
+ * modify menu contents or even functions that alter the top bar itself.
+ */
+
+
+/** \brief  Main menu bar widget
+ *
+ * Contains the submenus on the menu main bar
+ *
+ * This one lives until ui_exit() or thereabouts
+ */
+static GtkWidget *main_menu_bar = NULL;
+
+
+/** \brief  File submenu
+ */
+static GtkWidget *file_submenu = NULL;
+
+
+/** \brief  Edit submenu
+ */
+static GtkWidget *edit_submenu = NULL;
+
+
+/** \brief  Snapshot submenu
+ */
+static GtkWidget *snapshot_submenu = NULL;
+
+
+/** \brief  Settings submenu
+ */
+static GtkWidget *settings_submenu = NULL;
+
+
+#ifdef DEBUG
+/** \brief  Debug submenu, only available when --enable-debug was specified
+ */
+static GtkWidget *debug_submenu = NULL;
+#endif
+
+
+/** \brief  Help submenu
+ */
+static GtkWidget *help_submenu = NULL;
 
 
 /** \brief  File->Detach submenu
@@ -130,6 +181,7 @@ static ui_menu_item_t datasette_control_submenu[] = {
     UI_MENU_TERMINATOR
 };
 
+#if 0
 /** \brief  'File->Cartridge attach' submenu
  */
 static ui_menu_item_t cart_attach_submenu[] = {
@@ -138,30 +190,32 @@ static ui_menu_item_t cart_attach_submenu[] = {
         GDK_KEY_C, VICE_MOD_MASK },
     UI_MENU_TERMINATOR
 };
+#endif
+
 
 /** \brief  File->Reset submenu
  */
 static ui_menu_item_t reset_submenu[] = {
     { "Soft reset", UI_MENU_TYPE_ITEM_ACTION,
-        "reset-soft", machine_reset_callback, GINT_TO_POINTER(MACHINE_RESET_MODE_SOFT),
+        "reset-soft", ui_machine_reset_callback, GINT_TO_POINTER(MACHINE_RESET_MODE_SOFT),
         GDK_KEY_F9, VICE_MOD_MASK },
     { "Hard reset", UI_MENU_TYPE_ITEM_ACTION,
-        "reset-hard", machine_reset_callback, GINT_TO_POINTER(MACHINE_RESET_MODE_HARD),
+        "reset-hard", ui_machine_reset_callback, GINT_TO_POINTER(MACHINE_RESET_MODE_HARD),
         GDK_KEY_F12, VICE_MOD_MASK },
 
     UI_MENU_SEPARATOR,
 
     { "Reset drive #8", UI_MENU_TYPE_ITEM_ACTION,
-        "reset-drive8", drive_reset_callback, GINT_TO_POINTER(8),
+        "reset-drive8", ui_drive_reset_callback, GINT_TO_POINTER(8),
         0, 0 },
     { "Reset drive #9", UI_MENU_TYPE_ITEM_ACTION,
-        "reset-drive9", drive_reset_callback, GINT_TO_POINTER(9),
+        "reset-drive9", ui_drive_reset_callback, GINT_TO_POINTER(9),
         0, 0 },
     { "Reset drive #10", UI_MENU_TYPE_ITEM_ACTION,
-        "reset-drive10", drive_reset_callback, GINT_TO_POINTER(10),
+        "reset-drive10", ui_drive_reset_callback, GINT_TO_POINTER(10),
         0, 0 },
     { "Reset drive #11", UI_MENU_TYPE_ITEM_ACTION,
-        "reset-drive11", drive_reset_callback, GINT_TO_POINTER(11),
+        "reset-drive11", ui_drive_reset_callback, GINT_TO_POINTER(11),
         0, 0 },
 
     UI_MENU_TERMINATOR
@@ -231,14 +285,14 @@ static ui_menu_item_t file_menu_tape[] = {
  */
 static ui_menu_item_t file_menu_tail[] = {
     /* cart */
-    { "Attach cartridge image", UI_MENU_TYPE_SUBMENU,
-        NULL, NULL, cart_attach_submenu,
+    { "Attach cartridge image ...", UI_MENU_TYPE_ITEM_ACTION,
+        "cart-attach", uicart_show_dialog, NULL,
         0, 0 },
     { "Detach cartridge image(s)", UI_MENU_TYPE_ITEM_ACTION,
-        "detach-cart", (void *)uicart_detach, NULL,
+        "cart-detach", (void *)uicart_detach, NULL,
         0, 0 },
     { "Cartridge freeze", UI_MENU_TYPE_ITEM_ACTION,
-        "freeze-cart", (void *)uicart_trigger_freeze, NULL,
+        "cart-free", (void *)uicart_trigger_freeze, NULL,
         GDK_KEY_Z, VICE_MOD_MASK },
 
     UI_MENU_SEPARATOR,
@@ -246,24 +300,25 @@ static ui_menu_item_t file_menu_tail[] = {
     /* monitor */
     { "Activate monitor", UI_MENU_TYPE_ITEM_ACTION,
         "monitor", ui_monitor_activate_callback, NULL,
-        GDK_KEY_H, VICE_MOD_MASK | GDK_SHIFT_MASK },
-    { "Monitor settings ...", UI_MENU_TYPE_ITEM_ACTION,
-        NULL, NULL, NULL,
-        0, 0 },
+#ifdef MACOSX_SUPPORT
+        GDK_KEY_H, VICE_MOD_MASK | GDK_SHIFT_MASK
+#else
+        GDK_KEY_H, VICE_MOD_MASK
+#endif
+    },
 
     UI_MENU_SEPARATOR,
 
+#ifdef HAVE_NETWORK
     { "Netplay ...", UI_MENU_TYPE_ITEM_ACTION,
-        NULL, NULL, NULL,
+        NULL, ui_netplay_dialog, NULL,
         0, 0 },
 
     UI_MENU_SEPARATOR,
+#endif
 
     { "Reset", UI_MENU_TYPE_SUBMENU,
         NULL, NULL, reset_submenu,
-        0, 0 },
-    { "Action on CPU JAM ...", UI_MENU_TYPE_ITEM_ACTION,
-        NULL, NULL, NULL,
         0, 0 },
 
     UI_MENU_SEPARATOR,
@@ -348,7 +403,11 @@ static ui_menu_item_t snapshot_menu[] = {
 
     { "Save media file ...", UI_MENU_TYPE_ITEM_ACTION,
         "media-save", uimedia_dialog_show, NULL,
-        0, 0 },
+        GDK_KEY_R, VICE_MOD_MASK|GDK_SHIFT_MASK },
+
+    { "Stop media recording", UI_MENU_TYPE_ITEM_ACTION,
+        "media-stop", (void *)uimedia_stop_recording, NULL,
+        GDK_KEY_S, VICE_MOD_MASK|GDK_SHIFT_MASK },
 
     UI_MENU_TERMINATOR
 };
@@ -376,6 +435,9 @@ static ui_menu_item_t settings_menu_head[] = {
     { "Toggle warp mode", UI_MENU_TYPE_ITEM_CHECK,
         "warp", (void *)(ui_toggle_resource), (void *)"WarpMode",
         GDK_KEY_W, VICE_MOD_MASK },
+    { "Pause emulation", UI_MENU_TYPE_ITEM_CHECK,
+        "Pause emulation", (void *)(ui_toggle_pause), NULL,
+        GDK_KEY_P, VICE_MOD_MASK },
 
     UI_MENU_SEPARATOR,
 
@@ -456,7 +518,7 @@ static ui_menu_item_t settings_menu_tail[] = {
     UI_MENU_SEPARATOR,
 
     /* the settings dialog */
-    { "Settings", UI_MENU_TYPE_ITEM_ACTION,
+    { "Settings ...", UI_MENU_TYPE_ITEM_ACTION,
         "settings", ui_settings_dialog_create, NULL,
         0, 0 },
     UI_MENU_TERMINATOR
@@ -534,6 +596,29 @@ GtkWidget *ui_machine_menu_bar_create(void)
 {
     GtkWidget *menu_bar;
 
+    /* create the top menu bar */
+    menu_bar = gtk_menu_bar_new();
+
+    /* create the top-level 'File' menu */
+    file_submenu = ui_menu_submenu_create(menu_bar, "File");
+
+    /* create the top-level 'Edit' menu */
+    edit_submenu = ui_menu_submenu_create(menu_bar, "Edit");
+
+    /* create the top-level 'Snapshot' menu */
+    snapshot_submenu = ui_menu_submenu_create(menu_bar, "Snapshot");
+
+    /* create the top-level 'Settings' menu */
+    settings_submenu = ui_menu_submenu_create(menu_bar, "Settings");
+
+#ifdef DEBUG
+    /* create the top-level 'Debug' menu (when --enable-debug is used) */
+    debug_submenu = ui_menu_submenu_create(menu_bar, "Debug");
+#endif
+
+    /* create the top-level 'Help' menu */
+    help_submenu = ui_menu_submenu_create(menu_bar, "Help");
+
     /* determine which joystick swap menu items should be added */
     switch (machine_class) {
         case VICE_MACHINE_C64:      /* fall through */
@@ -570,34 +655,34 @@ GtkWidget *ui_machine_menu_bar_create(void)
             break;
     }
 
-    menu_bar = ui_menu_bar_create();
-
-    /* generate File menu */
-    ui_menu_file_add(file_menu_head);
+    /* add items to the File menu */
+    ui_menu_add(file_submenu, file_menu_head);
     if (file_menu_tape_section != NULL) {
-        ui_menu_file_add(file_menu_tape_section);
+        ui_menu_add(file_submenu, file_menu_tape_section);
     }
-    ui_menu_file_add(file_menu_tail);
+    ui_menu_add(file_submenu, file_menu_tail);
 
-    /* generate Edit menu */
-    ui_menu_edit_add(edit_menu);
-    /* generate Snapshot menu */
-    ui_menu_snapshot_add(snapshot_menu);
+    /* add items to the Edit menu */
+    ui_menu_add(edit_submenu, edit_menu);
+    /* add items to the Snapshot menu */
+    ui_menu_add(snapshot_submenu, snapshot_menu);
 
-    /* generate Settings menu */
-    ui_menu_settings_add(settings_menu_head);
+    /* add items to the Settings menu */
+    ui_menu_add(settings_submenu, settings_menu_head);
     if (settings_menu_joy_section != NULL) {
-        ui_menu_settings_add(settings_menu_joy_section);
+        ui_menu_add(settings_submenu, settings_menu_joy_section);
     }
-    ui_menu_settings_add(settings_menu_tail);
+    ui_menu_add(settings_submenu, settings_menu_tail);
 
 #ifdef DEBUG
-    /* generate Debug menu */
-    ui_menu_debug_add(debug_menu);
+    /* add items to the Debug menu */
+    ui_menu_add(debug_submenu, debug_menu);
 #endif
 
-    /* generate Help menu */
-    ui_menu_help_add(help_menu);
+    /* add items to the Help menu */
+    ui_menu_add(help_submenu, help_menu);
 
+    main_menu_bar = menu_bar;    /* XXX: do I need g_object_ref()/g_object_unref()
+                                         for this */
     return menu_bar;
 }

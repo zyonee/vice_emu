@@ -31,9 +31,10 @@
 #include <gtk/gtk.h>
 
 GtkWidget * resource_entry_create(const char *resource);
-
 void        resource_entry_update(GtkWidget *entry, const char *value);
-
 void        resource_entry_reset(GtkWidget *entry);
 
+GtkWidget * resource_entry_full_create(const char *resource);
+void        resource_entry_full_update(GtkWidget *entry, const char *new);
+void        resource_entry_full_reset(GtkWidget *entry);
 #endif

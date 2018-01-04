@@ -47,39 +47,6 @@
 #include "dqbbwidget.h"
 
 
-/* list of widgets, used to enable/disable depending on Double Quick Brown Box
- * resources */
-static GtkWidget *dqbb_enable_widget = NULL;
-static GtkWidget *dqbb_image = NULL;
-
-
-/** \brief  Handler for the "toggled" event of the dqbb_enable widget
- *
- * \param[in]   widget      check button
- * \param[in]   user_data   unused
- */
-static void on_enable_toggled(GtkWidget *widget, gpointer user_data)
-{
-    gboolean state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-
-    gtk_widget_set_sensitive(dqbb_image, state);
-}
-
-
-/** \brief  Create Double Quick Brown Box enable check button
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_dqbb_enable_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("DQBB",
-            "Enable Double Quick Brown Box");
-    return check;
-}
-
-
 /** \brief  Create widget to load/save Double Quick Brown Box image file
  *
  * \return  GtkGrid
@@ -102,22 +69,19 @@ static GtkWidget *create_dqbb_image_widget(GtkWidget *parent)
 GtkWidget *dqbb_widget_create(GtkWidget *parent)
 {
     GtkWidget *grid;
+    GtkWidget *dqbb_enable_widget; /* dqbb_enable shadows */
+    GtkWidget *dqbb_image;
 
     grid = gtk_grid_new();
     gtk_grid_set_column_spacing(GTK_GRID(grid), 8);
     gtk_grid_set_row_spacing(GTK_GRID(grid), 8);
 
-    dqbb_enable_widget = create_dqbb_enable_widget();
+    dqbb_enable_widget = carthelpers_create_enable_check_button(
+            CARTRIDGE_NAME_DQBB, CARTRIDGE_DQBB);
     gtk_grid_attach(GTK_GRID(grid), dqbb_enable_widget, 0, 0, 1, 1);
 
     dqbb_image = create_dqbb_image_widget(parent);
     gtk_grid_attach(GTK_GRID(grid), dqbb_image, 0, 1, 1, 1);
-
-    g_signal_connect(dqbb_enable_widget, "toggled", G_CALLBACK(on_enable_toggled),
-            NULL);
-
-    /* enable/disable widget based on dqbb-enable (dirty trick, I know) */
-    on_enable_toggled(dqbb_enable_widget, NULL);
 
     gtk_widget_show_all(grid);
     return grid;

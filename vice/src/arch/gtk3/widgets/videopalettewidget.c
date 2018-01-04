@@ -39,6 +39,7 @@
 #include "vice.h"
 
 #include <gtk/gtk.h>
+#include <stdbool.h>
 #include <string.h>
 
 #include "debug_gtk3.h"
@@ -61,6 +62,20 @@ static GtkWidget *combo_external = NULL;
 static GtkWidget *button_custom = NULL;
 
 
+/** \brief  Handler for the "toggled" events of the internal/external radios
+ *
+ * \param[in]   radio   Internal/External radio button
+ * \param[in]   data    setting (bool)
+ */
+static void on_internal_toggled(GtkWidget *radio, gpointer data)
+{
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(radio))) {
+        resources_set_int_sprintf("%sExternalPalette", GPOINTER_TO_INT(data),
+                chip_prefix);
+    }
+}
+
+
 /** \brief  Handler for the "changed" event of the palettes combo box
  *
  * \param[in]   combo       combo box
@@ -74,6 +89,8 @@ static void on_combo_changed(GtkComboBox *combo, gpointer user_data)
     debug_gtk3("got combo index %d, id '%s'\n", index, id);
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_external), TRUE);
     resources_set_string_sprintf("%sPaletteFile", id, chip_prefix);
+    resources_set_int_sprintf("%sExternalPalette", 1, chip_prefix);
+
 }
 
 
@@ -107,6 +124,10 @@ static void on_browse_clicked(GtkButton *button, gpointer user_data)
 
 /** \brief  Create combo box with available palettes for the current chip
  *
+ * If the file in the resource "${chip}PaletteFile" doesn't match any of the
+ * palette files provided by VICE, it is assumed to be a user-defined custom
+ * palette and inserted at the top of the combo box.
+ *
  * \return  GtkComboBoxText
  */
 static GtkWidget *create_combo_box(void)
@@ -116,8 +137,12 @@ static GtkWidget *create_combo_box(void)
     palette_info_t *list;
     int row;
     const char *current;
+    bool found = false;
 
-    resources_get_string_sprintf("%sPaletteFile", &current, chip_prefix);
+    if (resources_get_string_sprintf("%sPaletteFile",
+                &current, chip_prefix) < 0) {
+        current = NULL;
+    }
 
     row = 0;
     list = palette_get_info_list();
@@ -127,12 +152,21 @@ static GtkWidget *create_combo_box(void)
             /* got a valid entry */
             gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(combo),
                     list[index].file, list[index].name);
-            if (strcmp(list[index].file, current) == 0) {
+            if (current != NULL && strcmp(list[index].file, current) == 0) {
                 gtk_combo_box_set_active(GTK_COMBO_BOX(combo), row);
+                found = true;
             }
             row++;
         }
     }
+
+    /* if we didn't find `current` in the list of VICE palette files, add it as
+     * a custom user-defined file */
+    if ((!found) && current != NULL) {
+        gtk_combo_box_text_insert(GTK_COMBO_BOX_TEXT(combo), 0, current, current);
+        gtk_combo_box_set_active(GTK_COMBO_BOX(combo), 0);
+    }
+
     g_signal_connect(combo, "changed", G_CALLBACK(on_combo_changed), NULL);
     return combo;
 }
@@ -193,6 +227,12 @@ GtkWidget *video_palette_widget_create(const char *chip)
     } else {
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_internal), TRUE);
     }
+
+    g_signal_connect(radio_internal, "toggled",
+            G_CALLBACK(on_internal_toggled), GINT_TO_POINTER(0));
+     g_signal_connect(radio_external, "toggled",
+            G_CALLBACK(on_internal_toggled), GINT_TO_POINTER(1));
+
     gtk_widget_show_all(grid);
     return grid;
 }

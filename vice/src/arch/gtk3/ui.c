@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <gtk/gtk.h>
+#include <stdbool.h>
 
 #include "debug_gtk3.h"
 #include "not_implemented.h"
@@ -53,7 +54,7 @@
 #include "uimenu.h"
 #include "uisettings.h"
 #include "uistatusbar.h"
-#include "selectdirectorydialog.h"
+#include "uivsidmenu.h"
 #include "jamdialog.h"
 
 #include "ui.h"
@@ -192,7 +193,6 @@ static const cmdline_option_t cmdline_options_common[] = {
  */
 static int is_paused = 0;
 
-
 /** \brief  Signals the html_browser_command field of the resource got allocated
  */
 static int html_browser_command_set = 0;
@@ -209,6 +209,9 @@ static int is_fullscreen = 0;
  */
 static int fullscreen_has_decorations = 0;
 
+/** \brief  Function to help create a main window.
+ */
+static void (*create_window_func)(struct video_canvas_s *) = NULL;
 
 /******************************************************************************
  *                              Event handlers                                *
@@ -227,6 +230,21 @@ GtkWindow *ui_get_active_window(void)
 
     return GTK_WINDOW(ui_resources.window_widget[active_win_index]);
 }
+
+
+/** \brief  Get video canvas of active window
+ *
+ * \return  current active video canvas
+ */
+struct video_canvas_s *ui_get_active_canvas(void)
+{
+    if (active_win_index < 0) {
+        /* Probably should never end up here. */
+        return ui_resources.canvas[PRIMARY_WINDOW];
+    }
+    return ui_resources.canvas[active_win_index];
+}
+
 
 /** \brief  Get a window's index
  *
@@ -564,6 +582,15 @@ static int set_window_ypos(int val, void *param)
 }
 
 
+/** \brief  Set function to help create the main window(s)
+ *
+ * \param[in]   func    create window function
+ */
+void ui_set_create_window_func(void (*func)(struct video_canvas_s *))
+{
+    create_window_func = func;
+}
+
 
 /* FIXME: the code that calls this apparently creates the VDC window for x128
           before the VIC window (primary) - this is probably done so the VIC
@@ -596,7 +623,7 @@ static int set_window_ypos(int val, void *param)
  */
 void ui_create_toplevel_window(struct video_canvas_s *canvas)
 {
-    GtkWidget *new_window, *grid, *new_drawing_area, *status_bar;
+    GtkWidget *new_window, *grid, *status_bar;
     GtkWidget *menu_bar;
     int target_window;
 
@@ -604,8 +631,10 @@ void ui_create_toplevel_window(struct video_canvas_s *canvas)
     /* this needs to be here to make the menus with accelerators work */
     ui_menu_init_accelerators(new_window);
 
+    if (create_window_func != NULL) {
+        create_window_func(canvas);
+    }
     grid = gtk_grid_new();
-    new_drawing_area = vice_renderer_backend->create_widget(canvas);
     status_bar = ui_statusbar_create();
     gtk_widget_show_all(status_bar);
     gtk_widget_set_no_show_all(status_bar, TRUE);
@@ -614,27 +643,34 @@ void ui_create_toplevel_window(struct video_canvas_s *canvas)
      * should go somewhere else: call ui_menu_bar_create() once and attach the
      * result menu to each GtkWindow instance
      */
-    /* TODO: This can't stay here because this file gets linked into vsid,
-     * which gets a diferent set of menus. Of course, the main vsid window
-     * won't have a canvas either, so this whole function should probably
-     * be moved to another file.
-     */
-    menu_bar = ui_machine_menu_bar_create();
-
-    canvas->drawing_area = new_drawing_area;
-    canvas->event_box = gtk_event_box_new();
-    gtk_container_add(GTK_CONTAINER(canvas->event_box), new_drawing_area);
+    if (machine_class != VICE_MACHINE_VSID) {
+        /* TODO: This can't stay here because this file gets linked into vsid,
+         * which gets a diferent set of menus. Of course, the main vsid window
+         * won't have a canvas either, so this whole function should probably
+         * be moved to another file.
+         */
+        menu_bar = ui_machine_menu_bar_create();
+    } else {
+        /* TODO: This can't stay here for the exact opposite reason
+         * of the above.
+         */
+        menu_bar = ui_vsid_menu_bar_create();
+    }
 
     gtk_container_add(GTK_CONTAINER(new_window), grid);
     /* When we have a menu bar, we'll add it at the top here */
     gtk_orientable_set_orientation(GTK_ORIENTABLE(grid), GTK_ORIENTATION_VERTICAL);
 
     gtk_container_add(GTK_CONTAINER(grid), menu_bar);
-    gtk_container_add(GTK_CONTAINER(grid), canvas->event_box);
+    if (canvas->event_box != NULL) {
+        gtk_container_add(GTK_CONTAINER(grid), canvas->event_box);
+    }
     gtk_container_add(GTK_CONTAINER(grid), status_bar);
 
+    /*
     gtk_widget_set_hexpand(new_drawing_area, TRUE);
     gtk_widget_set_vexpand(new_drawing_area, TRUE);
+     */
 
     g_signal_connect(new_window, "focus-in-event",
                      G_CALLBACK(on_focus_in_event), NULL);
@@ -664,6 +700,8 @@ void ui_create_toplevel_window(struct video_canvas_s *canvas)
     ui_resources.canvas[target_window] = canvas;
     ui_resources.window_widget[target_window] = new_window;
 
+    canvas->window_index = target_window;
+
     /* gtk_window_set_title(GTK_WINDOW(new_window), canvas->viewport->title); */
     ui_display_speed(100.0f, 0.0f, 0); /* initial update of the window status bar */
 
@@ -671,20 +709,16 @@ void ui_create_toplevel_window(struct video_canvas_s *canvas)
     kbd_connect_handlers(new_window, NULL);
 }
 
-/** \brief  Finds the window associated with this canvas and makes it visible. */
+/** \brief  Makes the specified window visible. */
 
-void ui_display_toplevel_window(struct video_canvas_s *canvas)
+void ui_display_toplevel_window(int index)
 {
-    int i;
-    for (i = 0; i < NUM_WINDOWS; ++i) {
-        if (ui_resources.canvas[i] == canvas) {
-            /* Normally this would show everything in the window,
-             * including hidden status bar displays, but we've
-             * disabled secondary displays in the status bar code with
-             * gtk_widget_set_no_show_all(). */
-            gtk_widget_show_all(ui_resources.window_widget[i]);
-            break;
-        }
+    if (ui_resources.window_widget[index]) {
+        /* Normally this would show everything in the window,
+         * including hidden status bar displays, but we've
+         * disabled secondary displays in the status bar code with
+         * gtk_widget_set_no_show_all(). */
+        gtk_widget_show_all(ui_resources.window_widget[index]);
     }
 }
 
@@ -848,7 +882,6 @@ int ui_extend_image_dialog(void)
  */
 void ui_error(const char *format, ...)
 {
-    GtkWindow *window;
     char *buffer;
     va_list ap;
 
@@ -856,11 +889,7 @@ void ui_error(const char *format, ...)
     buffer = lib_mvsprintf(format, ap);
     va_end(ap);
 
-    /* use active window as blocking toplevel */
-    /* FIXME: this isn't actually used by ui_message_error() */
-    window = ui_get_active_window();
-
-    ui_message_error(GTK_WIDGET(window), "VICE Error", buffer);
+    ui_message_error(NULL, "VICE Error", buffer);
     lib_free(buffer);
 }
 
@@ -869,7 +898,6 @@ void ui_error(const char *format, ...)
  */
 void ui_message(const char *format, ...)
 {
-    GtkWindow *window;
     char *buffer;
     va_list ap;
 
@@ -877,10 +905,7 @@ void ui_message(const char *format, ...)
     buffer = lib_mvsprintf(format, ap);
     va_end(ap);
 
-    /* FIXME: this isn't actually used by ui_message_info() */
-    window = ui_get_active_window();
-
-    ui_message_info(GTK_WIDGET(window), "VICE Message", buffer);
+    ui_message_info(NULL, "VICE Message", buffer);
     lib_free(buffer);
 }
 
@@ -957,6 +982,24 @@ void ui_pause_emulation(int flag)
 int ui_emulation_is_paused(void)
 {
     return is_paused;
+}
+
+
+/** \brief  Pause toggle handler
+ *
+ * \return  TRUE (indicates the Alt+P got consumed by Gtk, so it won't be
+ *          passed to the emu)
+ *
+ * FIXME:   Using the UI the tickmark is properly set/unset, but when using this
+ *          from a keyboard shortcut, the tickmark isn't updated at all.
+ */
+gboolean ui_toggle_pause(void)
+{
+    ui_pause_emulation(!is_paused);
+    /* TODO: somehow update the checkmark in the menu without reverting to
+     *       weird code like Gtk
+     */
+    return TRUE;    /* has to be TRUE to avoid passing Alt+H into the emu */
 }
 
 

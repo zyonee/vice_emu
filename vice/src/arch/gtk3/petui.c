@@ -1,8 +1,9 @@
-/*
- * petui.c - Native GTK3 PET UI.
+/** \brief  src/arch/gtk3/petui.c
+ * \brief   Native GTK3 PET UI
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
+ *  Bas Wassink <b.wassink@ziggo.nl>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -34,24 +35,50 @@
 #include "machinemodelwidget.h"
 #include "petkeyboardtypewidget.h"
 #include "sampler.h"
+#include "uimachinewindow.h"
 #include "uisamplersettings.h"
 
 #include "petui.h"
 
 
+/** \brief  List of PET models
+ *
+ * Used in the machine-model widget
+ */
 static const char *pet_model_list[] = {
-    "PET 2001-8N", "PET 3008", "PET 3016", "PET 3032", "PET 3032B", "PET 4016",
-    "PET 4032", "PET 4032B", "PET 8032", "PET 8096", "PET 8296", "SuperPET",
+    "PET 2001-8N",
+    "PET 3008",
+    "PET 3016",
+    "PET 3032",
+    "PET 3032B",
+    "PET 4016",
+    "PET 4032",
+    "PET 4032B",
+    "PET 8032",
+    "PET 8096",
+    "PET 8296",
+    "SuperPET",
     NULL
 };
 
 
+/** \brief  Pre-initialize the UI before the canvas window gets created
+ *
+ * \return  0 on success, -1 on failure
+ */
 int petui_init_early(void)
 {
+    ui_machine_window_init();
+
     INCOMPLETE_IMPLEMENTATION();
     return 0;
 }
 
+
+/** \brief  Initialize the UI
+ *
+ * \return  0 on success, -1 on failure
+ */
 int petui_init(void)
 {
     /* Some of the work here is done by video.c now, and would need to
@@ -70,8 +97,10 @@ int petui_init(void)
     return 0;
 }
 
+
+/** \brief  Shut down the UI
+ */
 void petui_shutdown(void)
 {
     INCOMPLETE_IMPLEMENTATION();
 }
-

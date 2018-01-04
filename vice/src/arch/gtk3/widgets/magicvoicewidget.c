@@ -38,22 +38,13 @@
 #include "widgethelpers.h"
 #include "basedialogs.h"
 #include "openfiledialog.h"
+#include "cartridge.h"
 
 #include "magicvoicewidget.h"
 
 
 static GtkWidget *entry = NULL;
 static GtkWidget *browse = NULL;
-
-
-
-static void on_enable_toggled(GtkWidget *widget, gpointer user_data)
-{
-    int state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-
-    gtk_widget_set_sensitive(entry, state);
-    gtk_widget_set_sensitive(browse, state);
-}
 
 
 /** \brief  Handler for the "clicked" event of the browse button
@@ -95,8 +86,9 @@ GtkWidget *magic_voice_widget_create(GtkWidget *parent)
     gtk_grid_set_column_spacing(GTK_GRID(grid), 16);
     gtk_grid_set_row_spacing(GTK_GRID(grid), 8);
 
-    enable = resource_check_button_create("MagicVoiceCartridgeEnabled",
-            "Enable Magic Voice cartridge");
+    /*    enable = create_enable_check_button(); */
+    enable = carthelpers_create_enable_check_button(CARTRIDGE_NAME_MAGIC_VOICE,
+            CARTRIDGE_MAGIC_VOICE);
     gtk_grid_attach(GTK_GRID(grid), enable, 0, 0, 3, 1);
 
     label = gtk_label_new("Magic Voice ROM");
@@ -110,11 +102,6 @@ GtkWidget *magic_voice_widget_create(GtkWidget *parent)
     gtk_grid_attach(GTK_GRID(grid), label, 0, 1, 1, 1);
     gtk_grid_attach(GTK_GRID(grid), entry, 1, 1, 1, 1);
     gtk_grid_attach(GTK_GRID(grid), browse, 2, 1, 1, 1);
-
-    g_signal_connect(enable, "toggled", G_CALLBACK(on_enable_toggled), NULL);
-
-    /*hack*/
-    on_enable_toggled(enable, NULL);
 
     gtk_widget_show_all(grid);
     return grid;

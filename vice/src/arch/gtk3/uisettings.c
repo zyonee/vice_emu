@@ -129,6 +129,8 @@
 #include "snapshotwidget.h"
 #include "ui.h"
 
+#include "monitorsettingswidget.h"
+
 #include "uisettings.h"
 
 
@@ -156,12 +158,12 @@ enum {
 };
 
 
-/** \brief  List of C64 I/O extensions (x64, x64sc, xscpu64)
+/** \brief  List of C64 I/O extensions (x64, x64sc)
  *
  * Every empty line indicates a separator in the Gtk2 UI's menu
  */
 static ui_settings_tree_node_t c64_io_extensions[] = {
-    { "Memory Expansions Hack",     c64_memory_expansion_hacks_widget_create, NULL },
+    { "Memory Expansion Hacks",     c64_memory_expansion_hacks_widget_create, NULL },
 
     { "GEO-RAM",                    georam_widget_create, NULL },
     { "RAM Expansion Module",       reu_widget_create, NULL },
@@ -202,13 +204,11 @@ static ui_settings_tree_node_t c64_io_extensions[] = {
 };
 
 
-/** \brief  List of SCPU64 extensions
+/** \brief  List of SuperCPU64 extensions (xscpu64)
  *
  * Every empty line indicates a separator in the Gtk2 UI's menu
  */
 static ui_settings_tree_node_t scpu64_io_extensions[] = {
-    { "Memory Expansions Hack",     c64_memory_expansion_hacks_widget_create, NULL },
-
     { "GEO-RAM",                    georam_widget_create, NULL },
     { "RAM Expansion Module",       reu_widget_create, NULL },
     { "RamCart",                    ramcart_widget_create, NULL },
@@ -241,7 +241,6 @@ static ui_settings_tree_node_t scpu64_io_extensions[] = {
 
     { "DS12C887 Real Time Clock",   ds12c887_widget_create, NULL },
     { "Userport devices",           userport_devices_widget_create, NULL },
-    { "Tape port devices",          tapeport_devices_widget_create, NULL },
 
     { NULL, NULL, NULL }
 };
@@ -429,6 +428,7 @@ static ui_settings_tree_node_t main_nodes[] = {
     { "I/O extensions", ioextensions_widget_create, c64_io_extensions },
 
     { "Snaphot/event recording, media file stuff", snapshot_widget_create, NULL },
+    { "Monitor settings", monitor_settings_widget_create, NULL },
     { NULL, NULL, NULL }
 };
 
@@ -795,24 +795,33 @@ static void response_callback(GtkWidget *widget, gint response_id,
 }
 
 
-static gboolean on_dialog_configure_event(GtkWidget *widget, GdkEvent *event,
-        gpointer user_data)
+/** \brief  Respond to window size changes
+ *
+ * This allows for quickly seeing if specific dialog is getting too large. The
+ * DIALOG_WIDTH_MAX and DIALOG_HEIGHT_MAX I sucked out of my thumb, since due
+ * to window managers using different themes, we can't use 'proper' values, so
+ * I had to use approximate values.
+ *
+ * \param[in]   widget  a GtkWindow
+ * \param[in]   event   the GDK event
+ * \param[in]   data    extra event data (unused)
+ *
+ * \return  boolean
+ */
+static gboolean on_dialog_configure_event(
+        GtkWidget *widget,
+        GdkEvent *event,
+        gpointer data)
 {
     if (event->type == GDK_CONFIGURE) {
-        /*
-        GdkRGBA color = { 1.0, 0.0, 0.0, 1.0 };
-         */
         int width = ((GdkEventConfigure*)event)->width;
         int height = ((GdkEventConfigure*)event)->height;
-        debug_gtk3("width %d, height %d\n", width, height);
+
+        /* debug_gtk3("width %d, height %d\n", width, height); */
         if (width > DIALOG_WIDTH_MAX || height > DIALOG_HEIGHT_MAX) {
-            /*
-            gtk_widget_override_background_color(widget, 0, &color);
-            */
             gtk_window_set_title(GTK_WINDOW(widget),
                     "HELP! --- DIALOG IS TOO BLOODY LARGE -- ERROR!");
         }
-
     }
     return FALSE;
 }

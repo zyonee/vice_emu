@@ -1,8 +1,9 @@
-/*
- * c64ui.c - Native GTK3 C64 UI.
+/** \file   src/arch/gtk3/c64ui.c
+ * \brief   Native GTK3 C64 UI
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
+ *  Bas Wassink <b.wassink@ziggo.nl>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -35,6 +36,7 @@
 #include "widgethelpers.h"
 #include "machinemodelwidget.h"
 #include "videomodelwidget.h"
+#include "uimachinewindow.h"
 #include "uisamplersettings.h"
 
 #include "clockportdevicewidget.h"
@@ -61,6 +63,10 @@
 #include "c64ui.h"
 
 
+/** \brief  List of C64 models
+ *
+ * Used in the machine-model widget
+ */
 static const char *c64_model_list[] = {
     "C64 PAL", "C64C PAL", "C64 old PAL",
     "C64 NTSC", "C64C NTSC", "C64 old NTSC",
@@ -72,6 +78,10 @@ static const char *c64_model_list[] = {
 };
 
 
+/** \brief  List of VIC-II models
+ *
+ * Used in the VIC-II model widget
+ */
 static ui_radiogroup_entry_t c64_vicii_models[] = {
     { "PAL",        VICII_MODEL_PALG },
     { "Old PAL",    VICII_MODEL_PALG_OLD },
@@ -82,12 +92,23 @@ static ui_radiogroup_entry_t c64_vicii_models[] = {
 };
 
 
+/** \brief  Pre-initialize the UI before the canvas window gets created
+ *
+ * \return  0 on success, -1 on failure
+ */
 int c64ui_init_early(void)
 {
+    ui_machine_window_init();
+
     INCOMPLETE_IMPLEMENTATION();
     return 0;
 }
 
+
+/** \brief  Initialize the UI
+ *
+ * \return  0 on success, -1 on failure
+ */
 int c64ui_init(void)
 {
     /* Some of the work here is done by video.c now, and would need to
@@ -110,9 +131,12 @@ int c64ui_init(void)
     carthelpers_set_functions(
             cartridge_save_image,
             cartridge_flush_image,
-            cartridge_type_enabled);
+            cartridge_type_enabled,
+            cartridge_enable,
+            cartridge_disable);
 
     /* uicart_set_detect_func(cartridge_detect); only cbm2/plus4 */
+    uicart_set_list_func(cartridge_get_info_list);
     uicart_set_attach_func(cartridge_attach_image);
     uicart_set_freeze_func(cartridge_trigger_freeze);
     uicart_set_detach_func(cartridge_detach_image);
@@ -122,8 +146,9 @@ int c64ui_init(void)
 }
 
 
+/** \brief  Shut down the UI
+ */
 void c64ui_shutdown(void)
 {
     INCOMPLETE_IMPLEMENTATION();
 }
-

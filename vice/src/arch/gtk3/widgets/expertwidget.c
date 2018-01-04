@@ -58,40 +58,6 @@ static ui_radiogroup_entry_t mode_list[] = {
 };
 
 
-/* list of widgets, used to enable/disable depending on Expert Cartridge resource */
-static GtkWidget *expert_enable_widget = NULL;
-static GtkWidget *expert_image = NULL;
-static GtkWidget *expert_mode = NULL;
-
-
-/** \brief  Handler for the "toggled" event of the expert_enable widget
- *
- * \param[in]   widget      check button
- * \param[in]   user_data   unused
- */
-static void on_enable_toggled(GtkWidget *widget, gpointer user_data)
-{
-    gboolean state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-
-    gtk_widget_set_sensitive(expert_image, state);
-    gtk_widget_set_sensitive(expert_mode, state);
-}
-
-
-/** \brief  Create Expert Cartridge enable check button
- *
- * \return  GtkCheckButton
- */
-static GtkWidget *create_expert_enable_widget(void)
-{
-    GtkWidget *check;
-
-    check = resource_check_button_create("ExpertCartridgeEnabled",
-            "Enable Expert Cartridge");
-    return check;
-}
-
-
 /** \brief  Create Expert Cartridge mode widget
  *
  * \return  GtkCheckButton
@@ -135,26 +101,24 @@ static GtkWidget *create_expert_image_widget(GtkWidget *parent)
 GtkWidget *expert_widget_create(GtkWidget *parent)
 {
     GtkWidget *grid;
+    GtkWidget *expert_enable_widget; /* expert_enable is defined by expert.c */
+    GtkWidget *expert_image;
+    GtkWidget *expert_mode;
+
 
     grid = gtk_grid_new();
     gtk_grid_set_column_spacing(GTK_GRID(grid), 8);
     gtk_grid_set_row_spacing(GTK_GRID(grid), 8);
 
-    expert_enable_widget = create_expert_enable_widget();
+    expert_enable_widget = carthelpers_create_enable_check_button(
+            CARTRIDGE_NAME_EXPERT, CARTRIDGE_EXPERT);
     gtk_grid_attach(GTK_GRID(grid), expert_enable_widget, 0, 0, 1, 1);
 
-    /* TODO: add widget for MODE */
     expert_mode = create_expert_mode_widget();
     gtk_grid_attach(GTK_GRID(grid), expert_mode, 0, 1, 1, 1);
 
     expert_image = create_expert_image_widget(parent);
     gtk_grid_attach(GTK_GRID(grid), expert_image, 0, 2, 1, 1);
-
-    g_signal_connect(expert_enable_widget, "toggled", G_CALLBACK(on_enable_toggled),
-            NULL);
-
-    /* enable/disable widget based on expert-enable (dirty trick, I know) */
-    on_enable_toggled(expert_enable_widget, NULL);
 
     gtk_widget_show_all(grid);
     return grid;

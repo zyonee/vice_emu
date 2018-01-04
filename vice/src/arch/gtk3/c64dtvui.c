@@ -1,8 +1,9 @@
-/*
- * c64dtvui.c - Native GTK3 C64DTV UI.
+/** \file   src/arch/gtk3/c64dtvui.c
+ * \brief   Native GTK3 C64DTV UI
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
+ *  Bas Wassink <b.wassink@ziggo.nl>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -33,16 +34,30 @@
 #include "c64dtvmodel.h"
 #include "machinemodelwidget.h"
 #include "videomodelwidget.h"
+#include "uimachinewindow.h"
 #include "uisamplersettings.h"
 
 #include "c64ui.h"
 
 
+/** \brief  List of DTV models
+ *
+ * Used in the machine-model widget
+ */
 static const char *c64dtv_model_list[] = {
-    "V2 PAL", "V2 NTSC", "V3 PAL", "V3 NTSC", "Hummer (NTSC)", NULL
+    "V2 PAL",
+    "V2 NTSC",
+    "V3 PAL",
+    "V3 NTSC",
+    "Hummer (NTSC)",
+    NULL
 };
 
 
+/** \brief  VIC-II models
+ *
+ * Used in the VIC-II models widget
+ */
 static ui_radiogroup_entry_t c64dtv_vicii_models[] = {
      { "PAL-G", MACHINE_SYNC_PAL },
      { "NTSC-M", MACHINE_SYNC_NTSC },
@@ -50,12 +65,23 @@ static ui_radiogroup_entry_t c64dtv_vicii_models[] = {
 };
 
 
+/** \brief  Pre-initialize the UI before the canvas window gets created
+ *
+ * \return  0 on success, -1 on failure
+ */
 int c64dtvui_init_early(void)
 {
+    ui_machine_window_init();
+
     INCOMPLETE_IMPLEMENTATION();
     return 0;
 }
 
+
+/** \brief  Initialize the UI
+ *
+ * \return  0 on success, -1 on failure
+ */
 int c64dtvui_init(void)
 {
     /* Some of the work here is done by video.c now, and would need to
@@ -75,8 +101,10 @@ int c64dtvui_init(void)
     return 0;
 }
 
+
+/** \brief  Shut down the UI
+ */
 void c64dtvui_shutdown(void)
 {
     INCOMPLETE_IMPLEMENTATION();
 }
-

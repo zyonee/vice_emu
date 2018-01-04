@@ -3097,6 +3097,12 @@ translate_t string_table[] = {
 /* tr */ {IDGS_MON_TAPECTRL_DESCRIPTION_TR, "Teybi kontrol et. Geçerli komutlar:\n0 = durdur, 1 = baþlat, 2 = ileri, 3 = geri, 4 = kayýt,\n5 = reset, 6 = reset sayacý."},
 #endif
 
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_MAINCPU_TRACE_DESCRIPTION,    N_("Turn tracing of every instruction executed by the main CPU on or off. If the argument is 'toggle' then the current mode is switched.")},
+#ifdef HAS_TRANSLATION
+/* it */ {IDGS_MON_MAINCPU_TRACE_DESCRIPTION_IT, "Accendi (on) o spegni (off) il tracciamento di ogni istruzione eseguita. Se l'argomento è 'toggle', lo stato attuale viene invertito."},
+#endif
+
 /* joyport.c */
 /* en */ {IDGS_CONTROL_PORT,    N_("Control port")},
 #ifdef HAS_TRANSLATION
@@ -4048,6 +4054,23 @@ translate_t string_table[] = {
 /* ru */ {IDGS_SENSE_DONGLE_RU, ""},  /* fuzzy */
 /* sv */ {IDGS_SENSE_DONGLE_SV, ""},  /* fuzzy */
 /* tr */ {IDGS_SENSE_DONGLE_TR, ""},  /* fuzzy */
+#endif
+
+/* tapeport/tapecart.c */
+/* en */ {IDGS_TAPECART,    N_("tapecart")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDGS_TAPECART_DA, ""},  /* fuzzy */
+/* de */ {IDGS_TAPECART_DE, ""},  /* fuzzy */
+/* es */ {IDGS_TAPECART_ES, ""},  /* fuzzy */
+/* fr */ {IDGS_TAPECART_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_TAPECART_HU, ""},  /* fuzzy */
+/* it */ {IDGS_TAPECART_IT, ""},  /* fuzzy */
+/* ko */ {IDGS_TAPECART_KO, ""},  /* fuzzy */
+/* nl */ {IDGS_TAPECART_NL, ""},  /* fuzzy */
+/* pl */ {IDGS_TAPECART_PL, ""},  /* fuzzy */
+/* ru */ {IDGS_TAPECART_RU, ""},  /* fuzzy */
+/* sv */ {IDGS_TAPECART_SV, ""},  /* fuzzy */
+/* tr */ {IDGS_TAPECART_TR, ""},  /* fuzzy */
 #endif
 
 /* userport/userport_dac.c */
@@ -7403,6 +7426,142 @@ translate_t string_table[] = {
 /* ru */ {IDCLS_DISABLE_TAPE_SENSE_DONGLE_RU, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_TAPE_SENSE_DONGLE_SV, ""},  /* fuzzy */
 /* tr */ {IDCLS_DISABLE_TAPE_SENSE_DONGLE_TR, ""},  /* fuzzy */
+#endif
+
+/* tapeport/tapecart.c */
+/* en */ {IDCLS_ENABLE_TAPECART,    N_("Enable tapecart")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_TAPECART_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_ENABLE_TAPECART_DE, "tapecart aktivieren"},
+/* es */ {IDCLS_ENABLE_TAPECART_ES, ""},  /* fuzzy */
+/* fr */ {IDCLS_ENABLE_TAPECART_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_ENABLE_TAPECART_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_ENABLE_TAPECART_IT, ""},  /* fuzzy */
+/* ko */ {IDCLS_ENABLE_TAPECART_KO, ""},  /* fuzzy */
+/* nl */ {IDCLS_ENABLE_TAPECART_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_ENABLE_TAPECART_PL, ""},  /* fuzzy */
+/* ru */ {IDCLS_ENABLE_TAPECART_RU, ""},  /* fuzzy */
+/* sv */ {IDCLS_ENABLE_TAPECART_SV, ""},  /* fuzzy */
+/* tr */ {IDCLS_ENABLE_TAPECART_TR, ""},  /* fuzzy */
+#endif
+
+/* tapeport/tapecart.c */
+/* en */ {IDCLS_DISABLE_TAPECART,    N_("Disable tapecart")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_TAPECART_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_DISABLE_TAPECART_DE, "tapecart deaktivieren"},
+/* es */ {IDCLS_DISABLE_TAPECART_ES, ""},  /* fuzzy */
+/* fr */ {IDCLS_DISABLE_TAPECART_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_DISABLE_TAPECART_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_DISABLE_TAPECART_IT, ""},  /* fuzzy */
+/* ko */ {IDCLS_DISABLE_TAPECART_KO, ""},  /* fuzzy */
+/* nl */ {IDCLS_DISABLE_TAPECART_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_DISABLE_TAPECART_PL, ""},  /* fuzzy */
+/* ru */ {IDCLS_DISABLE_TAPECART_RU, ""},  /* fuzzy */
+/* sv */ {IDCLS_DISABLE_TAPECART_SV, ""},  /* fuzzy */
+/* tr */ {IDCLS_DISABLE_TAPECART_TR, ""},  /* fuzzy */
+#endif
+
+/* tapeport/tapecart.c */
+/* en */ {IDCLS_ATTACH_TCRT_TAPECART,    N_("Attach TCRT tapecart image")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_TCRT_TAPECART_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_ATTACH_TCRT_TAPECART_DE, "tapecart Image einlegen"},
+/* es */ {IDCLS_ATTACH_TCRT_TAPECART_ES, ""},  /* fuzzy */
+/* fr */ {IDCLS_ATTACH_TCRT_TAPECART_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_ATTACH_TCRT_TAPECART_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_ATTACH_TCRT_TAPECART_IT, ""},  /* fuzzy */
+/* ko */ {IDCLS_ATTACH_TCRT_TAPECART_KO, ""},  /* fuzzy */
+/* nl */ {IDCLS_ATTACH_TCRT_TAPECART_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_ATTACH_TCRT_TAPECART_PL, ""},  /* fuzzy */
+/* ru */ {IDCLS_ATTACH_TCRT_TAPECART_RU, ""},  /* fuzzy */
+/* sv */ {IDCLS_ATTACH_TCRT_TAPECART_SV, ""},  /* fuzzy */
+/* tr */ {IDCLS_ATTACH_TCRT_TAPECART_TR, ""},  /* fuzzy */
+#endif
+
+/* tapeport/tapecart.c */
+/* en */ {IDCLS_ENABLE_TAPECART_TCRT_UPDATE,    N_("Enable updating tapecart .tcrt image")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_TAPECART_TCRT_UPDATE_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_ENABLE_TAPECART_TCRT_UPDATE_DE, "Schreibzugriff auf tapecart .tcrt Image erlauben"},
+/* es */ {IDCLS_ENABLE_TAPECART_TCRT_UPDATE_ES, ""},  /* fuzzy */
+/* fr */ {IDCLS_ENABLE_TAPECART_TCRT_UPDATE_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_ENABLE_TAPECART_TCRT_UPDATE_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_ENABLE_TAPECART_TCRT_UPDATE_IT, ""},  /* fuzzy */
+/* ko */ {IDCLS_ENABLE_TAPECART_TCRT_UPDATE_KO, ""},  /* fuzzy */
+/* nl */ {IDCLS_ENABLE_TAPECART_TCRT_UPDATE_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_ENABLE_TAPECART_TCRT_UPDATE_PL, ""},  /* fuzzy */
+/* ru */ {IDCLS_ENABLE_TAPECART_TCRT_UPDATE_RU, ""},  /* fuzzy */
+/* sv */ {IDCLS_ENABLE_TAPECART_TCRT_UPDATE_SV, ""},  /* fuzzy */
+/* tr */ {IDCLS_ENABLE_TAPECART_TCRT_UPDATE_TR, ""},  /* fuzzy */
+#endif
+
+/* tapeport/tapecart.c */
+/* en */ {IDCLS_DISABLE_TAPECART_TCRT_UPDATE,    N_("Disable updating tapecart .tcrt image")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_TAPECART_TCRT_UPDATE_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_DISABLE_TAPECART_TCRT_UPDATE_DE, "Schreibzugriff auf tapecart .tcrt Image verbieten"},
+/* es */ {IDCLS_DISABLE_TAPECART_TCRT_UPDATE_ES, ""},  /* fuzzy */
+/* fr */ {IDCLS_DISABLE_TAPECART_TCRT_UPDATE_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_DISABLE_TAPECART_TCRT_UPDATE_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_DISABLE_TAPECART_TCRT_UPDATE_IT, ""},  /* fuzzy */
+/* ko */ {IDCLS_DISABLE_TAPECART_TCRT_UPDATE_KO, ""},  /* fuzzy */
+/* nl */ {IDCLS_DISABLE_TAPECART_TCRT_UPDATE_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_DISABLE_TAPECART_TCRT_UPDATE_PL, ""},  /* fuzzy */
+/* ru */ {IDCLS_DISABLE_TAPECART_TCRT_UPDATE_RU, ""},  /* fuzzy */
+/* sv */ {IDCLS_DISABLE_TAPECART_TCRT_UPDATE_SV, ""},  /* fuzzy */
+/* tr */ {IDCLS_DISABLE_TAPECART_TCRT_UPDATE_TR, ""},  /* fuzzy */
+#endif
+
+/* tapeport/tapecart.c */
+/* en */ {IDCLS_ENABLE_TAPECART_TCRT_OPTIMIZE,    N_("Enable tapecart .tcrt image optimization on write")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_TAPECART_TCRT_OPTIMIZE_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_ENABLE_TAPECART_TCRT_OPTIMIZE_DE, "tapecart .tcrt Image beim Speichern optimieren"},
+/* es */ {IDCLS_ENABLE_TAPECART_TCRT_OPTIMIZE_ES, ""},  /* fuzzy */
+/* fr */ {IDCLS_ENABLE_TAPECART_TCRT_OPTIMIZE_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_ENABLE_TAPECART_TCRT_OPTIMIZE_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_ENABLE_TAPECART_TCRT_OPTIMIZE_IT, ""},  /* fuzzy */
+/* ko */ {IDCLS_ENABLE_TAPECART_TCRT_OPTIMIZE_KO, ""},  /* fuzzy */
+/* nl */ {IDCLS_ENABLE_TAPECART_TCRT_OPTIMIZE_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_ENABLE_TAPECART_TCRT_OPTIMIZE_PL, ""},  /* fuzzy */
+/* ru */ {IDCLS_ENABLE_TAPECART_TCRT_OPTIMIZE_RU, ""},  /* fuzzy */
+/* sv */ {IDCLS_ENABLE_TAPECART_TCRT_OPTIMIZE_SV, ""},  /* fuzzy */
+/* tr */ {IDCLS_ENABLE_TAPECART_TCRT_OPTIMIZE_TR, ""},  /* fuzzy */
+#endif
+
+/* tapeport/tapecart.c */
+/* en */ {IDCLS_DISABLE_TAPECART_TCRT_OPTIMIZE,    N_("Disable tapecart .tcrt image optimization on write")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_TAPECART_TCRT_OPTIMIZE_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_DISABLE_TAPECART_TCRT_OPTIMIZE_DE, "tapecart .tcrt Image beim Speichern nicht optimieren"},
+/* es */ {IDCLS_DISABLE_TAPECART_TCRT_OPTIMIZE_ES, ""},  /* fuzzy */
+/* fr */ {IDCLS_DISABLE_TAPECART_TCRT_OPTIMIZE_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_DISABLE_TAPECART_TCRT_OPTIMIZE_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_DISABLE_TAPECART_TCRT_OPTIMIZE_IT, ""},  /* fuzzy */
+/* ko */ {IDCLS_DISABLE_TAPECART_TCRT_OPTIMIZE_KO, ""},  /* fuzzy */
+/* nl */ {IDCLS_DISABLE_TAPECART_TCRT_OPTIMIZE_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_DISABLE_TAPECART_TCRT_OPTIMIZE_PL, ""},  /* fuzzy */
+/* ru */ {IDCLS_DISABLE_TAPECART_TCRT_OPTIMIZE_RU, ""},  /* fuzzy */
+/* sv */ {IDCLS_DISABLE_TAPECART_TCRT_OPTIMIZE_SV, ""},  /* fuzzy */
+/* tr */ {IDCLS_DISABLE_TAPECART_TCRT_OPTIMIZE_TR, ""},  /* fuzzy */
+#endif
+
+/* tapeport/tapecart.c */
+/* en */ {IDCLS_SET_TAPECART_LOGLEVEL,    N_("Set tapecart log verbosity")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SET_TAPECART_LOGLEVEL_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_SET_TAPECART_LOGLEVEL_DE, "tapecart Log-Ausfuehrlichkeit einstellen"},
+/* es */ {IDCLS_SET_TAPECART_LOGLEVEL_ES, ""},  /* fuzzy */
+/* fr */ {IDCLS_SET_TAPECART_LOGLEVEL_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_SET_TAPECART_LOGLEVEL_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_SET_TAPECART_LOGLEVEL_IT, ""},  /* fuzzy */
+/* ko */ {IDCLS_SET_TAPECART_LOGLEVEL_KO, ""},  /* fuzzy */
+/* nl */ {IDCLS_SET_TAPECART_LOGLEVEL_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_SET_TAPECART_LOGLEVEL_PL, ""},  /* fuzzy */
+/* ru */ {IDCLS_SET_TAPECART_LOGLEVEL_RU, ""},  /* fuzzy */
+/* sv */ {IDCLS_SET_TAPECART_LOGLEVEL_SV, ""},  /* fuzzy */
+/* tr */ {IDCLS_SET_TAPECART_LOGLEVEL_TR, ""},  /* fuzzy */
 #endif
 
 /* tapeport/dtl-basic-dongle.c */

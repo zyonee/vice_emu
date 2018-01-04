@@ -24,7 +24,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src/scpu64 \
 	-I$(top_srcdir)/src/vic20 \
 	-I$(top_srcdir)/src/samplerdrv \
-	-I$(top_srcdir)/src/c64/cart
+	-I$(top_srcdir)/src/c64/cart \
+	-I$(top_srcdir)/src/imagecontents
 
 
 noinst_LIBRARIES = libarch.a
@@ -69,6 +70,7 @@ libarch_a_SOURCES = \
 	uiedit.c \
 	uifliplist.c \
 	uimachinemenu.c \
+	uimachinewindow.c \
 	uimenu.c \
 	uimon.c \
 	uimon-fallback.c \
@@ -79,6 +81,8 @@ libarch_a_SOURCES = \
 	uispeed.c \
 	uistatusbar.c \
 	uitapeattach.c \
+	uivsidmenu.c \
+	uivsidwindow.c \
 	vic20ui.c \
 	video.c \
 	vsidui.c \
@@ -100,7 +104,9 @@ libarch_a_SOURCES = \
 	uisnapshot.c \
 	uidebug.c \
 	uicart.c \
-	uimedia.c
+	uimedia.c \
+	uinetplay.c \
+	uisidattach.c
 
 EXTRA_DIST = \
 	archdep.h \
@@ -138,6 +144,7 @@ EXTRA_DIST = \
 	uikeyboard.h \
 	uiedit.h \
 	uimachinemenu.h \
+	uimachinewindow.h \
 	uimenu.h \
 	uisettings.h \
 	uismartattach.h \
@@ -145,6 +152,8 @@ EXTRA_DIST = \
 	uispeed.h \
 	uistatusbar.h \
 	uitapeattach.h \
+	uivsidmenu.h \
+	uivsidwindow.h \
 	videoarch.h \
 	uimodel.h \
 	uimisc.h \
@@ -163,4 +172,6 @@ EXTRA_DIST = \
 	uisnapshot.h \
 	uidebug.h \
 	uicart.h \
-	uimedia.h
+	uimedia.h \
+	uinetplay.h \
+	uisidattach.h

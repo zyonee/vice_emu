@@ -1,8 +1,9 @@
-/*
- * cbm2ui.c - Native GTK3 CBM2 UI.
+/** \file   src/arch/gtk3/cbm2ui.c
+ * \brief   Native GTK3 CBM2 UI.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
+ *  Bas Wassink <b.wassink@ziggo.nl>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -32,12 +33,18 @@
 #include "cbm2model.h"
 #include "machinemodelwidget.h"
 #include "sampler.h"
+#include "uimachinewindow.h"
 #include "uisamplersettings.h"
 
 #include "cbm2ui.h"
 
-
-/* XXX: careful: the first entry has an ID of 2 when calling cbm2model_*()*/
+/** \brief  List of CBM-II models
+ *
+ * Used in the machine-model widget
+ *
+ * \note    Careful: the first entry has an ID of 2 when calling cbm2model_*()
+ *          since xcbm2 skips the 5x0 models.
+ */
 static const char *cbm2_model_list[] = {
     "CBM 610 PAL", "CBM 610 NTSC", "CBM 620 PAL", "CBM 620 NTSC",
     "CBM 620+ (1M) PAL", "CBM 620+ (1M) NTSC", "CBM 710 NTSC", "CBM 720 NTSC",
@@ -45,12 +52,23 @@ static const char *cbm2_model_list[] = {
 };
 
 
+/** \brief  Pre-initialize the UI before the canvas window gets created
+ *
+ * \return  0 on success, -1 on failure
+ */
 int cbm2ui_init_early(void)
 {
+    ui_machine_window_init();
+
     INCOMPLETE_IMPLEMENTATION();
     return 0;
 }
 
+
+/** \brief  Initialize the UI
+ *
+ * \return  0 on success, -1 on failure
+ */
 int cbm2ui_init(void)
 {
     /* Some of the work here is done by video.c now, and would need to
@@ -66,8 +84,10 @@ int cbm2ui_init(void)
     return 0;
 }
 
+
+/** \brief  Shut down the UI
+ */
 void cbm2ui_shutdown(void)
 {
     INCOMPLETE_IMPLEMENTATION();
 }
-

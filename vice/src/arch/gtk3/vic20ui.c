@@ -1,8 +1,9 @@
-/*
- * vic20ui.c - Native GTK3 VIC20 UI.
+/** \file   src/arch/gtk3/vic20ui.c
+ * \brief   Native GTK3 VIC20 UI
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
+ *  Bas Wassink <b.wassink@ziggo.nl>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -35,30 +36,57 @@
 #include "widgethelpers.h"
 #include "videomodelwidget.h"
 #include "sampler.h"
+#include "uimachinewindow.h"
 #include "uisamplersettings.h"
 #include "cartridge.h"
 #include "carthelpers.h"
 #include "georamwidget.h"
+#include "cartridge.h"
+#include "uicart.h"
 
 #include "vic20ui.h"
 
 
+/** \brief  List of VIC-20 models
+ *
+ * Used in the machine-model widget
+ */
 static const char *vic20_model_list[] = {
-    "VIC20 PAL", "VIC20 NTSC", "VIC21", NULL
+    "VIC20 PAL",
+    "VIC20 NTSC",
+    "VIC21",
+    NULL
 };
 
 
+/** \brief  List of VIC models
+ *
+ * Used in the VIC model widget
+ */
 static ui_radiogroup_entry_t vic20_vic_models[] = {
-    { "PAL", MACHINE_SYNC_PAL }, { "NTSC", MACHINE_SYNC_NTSC }, { NULL, -1 }
+    { "PAL", MACHINE_SYNC_PAL },
+    { "NTSC", MACHINE_SYNC_NTSC },
+    { NULL, -1 }
 };
 
 
+/** \brief  Pre-initialize the UI before the canvas window gets created
+ *
+ * \return  0 on success, -1 on failure
+ */
 int vic20ui_init_early(void)
 {
+    ui_machine_window_init();
+
     INCOMPLETE_IMPLEMENTATION();
     return 0;
 }
 
+
+/** \brief  Initialize the UI
+ *
+ * \return  0 on success, -1 on failure
+ */
 int vic20ui_init(void)
 {
     /* Some of the work here is done by video.c now, and would need to
@@ -77,14 +105,23 @@ int vic20ui_init(void)
 
     /* I/O extension function pointers */
     carthelpers_set_functions(cartridge_save_image, cartridge_flush_image,
-            cartridge_type_enabled);
+            cartridge_type_enabled, NULL, NULL);
+
+    /* uicart_set_detect_func(cartridge_detect); only cbm2/plus4 */
+/*    uicart_set_list_func(cartridge_get_info_list); */
+    uicart_set_attach_func(cartridge_attach_image);
+/*    uicart_set_freeze_func(cartridge_trigger_freeze); */
+    uicart_set_detach_func(cartridge_detach_image);
+
 
     INCOMPLETE_IMPLEMENTATION();
     return 0;
 }
 
+
+/** \brief  Shut down the UI
+ */
 void vic20ui_shutdown(void)
 {
     INCOMPLETE_IMPLEMENTATION();
 }
-

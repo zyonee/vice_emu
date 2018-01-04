@@ -77,8 +77,10 @@ typedef struct ui_resources_s {
 /* ------------------------------------------------------------------------- */
 /* Prototypes */
 
+void ui_set_create_window_func(void (*func)(struct video_canvas_s *));
+
 void ui_create_toplevel_window(struct video_canvas_s *canvas);
-void ui_display_toplevel_window(struct video_canvas_s *canvas);
+void ui_display_toplevel_window(int index);
 
 void ui_display_speed(float percent, float framerate, int warp_flag);
 void ui_display_paused(int flag);
@@ -107,5 +109,7 @@ void ui_common_init(void);
 void ui_common_shutdown(void);
 
 GtkWindow *ui_get_active_window(void);
+struct video_canvas_s *ui_get_active_canvas(void);
 
+gboolean ui_toggle_pause(void);
 #endif

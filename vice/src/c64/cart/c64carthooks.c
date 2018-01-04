@@ -1393,6 +1393,100 @@ int cartridge_enable(int type)
     return -1;
 }
 
+
+/** \brief  Disable cartridge by \a type
+ *
+ * \return  0 on success, -1 on failure
+ *
+ * \todo    More or less copy cartridge_enable() while replacing
+ *          ${cart}_enable() with ${cart_disable(). The various disable
+ *          functions still need to be written at the moment.
+ */
+int cartridge_disable(int type)
+{
+    /*
+    fprintf(stderr, "%s:%d: %s() isn't implemented yet, continuing\n",
+            __FILE__, __LINE__, __func__);
+    */
+    DBG(("CART: enable type: %d\n", type));
+    switch (type) {
+        /* "Slot 0" */
+        case CARTRIDGE_IEEE488:
+            tpi_disable();
+            break;
+        case CARTRIDGE_MAGIC_VOICE:
+            magicvoice_disable();
+            break;
+        case CARTRIDGE_MMC64:
+            mmc64_disable();
+            break;
+        /* "Slot 1" */
+        case CARTRIDGE_DQBB:
+            dqbb_disable();
+            break;
+        case CARTRIDGE_EXPERT:
+            expert_disable();
+            break;
+        case CARTRIDGE_ISEPIC:
+            isepic_disable();
+            break;
+        case CARTRIDGE_RAMCART:
+            ramcart_disable();
+            break;
+        /* "I/O Slot" */
+        case CARTRIDGE_DIGIMAX:
+            digimax_disable();
+            break;
+        case CARTRIDGE_DS12C887RTC:
+            ds12c887rtc_disable();
+            break;
+        case CARTRIDGE_GEORAM:
+            georam_disable();
+            break;
+#ifdef HAVE_MIDI
+        case CARTRIDGE_MIDI_PASSPORT:
+        case CARTRIDGE_MIDI_DATEL:
+        case CARTRIDGE_MIDI_SEQUENTIAL:
+        case CARTRIDGE_MIDI_NAMESOFT:
+        case CARTRIDGE_MIDI_MAPLIN:
+            c64_midi_disable();
+            break;
+#endif
+        case CARTRIDGE_REU:
+            reu_enable();
+            break;
+        case CARTRIDGE_SFX_SOUND_EXPANDER:
+            sfx_soundexpander_enable();
+            break;
+        case CARTRIDGE_SFX_SOUND_SAMPLER:
+            sfx_soundsampler_enable();
+            break;
+#ifdef HAVE_RAWNET
+        case CARTRIDGE_TFE:
+            ethernetcart_enable();
+            break;
+#endif
+#if defined(HAVE_RS232DEV) || defined(HAVE_RS232NET)
+        case CARTRIDGE_TURBO232:
+            aciacart_enable();
+            break;
+#endif
+        /* "Main Slot" */
+        default:
+            DBG(("CART: no disable hook %d\n", type));
+            break;
+    }
+#if 0
+    cart_detach_conflicting(type);
+#endif
+    /* make sure the cart has been disabled */
+    if (!cart_type_enabled(type)) {
+        return 0;
+    }
+    return -1;
+}
+
+
 /*
     detach all cartridges
 
