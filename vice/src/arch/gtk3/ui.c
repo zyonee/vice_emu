@@ -1,9 +1,10 @@
-/*
- * ui.c - Native GTK3 UI stuff.
+/** \file   src/arch/gtk3/ui.c
+ * \brief   Native GTK3 UI stuff.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
  *  Bas Wassink <b.wassink@ziggo.nl>
+ *  Marcus Sutton <loggedoubt@gmail.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -50,11 +51,9 @@
 #include "basedialogs.h"
 #include "uiapi.h"
 #include "uicommands.h"
-#include "uimachinemenu.h"
 #include "uimenu.h"
 #include "uisettings.h"
 #include "uistatusbar.h"
-#include "uivsidmenu.h"
 #include "jamdialog.h"
 
 #include "ui.h"
@@ -211,7 +210,11 @@ static int fullscreen_has_decorations = 0;
 
 /** \brief  Function to help create a main window.
  */
-static void (*create_window_func)(struct video_canvas_s *) = NULL;
+static void (*create_window_func)(video_canvas_t *) = NULL;
+
+/** \brief  Function to identify a canvas from its video chip.
+ */
+static int (*identify_canvas_func)(video_canvas_t *) = NULL;
 
 /******************************************************************************
  *                              Event handlers                                *
@@ -219,13 +222,14 @@ static void (*create_window_func)(struct video_canvas_s *) = NULL;
 
 /** \brief  Get the most recently focused main window
  *
- * \return  pointer to a main window
+ * \return  pointer to a main window, or NULL
  */
 GtkWindow *ui_get_active_window(void)
 {
     if (active_win_index < 0) {
-        /* Probably should never end up here. */
-        return GTK_WINDOW(ui_resources.window_widget[PRIMARY_WINDOW]);
+        /* If we end up here it probably means no main window has
+         * been created yet. */
+        return NULL;
     }
 
     return GTK_WINDOW(ui_resources.window_widget[active_win_index]);
@@ -234,13 +238,14 @@ GtkWindow *ui_get_active_window(void)
 
 /** \brief  Get video canvas of active window
  *
- * \return  current active video canvas
+ * \return  current active video canvas, or NULL
  */
-struct video_canvas_s *ui_get_active_canvas(void)
+video_canvas_t *ui_get_active_canvas(void)
 {
     if (active_win_index < 0) {
-        /* Probably should never end up here. */
-        return ui_resources.canvas[PRIMARY_WINDOW];
+        /* If we end up here it probably means no main window has
+         * been created yet. */
+        return NULL;
     }
     return ui_resources.canvas[active_win_index];
 }
@@ -586,9 +591,19 @@ static int set_window_ypos(int val, void *param)
  *
  * \param[in]   func    create window function
  */
-void ui_set_create_window_func(void (*func)(struct video_canvas_s *))
+void ui_set_create_window_func(void (*func)(video_canvas_t *))
 {
     create_window_func = func;
+}
+
+
+/** \brief  Set function to identify a canvas from its video chip.
+ *
+ * \param[in]   func    identify canvas function
+ */
+void ui_set_identify_canvas_func(int (*func)(video_canvas_t *))
+{
+    identify_canvas_func = func;
 }
 
 
@@ -597,10 +612,6 @@ void ui_set_create_window_func(void (*func)(struct video_canvas_s *))
           window ends up being on top of the VDC window. however, we better call
           some "move window to front" function instead, and create the windows
           starting with the primary one. */
-/* FIXME: the code below deals with the above mentioned fact and sets up the
-          window_widget pointers correctly. this hackish magic can be eliminated
-          when the code that creates the windows was moved over here AND the
-          calling code is fixed to create the windows in different order. */
 /** \brief Create a toplevel window to represent a video canvas.
  *
  * This function takes a video canvas structure and builds the widgets
@@ -612,65 +623,30 @@ void ui_set_create_window_func(void (*func)(struct video_canvas_s *))
  * video canvas routines are expected to do any last-minute processing
  * or preparation, and then call ui_display_toplevel_window() when
  * ready.
- *
- * \warning The "meaning" of the window depends on how many times the
- *          function has been called. On a C128, the first call
- *          produces the VDC window and the second produces the
- *          primary window. On all other machines, the first call
- *          produces the primary window. All subsequent calls will
- *          replace or leak the "monitor" window, but the nature of
- *          monitor windows is such that this should never happen.
  */
-void ui_create_toplevel_window(struct video_canvas_s *canvas)
+void ui_create_toplevel_window(video_canvas_t *canvas)
 {
     GtkWidget *new_window, *grid, *status_bar;
-    GtkWidget *menu_bar;
     int target_window;
 
     new_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     /* this needs to be here to make the menus with accelerators work */
     ui_menu_init_accelerators(new_window);
 
+    grid = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(new_window), grid);
+    gtk_orientable_set_orientation(GTK_ORIENTABLE(grid), GTK_ORIENTATION_VERTICAL);
+    canvas->grid = grid;
+
     if (create_window_func != NULL) {
         create_window_func(canvas);
     }
-    grid = gtk_grid_new();
+
     status_bar = ui_statusbar_create();
     gtk_widget_show_all(status_bar);
     gtk_widget_set_no_show_all(status_bar, TRUE);
 
-    /* I'm pretty sure when running x128 we get two menu instances, so this
-     * should go somewhere else: call ui_menu_bar_create() once and attach the
-     * result menu to each GtkWindow instance
-     */
-    if (machine_class != VICE_MACHINE_VSID) {
-        /* TODO: This can't stay here because this file gets linked into vsid,
-         * which gets a diferent set of menus. Of course, the main vsid window
-         * won't have a canvas either, so this whole function should probably
-         * be moved to another file.
-         */
-        menu_bar = ui_machine_menu_bar_create();
-    } else {
-        /* TODO: This can't stay here for the exact opposite reason
-         * of the above.
-         */
-        menu_bar = ui_vsid_menu_bar_create();
-    }
-
-    gtk_container_add(GTK_CONTAINER(new_window), grid);
-    /* When we have a menu bar, we'll add it at the top here */
-    gtk_orientable_set_orientation(GTK_ORIENTABLE(grid), GTK_ORIENTATION_VERTICAL);
-
-    gtk_container_add(GTK_CONTAINER(grid), menu_bar);
-    if (canvas->event_box != NULL) {
-        gtk_container_add(GTK_CONTAINER(grid), canvas->event_box);
-    }
     gtk_container_add(GTK_CONTAINER(grid), status_bar);
-
-    /*
-    gtk_widget_set_hexpand(new_drawing_area, TRUE);
-    gtk_widget_set_vexpand(new_drawing_area, TRUE);
-     */
 
     g_signal_connect(new_window, "focus-in-event",
                      G_CALLBACK(on_focus_in_event), NULL);
@@ -681,20 +657,18 @@ void ui_create_toplevel_window(struct video_canvas_s *canvas)
     g_signal_connect(new_window, "destroy",
                      G_CALLBACK(ui_window_destroy_callback), NULL);
 
-    /* We've defaulted to PRIMARY_WINDOW. C128, however, gets its VDC
-     * window created first, so shunt this window to secondary status
-     * if that is what it is. */
-    target_window = PRIMARY_WINDOW;
-    if (machine_class == VICE_MACHINE_C128 && ui_resources.window_widget[SECONDARY_WINDOW] == NULL) {
-        target_window = SECONDARY_WINDOW;
+    target_window = -1;
+    if (identify_canvas_func != NULL) {
+        /* Identify the window as the PRIMARY_WINDOW or SECONDARY_WINDOW. */
+        target_window = identify_canvas_func(canvas);
     }
-    /* Recreated canvases go to MONITOR_WINDOW. */
+    if (target_window < 0) {
+        fprintf(stderr, "ui_create_toplevel_window: canvas not identified!\n");
+        exit(1);
+    }
     if (ui_resources.window_widget[target_window] != NULL) {
-        /* TODO: This doesn't make even a little bit of sense. The monitor
-         * window doesn't have a Commodore-screen canvas associated with
-         * it! Monitors should be tracked completely seperately. */
-        /* TODO: Ending up here should be a fatal error */
-        target_window = MONITOR_WINDOW;
+        fprintf(stderr, "ui_create_toplevel_window: existing window recreated??\n");
+        exit(1);
     }
 
     ui_resources.canvas[target_window] = canvas;
