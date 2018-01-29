@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/userportprinter.c
+/**
  * \brief   Widget to control userport printer
  *
  * Written by
@@ -48,7 +48,7 @@
 
 /** \brief  List of text output devices
  */
-static ui_radiogroup_entry_t text_devices[] = {
+static const vice_gtk3_radiogroup_entry_t text_devices[] = {
     { "#1 (file dump", 0 },
     { "#2 (exec)", 1 },
     { "#3 (exec)", 2 },

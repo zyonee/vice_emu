@@ -57,33 +57,33 @@
 #include "resources.h"
 #include "vsync.h"
 
-#include "debug_gtk3.h"
-#include "resourcecheckbutton.h"
-#include "widgethelpers.h"
-#include "openfiledialog.h"
-#include "savefiledialog.h"
+#include "widgets/base/vice_gtk3.h"
 
 #include "ui.h"
-#include "uispeed.h"
-#include "uikeyboard.h"
-#include "uisound.h"
-#include "uiautostart.h"
-#include "uidrivesettings.h"
-#include "uimodel.h"
-#include "uimisc.h"
-#include "ramresetwidget.h"
-#include "uivideosettings.h"
-#include "uisamplersettings.h"
-#include "uiprintersettings.h"
-#include "uicontrolport.h"
-#include "uijoystick.h"
-#include "uimousesettings.h"
-#include "uisoundchipsettings.h"
+#include "settings_speed.h"
+#include "settings_keyboard.h"
+#include "settings_sound.h"
+#include "settings_autostart.h"
+#include "settings_drive.h"
+#include "settings_model.h"
+#include "settings_misc.h"
+#include "settings_ramreset.h"
+#include "settings_video.h"
+#include "settings_sampler.h"
+#include "settings_printer.h"
+#include "settings_controlport.h"
+#include "settings_joystick.h"
+#include "settings_mouse.h"
+#include "settings_soundchip.h"
+#include "settings_monitor.h"
+#include "settings_romset.h"
+#include "settings_snapshot.h"
+#include "settings_ethernet.h"
 
 /* I/O extension widgets */
-#include "ioextensionswidget.h"
-#include "c64memoryexpansionhackswidget.h"
-#include "georamwidget.h"
+#include "settings_io.h"
+#include "settings_io_c64_memhacks.h"
+#include "settings_io_georam.h"
 #include "reuwidget.h"
 #include "ramcartwidget.h"
 #include "dqbbwidget.h"
@@ -127,10 +127,6 @@
 #include "vfliwidget.h"
 #include "petdiagpinwidget.h"
 #include "pethrewidget.h"
-
-#include "snapshotwidget.h"
-#include "monitorsettingswidget.h"
-#include "romsetwidget.h"
 
 #include "uisettings.h"
 
@@ -176,12 +172,12 @@ enum {
  */
 static ui_settings_tree_node_t c64_io_extensions[] = {
     { "Memory Expansion Hacks",
-        "mem-hacks",
-        c64_memory_expansion_hacks_widget_create, NULL },
+       "mem-hacks",
+       settings_io_c64_memhacks_widget_create, NULL },
 
     { "GEO-RAM",
         "geo-ram",
-        georam_widget_create, NULL },
+        settings_io_georam_widget_create, NULL },
     { "RAM Expansion Module",
         "reu",
         reu_widget_create, NULL },
@@ -277,7 +273,7 @@ static ui_settings_tree_node_t c64_io_extensions[] = {
 static ui_settings_tree_node_t scpu64_io_extensions[] = {
     { "GEO-RAM",
         "geo-ram",
-        georam_widget_create, NULL },
+        settings_io_georam_widget_create, NULL },
     { "RAM Expansion Module",
         "reu",
         reu_widget_create, NULL },
@@ -375,7 +371,7 @@ static ui_settings_tree_node_t c128_io_extensions[] = {
 
     { "GEO-RAM",
         "geo-ram",
-        georam_widget_create, NULL },
+        settings_io_georam_widget_create, NULL },
     { "RAM Expansion Module",
         "reu",
         reu_widget_create, NULL },
@@ -501,8 +497,8 @@ static ui_settings_tree_node_t vic20_io_extensions[] = {
         "ds12c887-rtc",
         ds12c887_widget_create, NULL },
     { "GEO-RAM (MasC=uerade)",
-        "geo-ram",
-        georam_widget_create, NULL },
+       "geo-ram",
+       settings_io_georam_widget_create, NULL },
     { "SFX Sound Expander (MasC=uerade)",
         "sfx-expander",
         sfx_sound_expander_widget_create, NULL },
@@ -652,68 +648,72 @@ static ui_settings_tree_node_t no_io_extensions[] = {
  */
 static ui_settings_tree_node_t main_nodes[] = {
     { "Speed settings",
-       "speed",
-       uispeed_create_central_widget, NULL },
+      "speed",
+       settings_speed_widget_create, NULL },
     { "Keyboard settings",
-       "keyboard",
-       uikeyboard_create_central_widget, NULL },
+      "keyboard",
+      settings_keyboard_widget_create, NULL },
     { "Sound settings",
-       "sound",
-       uisound_create_central_widget, NULL },
+      "sound",
+      settings_sound_create, NULL },
     { "Sampler settings",
-       "sampler",
-       uisamplersettings_widget_create, NULL },
+      "sampler",
+      settings_sampler_widget_create, NULL },
     { "Autostart settings",
-       "autostart",
-       uiautostart_create_central_widget, NULL },
+      "autostart",
+      settings_autostart_widget_create, NULL },
     { "Drive settings",
-       "drive",
-       uidrivesettings_widget_create, NULL },
+      "drive",
+      settings_drive_widget_create, NULL },
     { "Printer settings",
-        "printer",
-        uiprintersettings_widget_create, NULL },
+      "printer",
+      settings_printer_widget_create, NULL },
     { "Control port settings",
-        "control-port",
-        uicontrolport_widget_create, NULL },
+      "control-port",
+      settings_controlport_widget_create, NULL },
     { "Joystick settings",
-        "joystick",
-        uijoystick_widget_create, NULL },
+      "joystick",
+      settings_joystick_widget_create, NULL },
     { "Mouse settings",
-        "mouse",
-        uimousesettings_widget_create, NULL },
+      "mouse",
+      settings_mouse_widget_create, NULL },
     { "Model settings",
-        "model",
-        uimodel_create_central_widget, NULL },
+      "model",
+      settings_model_widget_create, NULL },
     { "RAM reset pattern",
-        "ram-reset",
-        create_ram_reset_central_widget, NULL },
+      "ram-reset",
+      settings_ramreset_widget_create, NULL },
     { "ROM settings",
-        "rom-settings",
-        romset_widget_create, NULL },
+      "rom-settings",
+      settings_romset_widget_create, NULL },
     { "Miscellaneous",
-        "misc",
-        uimisc_create_central_widget, NULL },
+      "misc",
+      settings_misc_widget_create, NULL },
     { "Video settings",
-        "video",
-        uivideosettings_widget_create, NULL },
+      "video",
+      settings_video_create, NULL },
     { "SID settings",
-        "sid",
-        uisoundchipsettings_widget_create, NULL },
+      "sid",
+      settings_soundchip_widget_create, NULL },
 
     /* the `c64_io_extensions` is a placeholder: it will get replaced by the
      * proper per-machine list. Unfortunately with a fixed index into this list
      * until I refactor the tree model code into something more flexible
      * -- compyx*/
     { "I/O extensions",
-        "io-extensions",
-        ioextensions_widget_create, c64_io_extensions },
+      "io-extensions",
+      settings_io_widget_create, c64_io_extensions },
+
+    { "Ethernet settings",
+      "ethernet",
+      settings_ethernet_widget_create, NULL },
 
     { "Snaphot/event/media recording",
-        "snapshot",
-        snapshot_widget_create, NULL },
+      "snapshot",
+      settings_snapshot_widget_create, NULL },
     { "Monitor settings",
-        "monitor",
-        monitor_settings_widget_create, NULL },
+      "monitor",
+      settings_monitor_widget_create, NULL },
 
     UI_SETTINGS_TERMINATOR
 };
@@ -1057,7 +1057,7 @@ static GtkWidget *create_content_widget(GtkWidget *widget)
     gtk_grid_attach(GTK_GRID(settings_grid), scroll, 0, 0, 1, 1);
 
     /* TODO: remember the previously selected setting/widget and set it here */
-    ui_settings_set_central_widget(uispeed_create_central_widget(widget));
+    ui_settings_set_central_widget(settings_speed_widget_create(widget));
 
     /* create container for generic settings */
     extra = gtk_grid_new();
@@ -1125,18 +1125,20 @@ static void response_callback(GtkWidget *widget, gint response_id,
         case RESPONSE_LOAD:
             debug_gtk3("loading resources from default file\n");
             if(resources_load(NULL) != 0) {
-                debug_gtk3("failed\n");
+                vice_gtk3_message_error("VICE core error",
+                        "Failed to load default settings file");
             }
             break;
 
         /* load vicerc from a user-specified location */
         case RESPONSE_LOAD_FILE:
-            filename = ui_open_file_dialog(widget, "Load settings file",
+            filename = vice_gtk3_open_file_dialog("Load settings file",
                     NULL, NULL, NULL);
             if (filename!= NULL) {
                 debug_gtk3("loading settings from '%s'\n", filename);
                 if (resources_load(filename) != 0) {
-                    debug_gtk3("failed\n");
+                    vice_gtk3_message_error("VICE core error",
+                            "Failed to load settings from '%s'", filename);
                 }
             }
             break;
@@ -1145,19 +1147,21 @@ static void response_callback(GtkWidget *widget, gint response_id,
         case RESPONSE_SAVE:
             debug_gtk3("saving vicerc to default location\n");
             if (resources_save(NULL) != 0) {
-                debug_gtk3("failed!\n");
+                vice_gtk3_message_error("VICE core error",
+                        "Failed to save settings to default file");
             }
             break;
 
         /* save settings to a user-specified location */
         case RESPONSE_SAVE_FILE:
-            filename = ui_save_file_dialog(widget, "Save settings as ...",
+            filename = vice_gtk3_save_file_dialog("Save settings as ...",
                     NULL, TRUE, NULL);
             if (filename != NULL) {
                 debug_gtk3("saving setting as '%s'\n",
                         filename ? filename : "NULL");
                 if (resources_save(filename) != 0) {
-                    debug_gtk3("failed!\n");
+                    vice_gtk3_message_error("VICE core error",
+                            "Failed to save setting as '%s'.", filename);
                 }
                 g_free(filename);
             }
@@ -1195,6 +1199,8 @@ static gboolean on_dialog_configure_event(
         if (width > DIALOG_WIDTH_MAX || height > DIALOG_HEIGHT_MAX) {
             gtk_window_set_title(GTK_WINDOW(widget),
                     "HELP! --- DIALOG IS TOO BLOODY LARGE -- ERROR!");
+            debug_gtk3("Dialog is too large: %dx%d (max: %dx%d)\n",
+                    width, height, DIALOG_WIDTH_MAX, DIALOG_HEIGHT_MAX);
         }
     }
     return FALSE;

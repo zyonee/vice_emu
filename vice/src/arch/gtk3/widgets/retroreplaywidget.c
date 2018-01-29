@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/retroreplaywidget.c
+/**
  * \brief   Widget to control Retro Replay resources
  *
  * Written by
@@ -52,7 +52,7 @@
 
 /** \brief  List of Retro Replay revisions
  */
-static ui_combo_entry_int_t rr_revisions[] = {
+static const vice_gtk3_combo_entry_int_t rr_revisions[] = {
     { CARTRIDGE_NAME_RETRO_REPLAY, 0 },
     { CARTRIDGE_NAME_NORDIC_REPLAY, 1 },
     { NULL, -1 }
@@ -69,11 +69,11 @@ static void on_save_clicked(GtkWidget *widget, gpointer user_data)
 {
     gchar *filename;
 
-    filename = ui_save_file_dialog(widget, "Save image as", NULL, TRUE, NULL);
+    filename = vice_gtk3_save_file_dialog("Save image as", NULL, TRUE, NULL);
     if (filename != NULL) {
         debug_gtk3("writing RR image file as '%s'\n", filename);
         if (carthelpers_save_func(CARTRIDGE_RETRO_REPLAY, filename) < 0) {
-            ui_message_error(widget, "VICE core",
+            vice_gtk3_message_error("VICE core",
                     "Failed to save Retro Replay image '%s'.", filename);
         }
         g_free(filename);
@@ -90,7 +90,7 @@ static void on_flush_clicked(GtkWidget *widget, gpointer user_data)
 {
     debug_gtk3("flushing RR image\n");
     if (carthelpers_flush_func(CARTRIDGE_RETRO_REPLAY) < 0) {
-        ui_message_error(widget, "VICE core",
+        vice_gtk3_message_error("VICE core",
                 "Failed to flush current Retro Replay image.");
     }
 }
@@ -133,7 +133,8 @@ GtkWidget *retroreplay_widget_create(GtkWidget *parent)
     g_object_set(label, "margin-left", 8, NULL);
     gtk_widget_set_halign(label, GTK_ALIGN_START);
     gtk_grid_attach(GTK_GRID(grid), label, 1, 0, 1, 1);
-    rev_combo = resource_combo_box_int_create("RRrevision", rr_revisions);
+    rev_combo = vice_gtk3_resource_combo_box_int_create("RRrevision",
+            rr_revisions);
     gtk_grid_attach(GTK_GRID(grid), rev_combo, 2, 0, 1, 1);
 
     /* RRClockPort */

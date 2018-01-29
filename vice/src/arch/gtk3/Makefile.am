@@ -65,7 +65,6 @@ libarch_a_SOURCES = \
 	signals.c \
 	ui.c \
 	uiabout.c \
-	uiautostart.c \
 	uidatasette.c \
 	uidiskattach.c \
 	uiedit.c \
@@ -75,11 +74,8 @@ libarch_a_SOURCES = \
 	uimenu.c \
 	uimon.c \
 	uimon-fallback.c \
-	uikeyboard.c \
 	uisettings.c \
 	uismartattach.c \
-	uisound.c \
-	uispeed.c \
 	uistatusbar.c \
 	uitapeattach.c \
 	uivsidmenu.c \
@@ -88,27 +84,19 @@ libarch_a_SOURCES = \
 	video.c \
 	vsidui.c \
 	vsyncarch.c \
-	uimodel.c \
-	uimisc.c \
 	uivideo.c \
-	uivideosettings.c \
-	uisamplersettings.c \
-	uiprintersettings.c \
 	uicmdline.c \
 	uicompiletimefeatures.c \
-	uicontrolport.c \
-	uijoystick.c \
 	uicommands.c \
-	uimousesettings.c \
-	uisoundchipsettings.c \
-	uidrivesettings.c \
 	uisnapshot.c \
 	uidebug.c \
 	uicart.c \
 	uimedia.c \
 	uinetplay.c \
 	uisidattach.c \
-	uinetplay_new.c
+	uinetplay_new.c \
+	uidiskcreate.c \
+	uitapecreate.c
 
 EXTRA_DIST = \
 	archdep.h \
@@ -139,42 +127,30 @@ EXTRA_DIST = \
 	rs232-win32-dev.c \
 	ui.h \
 	uiabout.h \
-	uiautostart.h \
 	uidatasette.h \
 	uidiskattach.h \
 	uifliplist.h \
-	uikeyboard.h \
 	uiedit.h \
 	uimachinemenu.h \
 	uimachinewindow.h \
 	uimenu.h \
 	uisettings.h \
 	uismartattach.h \
-	uisound.h \
-	uispeed.h \
 	uistatusbar.h \
 	uitapeattach.h \
 	uivsidmenu.h \
 	uivsidwindow.h \
 	videoarch.h \
-	uimodel.h \
-	uimisc.h \
 	uivideo.h \
-	uivideosettings.h \
-	uisamplersettings.h \
-	uiprintersettings.h \
 	uicmdline.h \
 	uicompiletimefeatures.h \
-	uicontrolport.h \
-	uijoystick.h \
 	uicommands.h \
-	uimousesettings.h \
-	uisoundchipsettings.h \
-	uidrivesettings.h \
 	uisnapshot.h \
 	uidebug.h \
 	uicart.h \
 	uimedia.h \
 	uinetplay.h \
 	uisidattach.h \
-	uinetplay_new.h
+	uinetplay_new.h \
+	uidiskcreate.h \
+	uitapecreate.h

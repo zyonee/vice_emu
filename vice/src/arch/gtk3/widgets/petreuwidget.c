@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/petreuwidget.c
+/**
  * \brief   PET RAM expansion module widget
  *
  * Written by
@@ -44,7 +44,7 @@
 
 /** \brief  List of REU sizes
  */
-static ui_radiogroup_entry_t reu_sizes[] = {
+static const vice_gtk3_radiogroup_entry_t reu_sizes[] = {
     { "128KB", 128 },
     { "512KB", 512 },
     { "1024KB", 1024 },
@@ -90,12 +90,11 @@ static void on_browse_clicked(GtkWidget *widget, gpointer user_data)
 {
     gchar *filename;
 
-    filename = ui_open_file_dialog(widget, "Open REU image file", NULL,
+    filename = vice_gtk3_open_file_dialog("Open REU image file", NULL,
             NULL, NULL);
     if (filename != NULL) {
-        GtkEntry *entry = GTK_ENTRY(user_data);
         debug_gtk3("setting PETREUfilename to '%s'\n", filename);
-        gtk_entry_set_text(entry, filename);
+        vice_gtk3_resource_entry_full_update(GTK_WIDGET(user_data), filename);
         g_free(filename);
     }
 }
@@ -127,7 +126,7 @@ GtkWidget *pet_reu_widget_create(GtkWidget *parent)
     label = gtk_label_new("REU size");
     gtk_widget_set_halign(label, GTK_ALIGN_START);
     g_object_set(label, "margin-left", 16, NULL);
-    group = resource_radiogroup_create("PETREUsize", reu_sizes,
+    group = vice_gtk3_resource_radiogroup_create("PETREUsize", reu_sizes,
             GTK_ORIENTATION_HORIZONTAL);
     gtk_grid_set_column_spacing(GTK_GRID(group), 16);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 1, 1, 1);
@@ -137,7 +136,7 @@ GtkWidget *pet_reu_widget_create(GtkWidget *parent)
     label = gtk_label_new("REU image file");
     gtk_widget_set_halign(label, GTK_ALIGN_START);
     g_object_set(label, "margin-left", 16, NULL);
-    entry = resource_entry_create("PETREUfilename");
+    entry = vice_gtk3_resource_entry_full_create("PETREUfilename");
     gtk_widget_set_hexpand(entry, TRUE);
     browse = gtk_button_new_with_label("Browse ...");
     g_signal_connect(browse, "clicked", G_CALLBACK(on_browse_clicked),

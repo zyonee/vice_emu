@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/sidmodelwidget.c
+/**
  * \brief   Widget to select SID model
  *
  * Written by
@@ -32,6 +32,7 @@
 #include <gtk/gtk.h>
 #include <glib/gstdio.h>
 
+#include "basewidgets.h"
 #include "lib.h"
 #include "widgethelpers.h"
 #include "debug_gtk3.h"
@@ -44,13 +45,13 @@
 
 /** \brief  Empty list of SID models
  */
-static ui_radiogroup_entry_t sid_models_none[] = {
+static const vice_gtk3_radiogroup_entry_t sid_models_none[] = {
     { NULL, -1 }
 };
 
 /** \brief  All SID models
  */
-static ui_radiogroup_entry_t sid_models_all[] = {
+static const vice_gtk3_radiogroup_entry_t sid_models_all[] = {
     { "6581", 0 },
     { "8580", 1 },
     { "8580D", 2 },
@@ -62,7 +63,7 @@ static ui_radiogroup_entry_t sid_models_all[] = {
 /** \brief  SID models used in the C64/C64SCPU, C128 and expanders for PET,
  *          VIC-20 and Plus/4
  */
-static ui_radiogroup_entry_t sid_models_c64[] = {
+static const vice_gtk3_radiogroup_entry_t sid_models_c64[] = {
     { "6581", 0 },
     { "8580", 1 },
     { "8580D", 2 },
@@ -71,7 +72,7 @@ static ui_radiogroup_entry_t sid_models_c64[] = {
 
 /** \brief  SID models used in the CBM-II 510/520 models
  */
-static ui_radiogroup_entry_t sid_models_cbm5x0[] = {
+static const vice_gtk3_radiogroup_entry_t sid_models_cbm5x0[] = {
     { "6581", 0 },
     { "8580", 1 },
     { "8580D", 2 },
@@ -86,35 +87,6 @@ static ui_radiogroup_entry_t sid_models_cbm5x0[] = {
 static GtkWidget *machine_widget = NULL;
 
 
-/** \brief  Handler for the "toggled" event of a radio button
- *
- * \param[in]   widget      toggle button triggering the event
- * \param[in]   user_data   SID model ID (int)
- */
-static void on_sid_model_toggled(GtkWidget *widget, gpointer user_data)
-{
-    int old_model = 0;
-    int new_model = 0;
-
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))) {
-        resources_get_int("SidModel", &old_model);
-        new_model = GPOINTER_TO_INT(user_data);
-        if (old_model != new_model) {
-            resources_set_int("SidModel", new_model);
-
-            /* now trigger `model` update */
-            if (machine_widget != NULL) {
-                /* this causes the 'machine model' widget to be updated: it
-                 * will inspect various resources to determine a valid model.
-                 * if invalid the 'unknown' radio button will be activated
-                 */
-                machine_model_widget_update(machine_widget);
-            }
-        }
-    }
-}
-
-
 /** \brief  Create SID model widget
  *
  * Creates a SID model widget, depending on `machine_class`. Also sets a
@@ -127,12 +99,10 @@ static void on_sid_model_toggled(GtkWidget *widget, gpointer user_data)
 GtkWidget *sid_model_widget_create(GtkWidget *machine_model_widget)
 {
     GtkWidget *grid;
-    int current_model;
-    ui_radiogroup_entry_t *models;
+    GtkWidget *group;
+    const vice_gtk3_radiogroup_entry_t *models;
 
     machine_widget = machine_model_widget;
-
-    resources_get_int("SidModel", &current_model);
 
     switch (machine_class) {
 
@@ -164,11 +134,12 @@ GtkWidget *sid_model_widget_create(GtkWidget *machine_model_widget)
             models = sid_models_none;
     }
 
-
-    grid = uihelpers_radiogroup_create("SID model",
-            models,
-            on_sid_model_toggled,
-            current_model);
+    grid = vice_gtk3_grid_new_spaced_with_label(VICE_GTK3_DEFAULT,
+            VICE_GTK3_DEFAULT, "SID model", 1);
+    group = vice_gtk3_resource_radiogroup_create(
+            "SidModel", models, GTK_ORIENTATION_VERTICAL);
+    g_object_set(group, "margin-left", 16, NULL);
+    gtk_grid_attach(GTK_GRID(grid), group, 0, 1, 1, 1);
 
     /* SID cards for the Plus4, PET or VIC20:
      *
@@ -199,6 +170,5 @@ GtkWidget *sid_model_widget_create(GtkWidget *machine_model_widget)
  */
 void sid_model_widget_update(GtkWidget *widget, int model)
 {
-    uihelpers_radiogroup_set_index(widget, model);
+    vice_gtk3_radiogroup_set_index(widget, model);
 }
-

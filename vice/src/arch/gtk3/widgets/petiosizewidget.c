@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/petiosizewidget.c
+/**
  * \brief   Widget to set the PET I/O area size (PET 8296 only)
  *
  * Written by
@@ -41,7 +41,7 @@
 
 /** \brief  Available I/O sizes
  */
-static ui_radiogroup_entry_t io_sizes[] = {
+static const vice_gtk3_radiogroup_entry_t io_sizes[] = {
     { "256 bytes", 256 },
     { "2048 bytes", 2048 },
     { NULL, -1 }
@@ -59,7 +59,7 @@ GtkWidget *pet_io_size_widget_create(void)
 
     grid = uihelpers_create_grid_with_label("I/O area size", 1);
     gtk_grid_set_column_spacing(GTK_GRID(grid), 16);
-    group = resource_radiogroup_create("IOSize", io_sizes,
+    group = vice_gtk3_resource_radiogroup_create("IOSize", io_sizes,
             GTK_ORIENTATION_VERTICAL);
     g_object_set(group, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), group, 0, 1, 1, 1);

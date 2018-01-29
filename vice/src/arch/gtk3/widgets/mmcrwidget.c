@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/mmcrwidget.c
+/**
  * \brief   Widget to control MMC Replay resources
  *
  * Written by
@@ -54,7 +54,7 @@
 
 /** \brief  List of memory card types
  */
-static const ui_radiogroup_entry_t card_types[] = {
+static const vice_gtk3_radiogroup_entry_t card_types[] = {
     { "Auto", 0 },
     { "MMC", 1 },
     { "SD", 2 },
@@ -72,7 +72,7 @@ static void on_card_browse_clicked(GtkWidget *button, gpointer user_data)
 {
     char *filename;
 
-    filename = ui_open_file_dialog(button, "Open memory card file",
+    filename = vice_gtk3_open_file_dialog("Open memory card file",
             NULL, NULL, NULL);
     if (filename != NULL) {
         GtkWidget *parent;
@@ -81,7 +81,7 @@ static void on_card_browse_clicked(GtkWidget *button, gpointer user_data)
         parent = gtk_widget_get_parent(button);
         entry= gtk_grid_get_child_at(GTK_GRID(parent), 1, 1);
         /* trigger resource update */
-        gtk_entry_set_text(GTK_ENTRY(entry), filename);
+        vice_gtk3_resource_entry_full_update(entry, filename);
         g_free(filename);
     }
 }
@@ -171,7 +171,7 @@ static GtkWidget *create_card_image_widget(GtkWidget *parent)
     g_object_set(label, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 1, 1, 1);
 
-    entry = resource_entry_create("MMCRCardImage");
+    entry = vice_gtk3_resource_entry_full_create("MMCRCardImage");
     gtk_widget_set_hexpand(entry, TRUE);
     gtk_grid_attach(GTK_GRID(grid), entry, 1, 1, 1, 1);
 
@@ -209,7 +209,7 @@ static GtkWidget *create_card_type_widget(void)
     g_object_set(label, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
 
-    radio_group = resource_radiogroup_create("MMCRSDType", card_types,
+    radio_group = vice_gtk3_resource_radiogroup_create("MMCRSDType", card_types,
             GTK_ORIENTATION_HORIZONTAL);
     gtk_grid_set_column_spacing(GTK_GRID(radio_group), 16);
     gtk_grid_attach(GTK_GRID(grid), radio_group, 1, 0, 1, 1);

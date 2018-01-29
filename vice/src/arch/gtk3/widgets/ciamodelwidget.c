@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/ciamodelwidget.c
+/**
  * \brief   Widget to set the CIA model
  *
  * Written by
@@ -44,7 +44,7 @@
 #include "ciamodelwidget.h"
 
 
-static ui_radiogroup_entry_t cia_models[] = {
+static const vice_gtk3_radiogroup_entry_t cia_models[] = {
     { "6526 (old)", CIA_MODEL_6526 },
     { "8521 (new)", CIA_MODEL_6526A },
     { NULL, -1 }
@@ -88,8 +88,8 @@ static GtkWidget *create_cia_widget(int num)
     g_object_set(label, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
 
-    radio_group = resource_radiogroup_create_sprintf("CIA%dModel", cia_models,
-            GTK_ORIENTATION_HORIZONTAL, num);
+    radio_group = vice_gtk3_resource_radiogroup_create_sprintf(
+            "CIA%dModel", cia_models, GTK_ORIENTATION_HORIZONTAL, num);
     gtk_grid_attach(GTK_GRID(grid), radio_group, 1, 0, 1, 1);
 
     gtk_widget_show_all(grid);

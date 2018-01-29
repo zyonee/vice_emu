@@ -1,9 +1,10 @@
-/** \file   src/arch/gtk3/widgets/uicart.c
+/**
  * \brief   Widget to attach carts
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -207,7 +208,7 @@ static void on_response(GtkWidget *dialog, gint response_id, gpointer data)
                 debug_gtk3("attaching '%s'\n", filename);
                 /* just do smart-attach for now */
                 if (!attach_cart_image(get_cart_type(), get_cart_id(), filename)) {
-                    ui_message_error(dialog, "VICE Error",
+                    vice_gtk3_message_error("VICE Error",
                             "Failed to smart-attach '%s'\n", filename);
                 }
                 g_free(filename);
@@ -761,8 +762,7 @@ gboolean uicart_smart_attach_dialog(GtkWidget *widget, gpointer user_data)
 
     gchar *filename;
 
-    filename = ui_open_file_dialog(
-            widget,
+    filename = vice_gtk3_open_file_dialog(
             "Smart-attach cartridge image",
             "Cartridge images",
             file_chooser_pattern_cart,
@@ -772,7 +772,7 @@ gboolean uicart_smart_attach_dialog(GtkWidget *widget, gpointer user_data)
         debug_gtk3("Got filename '%s'\n", filename);
         if (crt_attach_func != NULL) {
             if (crt_attach_func(CARTRIDGE_CRT, filename) < 0) {
-                ui_message_error(widget, "VICE error",
+                vice_gtk3_message_error("VICE error",
                         "Failed to attach '%s' as a cartridge image",
                         filename);
             } else {

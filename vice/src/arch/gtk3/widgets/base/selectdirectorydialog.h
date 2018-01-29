@@ -1,11 +1,10 @@
-/** \file   src/arch/gtk3/widgets/selectdirectorydialog.h
- * \brief   Wrapper around the GtkFileChooser dialog for simple cases
+/**
+ * \brief   GtkFileChooser wrapper to select/create a directory
  *
- * GTK3 directory selection dialog - header
- *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -25,14 +24,13 @@
  *  02111-1307  USA.
  */
 
-#ifndef VICE_SELECTDIRECTORYDIALOG
-#define VICE_SELECTDIRECTORYDIALOG
+#ifndef VICE_SELECTDIRECTORYDIALOG_H
+#define VICE_SELECTDIRECTORYDIALOG_H
 
 #include "vice.h"
 #include <gtk/gtk.h>
 
-gchar *ui_select_directory_dialog(
-        GtkWidget *widget,
+gchar *vice_gtk3_select_directory_dialog(
         const char *title,
         const char *proposed,
         gboolean allow_create,

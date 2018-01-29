@@ -1,8 +1,10 @@
-/** \file   src/arch/gtk3/widgets/base/basewidget_types.h
+/**
  * \brief   Types used for the base widgets
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -33,32 +35,32 @@
 
 /** \brief  Entry for a combo box using an integer as ID
  */
-typedef struct ui_combo_entry_int_s {
+typedef struct vice_gtk3_combo_entry_int_s {
     char *name;     /**< displayed in the combo box */
     int   id;       /**< ID for the entry in the combo box */
-} ui_combo_entry_int_t;
+} vice_gtk3_combo_entry_int_t;
 
-#define UI_COMBO_ENTRY_INT_LIST_END { NULL, -1 }
+#define VICE_GTK3_COMBO_ENTRY_INT_LIST_END { NULL, -1 }
 
 
 /** \brief  Entry for a combo box using a string as ID
  */
-typedef struct ui_combo_entry_str_s {
+typedef struct vice_gtk3_combo_entry_str_s {
     char *name;     /**< displayed in the combo box */
     char *id;       /**< ID for the entry in the combo box */
-} ui_combo_entry_str_t;
+} vice_gtk3_combo_entry_str_t;
 
-#define UI_COMBO_ENTRY_STR_LIST_END { NULL, NULL }
+#define VICE_GTK3_COMBO_ENTRY_STR_LIST_END { NULL, NULL }
 
 
 /** \brief  Entry for a radio button group using an integer as ID
  */
-typedef struct ui_radiogroup_entry_s {
+typedef struct vice_gtk3_radiogroup_entry_s {
     char *name;     /**< label for the radio button */
     int   id;       /**< ID for the radio button */
-} ui_radiogroup_entry_t;
+} vice_gtk3_radiogroup_entry_t;
 
-#define UI_RADIOGROUP_ENTRY_LIST_END { NULL, -1 }
+#define VICE_GTK3_RADIOGROUP_ENTRY_LIST_END { NULL, -1 }
 
 
 #endif

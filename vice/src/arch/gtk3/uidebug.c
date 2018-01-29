@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/uidebug.c
+/**
  * \brief   Debug menu dialogs
  *
  * Written by
@@ -48,7 +48,7 @@
 #include "uidebug.h"
 
 
-static ui_radiogroup_entry_t trace_modes[] = {
+static const vice_gtk3_radiogroup_entry_t trace_modes[] = {
     { "Normal", DEBUG_NORMAL },
     { "Small", DEBUG_SMALL },
     { "History", DEBUG_HISTORY },
@@ -70,7 +70,7 @@ static GtkWidget *create_playback_widget(void)
     gtk_widget_set_halign(label, GTK_ALIGN_START);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
 
-    spin = resource_spin_button_int_create("AutoPlaybackFrames",
+    spin = vice_gtk3_resource_spin_button_int_create("AutoPlaybackFrames",
             0, 65536, 10);
     gtk_grid_attach(GTK_GRID(grid), spin, 1, 0, 1,1);
 
@@ -85,7 +85,7 @@ static GtkWidget *create_trace_widget(void)
     GtkWidget *group;
 
     grid = uihelpers_create_grid_with_label("Select CPU/Drive trace mode", 1);
-    group = resource_radiogroup_create("TraceMode", trace_modes,
+    group = vice_gtk3_resource_radiogroup_create("TraceMode", trace_modes,
             GTK_ORIENTATION_VERTICAL);
     g_object_set(group, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), group, 0, 1, 1, 1);

@@ -1,5 +1,5 @@
-/*
- * soundoutputmodewidget.c - GTK3 sound output mode widget
+/**
+ * \brief   GTK3 sound output mode widget
  *
  * Written by
  *  Bas Wassink <b.wassink@ziggo.nl>
@@ -31,6 +31,7 @@
 
 #include <gtk/gtk.h>
 
+#include "basewidgets.h"
 #include "lib.h"
 #include "ui.h"
 #include "resources.h"
@@ -44,29 +45,12 @@
 
 /** \brief  List of sound output modes
  */
-static ui_radiogroup_entry_t output_modes[] = {
+static const vice_gtk3_radiogroup_entry_t output_modes[] = {
     { "System", SOUND_OUTPUT_SYSTEM },
-    { "Mono", SOUND_OUTPUT_MONO },
+    { "Mono",   SOUND_OUTPUT_MONO },
     { "Stereo", SOUND_OUTPUT_STEREO },
     { NULL, -1 }
 };
-
-
-/** \brief  Event handler to alter the "SoundMode" resource
- *
- * \param[in]   widget      widget triggering the callback
- * \param[in]   user_data   the SoundMode setting (`int`)
- *
- */
-static void on_output_mode_changed(GtkWidget *widget, gpointer user_data)
-{
-    int mode = GPOINTER_TO_INT(user_data);
-
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))) {
-        debug_gtk3("got sound output mode %d\n", mode);
-        resources_set_int("SoundOutput", mode);
-    }
-}
 
 
 /** \brief  Create widget for "Sound output mode"
@@ -77,16 +61,16 @@ static void on_output_mode_changed(GtkWidget *widget, gpointer user_data)
  */
 GtkWidget *sound_output_mode_widget_create(void)
 {
-    GtkWidget *layout;
-    int mode;
+    GtkWidget *grid;
+    GtkWidget *group;
 
-    resources_get_int("SoundOutput", &mode);
-
-    layout = uihelpers_radiogroup_create(
-            "Output mode",
-            output_modes,
-            on_output_mode_changed,
-            mode);
-
-    return layout;
+    grid = vice_gtk3_grid_new_spaced_with_label(
+            VICE_GTK3_DEFAULT, VICE_GTK3_DEFAULT,
+            "Output mode", 1);
+    group = vice_gtk3_resource_radiogroup_create(
+            "SoundOutput", output_modes, GTK_ORIENTATION_VERTICAL);
+    g_object_set(group, "margin-left", 16, NULL);
+    gtk_grid_attach(GTK_GRID(grid), group, 0, 1, 1, 1);
+    gtk_widget_show_all(grid);
+    return grid;
 }

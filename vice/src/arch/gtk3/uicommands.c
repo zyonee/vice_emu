@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/uicommands.c
+/**
  * \brief   Simple commands triggered from the menu
  *
  * Written by
@@ -143,7 +143,7 @@ void ui_close_callback(GtkWidget *widget, gpointer user_data)
         return;
     }
 
-    if (ui_message_confirm(ui_resources.window_widget[index], "Exit VICE",
+    if (vice_gtk3_message_confirm("Exit VICE",
                 "Do you really wish to exit VICE?")) {
         debug_gtk3("Exit confirmed\n");
         gtk_widget_destroy(ui_resources.window_widget[index]);
@@ -170,7 +170,7 @@ gboolean on_delete_event(GtkWidget *widget, GdkEvent *event, gpointer user_data)
         return FALSE;
     }
 
-    if (ui_message_confirm(widget, "Exit VICE",
+    if (vice_gtk3_message_confirm("Exit VICE",
                 "Do you really wish to exit VICE?")) {
         debug_gtk3("Exit confirmed\n");
         return FALSE;

@@ -1,4 +1,4 @@
-/** \file   uimedia.c
+/**
  * \brief   Media recording dialog
  *
  * Written by
@@ -134,7 +134,7 @@ static audio_driver_info_t audio_driver_list[] = {
 
 /** \brief  List of 'oversize modes' for some screenshot output drivers
  */
-static ui_combo_entry_int_t oversize_modes[] = {
+static vice_gtk3_combo_entry_int_t oversize_modes[] = {
     { "scale down", 0 },
     { "crop left top", 1, },
     { "crop center top", 2 },
@@ -151,7 +151,7 @@ static ui_combo_entry_int_t oversize_modes[] = {
 
 /** \brief  List of 'undersize modes' for some screenshot output drivers
  */
-static ui_combo_entry_int_t undersize_modes[] = {
+static vice_gtk3_combo_entry_int_t undersize_modes[] = {
     { "scale up", 0 },
     { "border size", 1 },
     { NULL, -1 }
@@ -160,7 +160,7 @@ static ui_combo_entry_int_t undersize_modes[] = {
 
 /** \brief  List of multi color modes for some screenshot output drivers
  */
-static ui_combo_entry_int_t multicolor_modes[] = {
+static const vice_gtk3_combo_entry_int_t multicolor_modes[] = {
     { "B&W", 0 },
     { "2 colors", 1 },
     { "4 colors", 2 },
@@ -172,7 +172,7 @@ static ui_combo_entry_int_t multicolor_modes[] = {
 
 /** \brief  TED output driver Luma modes
  */
-static ui_combo_entry_int_t ted_luma_modes[] = {
+static const vice_gtk3_combo_entry_int_t ted_luma_modes[] = {
     { "ignore", 0 },
     { "dither", 1 },
     { NULL, -1 },
@@ -181,7 +181,7 @@ static ui_combo_entry_int_t ted_luma_modes[] = {
 
 /** \brief  List of available colors to use for CRTC screenshots
  */
-static ui_combo_entry_int_t crtc_colors[] = {
+static const vice_gtk3_combo_entry_int_t crtc_colors[] = {
     { "White", 0 },
     { "Amber", 1 },
     { "Green", 2 },
@@ -433,14 +433,14 @@ static void save_screenshot_handler(void)
     title = lib_msprintf("Save %s file", display);
     proposed = create_proposed_screenshot_name(ext);
 
-    filename = ui_save_file_dialog(NULL, title, proposed, TRUE, NULL);
+    filename = vice_gtk3_save_file_dialog(title, proposed, TRUE, NULL);
     if (filename != NULL) {
         /* TODO: add extension if not present? */
         if (screenshot_save(name, filename, ui_get_active_canvas()) < 0) {
-            ui_message_error(NULL, "VICE Error",
+            vice_gtk3_message_error("VICE Error",
                     "Failed to write screenshot file '%s'", filename);
         } else {
-            ui_message_info(NULL, "VICE Info",
+            vice_gtk3_message_info("VICE Info",
                     "Saved screenshot as '%s'", filename);
         }
         g_free(filename);
@@ -471,7 +471,7 @@ static void save_audio_recording_handler(void)
     title = lib_msprintf("Save %s file", display);
     proposed = create_proposed_audio_recording_name(ext);
 
-    filename = ui_save_file_dialog(NULL, title, proposed, TRUE, NULL);
+    filename = vice_gtk3_save_file_dialog(title, proposed, TRUE, NULL);
     if (filename != NULL) {
         /* XXX: setting resources doesn't exactly help with catching errors */
         resources_set_string("SoundRecordDeviceArg", filename);
@@ -509,7 +509,7 @@ static void save_video_recording_handler(void)
     title = lib_msprintf("Save %s file", "FFMPEG");
     proposed = create_proposed_video_recording_name(ext);
 
-    filename = ui_save_file_dialog(NULL, title, proposed, TRUE, NULL);
+    filename = vice_gtk3_save_file_dialog(title, proposed, TRUE, NULL);
     if (filename != NULL) {
 
         const char *driver;
@@ -533,7 +533,7 @@ static void save_video_recording_handler(void)
 
         /* TODO: add extension if not present? */
         if (screenshot_save("FFMPEG", filename, ui_get_active_canvas()) < 0) {
-            ui_message_error(NULL, "VICE Error",
+            vice_gtk3_message_error("VICE Error",
                     "Failed to write video file '%s'", filename);
         }
         g_free(filename);
@@ -643,7 +643,7 @@ static GtkWidget *create_screenshot_param_widget(const char *prefix)
     label = gtk_label_new("Oversize handling");
     g_object_set(label, "margin-left", 16, NULL);
     gtk_widget_set_halign(label, GTK_ALIGN_START);
-    oversize_widget = resource_combo_box_int_create_sprintf(
+    oversize_widget = vice_gtk3_resource_combo_box_int_create_sprintf(
             "%sOversizeHandling", oversize_modes, prefix);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
     gtk_grid_attach(GTK_GRID(grid), oversize_widget, 1, 0, 1, 1);
@@ -652,7 +652,7 @@ static GtkWidget *create_screenshot_param_widget(const char *prefix)
     label = gtk_label_new("Undersize handling");
     g_object_set(label, "margin-left", 16, NULL);
     gtk_widget_set_halign(label, GTK_ALIGN_START);
-    undersize_widget = resource_combo_box_int_create_sprintf(
+    undersize_widget = vice_gtk3_resource_combo_box_int_create_sprintf(
             "%sUndersizeHandling", undersize_modes, prefix);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 1, 1, 1);
     gtk_grid_attach(GTK_GRID(grid), undersize_widget, 1, 1, 1, 1);
@@ -666,7 +666,7 @@ static GtkWidget *create_screenshot_param_widget(const char *prefix)
         label = gtk_label_new("Multi color handling");
         g_object_set(label, "margin-left", 16, NULL);
         gtk_widget_set_halign(label, GTK_ALIGN_START);
-        multicolor_widget = resource_combo_box_int_create_sprintf(
+        multicolor_widget = vice_gtk3_resource_combo_box_int_create_sprintf(
                 "%sMultiColorHandling", multicolor_modes, prefix);
         gtk_grid_attach(GTK_GRID(grid), label, 0, row, 1, 1);
         gtk_grid_attach(GTK_GRID(grid), multicolor_widget, 1, row, 1, 1);
@@ -678,7 +678,7 @@ static GtkWidget *create_screenshot_param_widget(const char *prefix)
         label = gtk_label_new("TED luma handling");
         g_object_set(label, "margin-left", 16, NULL);
         gtk_widget_set_halign(label, GTK_ALIGN_START);
-        ted_luma_widget = resource_combo_box_int_create_sprintf(
+        ted_luma_widget = vice_gtk3_resource_combo_box_int_create_sprintf(
                 "%sTEDLumHandling", ted_luma_modes, prefix);
         gtk_grid_attach(GTK_GRID(grid), label, 0, row, 1, 1);
         gtk_grid_attach(GTK_GRID(grid), ted_luma_widget, 1, row, 1, 1);
@@ -691,7 +691,7 @@ static GtkWidget *create_screenshot_param_widget(const char *prefix)
         label = gtk_label_new("CRTC text color");
         g_object_set(label, "margin-left", 16, NULL);
         gtk_widget_set_halign(label, GTK_ALIGN_START);
-        crtc_textcolor_widget = resource_combo_box_int_create_sprintf(
+        crtc_textcolor_widget = vice_gtk3_resource_combo_box_int_create_sprintf(
                 "%sCRTCTextColor", crtc_colors, prefix);
         gtk_grid_attach(GTK_GRID(grid), label, 0, row, 1, 1);
         gtk_grid_attach(GTK_GRID(grid), crtc_textcolor_widget, 1, row, 1, 1);

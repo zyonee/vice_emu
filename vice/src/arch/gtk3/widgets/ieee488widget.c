@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/ieee488widget.c
+/**
  * \brief   IEEE-488 adapter widget
  *
  * Written by
@@ -66,7 +66,7 @@ static void on_enable_toggled(GtkWidget *widget, gpointer data)
 
         if (image == NULL || *image == '\0') {
             /* no image */
-            ui_message_error(widget, "VICE core",
+            vice_gtk3_message_error("VICE core",
                     "Cannot enable IEEE-488 adapter, no image specified.");
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), FALSE);
             state = 0;
@@ -97,7 +97,7 @@ static void on_browse_clicked(GtkWidget *widget, gpointer user_data)
 {
     gchar *filename;
 
-    filename = ui_open_file_dialog(widget, "Open IEEE-488 image", NULL, NULL,
+    filename = vice_gtk3_open_file_dialog("Open IEEE-488 image", NULL, NULL,
             NULL);
     if (filename != NULL) {
         GtkEntry *entry = GTK_ENTRY(user_data);
@@ -107,7 +107,7 @@ static void on_browse_clicked(GtkWidget *widget, gpointer user_data)
          * update of the connected resource (it only responds to focus-out and
          * pressing 'Enter' */
         if (resources_set_string("IEEE488Image", filename) < 0) {
-            ui_message_error(widget, "VICE core",
+            vice_gtk3_message_error("VICE core",
                     "Failed to set '%s' as IEEE-488 EEPROM image.",
                     filename);
         }
@@ -155,7 +155,7 @@ GtkWidget *ieee488_widget_create(GtkWidget *parent)
 
     label = gtk_label_new("IEEE-488 image");
     gtk_widget_set_halign(label, GTK_ALIGN_START);
-    entry = resource_entry_full_create("IEEE488Image");
+    entry = vice_gtk3_resource_entry_full_create("IEEE488Image");
     gtk_widget_set_hexpand(entry, TRUE);
     browse = gtk_button_new_with_label("Browse ...");
     g_signal_connect(browse, "clicked", G_CALLBACK(on_browse_clicked),

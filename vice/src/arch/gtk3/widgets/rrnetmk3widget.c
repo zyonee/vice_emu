@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/rrnetmk3widget.c
+/**
  * \brief   Widget to control RRNet MK3 resourcs
  *
  * Written by
@@ -52,11 +52,11 @@ static void on_save_clicked(GtkWidget *widget, gpointer user_data)
 {
     gchar *filename;
 
-    filename = ui_save_file_dialog(widget, "Save image as", NULL, TRUE, NULL);
+    filename = vice_gtk3_save_file_dialog("Save image as", NULL, TRUE, NULL);
     if (filename != NULL) {
         debug_gtk3("writing RRNetMk3 image file as '%s'\n", filename);
         if (carthelpers_save_func(CARTRIDGE_RRNETMK3, filename) < 0) {
-            ui_message_error(widget, "VICE core",
+            vice_gtk3_message_error("VICE core",
                     "Failed to save RR-Net Mk3 image as '%s;.", filename);
         }
         g_free(filename);
@@ -73,7 +73,7 @@ static void on_flush_clicked(GtkWidget *widget, gpointer user_data)
 {
     debug_gtk3("flushing RRNetMk3 image\n");
     if (carthelpers_flush_func(CARTRIDGE_RRNETMK3) < 0) {
-        ui_message_error(widget, "VICE core",
+        vice_gtk3_message_error("VICE core",
                 "Failed to flush RR-Net Mk3 image.");
     }
 }

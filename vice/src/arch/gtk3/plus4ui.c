@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/plus4ui.c
+/**
  * \brief   Native GTK3 PLUS4 UI
  *
  * Written by
@@ -37,7 +37,7 @@
 #include "ted.h"
 #include "ui.h"
 #include "uimachinewindow.h"
-#include "uisamplersettings.h"
+#include "settings_sampler.h"
 #include "videomodelwidget.h"
 #include "widgethelpers.h"
 
@@ -63,7 +63,7 @@ static const char *plus4_model_list[] = {
  *
  * Used in the TED model widget
  */
-static ui_radiogroup_entry_t plus4_ted_models[] = {
+static const vice_gtk3_radiogroup_entry_t plus4_ted_models[] = {
     { "PAL", MACHINE_SYNC_PAL },
     { "NTSC", MACHINE_SYNC_NTSC },
     { NULL, -1 }
@@ -111,7 +111,7 @@ int plus4ui_init(void)
     video_model_widget_set_resource("MachineVideoStandard");
     video_model_widget_set_models(plus4_ted_models);
 
-    uisamplersettings_set_devices_getter(sampler_get_devices);
+    settings_sampler_set_devices_getter(sampler_get_devices);
 
     INCOMPLETE_IMPLEMENTATION();
     return 0;

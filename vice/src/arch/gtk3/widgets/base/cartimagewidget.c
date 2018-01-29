@@ -1,9 +1,10 @@
-/** \file   src/arch/gtk3/widgets/base/cartimagewidget.c
+/**
  * \brief   Widget to control load/save/flush for cart images
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -62,11 +63,12 @@ static void on_browse_clicked(GtkWidget *button, gpointer user_data)
 
     g_snprintf(buffer, 256, "Open or create %s image file", crt_name);
 
-    filename = ui_open_create_file_dialog(button, buffer, NULL, FALSE, NULL);
+    filename = vice_gtk3_open_create_file_dialog(buffer, NULL, FALSE, NULL);
     if (filename != NULL) {
         GtkWidget *grid = gtk_widget_get_parent(button);
         GtkWidget *entry = gtk_grid_get_child_at(GTK_GRID(grid), 1, 1);
-        gtk_entry_set_text(GTK_ENTRY(entry), filename);
+
+        vice_gtk3_resource_entry_full_update(entry, filename);
         g_free(filename);
     }
 }
@@ -100,20 +102,18 @@ static void on_save_clicked(GtkWidget *button, gpointer user_data)
 #endif
 
     g_snprintf(buffer, 256, "Save %s image file", crt_name);
-    new_filename = ui_save_file_dialog(button,
-            buffer,
-            fname, TRUE, dname);
+    new_filename = vice_gtk3_save_file_dialog(buffer, fname, TRUE, dname);
     if (new_filename != NULL) {
         debug_gtk3("writing %s file image as '%s'\n", crt_name, new_filename);
         /* write file */
         if (save_func != NULL) {
             if (save_func(crt_id, new_filename) < 0) {
                 /* oops */
-                ui_message_error(button, "I/O error",
+                vice_gtk3_message_error("I/O error",
                         "Failed to save '%s'", new_filename);
             }
         } else {
-            ui_message_error(button, "Core error",
+            vice_gtk3_message_error("Core error",
                     "%s save handler not specified", crt_name);
         }
         g_free(new_filename);
@@ -137,10 +137,10 @@ static void on_flush_clicked(GtkWidget *widget, gpointer user_data)
 {
     if (flush_func != NULL) {
         if (flush_func(crt_id) < 0) {
-            ui_message_error(widget, "I/O error", "Failed to flush image");
+            vice_gtk3_message_error("I/O error", "Failed to flush image");
         }
     } else {
-        ui_message_error(widget, "Core error",
+        vice_gtk3_message_error("Core error",
                 "%s flush handler not specified", crt_name);
     }
 }
@@ -188,7 +188,7 @@ GtkWidget *cart_image_widget_create(
     label = gtk_label_new("file name");
     gtk_widget_set_halign(label, GTK_ALIGN_START);
     g_object_set(label, "margin-left", 16, NULL);
-    entry = resource_entry_full_create(resource_fname);
+    entry = vice_gtk3_resource_entry_full_create(resource_fname);
     gtk_widget_set_hexpand(entry, TRUE);
     /* gtk_widget_set_sensitive(entry, FALSE); */
     browse = gtk_button_new_with_label("Browse ...");

@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/superpetwidget.c
+/**
  * \brief   Widget to control various SuperPET related resources
  *
  * Written by
@@ -67,7 +67,7 @@ static int baud_rates[] = { 300, 1200, 2400, 9600, 19200, -1 };
 
 /** \brief  List of CPU types
  */
-static ui_radiogroup_entry_t cpu_types[] = {
+static const vice_gtk3_radiogroup_entry_t cpu_types[] = {
     { "MOS 6502", 0 },
     { "Motorola 6809", 1 },
     { "Programmable", 2 },
@@ -124,7 +124,7 @@ static void on_superpet_rom_browse_clicked(GtkWidget *widget, gpointer user_data
 
     g_snprintf(title, 256, "Select $%cXXX ROM", rom);
 
-    filename = ui_open_file_dialog(widget, title, NULL, NULL, NULL);
+    filename = vice_gtk3_open_file_dialog(title, NULL, NULL, NULL);
     if (filename != NULL) {
         GtkWidget *grid;
         GtkWidget *entry;

@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/c128ui.c
+/** file   src/arch/gtk3/c128ui.c
  * \brief   Native GTK3 C128 UI
  *
  * Written by
@@ -36,7 +36,7 @@
 #include "sampler.h"
 #include "ui.h"
 #include "uimachinewindow.h"
-#include "uisamplersettings.h"
+#include "settings_sampler.h"
 #include "vdc.h"
 #include "vicii.h"
 #include "videomodelwidget.h"
@@ -46,8 +46,6 @@
 #include "clockport.h"
 
 #include "cartridge.h"
-#include "georam.h"
-#include "georamwidget.h"
 #include "reu.h"
 #include "reuwidget.h"
 #include "ramcartwidget.h"
@@ -83,7 +81,7 @@ static const char *c128_model_list[] = {
  *
  * Used in the VIC-II model widget
  */
-static ui_radiogroup_entry_t c128_vicii_models[] = {
+static const vice_gtk3_radiogroup_entry_t c128_vicii_models[] = {
     { "PAL", MACHINE_SYNC_PAL },
     { "NTSC", MACHINE_SYNC_NTSC },
     { NULL, -1 }
@@ -137,7 +135,7 @@ int c128ui_init(void)
     video_model_widget_set_resource("MachineVideoStandard");
     video_model_widget_set_models(c128_vicii_models);
 
-    uisamplersettings_set_devices_getter(sampler_get_devices);
+    settings_sampler_set_devices_getter(sampler_get_devices);
     clockport_device_widget_set_devices((void *)clockport_supported_devices);
 
     /* I/O extension function pointers */

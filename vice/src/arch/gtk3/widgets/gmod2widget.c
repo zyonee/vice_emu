@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/gmod2widget.c
+/**
  * \brief   Widget to control GMod2 resources
  *
  * Written by
@@ -60,12 +60,12 @@ static int (*gmod2_flush_func)(int) = NULL;
 static void on_save_clicked(GtkWidget *widget, gpointer user_data)
 {
     /* TODO: retrieve filename of cart image */
-    gchar *filename = ui_save_file_dialog(widget, "Save Cartridge image",
+    gchar *filename = vice_gtk3_save_file_dialog("Save Cartridge image",
             NULL, TRUE, NULL);
     if (filename != NULL) {
         debug_gtk3("saving GMod2 cart image as '%s'\n", filename);
         if (carthelpers_save_func(CARTRIDGE_GMOD2, filename) < 0) {
-            ui_message_error(widget, "Saving failed",
+            vice_gtk3_message_error("Saving failed",
                     "Failed to save cartridge image '%s'",
                     filename);
         }
@@ -83,7 +83,7 @@ static void on_flush_clicked(GtkWidget *widget, gpointer user_data)
 {
     if (carthelpers_flush_func(CARTRIDGE_GMOD2) < 0) {
         debug_gtk3("Flusing GMod2 cart image\n");
-        ui_message_error(widget, "Flushing failed",
+        vice_gtk3_message_error("Flushing failed",
                     "Failed to fush cartridge image");
     }
 }
@@ -96,14 +96,14 @@ static void on_flush_clicked(GtkWidget *widget, gpointer user_data)
  */
 static void on_eeprom_browse_clicked(GtkWidget *widget, gpointer user_data)
 {
-    gchar *filename = ui_open_file_dialog(widget, "Open EEMPROM image",
+    gchar *filename = vice_gtk3_open_file_dialog("Open EEMPROM image",
                 NULL, NULL, NULL);
 
     if (filename != NULL) {
         debug_gtk3("Loading GMod2 EEPROM image '%s'\n", filename);
         if (resources_set_string("GMOD2EEPROMImage", filename) < 0) {
-            ui_message_error(widget, "Failed to load EEPROM file",
-                    "Failed load EEPROM image file '%s'",
+            vice_gtk3_message_error("Failed to load EEPROM file",
+                    "Failed to load EEPROM image file '%s'",
                     filename);
         } else {
             gtk_entry_set_text(GTK_ENTRY(user_data), filename);
@@ -168,7 +168,7 @@ static GtkWidget *create_eeprom_image_widget(void)
     gtk_widget_set_halign(label, GTK_ALIGN_START);
     g_object_set(label, "margin-left", 16, NULL);
 
-    entry = resource_entry_full_create("GMOD2EEPROMImage");
+    entry = vice_gtk3_resource_entry_full_create("GMOD2EEPROMImage");
     gtk_widget_set_hexpand(entry, TRUE);
 
     browse = gtk_button_new_with_label("Browse ...");

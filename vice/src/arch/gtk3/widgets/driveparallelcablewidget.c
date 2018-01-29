@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/driveparallelcablewidget.c
+/**
  * \brief   Drive parallel cable widget
  *
  * Written by
@@ -46,7 +46,7 @@
 
 /** \brief  List of possible parallel cables for c64
  */
-static ui_combo_entry_int_t parallel_cables_c64[] = {
+static const vice_gtk3_combo_entry_int_t parallel_cables_c64[] = {
     { "None", 0 },
     { "Standard", 1 },
     { "Professional DOS", 2 },
@@ -57,7 +57,7 @@ static ui_combo_entry_int_t parallel_cables_c64[] = {
 
 /** \brief  List of possible parallel cables for Plus4
  */
-static ui_combo_entry_int_t parallel_cables_plus4[] = {
+static const vice_gtk3_combo_entry_int_t parallel_cables_plus4[] = {
     { "None", 0 },
     { "Standard", 1 },
     { NULL, -1 }
@@ -73,7 +73,7 @@ GtkWidget *drive_parallel_cable_widget_create(int unit)
 {
     GtkWidget *grid;
     GtkWidget *combo;
-    ui_combo_entry_int_t *list;
+    const vice_gtk3_combo_entry_int_t *list;
 
     if (machine_class == VICE_MACHINE_PLUS4) {
         list = parallel_cables_plus4;
@@ -85,8 +85,8 @@ GtkWidget *drive_parallel_cable_widget_create(int unit)
     debug_gtk3("setting UnitNumber property to %d\n", unit);
     g_object_set_data(G_OBJECT(grid), "UnitNumber", GINT_TO_POINTER(unit));
 
-    combo = resource_combo_box_int_create_sprintf("Drive%dParallelCable",
-            list, unit);
+    combo = vice_gtk3_resource_combo_box_int_create_sprintf(
+            "Drive%dParallelCable", list, unit);
     gtk_widget_set_hexpand(combo, TRUE);
     g_object_set(combo, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), combo, 0, 1, 1, 1);

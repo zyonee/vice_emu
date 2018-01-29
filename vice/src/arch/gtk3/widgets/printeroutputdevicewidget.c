@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/printeroutputdevicewidget.c
+/**
  * \brief   Widget to control printer output device settings
  *
  * Written by
@@ -46,7 +46,7 @@
 
 /** \brief  List of text output devices
  */
-static ui_radiogroup_entry_t device_list[] = {
+static const vice_gtk3_radiogroup_entry_t device_list[] = {
     { "#1 (file dump)", 0 },
     { "#2 (exec)", 1 },
     { "#3 (exec)", 2 },
@@ -66,8 +66,9 @@ GtkWidget *printer_output_device_widget_create(int device)
     GtkWidget *radio_group;
 
     grid = uihelpers_create_grid_with_label("Output device", 1);
-    radio_group = resource_radiogroup_create_sprintf("Printer%dTextDevice",
-            device_list, GTK_ORIENTATION_VERTICAL, device);
+    radio_group = vice_gtk3_resource_radiogroup_create_sprintf(
+            "Printer%dTextDevice", device_list, GTK_ORIENTATION_VERTICAL,
+            device);
     gtk_grid_attach(GTK_GRID(grid), radio_group, 0, 1, 1, 1);
 
     gtk_widget_show_all(grid);

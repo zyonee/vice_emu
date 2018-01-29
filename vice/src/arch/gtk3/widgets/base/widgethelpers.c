@@ -1,13 +1,19 @@
-/** \file   src/arch/gtk3/widgets/widgethelpers.c
+/**
  * \brief   Helpers for creating Gtk3 widgets
+ *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
  *
  * This file is supposed to contain some helper functions for boiler plate
  * code, such as creating layout widgets, creating lists of radio or check
  * boxes, etc.
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
+ * \todo    turn the margin/padding values into defines and move into a file
+ *          like uidefs.h (partially done, \a see vice_gtk3_settings.h)
  *
+ * \todo    rename/replace functions (partially done)
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -26,11 +32,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  *  02111-1307  USA.
  *
- *  TODO:   turn the margin/padding values into defines and move into a file
- *          like uidefs.h
- *
- *  TODO:   rename functions
- */
+*/
 
 
 #include "vice.h"
@@ -41,6 +43,7 @@
 #include "resources.h"
 #include "vsync.h"
 
+#include "vice_gtk3_settings.h"
 #include "debug_gtk3.h"
 
 #include "widgethelpers.h"
@@ -54,8 +57,10 @@
 /** \brief  Create a GtkGrid with a bold GtkLabel as its first widget
  *
  * This creates a GtkGrid with a left-aligned, bold label, optionally spread
- * over multiple columns. If you don't what pass as the \a columns argument,
- * just pass 1.
+ * over multiple columns. If you don't know what pass as the \a columns
+ * argument, just pass 1.
+ *
+ * \note    Deprecated in favour of vice_gtk3_grid_new_spaced_with_label()
  *
  * \param[in]   text    label text
  * \param[in]   columns number of columns in the grid the label should span
@@ -89,7 +94,6 @@ GtkWidget *uihelpers_create_grid_with_label(const gchar *text, gint columns)
     return grid;
 }
 
-
 /** \brief  Create a GtkGrid with a label radio buttons with text/id pairs
  *
  * \param[in]   label       label text
@@ -105,7 +109,7 @@ GtkWidget *uihelpers_create_grid_with_label(const gchar *text, gint columns)
  */
 GtkWidget *uihelpers_radiogroup_create(
         const gchar *label,
-        ui_radiogroup_entry_t *data,
+        const vice_gtk3_radiogroup_entry_t *data,
         void (*callback)(GtkWidget *, gpointer),
         int active)
 {
@@ -114,6 +118,7 @@ GtkWidget *uihelpers_radiogroup_create(
     GSList *group = NULL;
     size_t i;
 
+    debug_gtk3("DEPRECATED in favour of vice_gtk3_resource_radiogroup!\n");
     grid = uihelpers_create_grid_with_label(label, 1);
 
     last = NULL;
@@ -142,12 +147,17 @@ GtkWidget *uihelpers_radiogroup_create(
 
 /** \brief  Get index of \a value in \a list
  *
+ * Get the index in \a list for \a value. This function is required for custom
+ * radiogroups that add 'unknown' options or something similar.
+ *
  * \param[in]   list    radio button group array
  * \param[in]   value   value to find in \a list
  *
  * \return  index of \a value or -1 when not found
  */
-int uihelpers_radiogroup_get_index(ui_radiogroup_entry_t *list, int value)
+int vice_gtk3_radiogroup_get_list_index(
+        const vice_gtk3_radiogroup_entry_t *list,
+        int value)
 {
     int i;
 
@@ -157,36 +167,6 @@ int uihelpers_radiogroup_get_index(ui_radiogroup_entry_t *list, int value)
         }
     }
     return -1;
-}
-
-
-/** \brief  Create a GtkButtonBox
- *
- * \param[in]   buttons     list of (title, callback) tuples, NULL-terminated
- * \param[in]   orientation orientation of the box (\see GtkOrientation)
- *
- * \return  GtkButtonBox
- */
-GtkWidget *uihelpers_create_button_box(
-        ui_button_t *buttons,
-        GtkOrientation orientation)
-{
-    GtkWidget *box = gtk_button_box_new(orientation);
-    size_t i;
-
-    for (i = 0; buttons[i].text != NULL; i++) {
-        GtkWidget *button = gtk_button_new_with_label(buttons[i].text);
-        if (buttons[i].callback != NULL) {
-            g_signal_connect(button,
-                    "clicked",
-                    G_CALLBACK(buttons[i].callback),
-                    NULL);
-        }
-        gtk_widget_show(button);
-        gtk_container_add(GTK_CONTAINER(box), button);
-    }
-    gtk_widget_show(box);
-    return box;
 }
 
 
@@ -201,7 +181,7 @@ GtkWidget *uihelpers_create_button_box(
  * \param[in[   index   index of the radio button (the actual index of the
  *                      radio button, other widgets are skipped)
  */
-void uihelpers_radiogroup_set_index(GtkWidget *grid, int index)
+void vice_gtk3_radiogroup_set_index(GtkWidget *grid, int index)
 {
     GtkWidget *radio;
     int row = 0;
@@ -229,33 +209,16 @@ void uihelpers_radiogroup_set_index(GtkWidget *grid, int index)
 }
 
 
-
-/** \brief  Create the bold title label of a settings widget's grid
- *
- * \return  label
- */
-GtkWidget *uihelpers_create_grid_label(const char *text)
-{
-    GtkWidget *label;
-    gchar buffer[LABEL_BUFFER_SIZE];
-
-    label = gtk_label_new(NULL);
-    g_snprintf(buffer, LABEL_BUFFER_SIZE, "<b>%s</b>", text);
-    gtk_label_set_markup(GTK_LABEL(label), buffer);
-    gtk_widget_set_halign(label, GTK_ALIGN_START);
-    g_object_set(label, "margin-bottom", 8, NULL);
-    return label;
-}
-
-
-
 /** \brief  Create a left-aligned, 16 units indented label
+ *
+ * XXX: This function is of little use an should probably be removed in favour
+ *      of something a little more flexible.
  *
  * \param[in]   text    label text
  *
  * \return  label
   */
-GtkWidget *uihelpers_create_indented_label(const char *text)
+GtkWidget *vice_gtk3_create_indented_label(const char *text)
 {
     GtkWidget *label = gtk_label_new(text);
 
@@ -265,137 +228,59 @@ GtkWidget *uihelpers_create_indented_label(const char *text)
 }
 
 
-
-/** \brief  Handler for the ui_helpers_create_resource_checkbox() toggled event
+/** \brief  Create a new `GtkGrid`, setting column and row spacing
  *
- * \param[in]   widget      checkbox
- * \param[in]   user_data   resource name
+ * \param[in]   column_spacing  column spacing (< 0 to use default)
+ * \param[in]   row_spacing     row spacing (< 0 to use default)
+ *
+ * \return  new `GtkGrid` instance
  */
-static void resource_callback(GtkWidget *widget, gpointer user_data)
+GtkWidget *vice_gtk3_grid_new_spaced(int column_spacing, int row_spacing)
 {
-    const char *resource = (const char *)user_data;
-    int state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
+    GtkWidget *grid = gtk_grid_new();
 
-    debug_gtk3("setting '%s' to %d\n", resource, state);
-    resources_set_int(resource, state);
+    gtk_grid_set_column_spacing(GTK_GRID(grid),
+            column_spacing < 0 ? VICE_GTK3_GRID_COLUMN_SPACING : column_spacing);
+    gtk_grid_set_row_spacing(GTK_GRID(grid),
+            row_spacing < 0 ? VICE_GTK3_GRID_ROW_SPACING : row_spacing);
+    return grid;
 }
 
 
-/** \brief  Create a checkbox connected to a VICE resource
+/** \brief  Create a new `GtkGrid` with label, setting column and row spacing
  *
- * \param[in]   label       checkbox text
- * \param[in]   resource    name of resource to set/unset
+ * \param[in]   column_spacing  column spacing (< 0 to use default)
+ * \param[in]   row_spacing     row spacing (< 0 to use default)
+ * \param[in]   label           label text
+ * \param[in]   span            number of columns for the \a label to span
  *
- * \return  checkbox
+ * \return  new `GtkGrid` instance
  */
-GtkWidget *uihelpers_create_resource_checkbox(const char *label,
-                                              const char *resource)
+GtkWidget *vice_gtk3_grid_new_spaced_with_label(int column_spacing,
+                                                int row_spacing,
+                                                const char *label,
+                                                int span)
 {
-    GtkWidget *check;
-    int state;
+    GtkWidget *grid = vice_gtk3_grid_new_spaced(column_spacing, row_spacing);
+    GtkWidget *lbl = gtk_label_new(NULL);
+    char *temp;
 
-    check =  gtk_check_button_new_with_label(label);
-    resources_get_int(resource, &state);
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check), state);
-
-    g_signal_connect(check, "toggled", G_CALLBACK(resource_callback),
-            (gpointer)(resource));
-
-    return check;
-}
-
-
-/** \brief  Set drive \a unit resource from \a widget
- *
- * \param[in]   widget      check button
- * \param[in]   fmt         printf-like format string
- * \param[in]   unit        unit number (8-11)
- */
-void uihelpers_set_drive_resource_from_check_button(
-        GtkWidget *widget,
-        const char *fmt,
-        int unit)
-{
-    char buffer[256];
-    int state;
-
-    g_snprintf(buffer, 256, fmt, unit);
-    state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-    debug_gtk3("setting %s to %s\n", buffer, state ? "ON" : "OFF");
-    resources_set_int(buffer, state);
-}
-
-
-/** \brief  Get drive \a unit resource from \a widget
- *
- * \param[in]   widget      check button
- * \param[in]   fmt         printf-like format string
- * \param[in]   unit        unit number (8-11)
- */
-int uihelpers_get_drive_resource_from_check_button(
-        GtkWidget *widget,
-        const char *fmt,
-        int unit)
-{
-    char buffer[256];
-    int state;
-
-    g_snprintf(buffer, 256, fmt, unit);
-    resources_get_int(buffer, &state);
-    debug_gtk3("getting %s -> %s\n", buffer, state ? "ON" : "OFF");
-    return state;
-}
-
-
-
-static void on_int_combo_changed(GtkComboBoxText *combo, char *resource)
-{
-    long value;
-    gchar *text;
-    char *endptr;
-
-    text = gtk_combo_box_text_get_active_text(combo);
-    value = strtol(text, &endptr, 0);
-    if (*endptr == '\0') {
-        debug_gtk3("setting %s to %ld\n", resource, value);
-        resources_set_int(resource, (int)value);
-    }
-}
-
-
-/** \brief  Create a combo box with integers in \a list for \a resource
- *
- * \param[in]   list        list of values, terminated with -1
- * \param[in]   resource    resource name
- *
- * \note    The strtol(3) call in the event handler can probably be avoided by
- *          using a proper GtkComboBox with a GtkListStore
- *
- * \return  GtkComboBoxText
- */
-GtkWidget *uihelpers_create_int_combo_box(const int *list, const char *resource)
-{
-    GtkWidget *combo;
-    int value;
-    int i;
-
-    resources_get_int(resource, &value);
-    debug_gtk3("got %d for %s\n", value, resource);
-
-    combo = gtk_combo_box_text_new();
-    for (i = 0; list[i] >= 0; i++) {
-        gchar buffer[64];
-
-        g_snprintf(buffer, 64, "%d", list[i]);
-        gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(combo), NULL, buffer);
-        if (list[i] == value) {
-            gtk_combo_box_set_active(GTK_COMBO_BOX(combo), i);
-        }
+    if (span <= 0) {
+        span = 1;
     }
 
-    g_signal_connect(combo, "changed", G_CALLBACK(on_int_combo_changed),
-            (gpointer)resource);
+    /* create left-indented bold label */
+    temp = lib_msprintf("<b>%s</b>", label);
+    gtk_label_set_markup(GTK_LABEL(lbl), temp);
+    gtk_widget_set_halign(lbl, GTK_ALIGN_START);
+    /* g_object_set(lbl, "margin-bottom", 8, NULL); */
+    lib_free(temp);
 
-    gtk_widget_show(combo);
-    return combo;
+    /* attach label */
+    gtk_grid_attach(GTK_GRID(grid), lbl, 0, 0, span, 1);
+    gtk_widget_show(grid);
+    return grid;
 }
+
+
+

@@ -1,9 +1,10 @@
-/** \file   src/arch/gtk3/widgets/base/resourcecheckbutton.c
+/**
  * \brief   Check button connected to a resource
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -31,6 +32,7 @@
 
 #include "debug_gtk3.h"
 #include "lib.h"
+#include "log.h"
 #include "resources.h"
 #include "resourcehelpers.h"
 
@@ -65,7 +67,7 @@ static void on_check_button_toggled(GtkWidget *check, gpointer user_data)
     state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(check));
     if (resources_get_int(resource, &current) < 0) {
         /* invalid resource, exit */
-        debug_gtk3("warning: invalid resource '%s'\n", resource);
+        log_error(LOG_ERR, "invalid resource name'%s'\n", resource);
         return;
     }
 
@@ -74,14 +76,14 @@ static void on_check_button_toggled(GtkWidget *check, gpointer user_data)
     if (state != current) {
         debug_gtk3("setting %s to %s\n", resource, state ? "True": "False");
         if (resources_set_int(resource, state ? 1 : 0) < 0) {
-            debug_gtk3("setting %s to %s failed\n", resource, state ? "True": "False");
-            /* get current resource value */
-            if (resources_get_int(resource, &current) < 0) {
-                /* invalid resource, set state to off */
-                debug_gtk3("warning: invalid resource '%s'\n", resource);
-                current = 0;
-            }
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check), current ? TRUE : FALSE);
+            log_error(LOG_ERR,
+                    "setting %s to %s failed\n",
+                    resource, state ? "True": "False");
+            /* get current resource value (validity of the name has been
+             * checked already */
+            resources_get_int(resource, &current);
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check),
+                    current ? TRUE : FALSE);
         }
     }
 }
@@ -106,7 +108,7 @@ static GtkWidget *resource_check_button_create_helper(GtkWidget *check)
     resource = resource_widget_get_resource_name(check);
     if (resources_get_int(resource, &state) < 0) {
         /* invalid resource, set state to off */
-        debug_gtk3("warning: invalid resource '%s'\n", resource);
+        log_error(LOG_ERR, "invalid resource name '%s'\n", resource);
         state = 0;
     }
 

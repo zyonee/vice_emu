@@ -1,9 +1,10 @@
-/** \file   src/arch/gtk3/widgets/base/resourcecombobox.h
+/**
  * \brief   Combo box connected to a resource - header
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -31,37 +32,43 @@
 #include <gtk/gtk.h>
 #include "basewidget_types.h"
 
-GtkWidget * resource_combo_box_int_create(const char *resource,
-                                          const ui_combo_entry_int_t *entries);
+GtkWidget *vice_gtk3_resource_combo_box_int_create(
+        const char *resource,
+        const vice_gtk3_combo_entry_int_t *entries);
 
-GtkWidget *resource_combo_box_int_create_sprintf(
+GtkWidget *vice_gtk3_resource_combo_box_int_create_sprintf(
         const char *fmt,
-        const ui_combo_entry_int_t *entries,
+        const vice_gtk3_combo_entry_int_t *entries,
         ...);
 
-GtkWidget * resource_combo_box_int_create_with_label(const char *resource,
-                                                     const ui_combo_entry_int_t *entries,
-                                                     const char *label);
+GtkWidget *vice_gtk3_resource_combo_box_int_create_with_label(
+        const char *resource,
+        const vice_gtk3_combo_entry_int_t *entries,
+        const char *label);
 
-void        resource_combo_box_int_update(GtkWidget *widget, int id);
+void vice_gtk3_resource_combo_box_int_update(GtkWidget *widget, int id);
 
-void        resource_combo_box_int_reset(GtkWidget *widget);
+void vice_gtk3_resource_combo_box_int_reset(GtkWidget *widget);
 
-GtkWidget * resource_combo_box_str_create(const char *resource,
-                                          const ui_combo_entry_str_t *entries);
 
-GtkWidget *resource_combo_box_str_create_sprintf(
+
+GtkWidget *vice_gtk3_resource_combo_box_str_create(
+        const char *resource,
+        const vice_gtk3_combo_entry_str_t *entries);
+
+GtkWidget *vice_gtk3_resource_combo_box_str_create_sprintf(
         const char *fmt,
-        const ui_combo_entry_str_t *entries,
+        const vice_gtk3_combo_entry_str_t *entries,
         ...);
 
 
-GtkWidget * resource_combo_box_str_create_with_label(const char *resource,
-                                                     const ui_combo_entry_str_t *entries,
-                                                     const char *label);
+GtkWidget *vice_gtk3_resource_combo_box_str_create_with_label(
+        const char *resource,
+        const vice_gtk3_combo_entry_str_t *entries,
+        const char *label);
 
-void        resource_combo_box_str_update(GtkWidget *widget, const char *id);
+void vice_gtk3_resource_combo_box_str_update(GtkWidget *widget, const char *id);
 
-void        resource_combo_box_str_reset(GtkWidget *widget);
+void vice_gtk3_resource_combo_box_str_reset(GtkWidget *widget);
 
 #endif

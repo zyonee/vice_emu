@@ -1,11 +1,10 @@
-/** \file   src/arch/gtk3/widgets/savefiledialog.c
- * \brief   Wrapper around the GtkFileChooser dialog for simple cases
+/**
+ * \brief   GtkFileChooser wrapper to save/create a file
  *
- * savefiledialog.c - GTK3 save file dialog
- *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -38,7 +37,6 @@
 
 /** \brief  Create a 'save file' dialog
  *
- * \param[in]   widget      parent widget
  * \param[in]   title       dialog title
  * \param[in]   proposed    proposed file name (optional)
  * \param[in]   confirm     confirm overwriting an existing file
@@ -49,8 +47,7 @@
  * \note    the filename returned is allocated by GLib and needs to be freed
  *          after use with g_free()
  */
-gchar *ui_save_file_dialog(
-        GtkWidget *widget,
+gchar *vice_gtk3_save_file_dialog(
         const char *title,
         const char *proposed,
         gboolean confirm,

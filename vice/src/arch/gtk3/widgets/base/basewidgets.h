@@ -1,9 +1,10 @@
-/** \file   src/arch/gtk3/widgets/base/basewidgets.h
+/**
  * \brief   Header file for the base widgets
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -30,6 +31,7 @@
 #include "vice.h"
 #include <gtk/gtk.h>
 
+#include "vice_gtk3_settings.h"
 #include "basewidget_types.h"
 
 #include "cartimagewidget.h"
@@ -41,5 +43,6 @@
 #include "resourceradiogroup.h"
 #include "resourcescale.h"
 #include "resourcespinbutton.h"
+#include "resourcebrowser.h"
 
 #endif

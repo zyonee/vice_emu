@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/c64ui.c
+/**
  * \brief   Native GTK3 C64 UI
  *
  * Written by
@@ -35,7 +35,7 @@
 #include "sampler.h"
 #include "ui.h"
 #include "uimachinewindow.h"
-#include "uisamplersettings.h"
+#include "settings_sampler.h"
 #include "vicii.h"
 #include "videomodelwidget.h"
 #include "widgethelpers.h"
@@ -43,8 +43,6 @@
 #include "clockportdevicewidget.h"
 #include "clockport.h"
 
-#include "georam.h"
-#include "georamwidget.h"
 #include "reu.h"
 #include "reuwidget.h"
 #include "cartridge.h"
@@ -83,7 +81,7 @@ static const char *c64_model_list[] = {
  *
  * Used in the VIC-II model widget
  */
-static ui_radiogroup_entry_t c64_vicii_models[] = {
+static const vice_gtk3_radiogroup_entry_t c64_vicii_models[] = {
     { "PAL",        VICII_MODEL_PALG },
     { "Old PAL",    VICII_MODEL_PALG_OLD },
     { "NTSC",       VICII_MODEL_NTSCM },
@@ -134,7 +132,7 @@ int c64ui_init(void)
     video_model_widget_set_resource("MachineVideoStandard");
     video_model_widget_set_models(c64_vicii_models);
 
-    uisamplersettings_set_devices_getter(sampler_get_devices);
+    settings_sampler_set_devices_getter(sampler_get_devices);
 
     /* work around VSID again */
     clockport_device_widget_set_devices((void *)clockport_supported_devices);

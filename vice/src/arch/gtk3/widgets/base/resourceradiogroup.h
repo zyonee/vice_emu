@@ -1,9 +1,10 @@
-/** \file   src/arch/gtk3/widgets/base/resourceradiogroup.h
+/**
  * \brief   Group of radio buttons controlling a resource - header
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -31,21 +32,23 @@
 #include <gtk/gtk.h>
 #include "basewidget_types.h"
 
-GtkWidget * resource_radiogroup_create(const char *resource,
-                                       const ui_radiogroup_entry_t *entries,
-                                       GtkOrientation orientation);
+GtkWidget *vice_gtk3_resource_radiogroup_create(
+        const char *resource,
+        const vice_gtk3_radiogroup_entry_t *entries,
+        GtkOrientation orientation);
 
-GtkWidget *resource_radiogroup_create_sprintf(
+GtkWidget *vice_gtk3_resource_radiogroup_create_sprintf(
         const char *fmt,
-        const ui_radiogroup_entry_t *entries,
+        const vice_gtk3_radiogroup_entry_t *entries,
         GtkOrientation orientation,
         ...);
 
-void        resource_radiogroup_update(GtkWidget *widget, int id);
+void vice_gtk3_resource_radiogroup_update(GtkWidget *widget, int id);
 
-void        resource_radiogroup_reset(GtkWidget *widget);
+void vice_gtk3_resource_radiogroup_reset(GtkWidget *widget);
 
-void        resource_radiogroup_add_callback(GtkWidget *widget,
-                                             void (*callback)(GtkWidget*, int));
+void vice_gtk3_resource_radiogroup_add_callback(
+        GtkWidget *widget,
+        void (*callback)(GtkWidget*, int));
 
 #endif

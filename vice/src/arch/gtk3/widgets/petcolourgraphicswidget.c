@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/petcolourgraphicswidget.c
+/**
  * \brief   PET Colour Graphics widget
  *
  * Written by
@@ -43,7 +43,7 @@
 
 /** \brief  List of PET Colour types
  */
-static ui_radiogroup_entry_t colour_types[] = {
+static const vice_gtk3_radiogroup_entry_t colour_types[] = {
     { "Off", PET_COLOUR_TYPE_OFF },
     { "RGBI", PET_COLOUR_TYPE_RGBI },
     { "Analog", PET_COLOUR_TYPE_ANALOG },
@@ -71,7 +71,7 @@ GtkWidget *pet_colour_graphics_widget_create(GtkWidget *parent)
     /* PET Colour type */
     label = gtk_label_new("PET Colour type");
     gtk_widget_set_halign(label, GTK_ALIGN_START);
-    group = resource_radiogroup_create("PETColour", colour_types,
+    group = vice_gtk3_resource_radiogroup_create("PETColour", colour_types,
             GTK_ORIENTATION_HORIZONTAL);
     gtk_grid_set_column_spacing(GTK_GRID(group), 16);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
@@ -81,7 +81,7 @@ GtkWidget *pet_colour_graphics_widget_create(GtkWidget *parent)
     /* PET Colour background */
     label = gtk_label_new("PET Colour background");
     gtk_widget_set_halign(label, GTK_ALIGN_START);
-    spin = resource_spin_button_int_create("PETColourBG", 0, 255, 1);
+    spin = vice_gtk3_resource_spin_button_int_create("PETColourBG", 0, 255, 1);
     gtk_widget_set_hexpand(spin, FALSE);    /* still too wide */
     gtk_grid_attach(GTK_GRID(grid), label, 0, 1, 1, 1);
     gtk_grid_attach(GTK_GRID(grid), spin, 1, 1, 1, 1);

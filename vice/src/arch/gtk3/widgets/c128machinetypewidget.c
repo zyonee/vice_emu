@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/c128machinettypewidget.c
+/**
  * \brief   C128 machine type widget
  *
  * Written by
@@ -41,7 +41,7 @@
 
 /** \brief  List of C128 machine types
  */
-static ui_radiogroup_entry_t machine_types[] = {
+static const vice_gtk3_radiogroup_entry_t machine_types[] = {
     { "International",  C128_MACHINE_INT },
     /* any of these cause a KERNAL corrupted message from c128mem */
     { "Finish",         C128_MACHINE_FINNISH },
@@ -65,8 +65,8 @@ GtkWidget * c128_machine_type_widget_create(void)
     GtkWidget *radio_group;
 
     grid = uihelpers_create_grid_with_label("Machine type", 1);
-    radio_group = resource_radiogroup_create("MachineType", machine_types,
-            GTK_ORIENTATION_VERTICAL);
+    radio_group = vice_gtk3_resource_radiogroup_create(
+            "MachineType", machine_types, GTK_ORIENTATION_VERTICAL);
     g_object_set(radio_group, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), radio_group, 0, 1, 1, 1);
     gtk_widget_show_all(grid);

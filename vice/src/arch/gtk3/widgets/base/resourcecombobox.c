@@ -1,9 +1,10 @@
-/** \file   src/arch/gtk3/widgets/base/resourcecombobox.c
+/**
  * \brief   Combo boxes connected to a resource
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -35,6 +36,7 @@
 #include "basewidget_types.h"
 #include "debug_gtk3.h"
 #include "lib.h"
+#include "log.h"
 #include "resourcehelpers.h"
 #include "resources.h"
 
@@ -51,7 +53,7 @@
  *
  * \return  model
  */
-static GtkListStore *create_combo_int_model(const ui_combo_entry_int_t *list)
+static GtkListStore *create_combo_int_model(const vice_gtk3_combo_entry_int_t *list)
 {
     GtkListStore *model;
     GtkTreeIter iter;
@@ -156,10 +158,11 @@ static void on_combo_int_changed(GtkComboBox *combo, gpointer user_data)
     if (get_combo_int_id(combo, &id)) {
         debug_gtk3("setting %s to %d\n", resource, id);
         if (resources_set_int(resource, id) < 0) {
-            debug_gtk3("failed to set resource\n");
+            log_error(LOG_ERR, "failed to set resource '%s' to %d\n",
+                    resource, id);
         }
     } else {
-        debug_gtk3("failed to get ID for resource %s\n", resource);
+        log_error(LOG_ERR, "failed to get ID for resource '%s'\n", resource);
     }
 }
 
@@ -173,7 +176,7 @@ static void on_combo_int_changed(GtkComboBox *combo, gpointer user_data)
  */
 static GtkWidget *resource_combo_box_int_create_helper(
         GtkWidget *combo,
-        const ui_combo_entry_int_t *entries)
+        const vice_gtk3_combo_entry_int_t *entries)
 {
     GtkListStore *model;
     GtkCellRenderer *renderer;
@@ -192,12 +195,15 @@ static GtkWidget *resource_combo_box_int_create_helper(
     resource = resource_widget_get_resource_name(combo);
     if (resources_get_int(resource, &current) < 0) {
         /* couldn't read resource */
-        debug_gtk3("failed to get value for resource %s, "
-                "reverting to the first entry\n", resource);
+        log_error(LOG_ERR,
+                "failed to get value for resource %s, "
+                "reverting to the first entry\n",
+                resource);
         gtk_combo_box_set_active(GTK_COMBO_BOX(combo), 0);
     } else if (!set_combo_int_id(GTK_COMBO_BOX(combo), current)) {
         /* failed to set ID, revert to first entry */
-        debug_gtk3("failed to set ID to %d, reverting to the first entry\n",
+        log_error(LOG_ERR,
+                "failed to set ID to %d, reverting to the first entry\n",
                 current);
         gtk_combo_box_set_active(GTK_COMBO_BOX(combo), 0);
     }
@@ -218,8 +224,8 @@ static GtkWidget *resource_combo_box_int_create_helper(
  *
  * \return  GtkComboBoxText
  */
-GtkWidget *resource_combo_box_int_create(const char *resource,
-                                         const ui_combo_entry_int_t *entries)
+GtkWidget *vice_gtk3_resource_combo_box_int_create(const char *resource,
+                                         const vice_gtk3_combo_entry_int_t *entries)
 {
     GtkWidget * combo = gtk_combo_box_new();
 
@@ -239,9 +245,9 @@ GtkWidget *resource_combo_box_int_create(const char *resource,
  *
  * \return  GtkComboBoxText
  */
-GtkWidget *resource_combo_box_int_create_sprintf(
+GtkWidget *vice_gtk3_resource_combo_box_int_create_sprintf(
         const char *fmt,
-        const ui_combo_entry_int_t *entries,
+        const vice_gtk3_combo_entry_int_t *entries,
         ...)
 {
     GtkWidget *combo;
@@ -268,9 +274,9 @@ GtkWidget *resource_combo_box_int_create_sprintf(
  *
  * \return  GtkGrid
  */
-GtkWidget *resource_combo_box_int_create_with_label(
+GtkWidget *vice_gtk3_resource_combo_box_int_create_with_label(
         const char *resource,
-        const ui_combo_entry_int_t *entries,
+        const vice_gtk3_combo_entry_int_t *entries,
         const char *label)
 {
     GtkWidget *grid;
@@ -284,7 +290,7 @@ GtkWidget *resource_combo_box_int_create_with_label(
     gtk_widget_set_halign(lbl, GTK_ALIGN_START);
     gtk_grid_attach(GTK_GRID(grid), lbl, 0, 0, 1, 1);
 
-    combo = resource_combo_box_int_create(resource, entries);
+    combo = vice_gtk3_resource_combo_box_int_create(resource, entries);
     gtk_grid_attach(GTK_GRID(grid), combo, 1, 0, 1, 1);
 
     gtk_widget_show_all(grid);
@@ -301,7 +307,7 @@ GtkWidget *resource_combo_box_int_create_with_label(
  * \param[in,out]   combo   combo box
  * \param[in]       id      new ID of the combo box
  */
-void resource_combo_box_int_update(GtkWidget *widget, int id)
+void vice_gtk3_resource_combo_box_int_update(GtkWidget *widget, int id)
 {
     GtkWidget *combo;
 
@@ -321,7 +327,7 @@ void resource_combo_box_int_update(GtkWidget *widget, int id)
  *
  * \param[in,out]   widget  integer combo box
  */
-void resource_combo_box_int_reset(GtkWidget *widget)
+void vice_gtk3_resource_combo_box_int_reset(GtkWidget *widget)
 {
     const char *resource;
     int value;
@@ -329,7 +335,7 @@ void resource_combo_box_int_reset(GtkWidget *widget)
     resource = resource_widget_get_resource_name(widget);
     resources_get_default_value(resource, &value);
     debug_gtk3("resetting %s to factory value %d\n", resource, value);
-    resource_combo_box_int_update(widget, value);
+    vice_gtk3_resource_combo_box_int_update(widget, value);
 }
 
 
@@ -378,7 +384,7 @@ static void on_combo_str_changed(GtkWidget *combo, gpointer user_data)
  */
 static GtkWidget *resource_combo_box_str_create_helper(
         GtkWidget *combo,
-        const ui_combo_entry_str_t *entries)
+        const vice_gtk3_combo_entry_str_t *entries)
 {
     int index;
     const char *current;
@@ -425,8 +431,8 @@ static GtkWidget *resource_combo_box_str_create_helper(
  *
  * \return  GtkComboBoxText
  */
-GtkWidget *resource_combo_box_str_create(const char *resource,
-                                         const ui_combo_entry_str_t *entries)
+GtkWidget *vice_gtk3_resource_combo_box_str_create(const char *resource,
+                                         const vice_gtk3_combo_entry_str_t *entries)
 {
     GtkWidget *combo;
 
@@ -446,9 +452,9 @@ GtkWidget *resource_combo_box_str_create(const char *resource,
  *
  * \return  GtkComboBoxText
  */
-GtkWidget *resource_combo_box_str_create_sprintf(
+GtkWidget *vice_gtk3_resource_combo_box_str_create_sprintf(
         const char *fmt,
-        const ui_combo_entry_str_t *entries,
+        const vice_gtk3_combo_entry_str_t *entries,
         ...)
 {
     GtkWidget *combo;
@@ -474,9 +480,9 @@ GtkWidget *resource_combo_box_str_create_sprintf(
  *
  * \return  GtkGrid
  */
-GtkWidget *resource_combo_box_str_create_with_label(
+GtkWidget *vice_gtk3_resource_combo_box_str_create_with_label(
         const char *resource,
-        const ui_combo_entry_str_t *entries,
+        const vice_gtk3_combo_entry_str_t *entries,
         const char *label)
 {
     GtkWidget *grid;
@@ -490,7 +496,7 @@ GtkWidget *resource_combo_box_str_create_with_label(
     gtk_widget_set_halign(lbl, GTK_ALIGN_START);
     gtk_grid_attach(GTK_GRID(grid), lbl, 0, 0, 1, 1);
 
-    combo = resource_combo_box_str_create(resource, entries);
+    combo = vice_gtk3_resource_combo_box_str_create(resource, entries);
     gtk_grid_attach(GTK_GRID(grid), combo, 1, 0, 1, 1);
 
     gtk_widget_show_all(grid);
@@ -505,7 +511,7 @@ GtkWidget *resource_combo_box_str_create_with_label(
  * \param[in,out]   combo   combo box
  * \param[in]       id      new ID of the combo box
  */
-void resource_combo_box_str_update(GtkWidget *widget, const char *id)
+void vice_gtk3_resource_combo_box_str_update(GtkWidget *widget, const char *id)
 {
     GtkWidget *combo;
 
@@ -522,7 +528,7 @@ void resource_combo_box_str_update(GtkWidget *widget, const char *id)
  *
  * \param[in,out]   widget  string combo box
  */
-void resource_combo_box_str_reset(GtkWidget *widget)
+void vice_gtk3_resource_combo_box_str_reset(GtkWidget *widget)
 {
     const char *resource;
     const char *value;
@@ -530,5 +536,5 @@ void resource_combo_box_str_reset(GtkWidget *widget)
     resource = resource_widget_get_resource_name(widget);
     resources_get_default_value(resource, &value);
     debug_gtk3("resetting %s to factory value '%s'\n", resource, value);
-    resource_combo_box_str_update(widget, value);
+    vice_gtk3_resource_combo_box_str_update(widget, value);
 }

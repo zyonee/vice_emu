@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/sfxsoundexpanderwidget.c
+/**
  * \brief   SFX Sound Expander widget
  *
  * Written by
@@ -47,7 +47,7 @@
 
 /** \brief  List of YM chip models
  */
-static ui_radiogroup_entry_t chip_models[] = {
+static const vice_gtk3_radiogroup_entry_t chip_models[] = {
     { "3526", 3526 },
     { "3812", 3812 },
     { NULL, -1 }
@@ -96,7 +96,7 @@ static GtkWidget *create_sfx_chip_widget(void)
     gtk_widget_set_halign(label, GTK_ALIGN_START);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
 
-    chip_group = resource_radiogroup_create("SFXSoundExpanderChip",
+    chip_group = vice_gtk3_resource_radiogroup_create("SFXSoundExpanderChip",
             chip_models, GTK_ORIENTATION_HORIZONTAL);
     gtk_grid_attach(GTK_GRID(grid), chip_group, 1, 0, 1, 1);
 

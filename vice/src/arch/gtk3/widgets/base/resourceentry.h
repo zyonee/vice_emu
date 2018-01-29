@@ -1,9 +1,10 @@
-/** \file   src/arch/gtk3/widgets/resourceentry.c
+/**
  * \brief   Text entry connected to a resource - header
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -30,11 +31,13 @@
 #include "vice.h"
 #include <gtk/gtk.h>
 
-GtkWidget * resource_entry_create(const char *resource);
-void        resource_entry_update(GtkWidget *entry, const char *value);
-void        resource_entry_reset(GtkWidget *entry);
+GtkWidget * vice_gtk3_resource_entry_create(const char *resource);
+void        vice_gtk3_resource_entry_update(GtkWidget *entry,
+                                            const char *new);
+void        vice_gtk3_resource_entry_reset(GtkWidget *entry);
 
-GtkWidget * resource_entry_full_create(const char *resource);
-void        resource_entry_full_update(GtkWidget *entry, const char *new);
-void        resource_entry_full_reset(GtkWidget *entry);
+GtkWidget * vice_gtk3_resource_entry_full_create(const char *resource);
+gboolean    vice_gtk3_resource_entry_full_update(GtkWidget *entry,
+                                                 const char *new);
+void        vice_gtk3_resource_entry_full_reset(GtkWidget *entry);
 #endif

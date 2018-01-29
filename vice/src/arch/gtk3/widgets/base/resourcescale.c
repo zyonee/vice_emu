@@ -1,9 +1,10 @@
-/** \file   src/arch/gtk3/widgets/base/resourcescale.c
+/**
  * \brief   Scale to control an integer resource
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -32,6 +33,7 @@
 #include "basewidget_types.h"
 #include "debug_gtk3.h"
 #include "lib.h"
+#include "log.h"
 #include "resources.h"
 #include "resourcehelpers.h"
 
@@ -65,7 +67,11 @@ static void on_scale_int_changed(GtkWidget *scale, gpointer user_data)
     int new_val;
 
     resource = resource_widget_get_resource_name(scale);
-    resources_get_int(resource, &old_val);
+    if (resources_get_int(resource, &old_val) < 0) {
+        log_error(LOG_ERR, "failed to get value for resource '%s'\n",
+                resource);
+        return;
+    }
     new_val = (int)gtk_range_get_value(GTK_RANGE(scale));
     /* only update resource when required */
     if (old_val != new_val) {
@@ -95,7 +101,11 @@ static GtkWidget *resource_scale_int_create_helper(GtkWidget *scale)
     gtk_scale_set_digits(GTK_SCALE(scale), 0);
 
     /* set current value */
-    resources_get_int(resource, &value);
+    if (resources_get_int(resource, &value) < 0) {
+        log_error(LOG_ERR, "failed to get value for resource '%s'\n",
+                resource);
+        value = 0;
+    }
     gtk_range_set_value(GTK_RANGE(scale), (gdouble)value);
 
     g_signal_connect(scale, "value-changed", G_CALLBACK(on_scale_int_changed),
@@ -116,9 +126,10 @@ static GtkWidget *resource_scale_int_create_helper(GtkWidget *scale)
  *
  * \return  GtkScale
  */
-GtkWidget *resource_scale_int_create(const char *resource,
-                                     GtkOrientation orientation,
-                                     int low, int high, int step)
+GtkWidget *vice_gtk3_resource_scale_int_create(
+        const char *resource,
+        GtkOrientation orientation,
+        int low, int high, int step)
 {
     GtkWidget *scale;
 
@@ -141,7 +152,7 @@ GtkWidget *resource_scale_int_create(const char *resource,
  *
  * \return  GtkScale
  */
-GtkWidget *resource_scale_int_create_sprintf(const char *fmt,
+GtkWidget *vice_gtk3_resource_scale_int_create_sprintf(const char *fmt,
                                              GtkOrientation orientation,
                                              int low, int high, int step,
                                              ...)
@@ -168,7 +179,7 @@ GtkWidget *resource_scale_int_create_sprintf(const char *fmt,
  * \param[in,out]   scale   integer scale widget
  * \param[in]       step    distance between marks
  */
-void resource_scale_int_set_marks(GtkWidget *scale, int step)
+void vice_gtk3_resource_scale_int_set_marks(GtkWidget *scale, int step)
 {
     GtkAdjustment *adj;
     int lower;
@@ -190,7 +201,7 @@ void resource_scale_int_set_marks(GtkWidget *scale, int step)
  * \param[in,out]   scale   integer scale widget
  * \param[in]       value   new value for \a scale
  */
-void resource_scale_int_update(GtkWidget *scale, int value)
+void vice_gtk3_resource_scale_int_update(GtkWidget *scale, int value)
 {
     gtk_range_set_value(GTK_RANGE(scale), (gdouble)value);
 }
@@ -203,7 +214,7 @@ void resource_scale_int_update(GtkWidget *scale, int value)
  *
  * \param[in,out]   scale   integer scale widget
  */
-void resource_scale_int_reset(GtkWidget *scale)
+void vice_gtk3_resource_scale_int_reset(GtkWidget *scale)
 {
     const char *resource;
     int value;
@@ -211,5 +222,5 @@ void resource_scale_int_reset(GtkWidget *scale)
     resource = resource_widget_get_resource_name(scale);
     resources_get_default_value(resource, &value);
     debug_gtk3("resetting %s to factory value %d\n", resource, value);
-    resource_scale_int_update(scale, value);
+    vice_gtk3_resource_scale_int_update(scale, value);
 }

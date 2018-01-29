@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/midiwidget.c
+/**
  * \brief   MIDI emulation settings widget
  *
  * Written by
@@ -7,10 +7,13 @@
  * Controls the following resource(s):
  *  MIDIEnable (x64/x64sc/xscpu64/x128/xvic)
  *  MIDIMode (x64/x64sc/xscpu64/x128/xvic)
- *  MIDIDriver (x64/x64sc/xscpu64/x128/xvic)
+ *  MIDIDriver (x64/x64sc/xscpu64/x128/xvic) - Unix only
  *  MIDIInDev (x64/x64sc/xscpu64/x128/xvic)
  *  MIDIOutDev (x64/x64sc/xscpu64/x128/xvic)
- *
+ *  MIDIName (x64/x64sc/xscpu64/x128/xvic) - OSX only
+ *  MIDIInName (x64/x64sc/xscpu64/x128/xvic) - OSX only
+ *  MIDIOutName (x64/x64sc/xscpu64/x128/xvic) - OSX only
+
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -47,17 +50,20 @@
 
 static GtkWidget *midi_enable;
 static GtkWidget *midi_mode;
-#if defined(UNIX_COMPILE) && !defined(MACOSX_SUPPORT)
-static GtkWidget *midi_driver;
-#endif
 static GtkWidget *midi_in_entry;
-static GtkWidget *midi_in_browse;
 static GtkWidget *midi_out_entry;
+#ifdef UNIX_COMPILE
+#ifdef MACOSX_SUPPORT
+static GtkWidget *midi_name_entry;
+#else
+static GtkWidget *midi_driver;
+static GtkWidget *midi_in_browse;
 static GtkWidget *midi_out_browse;
+#endif
+#endif
 
 
-
-static ui_combo_entry_int_t midi_modes[] = {
+static const vice_gtk3_combo_entry_int_t midi_modes[] = {
     { "Sequential", 0 },
     { "Passport/Syntech", 1 },
     { "DATEL/Siel/JMS", 2 },
@@ -67,7 +73,7 @@ static ui_combo_entry_int_t midi_modes[] = {
 };
 
 #if defined(UNIX_COMPILE) && !defined(MACOSX_SUPPORT)
-static ui_combo_entry_int_t midi_drivers[]= {
+static const vice_gtk3_combo_entry_int_t midi_drivers[]= {
     { "OSS", 0 },
     { "ALSA", 1 },
     { NULL, -1 }
@@ -85,16 +91,23 @@ static void on_midi_enable_toggled(GtkWidget *widget, gpointer user_data)
     int state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
 
     gtk_widget_set_sensitive(midi_mode, state);
-#if defined(UNIX_COMPILE) && !defined(MACOSX_SUPPORT)
+#ifdef UNIX_COMPILE
+#ifdef MACOSX_SUPPORT
+    gtk_widget_set_sensitive(midi_name_entry, state);
+#else
     gtk_widget_set_sensitive(midi_driver, state);
 #endif
+#endif
     gtk_widget_set_sensitive(midi_in_entry, state);
-    gtk_widget_set_sensitive(midi_in_browse, state);
     gtk_widget_set_sensitive(midi_out_entry, state);
+#if defined(UNIX_COMPILE) && !defined(MACOSX_SUPPORT)
+    gtk_widget_set_sensitive(midi_in_browse, state);
     gtk_widget_set_sensitive(midi_out_browse, state);
+#endif
 }
 
 
+#if defined(UNIX_COMPILE) && !defined(MACOSX_SUPPORT)
 /** \brief  Handler for the "clicked" event of the MIDI-In "Browse" button
  *
  * \param[in]   widget      button
@@ -105,11 +118,11 @@ static void on_midi_in_browse(GtkWidget *widget, gpointer user_data)
     char *filename;
     const char *filters[] = { "mi*", NULL };
 
-    filename = ui_open_file_dialog(widget, "Select MIDI In device",
+    filename = vice_gtk3_open_file_dialog("Select MIDI In device",
             "MIDI devices", filters, "/dev");
     if (filename != NULL) {
         debug_gtk3("Setting MIDIInDev to '%s'", filename);
-        gtk_entry_set_text(GTK_ENTRY(user_data), filename);
+        vice_gtk3_resource_entry_full_update(GTK_WIDGET(user_data), filename);
         g_free(filename);
     }
 }
@@ -125,15 +138,16 @@ static void on_midi_out_browse(GtkWidget *widget, gpointer user_data)
     char *filename;
     const char *filters[] = { "mi*", NULL };
 
-    filename = ui_open_file_dialog(widget, "Select MIDI Out device",
+    filename = vice_gtk3_open_file_dialog("Select MIDI Out device",
             "MIDI devices", filters, "/dev");
     if (filename != NULL) {
         debug_gtk3("Setting MIDIOutDev to '%s'", filename);
-        gtk_entry_set_text(GTK_ENTRY(user_data), filename);
+        vice_gtk3_resource_entry_full_update(GTK_WIDGET(user_data), filename);
         g_free(filename);
     }
 
 }
+#endif
 
 
 /** \brief  Create check button to enable/disable MIDI emulation
@@ -158,7 +172,7 @@ static GtkWidget *create_midi_enable_widget(void)
  */
 static GtkWidget *create_midi_mode_widget(void)
 {
-    return resource_combo_box_int_create("MIDIMode", midi_modes);
+    return vice_gtk3_resource_combo_box_int_create("MIDIMode", midi_modes);
 }
 
 
@@ -169,7 +183,7 @@ static GtkWidget *create_midi_mode_widget(void)
  */
 static GtkWidget *create_midi_driver_widget(void)
 {
-    return resource_combo_box_int_create("MIDIDriver", midi_drivers);
+    return vice_gtk3_resource_combo_box_int_create("MIDIDriver", midi_drivers);
 }
 #endif
 
@@ -202,45 +216,66 @@ GtkWidget *midi_widget_create(GtkWidget *parent)
 
     row = 2;
 
-#if defined(UNIX_COMPILE) && !defined(MACOSX_SUPPORT)
+#ifdef UNIX_COMPILE
+#ifdef MACOSX_SUPPORT
+    label = gtk_label_new("MIDI Name");
+    g_object_set(label, "margin-left", 16, NULL);
+    gtk_widget_set_halign(label, GTK_ALIGN_START);
+    gtk_grid_attach(GTK_GRID(grid), label, 0, row, 1, 1);
+    midi_name_entry = vice_gtk3_resource_entry_full_create("MIDIName");
+    gtk_widget_set_hexpand(midi_name_entry, TRUE);
+    gtk_grid_attach(GTK_GRID(grid), midi_name_entry, 1, row, 1, 1);
+#else
     label = gtk_label_new("MIDI driver");
     gtk_widget_set_halign(label, GTK_ALIGN_START);
     g_object_set(label, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 2, 1, 1);
     midi_driver = create_midi_driver_widget();
     gtk_grid_attach(GTK_GRID(grid), midi_driver, 1, 2, 1, 1);
-
+#endif
     row++;
 #endif
 
     /* TODO: seems like Windows uses a combobox with a list of drivers, so this
-     *       code only works for Unix (and not OSX probably)
+     *       code only works for Unix and OSX.
      */
 
     label = gtk_label_new("MIDI In");
     g_object_set(label, "margin-left", 16, NULL);
     gtk_widget_set_halign(label, GTK_ALIGN_START);
     gtk_grid_attach(GTK_GRID(grid), label, 0, row, 1, 1);
-    midi_in_entry = resource_entry_create("MIDIInDev");
+#ifdef MACOSX_SUPPORT
+    midi_in_entry = vice_gtk3_resource_entry_full_create("MIDIInName");
+#else
+    midi_in_entry = vice_gtk3_resource_entry_full_create("MIDIInDev");
+#endif
     gtk_widget_set_hexpand(midi_in_entry, TRUE);
     gtk_grid_attach(GTK_GRID(grid), midi_in_entry, 1, row, 1, 1);
+#if defined(UNIX_COMPILE) && !defined(MACOSX_SUPPORT)
     midi_in_browse = gtk_button_new_with_label("Browse ...");
     g_signal_connect(midi_in_browse, "clicked", G_CALLBACK(on_midi_in_browse),
             (gpointer)midi_in_entry);
     gtk_grid_attach(GTK_GRID(grid), midi_in_browse, 2, row, 1, 1);
+#endif
     row++;
 
     label = gtk_label_new("MIDI Out");
     gtk_widget_set_halign(label, GTK_ALIGN_START);
     g_object_set(label, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), label, 0, row, 1, 1);
-    midi_out_entry = resource_entry_create("MIDIOutDev");
+#ifdef MACOSX_SUPPORT
+    midi_out_entry = vice_gtk3_resource_entry_full_create("MIDIOutName");
+#else
+    midi_out_entry = vice_gtk3_resource_entry_full_create("MIDIOutDev");
+#endif
     gtk_widget_set_hexpand(midi_out_entry, TRUE);
     gtk_grid_attach(GTK_GRID(grid), midi_out_entry, 1, row, 1, 1);
+#if defined(UNIX_COMPILE) && !defined(MACOSX_SUPPORT)
     midi_out_browse = gtk_button_new_with_label("Browse ...");
     g_signal_connect(midi_out_browse, "clicked",
             G_CALLBACK(on_midi_out_browse), (gpointer)midi_out_entry);
     gtk_grid_attach(GTK_GRID(grid), midi_out_browse, 2, row, 1, 1);
+#endif
     row++;
 
     on_midi_enable_toggled(midi_enable, NULL);

@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/mmc64widget.c
+/**
  * \brief   Widget to control MMC64 resources
  *
  * Written by
@@ -55,7 +55,7 @@
 
 /** \brief  List of revisions
  */
-static ui_radiogroup_entry_t revisions[] = {
+static const vice_gtk3_radiogroup_entry_t revisions[] = {
     { "Rev. A", 0 },
     { "Rev. B", 1 },
     { NULL, -1 }
@@ -64,7 +64,7 @@ static ui_radiogroup_entry_t revisions[] = {
 
 /** \brief  List of memory card types
  */
-static const ui_radiogroup_entry_t card_types[] = {
+static const vice_gtk3_radiogroup_entry_t card_types[] = {
     { "Auto", 0 },
     { "MMC", 1 },
     { "SD", 2 },
@@ -95,14 +95,11 @@ static void on_bios_browse_clicked(GtkWidget *button, gpointer user_data)
 {
     char *filename;
 
-    filename = ui_open_file_dialog(button, "Open MMC64 BIOS image file",
+    filename = vice_gtk3_open_file_dialog("Open MMC64 BIOS image file",
             NULL, NULL, NULL);
     if (filename != NULL) {
-        GtkEntry *entry;
-
-        entry = GTK_ENTRY(user_data);
         /* trigger resource update */
-        gtk_entry_set_text(GTK_ENTRY(entry), filename);
+        vice_gtk3_resource_entry_full_update(GTK_WIDGET(user_data), filename);
         g_free(filename);
     }
 }
@@ -117,7 +114,7 @@ static void on_card_browse_clicked(GtkWidget *button, gpointer user_data)
 {
     char *filename;
 
-    filename = ui_open_file_dialog(button, "Open memory card file",
+    filename = vice_gtk3_open_file_dialog("Open memory card file",
             NULL, NULL, NULL);
     if (filename != NULL) {
         GtkWidget *parent;
@@ -144,7 +141,7 @@ static void on_enable_toggled(GtkWidget *check, gpointer user_data)
     if (state && (bios == NULL || *bios == '\0')) {
         debug_gtk3("can't enable MMC64, missing BIOS file\n");
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check), FALSE);
-        ui_message_error(check, "VICE core error",
+        vice_gtk3_message_error("VICE core error",
                 "Cannot enable cartridge due to missing BIOS file");
         return;
     }
@@ -176,12 +173,12 @@ static void on_enable_toggled(GtkWidget *check, gpointer user_data)
 static void on_save_clicked(GtkWidget *widget, gpointer user_data)
 {
     /* TODO: retrieve filename of cart image */
-    gchar *filename = ui_save_file_dialog(widget, "Save Cartridge image",
+    gchar *filename = vice_gtk3_save_file_dialog("Save Cartridge image",
             NULL, TRUE, NULL);
     if (filename != NULL) {
         debug_gtk3("saving MMC64 cart image as '%s'\n", filename);
         if (carthelpers_save_func(CARTRIDGE_MMC64, filename) < 0) {
-            ui_message_error(widget, "Saving failed",
+            vice_gtk3_message_error("Saving failed",
                     "Failed to save cartridge image '%s'",
                     filename);
         }
@@ -199,7 +196,7 @@ static void on_flush_clicked(GtkWidget *widget, gpointer user_data)
 {
     if (carthelpers_flush_func(CARTRIDGE_MMC64) < 0) {
         debug_gtk3("Flusing MMC64 cart image\n");
-        ui_message_error(widget, "Flushing failed",
+        vice_gtk3_message_error("Flushing failed",
                     "Failed to fush cartridge image");
     }
 }
@@ -278,7 +275,7 @@ static GtkWidget *create_mmc64_revision_widget(void)
     label = gtk_label_new("Revision");
     gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
 
-    radio_group = resource_radiogroup_create("MMC64_revision", revisions,
+    radio_group = vice_gtk3_resource_radiogroup_create("MMC64_revision", revisions,
             GTK_ORIENTATION_HORIZONTAL);
     gtk_grid_attach(GTK_GRID(grid), radio_group, 1, 0, 1, 1);
 
@@ -303,7 +300,7 @@ static GtkWidget *create_bios_image_widget(GtkWidget *parent)
     gtk_grid_set_row_spacing(GTK_GRID(grid), 8);
 
     label = gtk_label_new("file name");
-    bios_filename_widget = resource_entry_create("MMC64BIOSfilename");
+    bios_filename_widget = vice_gtk3_resource_entry_create("MMC64BIOSfilename");
     gtk_widget_set_hexpand(bios_filename_widget, TRUE);
     g_object_set(label, "margin-left", 16, NULL);
     bios_browse_widget = gtk_button_new_with_label("Browse ...");
@@ -347,7 +344,7 @@ static GtkWidget *create_card_image_widget(GtkWidget *parent)
     g_object_set(label, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 1, 1, 1);
 
-    entry = resource_entry_create("MMC64Imagefilename");
+    entry = vice_gtk3_resource_entry_full_create("MMC64Imagefilename");
     gtk_widget_set_hexpand(entry, TRUE);
     gtk_grid_attach(GTK_GRID(grid), entry, 1, 1, 1, 1);
 
@@ -385,8 +382,8 @@ static GtkWidget *create_card_type_widget(void)
     g_object_set(label, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
 
-    radio_group = resource_radiogroup_create("MMC64_sd_type", card_types,
-            GTK_ORIENTATION_HORIZONTAL);
+    radio_group = vice_gtk3_resource_radiogroup_create("MMC64_sd_type",
+            card_types, GTK_ORIENTATION_HORIZONTAL);
     gtk_grid_set_column_spacing(GTK_GRID(radio_group), 16);
     gtk_grid_attach(GTK_GRID(grid), radio_group, 1, 0, 1, 1);
 

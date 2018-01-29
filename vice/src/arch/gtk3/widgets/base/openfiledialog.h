@@ -1,9 +1,10 @@
-/** \file   src/arch/gtk3/widgets/openfiledialog.h
- * \brief   Gtk3 file open dialog - header
+/**
+ * \brief   GtkFileChooser wrapper to open or create a file
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -29,15 +30,13 @@
 #include "vice.h"
 #include <gtk/gtk.h>
 
-gchar *ui_open_file_dialog(
-        GtkWidget *widget,
+gchar *vice_gtk3_open_file_dialog(
         const char *title,
         const char *filter_desc,
         const char **filter_list,
         const char *path);
 
-gchar *ui_open_create_file_dialog(
-        GtkWidget *widget,
+gchar *vice_gtk3_open_create_file_dialog(
         const char *title,
         const char *proposed,
         gboolean confirm,

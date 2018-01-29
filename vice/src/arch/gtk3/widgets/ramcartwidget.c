@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/ramcartwidget.c
+/**
  * \brief   Widget to control RamCart resources
  *
  * Written by
@@ -51,7 +51,7 @@
 
 /** \brief  List of supported RAM sizes
  */
-static ui_radiogroup_entry_t ram_sizes[] = {
+static const vice_gtk3_radiogroup_entry_t ram_sizes[] = {
     { "64KB", 64 },
     { "128KB", 128 },
     { NULL, -1 }
@@ -91,7 +91,7 @@ static GtkWidget *create_ramcart_size_widget(void)
     GtkWidget *radio_group;
 
     grid = uihelpers_create_grid_with_label("RAM Size", 1);
-    radio_group = resource_radiogroup_create("RAMCARTsize", ram_sizes,
+    radio_group = vice_gtk3_resource_radiogroup_create("RAMCARTsize", ram_sizes,
             GTK_ORIENTATION_VERTICAL);
     g_object_set(radio_group, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), radio_group, 0, 1, 1, 1);

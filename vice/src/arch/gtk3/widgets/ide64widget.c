@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/ide64widget.c
+/**
  * \brief   Widget to control IDE64 resources
  *
  * Written by
@@ -72,7 +72,7 @@
 
 /** \brief  List of IDE64 revisions
  */
-static ui_radiogroup_entry_t revisions[] = {
+static const vice_gtk3_radiogroup_entry_t revisions[] = {
     { "Version 3", IDE64_VERSION_3 },
     { "Version 4.1", IDE64_VERSION_4_1 },
     { "Version 4.2", IDE64_VERSION_4_2 },
@@ -82,7 +82,7 @@ static ui_radiogroup_entry_t revisions[] = {
 
 /** \brief  List of ShortBus DIGIMAX I/O bases
  */
-static ui_combo_entry_int_t digimax_addresses[] = {
+static const vice_gtk3_combo_entry_int_t digimax_addresses[] = {
     { "$DE40", 0xde40 },
     { "$DE48", 0xde48 },
     { NULL, -1 }
@@ -91,7 +91,7 @@ static ui_combo_entry_int_t digimax_addresses[] = {
 #ifdef HAVE_RAWNET
 /** \brief  List of ShortBus ETFE I/O bases
  */
-static ui_combo_entry_int_t etfe_addresses[] = {
+static const vice_gtk3_combo_entry_int_t etfe_addresses[] = {
     { "$DE00", 0xde00 },
     { "$DE10", 0xde10 },
     { "$DF00", 0xdf00 },
@@ -126,11 +126,10 @@ static void on_browse_clicked(GtkWidget *widget, gpointer user_data)
         "*.hdd", "*.iso", "*.fdd", "*.cfa", NULL
     };
 
-    filename = ui_open_file_dialog(widget, "Select disk image file",
+    filename = vice_gtk3_open_file_dialog("Select disk image file",
             "HD image files", filter_list, NULL);
     if (filename != NULL) {
-        GtkEntry *entry = GTK_ENTRY(user_data);
-        gtk_entry_set_text(entry, filename);
+        vice_gtk3_resource_entry_full_update(GTK_WIDGET(user_data), filename);
         g_free(filename);
     }
 }
@@ -189,7 +188,7 @@ static GtkWidget *create_ide64_revision_widget(void)
     gtk_widget_set_halign(label, GTK_ALIGN_START);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
 
-    group = resource_radiogroup_create("IDE64version", revisions,
+    group = vice_gtk3_resource_radiogroup_create("IDE64version", revisions,
             GTK_ORIENTATION_HORIZONTAL);
     gtk_grid_set_column_spacing(GTK_GRID(group), 16);
     gtk_grid_attach(GTK_GRID(grid), group, 1, 0, 1, 1);
@@ -217,7 +216,7 @@ static GtkWidget *create_ide64_usb_widget(void)
     enable = vice_gtk3_resource_check_button_create("IDE64USBServer",
             "Enable USB server");
     label = gtk_label_new("USB server address");
-    address = resource_entry_create("IDE64USBServerAddress");
+    address = vice_gtk3_resource_entry_full_create("IDE64USBServerAddress");
     gtk_widget_set_hexpand(address, TRUE);
 
     gtk_grid_attach(GTK_GRID(grid), enable, 0, 0, 1, 1);
@@ -303,7 +302,7 @@ static GtkWidget *create_ide64_device_widget(int device)
     g_object_set(label, "margin-left", 16, NULL);
 
     g_snprintf(resource, 256, "IDE64image%d", device);
-    entry = resource_entry_create(resource);
+    entry = vice_gtk3_resource_entry_full_create(resource);
     gtk_widget_set_hexpand(entry, TRUE);
 
     browse = gtk_button_new_with_label("Browse ...");
@@ -330,7 +329,7 @@ static GtkWidget *create_ide64_device_widget(int device)
     g_object_set(label, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(geometry), label, 0, 0, 1, 1);
 
-    cylinders = resource_spin_button_int_create_sprintf("IDE64cylinders%d",
+    cylinders = vice_gtk3_resource_spin_button_int_create_sprintf("IDE64cylinders%d",
             0, 65536, 256, device);
     gtk_widget_set_hexpand(cylinders, FALSE);
     gtk_grid_attach(GTK_GRID(geometry), cylinders, 1, 0, 1, 1);
@@ -340,8 +339,8 @@ static GtkWidget *create_ide64_device_widget(int device)
     g_object_set(label, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(geometry), label, 0, 1, 1, 1);
 
-    heads = resource_spin_button_int_create_sprintf("IDE64heads%d",
-            0, 16, 1, device);
+    heads = vice_gtk3_resource_spin_button_int_create_sprintf(
+            "IDE64heads%d", 0, 16, 1, device);
     gtk_widget_set_hexpand(heads, FALSE);
     gtk_grid_attach(GTK_GRID(geometry), heads, 1, 1, 1, 1);
 
@@ -350,8 +349,8 @@ static GtkWidget *create_ide64_device_widget(int device)
     g_object_set(label, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(geometry), label, 0, 2, 1, 1);
 
-    sectors = resource_spin_button_int_create_sprintf("IDE64sectors%d",
-            0, 63, 1, device);
+    sectors = vice_gtk3_resource_spin_button_int_create_sprintf(
+            "IDE64sectors%d", 0, 63, 1, device);
     gtk_widget_set_hexpand(heads, FALSE);
     gtk_grid_attach(GTK_GRID(geometry), sectors, 1, 2, 1, 1);
 
@@ -394,7 +393,7 @@ static GtkWidget *create_ide64_shortbus_widget(void)
     g_object_set(digimax_enable, "margin-left", 16, NULL);
     digimax_label = gtk_label_new("DigMAX base address");
     gtk_widget_set_halign(digimax_label, GTK_ALIGN_END);
-    digimax_address = resource_combo_box_int_create("SBDIGIMAXbase",
+    digimax_address = vice_gtk3_resource_combo_box_int_create("SBDIGIMAXbase",
             digimax_addresses);
 
     gtk_grid_attach(GTK_GRID(grid), digimax_enable, 0, 1, 1, 1);
@@ -412,7 +411,7 @@ static GtkWidget *create_ide64_shortbus_widget(void)
     g_object_set(etfe_enable, "margin-left", 16, NULL);
     etfe_label = gtk_label_new("ETFE base address");
     gtk_widget_set_halign(etfe_label, GTK_ALIGN_END);
-    etfe_address = resource_combo_box_int_create("SBETFEbase",
+    etfe_address = vice_gtk3_resource_combo_box_int_create("SBETFEbase",
             etfe_addresses);
 
     gtk_grid_attach(GTK_GRID(grid), etfe_enable, 0, 2, 1, 1);

@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/sidcartwidget.c
+/**
  * \brief   SID Cartidge widget
  *
  * Written by
@@ -56,7 +56,7 @@ static GtkWidget *sid_clock = NULL;
 
 /** \brief  SID cart I/O base addresses for VIC-20
  */
-static ui_radiogroup_entry_t sid_base_vic20[] = {
+static const vice_gtk3_radiogroup_entry_t sid_base_vic20[] = {
     { "$9800", 0x9800 },
     { "$9C00", 0x9c00 },
     { NULL, -1 }
@@ -65,7 +65,7 @@ static ui_radiogroup_entry_t sid_base_vic20[] = {
 
 /** \brief  SID cart I/O base addresses for Plus4
  */
-static ui_radiogroup_entry_t sid_base_plus4[] = {
+static const vice_gtk3_radiogroup_entry_t sid_base_plus4[] = {
     { "$FD40", 0xfd40 },
     { "$FE80", 0xfe80 },
     { NULL, -1 }
@@ -74,7 +74,7 @@ static ui_radiogroup_entry_t sid_base_plus4[] = {
 
 /** \brief  SID cart I/O base addresses for PET
  */
-static ui_radiogroup_entry_t sid_base_pet[] = {
+static const vice_gtk3_radiogroup_entry_t sid_base_pet[] = {
     { "$8F00", 0x8f00 },
     { "$E900", 0xe900 },
     { NULL, -1 }
@@ -83,7 +83,7 @@ static ui_radiogroup_entry_t sid_base_pet[] = {
 
 /** \brief  SID cart clock for VIC-20
  */
-static ui_radiogroup_entry_t sid_clock_vic20[] = {
+static const vice_gtk3_radiogroup_entry_t sid_clock_vic20[] = {
     { "C64", 0 },
     { "VIC-20", 1 },
     { NULL, -1 }
@@ -92,7 +92,7 @@ static ui_radiogroup_entry_t sid_clock_vic20[] = {
 
 /** \brief  SID cart clock for Plus4
  */
-static ui_radiogroup_entry_t sid_clock_plus4[] = {
+static const vice_gtk3_radiogroup_entry_t sid_clock_plus4[] = {
     { "C64", 0 },
     { "Plus4", 1 },
     { NULL, -1 }
@@ -101,7 +101,7 @@ static ui_radiogroup_entry_t sid_clock_plus4[] = {
 
 /** \brief  SID cart clock for PET
  */
-static ui_radiogroup_entry_t sid_clock_pet[] = {
+static const vice_gtk3_radiogroup_entry_t sid_clock_pet[] = {
     { "C64", 0 },
     { "PET", 1 },
     { NULL, -1 }
@@ -145,7 +145,7 @@ static GtkWidget *create_sidcart_address_widget(void)
 {
     GtkWidget *grid;
     GtkWidget *group;
-    ui_radiogroup_entry_t *list;
+    const vice_gtk3_radiogroup_entry_t *list;
 
     switch (machine_class) {
         case VICE_MACHINE_VIC20:
@@ -164,7 +164,7 @@ static GtkWidget *create_sidcart_address_widget(void)
 
     grid = uihelpers_create_grid_with_label("SID address", 1);
 
-    group = resource_radiogroup_create("SidAddress", list,
+    group = vice_gtk3_resource_radiogroup_create("SidAddress", list,
             GTK_ORIENTATION_VERTICAL);
     gtk_grid_attach(GTK_GRID(grid), group, 0, 1, 1, 1);
 
@@ -181,7 +181,7 @@ static GtkWidget *create_sidcart_clock_widget(void)
 {
     GtkWidget *grid;
     GtkWidget *group;
-    ui_radiogroup_entry_t *list;
+    const vice_gtk3_radiogroup_entry_t *list;
 
     switch (machine_class) {
         case VICE_MACHINE_VIC20:
@@ -200,7 +200,7 @@ static GtkWidget *create_sidcart_clock_widget(void)
 
     grid = uihelpers_create_grid_with_label("SID clock", 1);
 
-    group = resource_radiogroup_create("SidClock", list,
+    group = vice_gtk3_resource_radiogroup_create("SidClock", list,
             GTK_ORIENTATION_VERTICAL);
     gtk_grid_attach(GTK_GRID(grid), group, 0, 1, 1, 1);
 

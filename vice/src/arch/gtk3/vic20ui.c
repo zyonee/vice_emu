@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/vic20ui.c
+/**
  * \brief   Native GTK3 VIC20 UI
  *
  * Written by
@@ -35,7 +35,7 @@
 #include "sampler.h"
 #include "ui.h"
 #include "uimachinewindow.h"
-#include "uisamplersettings.h"
+#include "settings_sampler.h"
 #include "vic.h"
 #include "vic20model.h"
 #include "videomodelwidget.h"
@@ -43,7 +43,7 @@
 
 #include "cartridge.h"
 #include "carthelpers.h"
-#include "georamwidget.h"
+#include "settings_io_georam.h"
 #include "uicart.h"
 
 #include "vic20ui.h"
@@ -65,7 +65,7 @@ static const char *vic20_model_list[] = {
  *
  * Used in the VIC model widget
  */
-static ui_radiogroup_entry_t vic20_vic_models[] = {
+static const vice_gtk3_radiogroup_entry_t vic20_vic_models[] = {
     { "PAL", MACHINE_SYNC_PAL },
     { "NTSC", MACHINE_SYNC_NTSC },
     { NULL, -1 }
@@ -113,7 +113,7 @@ int vic20ui_init(void)
     video_model_widget_set_resource("MachineVideoStandard");
     video_model_widget_set_models(vic20_vic_models);
 
-    uisamplersettings_set_devices_getter(sampler_get_devices);
+    settings_sampler_set_devices_getter(sampler_get_devices);
 
     /* I/O extension function pointers */
     carthelpers_set_functions(cartridge_save_image, cartridge_flush_image,

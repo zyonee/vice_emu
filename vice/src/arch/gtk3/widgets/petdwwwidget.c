@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/petdwwwidget.c
+/**
  * \brief   PET RAM expansion module widget
  *
  * Written by
@@ -67,7 +67,7 @@ static void on_dww_toggled(GtkWidget *widget, gpointer user_data)
 
     /* only enable when I/O size is 2048 bytes */
     if (state && (io_size < 2048)) {
-        ui_message_error(widget, "Cannot enable DWW",
+        vice_gtk3_message_error("Cannot enable DWW",
                 "To be able to use DWW, the I/O size of the machine "
                 " needs to be 2048 bytes."
                 " The current I/O size is %d bytes.\n\n"
@@ -125,12 +125,11 @@ static void on_browse_clicked(GtkWidget *widget, gpointer user_data)
 {
     gchar *filename;
 
-    filename = ui_open_file_dialog(widget, "Open DWW image file", NULL,
+    filename = vice_gtk3_open_file_dialog("Open DWW image file", NULL,
             NULL, NULL);
     if (filename != NULL) {
-        GtkEntry *entry = GTK_ENTRY(user_data);
         debug_gtk3("setting PETDWWfilename to '%s'\n", filename);
-        gtk_entry_set_text(entry, filename);
+        vice_gtk3_resource_entry_full_update(GTK_WIDGET(user_data), filename);
         g_free(filename);
     }
 }
@@ -162,7 +161,7 @@ GtkWidget *pet_dww_widget_create(GtkWidget *parent)
     label = gtk_label_new("DWW image file");
     gtk_widget_set_halign(label, GTK_ALIGN_START);
     g_object_set(label, "margin-left", 16, NULL);
-    entry = resource_entry_create("PETDWWfilename");
+    entry = vice_gtk3_resource_entry_full_create("PETDWWfilename");
     gtk_widget_set_hexpand(entry, TRUE);
     browse = gtk_button_new_with_label("Browse ...");
     g_signal_connect(browse, "clicked", G_CALLBACK(on_browse_clicked),

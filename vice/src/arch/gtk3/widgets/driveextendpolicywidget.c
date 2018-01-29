@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/driveextendpolicywidget.c
+/**
  * \brief   Drive 40-track extend policy widget
  *
  * Written by
@@ -44,7 +44,7 @@
 
 /** \brief  List of (name,id) tuples for the radio buttons
  */
-static ui_combo_entry_int_t policies[] = {
+static vice_gtk3_combo_entry_int_t policies[] = {
     { "Never extend", 0 },
     { "Ask on extend", 1 },
     { "Extend on access", 2 },
@@ -67,8 +67,8 @@ GtkWidget *drive_extend_policy_widget_create(int unit)
     /* store unit number in "UnitNumber" property for later use */
     g_object_set_data(G_OBJECT(grid), "UnitNumber", GINT_TO_POINTER(unit));
 
-    combo = resource_combo_box_int_create_sprintf("Drive%dExtendImagePolicy",
-            policies, unit);
+    combo = vice_gtk3_resource_combo_box_int_create_sprintf(
+            "Drive%dExtendImagePolicy", policies, unit);
     gtk_widget_set_hexpand(combo, TRUE);
     g_object_set(combo, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), combo, 0, 1, 1, 1);

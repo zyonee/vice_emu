@@ -1,11 +1,10 @@
-/** \file   src/arch/gtk3/widgets/widgethelpers.h
+/**
  * \brief   GTK3 helper functions for widgets - header
  *
- * TODO:    Remove once the 'base widgets' are implemented properly
- *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -33,46 +32,40 @@
 
 #include "basewidget_types.h"
 
-typedef struct ui_button_s {
-    char *text;
-    void (*callback)(GtkWidget *, void *);
-    /* XXX: maybe add keyboard shortcut stuff ? */
-} ui_button_t;
 
-GtkWidget *uihelpers_create_button_box(
-        ui_button_t *buttons,
-        GtkOrientation orientation);
+/* XXX: either deprecated or needs renaming */
+
 
 GtkWidget *uihelpers_create_grid_with_label(const gchar *text, gint columns);
 
 GtkWidget *uihelpers_radiogroup_create(
         const gchar *label,
-        ui_radiogroup_entry_t *data,
+        const vice_gtk3_radiogroup_entry_t *data,
         void (*callback)(GtkWidget *, gpointer),
         int active);
 
-int uihelpers_radiogroup_get_index(ui_radiogroup_entry_t *list, int value);
 
-void uihelpers_radiogroup_set_index(GtkWidget *grid, int index);
+/* only useful for custom built radio groups, don't use on resourceradiogroup.c
+ * generated stuff */
 
-GtkWidget *uihelpers_create_grid_label(const char *text);
+int vice_gtk3_radiogroup_get_list_index(
+        const vice_gtk3_radiogroup_entry_t *list,
+        int value);
 
-GtkWidget *uihelpers_create_indented_label(const char *text);
-
-
-GtkWidget *uihelpers_create_resource_checkbox(
-        const char *label, const char *resource);
-
-void uihelpers_set_drive_resource_from_check_button(
-        GtkWidget *widget,
-        const char *fmt,
-        int unit);
-int uihelpers_get_drive_resource_from_check_button(
-        GtkWidget *widget,
-        const char *fmt,
-        int unit);
+void vice_gtk3_radiogroup_set_index(GtkWidget *grid, int index);
 
 
-GtkWidget *uihelpers_create_int_combo_box(const int *list, const char *resource);
+/* pretty useless, should be removed */
+GtkWidget *vice_gtk3_create_indented_label(const char *text);
+
+
+/* new stuff */
+
+GtkWidget *vice_gtk3_grid_new_spaced(int column_spacing, int row_spacing);
+
+GtkWidget *vice_gtk3_grid_new_spaced_with_label(int column_spacing,
+                                                int row_spacing,
+                                                const char *label,
+                                                int span);
 
 #endif

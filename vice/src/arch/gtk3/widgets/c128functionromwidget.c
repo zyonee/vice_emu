@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/c128functionromwidget.c
+/**
  * \brief   Widget to control C128 function roms
  *
  * Written by
@@ -41,7 +41,7 @@
  *
  * Seems to be the same for ext ROMS
  */
-static ui_radiogroup_entry_t rom_types[] = {
+static const vice_gtk3_radiogroup_entry_t rom_types[] = {
     { "None",   INT_FUNCTION_NONE },    /* this one probably requires the
                                            text entry/browse button to be
                                            disabled */
@@ -54,17 +54,17 @@ static ui_radiogroup_entry_t rom_types[] = {
 
 /** \brief  Handler for the "clicked" event of a "browse" button
  *
- * \param[in]   widget      button
- * \param[in]   user_data   entry to store filename
+ * \param[in]   widget  browse button
+ * \param[in]   data    entry to store filename
  */
-static void on_browse_clicked(GtkWidget *widget, gpointer user_data)
+static void on_browse_clicked(GtkWidget *widget, gpointer data)
 {
     gchar *filename;
 
-    filename = ui_open_file_dialog(widget, "Open ROM file", NULL, NULL, NULL);
+    filename = vice_gtk3_open_file_dialog("Open ROM file", NULL, NULL, NULL);
     if (filename != NULL) {
         debug_gtk3("got filename '%s'\n", filename);
-        gtk_entry_set_text(GTK_ENTRY(user_data), filename);
+        vice_gtk3_resource_entry_full_update(GTK_WIDGET(data), filename);
         g_free(filename);
     }
 }
@@ -81,8 +81,8 @@ static GtkWidget *create_rom_type_widget(const char *prefix)
     GtkWidget *widget;
 
 
-    widget = resource_radiogroup_create_sprintf("%sFunctionROM", rom_types,
-            GTK_ORIENTATION_HORIZONTAL, prefix);
+    widget = vice_gtk3_resource_radiogroup_create_sprintf("%sFunctionROM",
+            rom_types, GTK_ORIENTATION_HORIZONTAL, prefix);
     gtk_grid_set_column_spacing(GTK_GRID(widget), 16);
     return widget;
 }
@@ -104,10 +104,10 @@ static GtkWidget *create_rom_file_widget(const char *prefix)
     grid = gtk_grid_new();
     gtk_grid_set_column_spacing(GTK_GRID(grid), 8);
 
-    /* TODO: create resource_entry_create_sprintf() */
+    /* TODO: create vice_gtk3_resource_entry_create_sprintf() */
     g_snprintf(buffer, 256, "%sFunctionName", prefix);
 
-    entry = resource_entry_create(buffer);
+    entry = vice_gtk3_resource_entry_full_create(buffer);
     gtk_widget_set_hexpand(entry, TRUE);
     gtk_grid_attach(GTK_GRID(grid), entry, 0, 0, 1, 1);
 

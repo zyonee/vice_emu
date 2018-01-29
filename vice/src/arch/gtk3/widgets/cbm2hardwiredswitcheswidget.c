@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/cbm2hardwareswitchesmodel.c
+/**
  * \brief   Widget to select ....
  *
  * Written by
@@ -44,7 +44,7 @@
 
 /** \brief  Hardwired switches for 5x0 models
  */
-static ui_radiogroup_entry_t models_cbm5x0[] = {
+static const vice_gtk3_radiogroup_entry_t models_cbm5x0[] = {
     { "50Hz 5x0", 2 },
     { "60Hz 5x0", 1 },
     { NULL, -1 }
@@ -53,7 +53,7 @@ static ui_radiogroup_entry_t models_cbm5x0[] = {
 
 /** \brief  Hardwired switches for 6x0 models
  */
-static ui_radiogroup_entry_t models_cbm6x0[] = {
+static const vice_gtk3_radiogroup_entry_t models_cbm6x0[] = {
     { "50Hz 6x0", 2 },
     { "60Hz 6x0", 1 },
     { "50Hz 7x0", 0 },
@@ -71,7 +71,7 @@ GtkWidget *cbm2_hardwired_switches_widget_create(void)
     GtkWidget *radio_group;
 
     grid = uihelpers_create_grid_with_label("Hardwired switches", 1);
-    radio_group = resource_radiogroup_create("ModelLine",
+    radio_group = vice_gtk3_resource_radiogroup_create("ModelLine",
             machine_class == VICE_MACHINE_CBM5x0 ? models_cbm5x0 : models_cbm6x0,
             GTK_ORIENTATION_VERTICAL);
     g_object_set(radio_group, "margin-left", 16, NULL);

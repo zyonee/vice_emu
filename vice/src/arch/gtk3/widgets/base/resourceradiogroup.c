@@ -1,9 +1,10 @@
-/** \file   src/arch/gtk3/widgets/base/resourceradiogroup.c
+/**
  * \brief   Group of radio buttons controlling a resource
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -31,6 +32,7 @@
 #include "basewidget_types.h"
 #include "debug_gtk3.h"
 #include "lib.h"
+#include "log.h"
 #include "resources.h"
 #include "resourcehelpers.h"
 
@@ -66,24 +68,29 @@ static void on_radio_toggled(GtkWidget *radio, gpointer user_data)
     /* parent widget (grid) contains the "ResourceName" property */
     parent = gtk_widget_get_parent(radio);
     resource = resource_widget_get_resource_name(parent);
+
     /* get new and old values */
-    resources_get_int(resource, &old_val);
+    if (resources_get_int(resource, &old_val) < 0) {
+        log_error(LOG_ERR, "failed to get value for resource '%s'\n",
+                resource);
+        return;
+    }
     new_val = GPOINTER_TO_INT(user_data);
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(radio))
             && (old_val != new_val)) {
         debug_gtk3("setting %s to %d\n", resource, new_val);
 
-        /* FIXME: something is not right here, looks like setting this resource
-         *        to invalid values (ie HardSID), fails to actually set the
-         *        resource, keeping SidEngine at either 0 or 1, making the
-         *        callback to enable/disable the ReSID sampling fail.
-         */
-        resources_set_int(resource, new_val);
+        if (resources_set_int(resource, new_val) < 0) {
+            log_error(LOG_ERR, "failed to set resource '%s' to %d\n",
+                    resource, new_val);
+        } else {
+            /* only trigger callback on succesfully setting the resource */
 
-        callback = g_object_get_data(G_OBJECT(parent), "ExtraCallback");
-        if (callback != NULL) {
-            callback(radio, new_val);
+            callback = g_object_get_data(G_OBJECT(parent), "ExtraCallback");
+            if (callback != NULL) {
+                callback(radio, new_val);
+            }
         }
     }
 }
@@ -99,7 +106,7 @@ static void on_radio_toggled(GtkWidget *radio, gpointer user_data)
  */
 static GtkWidget *resource_radiogroup_create_helper(
         GtkWidget *grid,
-        const ui_radiogroup_entry_t *entries,
+        const vice_gtk3_radiogroup_entry_t *entries,
         GtkOrientation orientation)
 {
     GtkRadioButton *last = NULL;
@@ -162,9 +169,10 @@ static GtkWidget *resource_radiogroup_create_helper(
  *
  * \return  GtkGrid
  */
-GtkWidget *resource_radiogroup_create(const char *resource,
-                                      const ui_radiogroup_entry_t *entries,
-                                      GtkOrientation orientation)
+GtkWidget *vice_gtk3_resource_radiogroup_create(
+        const char *resource,
+        const vice_gtk3_radiogroup_entry_t *entries,
+        GtkOrientation orientation)
 {
     GtkWidget *grid;
 
@@ -194,9 +202,9 @@ GtkWidget *resource_radiogroup_create(const char *resource,
  *
  * \return  GtkGrid
  */
-GtkWidget *resource_radiogroup_create_sprintf(
+GtkWidget *vice_gtk3_resource_radiogroup_create_sprintf(
         const char *fmt,
-        const ui_radiogroup_entry_t *entries,
+        const vice_gtk3_radiogroup_entry_t *entries,
         GtkOrientation orientation,
         ...)
 {
@@ -220,16 +228,16 @@ GtkWidget *resource_radiogroup_create_sprintf(
  * \param[in,out]   widget  radiogroup widget
  * \param[in]       id      new value for widget
  */
-void resource_radiogroup_update(GtkWidget *widget, int id)
+void vice_gtk3_resource_radiogroup_update(GtkWidget *widget, int id)
 {
     int orientation;
     int index;
-    ui_radiogroup_entry_t *entries;
+    vice_gtk3_radiogroup_entry_t *entries;
     GtkWidget *radio;
 
     orientation = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget),
                 "Orientation"));
-    entries = (ui_radiogroup_entry_t *)(g_object_get_data(G_OBJECT(widget),
+    entries = (vice_gtk3_radiogroup_entry_t *)(g_object_get_data(G_OBJECT(widget),
                 "Entries"));
 
     for (index = 0; entries[index].name != NULL; index++) {
@@ -250,7 +258,7 @@ void resource_radiogroup_update(GtkWidget *widget, int id)
  *
  * \param[in,out]   widget  radio group
  */
-void resource_radiogroup_reset(GtkWidget *widget)
+void vice_gtk3_resource_radiogroup_reset(GtkWidget *widget)
 {
     const char *resource;
     int value;
@@ -258,14 +266,14 @@ void resource_radiogroup_reset(GtkWidget *widget)
     resource = resource_widget_get_resource_name(widget);
     resources_get_default_value(resource, &value);
     debug_gtk3("resetting %s to factory value %d\n", resource, value);
-    resource_radiogroup_update(widget, value);
+    vice_gtk3_resource_radiogroup_update(widget, value);
 }
 
 
 /** \brief  Add an extra callback to \a widget
  *
  * This callback should allow widgets interacting with other widgets without
- * usingany global references.
+ * using any global references.
  *
  * The widget returned is the actual radio group GtkGrid, the integer value is
  * the curent ID of the radiogroup's currently selected radio button.
@@ -274,8 +282,9 @@ void resource_radiogroup_reset(GtkWidget *widget)
  * \param[in]       callback    function to call when the radiogroup selection
  *                              changes
  */
-void resource_radiogroup_add_callback(GtkWidget *widget,
-                                      void (*callback)(GtkWidget *, int))
+void vice_gtk3_resource_radiogroup_add_callback(
+        GtkWidget *widget,
+        void (*callback)(GtkWidget *, int))
 {
     g_object_set_data(G_OBJECT(widget), "ExtraCallback", (gpointer)callback);
 }

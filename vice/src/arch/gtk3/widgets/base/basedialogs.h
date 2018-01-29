@@ -1,11 +1,10 @@
-/** \file   src/arch/gtk3/widgets/basedialogs.h
- * \brief   Basic dialogs (Info, Yes/No, etc)
+/**
+ * \brief   Gtk3 basic dialogs (Info, Yes/No, etc)
  *
- * GTK3 basic dialogs
- *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -42,16 +41,8 @@ enum {
 };
 
 
-gboolean ui_message_info(GtkWidget *widget,
-                         const char *title,
-                         const char *text, ...);
+gboolean vice_gtk3_message_info(const char *title, const char *fmt, ...);
+gboolean vice_gtk3_message_confirm(const char *title, const char *fmt, ...);
+gboolean vice_gtk3_message_error(const char *title, const char *fmt, ...);
 
-
-gboolean ui_message_confirm(GtkWidget *widget,
-                            const char *title,
-                            const char *fmt, ...);
-
-gboolean ui_message_error(GtkWidget *widget,
-                          const char *title,
-                          const char *fmt, ...);
 #endif

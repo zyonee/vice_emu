@@ -1,11 +1,10 @@
-/** \file   src/arch/gtk3/widgets/selectdirectorydialog.c
- * \brief   Wrapper around the GtkFileChooser dialog for simple cases
+/**
+ * \brief   GtkFileChooser wrapper to select/create a directory
  *
- * GTK3 directory selection dialog
- *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -38,7 +37,6 @@
 
 /** \brief  Create a 'save file' dialog
  *
- * \param[in]   widget          parent widget
  * \param[in]   title           dialog title
  * \param[in]   proposed        proposed directory name (optional)
  * \param[in]   allow_create    allow creating a new directory
@@ -49,8 +47,7 @@
  * \note    the directory name returned is allocated by GLib and needs to be
  *          freed after use with g_free()
  */
-gchar *ui_select_directory_dialog(
-        GtkWidget *widget,
+gchar *vice_gtk3_select_directory_dialog(
         const char *title,
         const char *proposed,
         gboolean allow_create,

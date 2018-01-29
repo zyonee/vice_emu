@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/videobordermodewidget.c
+/**
  * \brief   Widget to select border mode
  *
  * Written by
@@ -35,6 +35,7 @@
 #include <gtk/gtk.h>
 
 #include "debug_gtk3.h"
+#include "basewidgets.h"
 #include "widgethelpers.h"
 #include "resources.h"
 #include "video.h"
@@ -53,29 +54,13 @@ static const char *chip_prefix;
  * I've decided to use simple numeric constants to avoid having multiple lists
  * for each $CHIP with the same values.
  */
-static ui_radiogroup_entry_t modes[] = {
+static const vice_gtk3_radiogroup_entry_t modes[] = {
     { "Normal", 0 },
     { "Full", 1 },
     { "Debug", 2 },
     { "None", 3 },
     { NULL, -1 }
 };
-
-
-/** \brief  Handler for the "toggled" event of the radio buttons
- *
- * \param[in]   widget      radio button
- * \param[in]   user_data   new value for border mode (`int1)
- */
-static void on_border_mode_toggled(GtkWidget *widget, gpointer user_data)
-{
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))) {
-        int value = GPOINTER_TO_INT(user_data);
-
-        debug_gtk3("setting %sBorderMode to %d\n", chip_prefix, value);
-        resources_set_int_sprintf("%sBorderMode", value, chip_prefix);
-    }
-}
 
 
 /** \brief  Create widget to control render filter resources
@@ -87,13 +72,15 @@ static void on_border_mode_toggled(GtkWidget *widget, gpointer user_data)
 GtkWidget *video_border_mode_widget_create(const char *chip)
 {
     GtkWidget *grid;
-    int current;
+    GtkWidget *mode_widget;
 
     chip_prefix = chip;
-    resources_get_int_sprintf("%sBorderMode", &current, chip);
 
-    grid = uihelpers_radiogroup_create("Border mode", modes,
-            on_border_mode_toggled, current);
+    grid = vice_gtk3_grid_new_spaced_with_label(-1, -1, "Border mode", 1);
+    mode_widget = vice_gtk3_resource_radiogroup_create_sprintf(
+            "%sBorderMode", modes, GTK_ORIENTATION_VERTICAL, chip);
+    g_object_set(mode_widget, "margin-left", 16, NULL);
+    gtk_grid_attach(GTK_GRID(grid), mode_widget, 0, 1, 1, 1);
     gtk_widget_show_all(grid);
     return grid;
 }

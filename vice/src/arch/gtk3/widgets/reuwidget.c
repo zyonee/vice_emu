@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/reuwidget.c
+/**
  * \brief   Widget to control RAM Expansion Module resources
  *
  * Written by
@@ -51,7 +51,7 @@
 
 /** \brief  List of supported RAM sizes
  */
-static ui_radiogroup_entry_t ram_sizes[] = {
+static const vice_gtk3_radiogroup_entry_t ram_sizes[] = {
     { "128KB", 128 },
     { "256KB", 256 },
     { "512KB", 512 },
@@ -88,7 +88,7 @@ static GtkWidget *create_reu_size_widget(void)
     GtkWidget *radio_group;
 
     grid = uihelpers_create_grid_with_label("RAM Size", 1);
-    radio_group = resource_radiogroup_create("REUsize", ram_sizes,
+    radio_group = vice_gtk3_resource_radiogroup_create("REUsize", ram_sizes,
             GTK_ORIENTATION_VERTICAL);
     g_object_set(radio_group, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), radio_group, 0, 1, 1, 1);

@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/sidsoundwidget.c
+/**
  * \brief   Settings for SID emulation
  *
  * Written by
@@ -63,7 +63,7 @@
 
 /** \brief  Values for the "SidEngine" resource
  */
-static ui_radiogroup_entry_t sid_engines[] = {
+static vice_gtk3_radiogroup_entry_t sid_engines[] = {
     { "FastSID", 0 },
     { "ReSID", 1 },
     { "Catweasel MKIII", 2 },
@@ -76,7 +76,7 @@ static ui_radiogroup_entry_t sid_engines[] = {
 
 /** \brief  Values for the "SidResidSampling" resource
  */
-static ui_radiogroup_entry_t resid_sampling_modes[] = {
+static const vice_gtk3_radiogroup_entry_t resid_sampling_modes[] = {
     { "Fast", 0 },
     { "Interpolation", 1 },
     { "Resampling", 2 },
@@ -87,7 +87,7 @@ static ui_radiogroup_entry_t resid_sampling_modes[] = {
 
 /** \brief  Values for the "number of sids" widget
  */
-static ui_radiogroup_entry_t num_sids[] = {
+static const vice_gtk3_radiogroup_entry_t num_sids[] = {
     { "One", 0 },
     { "Two", 1 },
     { "Three", 2 },
@@ -100,7 +100,7 @@ static ui_radiogroup_entry_t num_sids[] = {
  *
  * \note    Yes, I know I can generate this table
  */
-static ui_combo_entry_int_t sid_address_c64[] = {
+static const vice_gtk3_combo_entry_int_t sid_address_c64[] = {
     { "$d420", 0xd420 }, { "$d440", 0xd440 }, { "$d460", 0xd460 },
     { "$d480", 0xd480 }, { "$d4a0", 0xd4a0 }, { "$d4c0", 0xd4c0 },
     { "$d4e0", 0xd4e0 },
@@ -124,13 +124,13 @@ static ui_combo_entry_int_t sid_address_c64[] = {
     { "$df00", 0xdf00 }, { "$df20", 0xdf20 }, { "$df40", 0xdf40 },
     { "$df60", 0xdf60 }, { "$df80", 0xdf80 }, { "$dfa0", 0xdfa0 },
     { "$dfc0", 0xdfc0 }, { "$dfe0", 0xdfe0 },
-    UI_COMBO_ENTRY_INT_LIST_END
+    VICE_GTK3_COMBO_ENTRY_INT_LIST_END
 };
 
 
 /** \brief  I/O addresses for extra SID's for the C128
  */
-static ui_combo_entry_int_t sid_address_c128[] = {
+static const vice_gtk3_combo_entry_int_t sid_address_c128[] = {
     { "$d420", 0xd420 }, { "$d440", 0xd440 }, { "$d460", 0xd460 },
     { "$d480", 0xd480 }, { "$d4a0", 0xd4a0 }, { "$d4c0", 0xd4c0 },
     { "$d4e0", 0xd4e0 },
@@ -146,7 +146,7 @@ static ui_combo_entry_int_t sid_address_c128[] = {
     { "$df00", 0xdf00 }, { "$df20", 0xdf20 }, { "$df40", 0xdf40 },
     { "$df60", 0xdf60 }, { "$df80", 0xdf80 }, { "$dfa0", 0xdfa0 },
     { "$dfc0", 0xdfc0 }, { "$dfe0", 0xdfe0 },
-    UI_COMBO_ENTRY_INT_LIST_END
+    VICE_GTK3_COMBO_ENTRY_INT_LIST_END
 };
 
 
@@ -236,7 +236,7 @@ static void on_sid_filters_toggled(GtkWidget *widget, gpointer user_data)
 static void on_resid_passband_default_clicked(GtkWidget *widget,
                                               gpointer user_data)
 {
-    resource_scale_int_reset(resid_passband);
+    vice_gtk3_resource_scale_int_reset(resid_passband);
 }
 
 
@@ -250,7 +250,7 @@ static void on_resid_passband_default_clicked(GtkWidget *widget,
 static void on_resid_gain_default_clicked(GtkWidget *widget,
                                           gpointer user_data)
 {
-    resource_scale_int_reset(resid_gain);
+    vice_gtk3_resource_scale_int_reset(resid_gain);
 }
 
 
@@ -264,7 +264,7 @@ static void on_resid_gain_default_clicked(GtkWidget *widget,
 static void on_resid_bias_default_clicked(GtkWidget *widget,
                                           gpointer user_data)
 {
-    resource_scale_int_reset(resid_bias);
+    vice_gtk3_resource_scale_int_reset(resid_bias);
 
 }
 
@@ -289,7 +289,7 @@ static GtkWidget *create_sid_engine_widget(void)
     g_object_set(label, "margin-bottom", 8, NULL);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
 
-    radio_group = resource_radiogroup_create("SidEngine", sid_engines,
+    radio_group = vice_gtk3_resource_radiogroup_create("SidEngine", sid_engines,
             GTK_ORIENTATION_VERTICAL);
     g_object_set(radio_group, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), radio_group, 0, 1, 1, 1);
@@ -328,7 +328,7 @@ static GtkWidget *create_sid_engine_widget(void)
         }
     }
 #endif
-    resource_radiogroup_add_callback(radio_group, on_sid_engine_changed);
+    vice_gtk3_resource_radiogroup_add_callback(radio_group, on_sid_engine_changed);
 
     gtk_widget_show_all(grid);
     return grid;
@@ -354,7 +354,7 @@ static GtkWidget *create_resid_sampling_widget(void)
     g_object_set(label, "margin-bottom", 8, NULL);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
 
-    radio_group = resource_radiogroup_create("SidResidSampling",
+    radio_group = vice_gtk3_resource_radiogroup_create("SidResidSampling",
             resid_sampling_modes, GTK_ORIENTATION_VERTICAL);
     g_object_set(radio_group, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), radio_group, 0, 1, 1, 1);
@@ -387,12 +387,13 @@ static GtkWidget *create_num_sids_widget(void)
     g_object_set(label, "margin-bottom", 8, NULL);
     gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
 
-    radio_group = resource_radiogroup_create("SidStereo",
+    radio_group = vice_gtk3_resource_radiogroup_create("SidStereo",
             num_sids, GTK_ORIENTATION_VERTICAL);
     g_object_set(radio_group, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), radio_group, 0, 1, 1, 1);
 
-    resource_radiogroup_add_callback(radio_group, on_sid_count_changed);
+    vice_gtk3_resource_radiogroup_add_callback(radio_group,
+            on_sid_count_changed);
 
     gtk_widget_show_all(grid);
     return grid;
@@ -408,7 +409,7 @@ static GtkWidget *create_num_sids_widget(void)
 static GtkWidget *create_extra_sid_address_widget(int sid)
 {
     GtkWidget *widget;
-    ui_combo_entry_int_t *entries;
+    const vice_gtk3_combo_entry_int_t *entries;
     char label[256];
     const char *resource[3] = {
         "SidStereoAddressStart",
@@ -420,8 +421,8 @@ static GtkWidget *create_extra_sid_address_widget(int sid)
     entries = machine_class == VICE_MACHINE_C128
         ? sid_address_c128 : sid_address_c64;
 
-    widget = resource_combo_box_int_create_with_label(resource[sid - 1],
-            entries, label);
+    widget = vice_gtk3_resource_combo_box_int_create_with_label(
+            resource[sid - 1], entries, label);
     gtk_widget_show_all(widget);
     return widget;
 }
@@ -435,9 +436,9 @@ static GtkWidget *create_resid_passband_widget(void)
 {
     GtkWidget *scale;
 
-    scale = resource_scale_int_create("SidResidPassband",
+    scale = vice_gtk3_resource_scale_int_create("SidResidPassband",
             GTK_ORIENTATION_HORIZONTAL, 0, 90, 5);
-    resource_scale_int_set_marks(scale, 10);
+    vice_gtk3_resource_scale_int_set_marks(scale, 10);
     return scale;
 }
 
@@ -450,9 +451,9 @@ static GtkWidget *create_resid_gain_widget(void)
 {
     GtkWidget *scale;
 
-    scale = resource_scale_int_create("SidResidGain",
+    scale = vice_gtk3_resource_scale_int_create("SidResidGain",
             GTK_ORIENTATION_HORIZONTAL, 90, 100, 1);
-    resource_scale_int_set_marks(scale, 1);
+    vice_gtk3_resource_scale_int_set_marks(scale, 1);
     return scale;
 }
 
@@ -465,9 +466,9 @@ static GtkWidget *create_resid_bias_widget(void)
 {
     GtkWidget *scale;
 
-    scale = resource_scale_int_create("SidResidFilterBias",
+    scale = vice_gtk3_resource_scale_int_create("SidResidFilterBias",
             GTK_ORIENTATION_HORIZONTAL, -5000, 5000, 500);
-    resource_scale_int_set_marks(scale, 500);
+    vice_gtk3_resource_scale_int_set_marks(scale, 500);
     return scale;
 }
 

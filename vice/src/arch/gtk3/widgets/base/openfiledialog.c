@@ -1,11 +1,10 @@
-/** \file   src/arch/gtk3/widgets/openfiledialog.c
- * \brief   Wrapper around the GtkFileChooser dialog for simple cases
+/**
+ * \brief   GtkFileChooser wrapper to open a file
  *
- * openfiledialog.c - GTK3 file open dialog
- *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -38,7 +37,6 @@
 
 /** \brief  Create an 'open file' dialog
  *
- * \param[in]   widget      parent widget
  * \param[in]   title       dialog title
  * \param[in]   filter_desc file filter name
  * \param[in]   filter_list list of file type filters, NULL-terminated
@@ -49,8 +47,7 @@
  * \note    the filename returned is allocated by GLib and needs to be freed
  *          after use with g_free()
  */
-gchar *ui_open_file_dialog(
-        GtkWidget *widget,
+gchar *vice_gtk3_open_file_dialog(
         const char *title,
         const char *filter_desc,
         const char **filter_list,
@@ -105,7 +102,6 @@ gchar *ui_open_file_dialog(
 
 /** \brief  Create a 'open or create file' dialog
  *
- * \param[in]   widget      parent widget
  * \param[in]   title       dialog title
  * \param[in]   proposed    proposed file name (optional)
  * \param[in]   confirm     confirm overwriting an existing file
@@ -116,8 +112,7 @@ gchar *ui_open_file_dialog(
  * \note    the filename returned is allocated by GLib and needs to be freed
  *          after use with g_free()
  */
-gchar *ui_open_create_file_dialog(
-        GtkWidget *widget,
+gchar *vice_gtk3_open_create_file_dialog(
         const char *title,
         const char *proposed,
         gboolean confirm,

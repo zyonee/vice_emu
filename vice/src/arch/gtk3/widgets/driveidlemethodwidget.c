@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/driveidlemethodwidget.c
+/**
  * \brief   Drive expansions widget
  *
  * Written by
@@ -45,7 +45,7 @@
 
 /** \brief  Idle method (name,id) tuples
  */
-static ui_combo_entry_int_t idle_methods[] = {
+static const vice_gtk3_combo_entry_int_t idle_methods[] = {
     { "None", 0 },
     { "Skip cycles", 1 },
     { "Trap idle", 2 },
@@ -67,8 +67,8 @@ GtkWidget *drive_idle_method_widget_create(int unit)
     grid = uihelpers_create_grid_with_label("Idle method", 1);
     g_object_set_data(G_OBJECT(grid), "UnitNumber", GINT_TO_POINTER(unit));
 
-    combo = resource_combo_box_int_create_sprintf("Drive%dIdleMethod",
-            idle_methods, unit);
+    combo = vice_gtk3_resource_combo_box_int_create_sprintf(
+            "Drive%dIdleMethod", idle_methods, unit);
     gtk_widget_set_hexpand(combo, TRUE);
     g_object_set(combo, "margin-left", 16, NULL);
     gtk_grid_attach(GTK_GRID(grid), combo, 0, 1, 1, 1);

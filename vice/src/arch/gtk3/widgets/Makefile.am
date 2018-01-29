@@ -24,7 +24,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src/vic20 \
 	-I$(top_srcdir)/src/userport \
 	-I$(top_srcdir)/src/arch/gtk3/widgets \
-	-I$(top_srcdir)/src/arch/gtk3/widgets/base
+	-I$(top_srcdir)/src/arch/gtk3/widgets/base \
+	-I$(top_srcdir)/src/samplerdrv
 
 noinst_LIBRARIES = libwidgets.a
 
@@ -69,7 +70,7 @@ libwidgets_a_SOURCES = \
 	cbm2memorysizewidget.c \
 	cbm2hardwiredswitcheswidget.c \
 	cbm2rammappingwidget.c \
-	ramresetwidget.c \
+	settings_ramreset.c \
 	videopalettewidget.c \
 	videorenderfilterwidget.c \
 	videobordermodewidget.c \
@@ -86,8 +87,8 @@ libwidgets_a_SOURCES = \
 	drivefsdevicewidget.c \
 	printeroutputmodewidget.c \
 	printeroutputdevicewidget.c \
-	c64memoryexpansionhackswidget.c \
-	georamwidget.c \
+	settings_io_c64_memhacks.c \
+	settings_io_georam.c \
 	reuwidget.c \
 	ramcartwidget.c \
 	dqbbwidget.c \
@@ -99,7 +100,7 @@ libwidgets_a_SOURCES = \
 	mmc64widget.c \
 	ide64widget.c \
 	retroreplaywidget.c \
-	ioextensionswidget.c \
+	settings_io.c \
 	ethernetcartwidget.c \
 	rrnetmk3widget.c \
 	c128functionromwidget.c \
@@ -132,11 +133,27 @@ libwidgets_a_SOURCES = \
 	vfliwidget.c \
 	petdiagpinwidget.c \
 	pethrewidget.c \
-	snapshotwidget.c \
+	settings_snapshot.c \
 	ffmpegwidget.c \
 	jamactionwidget.c \
-	monitorsettingswidget.c \
-	romsetwidget.c
+	settings_monitor.c \
+	settings_romset.c \
+	settings_sound.c \
+	settings_video.c \
+	settings_autostart.c \
+	settings_speed.c \
+	settings_keyboard.c \
+	romsetmanagerwidget.c \
+	settings_drive.c \
+	settings_sampler.c \
+	settings_printer.c \
+	settings_controlport.c \
+	settings_joystick.c \
+	settings_mouse.c \
+	settings_model.c \
+	settings_soundchip.c \
+	settings_misc.c \
+	settings_ethernet.c
 
 EXTRA_DIST = \
 	jamdialog.h \
@@ -183,7 +200,7 @@ EXTRA_DIST = \
 	cbm2memorysizewidget.h \
 	cbm2hardwiredswitcheswidget.h \
 	cbm2rammappingwidget.h \
-	ramresetwidget.h \
+	settings_ramreset.h \
 	videopalettewidget.h \
 	videorenderfilterwidget.h \
 	videobordermodewidget.h \
@@ -200,8 +217,8 @@ EXTRA_DIST = \
 	drivefsdevicewidget.h \
 	printeroutputmodewidget.h \
 	printeroutputdevicewidget.h \
-	c64memoryexpansionhackswidget.h \
-	georamwidget.h \
+	settings_io_c64_memhacks.h \
+	settings_io_georam.h \
 	reuwidget.h \
 	ramcartwidget.h \
 	dqbbwidget.h \
@@ -213,7 +230,7 @@ EXTRA_DIST = \
 	mmc64widget.h \
 	ide64widget.h \
 	retroreplaywidget.h \
-	ioextensionswidget.h \
+	settings_io.h \
 	ethernetcartwidget.h \
 	rrnetmk3widget.h \
 	c128functionromwidget.h \
@@ -246,8 +263,24 @@ EXTRA_DIST = \
 	vfliwidget.h \
 	petdiagpinwidget.h \
 	pethrewidget.h \
-	snapshotwidget.h \
+	settings_snapshot.h \
 	ffmpegwidget.h \
 	jamactionwidget.h \
-	monitorsettingswidget.h \
-	romsetwidget.h
+	settings_monitor.h \
+	settigs_romset.h \
+	settings_sound.h \
+	settings_video.h \
+	settings_autostart.h \
+	settings_speed.h \
+	settings_keyboard.h \
+	romsetmanagerwidget.h \
+	settings_drive.h \
+	settings_sampler.h \
+	settings_printer.h \
+	settings_controlport.h \
+	settings_joystick.h \
+	settings_mouse.h \
+	settings_model.h \
+	settings_soundchip.h \
+	settings_misc.h \
+	settings_ethernet.h

@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/cwdwidget.c
+/**
  * \brief   Widget to set the current working directory
  *
  * Written by
@@ -70,7 +70,7 @@ static void on_browse_clicked(GtkWidget *widget, gpointer user_data)
 {
     gchar *filename;
 
-    filename = ui_select_directory_dialog(widget, "Select directory",
+    filename = vice_gtk3_select_directory_dialog("Select directory",
             NULL, TRUE, NULL);
     if (filename != NULL) {
         gtk_entry_set_text(GTK_ENTRY(entry), filename);

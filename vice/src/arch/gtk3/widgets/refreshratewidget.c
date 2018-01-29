@@ -31,6 +31,7 @@
 
 #include <gtk/gtk.h>
 
+#include "basewidgets.h"
 #include "lib.h"
 #include "resources.h"
 #include "vsync.h"
@@ -42,7 +43,7 @@
 
 /** \brief  List of text/id pairs for the refresh rates
  */
-static ui_radiogroup_entry_t refresh_rates[] = {
+static const vice_gtk3_radiogroup_entry_t refresh_rates[] = {
     { "Automatic", 0 },
     { "1/1", 1 },
     { "1/2", 2 },
@@ -58,25 +59,6 @@ static ui_radiogroup_entry_t refresh_rates[] = {
 };
 
 
-/** \brief  Event handler for the radio buttons in the widget
- *
- * Updates the 'RefreshRate' resource
- *
- * \param[in]   widget      radio button triggering the event
- * \param[in]   user_data   new refresh rate
- */
-static void refreshrate_callback(GtkWidget *widget, gpointer user_data)
-{
-    gint rate = GPOINTER_TO_INT(user_data);
-
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))) {
-        debug_gtk3("got refresh rate %d\n", rate);
-        vsync_suspend_speed_eval();
-        resources_set_int("RefreshRate", rate);
-    }
-}
-
-
 /** \brief  Create 'fresh rate' widget
  *
  * \todo    Get current refresh rate from resources and set proper radio button
@@ -85,18 +67,16 @@ static void refreshrate_callback(GtkWidget *widget, gpointer user_data)
  */
 GtkWidget *refreshrate_widget_create(void)
 {
-    GtkWidget *layout;
+    GtkWidget *grid;
+    GtkWidget *group;
 
-    int index;
-    int value = 0;
+    grid = vice_gtk3_grid_new_spaced_with_label(
+            VICE_GTK3_DEFAULT, VICE_GTK3_DEFAULT, "Refresh rate", 1);
+    group = vice_gtk3_resource_radiogroup_create("RefreshRate", refresh_rates,
+            GTK_ORIENTATION_VERTICAL);
+    g_object_set(group, "margin-left", 16, NULL);
+    gtk_grid_attach(GTK_GRID(grid), group, 0, 1, 1, 1);
 
-    resources_get_int("RefreshRate", &value);
-    index = uihelpers_radiogroup_get_index(refresh_rates, value);
-    layout = uihelpers_radiogroup_create("Refresh rate",
-            refresh_rates, refreshrate_callback, index);
-
-    gtk_widget_show(layout);
-    return layout;
+    gtk_widget_show_all(grid);
+    return grid;
 }
-
-

@@ -1,9 +1,10 @@
-/** \file   src/arch/gtk3/widgets/base/resourceentry.c
+/**
  * \brief   Text entry connected to a resource
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -31,6 +32,7 @@
 
 #include "debug_gtk3.h"
 #include "lib.h"
+#include "log.h"
 #include "resources.h"
 #include "resourcehelpers.h"
 
@@ -58,11 +60,15 @@ static void on_entry_destroy(GtkWidget *entry, gpointer user_data)
 static void on_entry_changed(GtkWidget *entry, gpointer user_data)
 {
     const char *resource;
+    const char *text;
 
     resource = resource_widget_get_resource_name(entry);
-    debug_gtk3("setting %s to '%s'\n", resource,
-            gtk_entry_get_text(GTK_ENTRY(entry)));
-    resources_set_string(resource, gtk_entry_get_text(GTK_ENTRY(entry)));
+    text = gtk_entry_get_text(GTK_ENTRY(entry));
+    debug_gtk3("setting %s to '%s'\n", resource, text);
+    if (resources_set_string(resource, text) < 0) {
+        log_error(LOG_ERR, "failed to set resource '%s' to '%s'\n",
+                resource, text);
+    }
 }
 
 
@@ -78,7 +84,7 @@ static void on_entry_changed(GtkWidget *entry, gpointer user_data)
  *
  * \return  new entry
  */
-GtkWidget *resource_entry_create(const char *resource)
+GtkWidget *vice_gtk3_resource_entry_create(const char *resource)
 {
     GtkWidget *entry;
     const char *current;
@@ -86,7 +92,7 @@ GtkWidget *resource_entry_create(const char *resource)
     /* get current resource value */
     if (resources_get_string(resource, &current) < 0) {
         /* invalid resource, set text to NULL */
-        debug_gtk3("warning: failed to get resource '%s'\n", resource);
+        log_error(LOG_ERR, "failed to get resource '%s'\n", resource);
         current = NULL;
     }
 
@@ -110,11 +116,11 @@ GtkWidget *resource_entry_create(const char *resource)
 /** \brief  Set new \a value for \a entry
  *
  * \param[in]   entry   entry
- * \param[in]   value   new text for \a entry
+ * \param[in]   new     new text for \a entry
  */
-void resource_entry_update(GtkWidget *entry, const char *value)
+void vice_gtk3_resource_entry_update(GtkWidget *entry, const char *new)
 {
-    gtk_entry_set_text(GTK_ENTRY(entry), value);
+    gtk_entry_set_text(GTK_ENTRY(entry), new);
 }
 
 
@@ -122,7 +128,7 @@ void resource_entry_update(GtkWidget *entry, const char *value)
  *
  * \param[in]   entry   entry
  */
-void resource_entry_reset(GtkWidget *entry)
+void vice_gtk3_resource_entry_reset(GtkWidget *entry)
 {
     const char *resource;
     const char *factory;
@@ -130,7 +136,7 @@ void resource_entry_reset(GtkWidget *entry)
     resource = resource_widget_get_resource_name(entry);
     resources_get_default_value(resource, &factory);
     debug_gtk3("resetting %s to factory value %s\n", resource, factory);
-    resource_entry_update(entry, factory);
+    vice_gtk3_resource_entry_update(entry, factory);
 }
 
 
@@ -162,7 +168,7 @@ static void on_resource_entry_full_destroy(GtkEntry *entry, gpointer data)
  *
  * \param[in,out]   entry   full resource entry box
  */
-static void resource_entry_full_update_resource(GtkEntry *entry)
+static gboolean resource_entry_full_update_resource(GtkEntry *entry)
 {
     const char *res_name;
     const char *res_val;
@@ -170,14 +176,21 @@ static void resource_entry_full_update_resource(GtkEntry *entry)
 
     res_name = resource_widget_get_resource_name(GTK_WIDGET(entry));
     if (resources_get_string(res_name, &res_val) < 0) {
-        return;
+        log_error(LOG_ERR, "failed to retrieve value for resource '%s'\n",
+                res_name);
+        return FALSE;
     }
     entry_text = gtk_entry_get_text(entry);
-    debug_gtk3("res_name: %s res_val: %s entry_text: %s\n", res_name, res_val, entry_text);
+    debug_gtk3("res_name: %s res_val: %s entry_text: %s\n",
+            res_name, res_val, entry_text);
     if ((res_val == NULL) || (strcmp(entry_text, res_val) != 0)) {
-        resources_set_string(res_name, entry_text);
-        debug_gtk3("set res_name: %s entry_text: %s\n", res_name, entry_text);
+        if (resources_set_string(res_name, entry_text) < 0) {
+            log_error(LOG_ERR, "failed to set resource '%s' to '%s'\n",
+                    res_name, entry_text);
+            return FALSE;
+        }
     }
+    return TRUE;
 }
 
 
@@ -216,8 +229,7 @@ static gboolean on_key_press_event(
     GdkEventKey *keyev = (GdkEventKey *)event;
 
     if (keyev->type == GDK_KEY_PRESS && keyev->keyval == GDK_KEY_Return) {
-        resource_entry_full_update_resource(entry);
-        return TRUE;
+        return resource_entry_full_update_resource(entry);
     }
     return FALSE;
 }
@@ -234,7 +246,7 @@ static gboolean on_key_press_event(
  *
  * \return  GtkEntry
  */
-GtkWidget *resource_entry_full_create(const char *resource)
+GtkWidget *vice_gtk3_resource_entry_full_create(const char *resource)
 {
     GtkWidget *entry;
     const char *current;
@@ -281,7 +293,7 @@ GtkWidget *resource_entry_full_create(const char *resource)
  *
  * \param[in,out]   entry   resource entry box
  */
-void resource_entry_full_reset(GtkWidget *entry)
+void vice_gtk3_resource_entry_full_reset(GtkWidget *entry)
 {
     const char *res_name;
     const char *orig;
@@ -296,12 +308,17 @@ void resource_entry_full_reset(GtkWidget *entry)
 /** \brief  Update \a entry with text \a new
  *
  * Sets \a new as the new text for \a entry and also updates the connected
- * resource.
+ * resource. Returns TRUE on success, FALSE on failure. It is assumed that a
+ * failure to set a resource in only due to some registered resource handler
+ * failing, not due to an invalid resource name.
  *
  * \param[in,out]   entry   entry box
  * \param[in]       new     new string for \a entry
+ *
+ * \return  bool
  */
-void resource_entry_full_update(GtkWidget *entry, const char *new)
+gboolean vice_gtk3_resource_entry_full_update(GtkWidget *entry,
+                                              const char *new)
 {
     const char *res_name;
 
@@ -311,9 +328,10 @@ void resource_entry_full_update(GtkWidget *entry, const char *new)
 
     res_name = resource_widget_get_resource_name(entry);
     if (resources_set_string(res_name, new) < 0) {
-        debug_gtk3("failed to set resource %s to '%s'\n", res_name, new);
+        log_error(LOG_ERR, "failed to set resource %s to '%s'\n", res_name, new);
+        return FALSE;
     } else {
         gtk_entry_set_text(GTK_ENTRY(entry), new);
+        return TRUE;
     }
 }
-

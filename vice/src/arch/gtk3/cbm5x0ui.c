@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/cbm5x0ui.c
+/**
  * \brief   Native GTK3 CBM5x0 UI.
  *
  * Written by
@@ -36,7 +36,7 @@
 #include "sampler.h"
 #include "ui.h"
 #include "uimachinewindow.h"
-#include "uisamplersettings.h"
+#include "settings_sampler.h"
 #include "vicii.h"
 #include "videomodelwidget.h"
 #include "widgethelpers.h"
@@ -57,7 +57,7 @@ static const char *cbm5x0_model_list[] = {
  *
  * Used in the VIC-II model widget
  */
-static ui_radiogroup_entry_t cbm5x0_vicii_models[] = {
+static const vice_gtk3_radiogroup_entry_t cbm5x0_vicii_models[] = {
     { "PAL", MACHINE_SYNC_PAL },
     { "NTSC", MACHINE_SYNC_NTSC },
     { NULL, -1 }
@@ -105,7 +105,7 @@ int cbm5x0ui_init(void)
     video_model_widget_set_resource("MachineVideoStandard");
     video_model_widget_set_models(cbm5x0_vicii_models);
 
-    uisamplersettings_set_devices_getter(sampler_get_devices);
+    settings_sampler_set_devices_getter(sampler_get_devices);
 
     INCOMPLETE_IMPLEMENTATION();
     return 0;

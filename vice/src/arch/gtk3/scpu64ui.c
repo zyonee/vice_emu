@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/scpu64ui.c
+/**
  * \brief   Native GTK3 SCPU64 UI
  *
  * Written by
@@ -38,14 +38,12 @@
 #include "sampler.h"
 #include "ui.h"
 #include "uimachinewindow.h"
-#include "uisamplersettings.h"
+#include "settings_sampler.h"
 
 #include "clockportdevicewidget.h"
 #include "clockport.h"
 
 #include "cartridge.h"
-#include "georam.h"
-#include "georamwidget.h"
 #include "reu.h"
 #include "reuwidget.h"
 #include "ramcartwidget.h"
@@ -82,7 +80,7 @@ static const char *c64scpu_model_list[] = {
  *
  * Used in the VIC-II model widget
  */
-static ui_radiogroup_entry_t c64scpu_vicii_models[] = {
+static const vice_gtk3_radiogroup_entry_t c64scpu_vicii_models[] = {
     { "6569 (PAL)",             VICII_MODEL_6569 },
     { "8565 (PAL)",             VICII_MODEL_8565 },
     { "6569R1 (old PAL)",       VICII_MODEL_6569R1 },
@@ -135,7 +133,7 @@ int scpu64ui_init(void)
     video_model_widget_set_resource("VICIIModel");
     video_model_widget_set_models(c64scpu_vicii_models);
 
-    uisamplersettings_set_devices_getter(sampler_get_devices);
+    settings_sampler_set_devices_getter(sampler_get_devices);
     clockport_device_widget_set_devices((void *)clockport_supported_devices);
 
     /* I/O extension function pointers */

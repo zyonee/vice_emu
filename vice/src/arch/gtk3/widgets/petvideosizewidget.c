@@ -1,4 +1,4 @@
-/** \file   src/arch/gtk3/widgets/petvideosizewidget.c
+/**
  * \brief   Widget to set the PET video size
  *
  * Written by
@@ -40,7 +40,7 @@
 
 /** \brief  Data for the radio buttons group
  */
-static ui_radiogroup_entry_t video_sizes[] = {
+static const vice_gtk3_radiogroup_entry_t video_sizes[] = {
     { "Auto (from ROM)", 0 },
     { "40 Columns", 40 },
     { "80 Columns", 80 },
@@ -56,7 +56,7 @@ static ui_radiogroup_entry_t video_sizes[] = {
  */
 static int get_video_size_index(int size)
 {
-    return uihelpers_radiogroup_get_index(video_sizes, size);
+    return vice_gtk3_radiogroup_get_list_index(video_sizes, size);
 }
 
 
