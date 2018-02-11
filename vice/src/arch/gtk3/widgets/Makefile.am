@@ -153,7 +153,14 @@ libwidgets_a_SOURCES = \
 	settings_model.c \
 	settings_soundchip.c \
 	settings_misc.c \
-	settings_ethernet.c
+	settings_ethernet.c \
+	settings_rs232.c \
+	scpu64settingswidget.c \
+	c64dtvflashsettingswidget.c \
+	vsidmainwidget.c \
+	vsidtuneinfowidget.c \
+	vsidcontrolwidget.c \
+	vsidmixerwidget.c
 
 EXTRA_DIST = \
 	jamdialog.h \
@@ -283,4 +290,11 @@ EXTRA_DIST = \
 	settings_model.h \
 	settings_soundchip.h \
 	settings_misc.h \
-	settings_ethernet.h
+	settings_ethernet.h \
+	settings_rs232.h \
+	scpu64settingswidget.h \
+	c64dtvflashsettingswidget.h \
+	vsidmainwidget.h \
+	vsidtuneinfowidget.h \
+	vsidcontrolwidget.h \
+	vsidmixerwidget.h

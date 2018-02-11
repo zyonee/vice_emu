@@ -1,9 +1,10 @@
-/**
+/** \file   uivsidwindow.c
  * \brief   Native GTK3 main vsid window code.
  *
- * Written by
- *  Marcus Sutton <loggedoubt@gmail.com>
- *
+ * \author  Marcus Sutton <loggedoubt@gmail.com>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -35,10 +36,27 @@
 
 #include "videoarch.h"
 
+#include "vice_gtk3.h"
 #include "ui.h"
 #include "uivsidmenu.h"
+#include "vsidmainwidget.h"
+
 #include "uivsidwindow.h"
 
+
+/** \brief  Main widget of VSID
+ *
+ * This should contain play/stop/rewind etc controls, and data on the currently
+ * loaded SID. A proper playlist and Songlength.[txt|md5] support wouldn't
+ * hurt either.
+ */
+static GtkWidget *main_widget = NULL;
+
+
+/** \brief  Create  VSID window
+ *
+ * \param[in]   canvas  something
+ */
 static void vsid_window_create(video_canvas_t *canvas)
 {
     GtkWidget *menu_bar;
@@ -46,17 +64,23 @@ static void vsid_window_create(video_canvas_t *canvas)
     canvas->renderer_backend = NULL;
     canvas->drawing_area = NULL;
 
+    main_widget = vsid_main_widget_create();
+    gtk_widget_set_size_request(main_widget, 400, 300);
+    gtk_widget_set_hexpand(main_widget, TRUE);
+    gtk_widget_set_vexpand(main_widget, TRUE);
+    gtk_widget_show(main_widget);
+
     menu_bar = ui_vsid_menu_bar_create();
-
     gtk_container_add(GTK_CONTAINER(canvas->grid), menu_bar);
-
-    return;
+    gtk_container_add(GTK_CONTAINER(canvas->grid), main_widget);
 }
 
+
+/** \brief  Initialize VSID window
+ */
 void ui_vsid_window_init(void)
 {
     ui_set_create_window_func(vsid_window_create);
-    return;
 }
 
 #endif

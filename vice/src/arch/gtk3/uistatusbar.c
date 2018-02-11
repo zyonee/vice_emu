@@ -32,6 +32,7 @@
 
 #include "not_implemented.h"
 
+#include "vice_gtk3.h"
 #include "datasette.h"
 #include "drive.h"
 #include "joyport.h"
@@ -417,7 +418,8 @@ static void vice_gtk3_update_joyport_layout(void)
         ok[i] = 1;
     }
     /* Check for userport joystick counts */
-    if (machine_class != VICE_MACHINE_CBM5x0) {
+    if ((machine_class != VICE_MACHINE_CBM5x0) &&
+            (machine_class != VICE_MACHINE_VSID)) {
         int upjoy = 0;
         resources_get_int("UserportJoy", &upjoy);
         if (upjoy) {
@@ -437,14 +439,16 @@ static void vice_gtk3_update_joyport_layout(void)
     /* Port 1 disabled for machines that have no internal joystick
      * ports */
     if ((machine_class == VICE_MACHINE_CBM6x0) ||
-        (machine_class == VICE_MACHINE_PET)) {
+        (machine_class == VICE_MACHINE_PET) ||
+        (machine_class == VICE_MACHINE_VSID)) {
         ok[0] = 0;
     }
     /* Port 2 disabled for machines that have at most one internal
      * joystick ports */
     if ((machine_class == VICE_MACHINE_VIC20) ||
         (machine_class == VICE_MACHINE_CBM6x0) ||
-        (machine_class == VICE_MACHINE_PET)) {
+        (machine_class == VICE_MACHINE_PET) ||
+        (machine_class == VICE_MACHINE_VSID)) {
         ok[1] = 0;
     }
     /* Port 3 disabled for machines with no user port and no other
@@ -713,7 +717,7 @@ GtkWidget *ui_statusbar_create(void)
      * demands, while ensuring they remain alive. They receive an
      * extra dereference in ui_statusbar_destroy() so nothing should
      * leak. */
-    sb = gtk_grid_new();
+    sb = vice_gtk3_grid_new_spaced(8, 0);
     /* First column: messages */
     msg = gtk_label_new(NULL);
     g_object_ref_sink(G_OBJECT(msg));
@@ -727,26 +731,37 @@ GtkWidget *ui_statusbar_create(void)
     gtk_grid_attach(GTK_GRID(sb), msg, 0, 0, 1, 2);
     /* Second column: Tape and joysticks */
     gtk_grid_attach(GTK_GRID(sb), gtk_separator_new(GTK_ORIENTATION_VERTICAL), 1, 0, 1, 2);
-    tape = ui_tape_widget_create();
-    g_object_ref_sink(G_OBJECT(tape));
-    /* Clicking the tape status is supposed to pop up a window. This
-     * requires a way to make sure events are captured by random
-     * internal widgets; the GtkEventBox manages that task for us. */
-    tape_events = gtk_event_box_new();
-    gtk_event_box_set_visible_window(GTK_EVENT_BOX(tape_events), FALSE);
-    gtk_container_add(GTK_CONTAINER(tape_events), tape);
-    gtk_grid_attach(GTK_GRID(sb), tape_events, 2, 0, 1, 1);
-    allocated_bars[i].tape = tape;
-    allocated_bars[i].tape_menu = ui_create_datasette_control_menu();
-    g_object_ref_sink(G_OBJECT(allocated_bars[i].tape_menu));
-    g_signal_connect(tape_events, "button-press-event", G_CALLBACK(ui_do_datasette_popup), GINT_TO_POINTER(i));
-    g_signal_connect(tape_events, "enter-notify-event", G_CALLBACK(ui_statusbar_cross_cb), &allocated_bars[i]);
-    g_signal_connect(tape_events, "leave-notify-event", G_CALLBACK(ui_statusbar_cross_cb), &allocated_bars[i]);
 
-    joysticks = ui_joystick_widget_create();
-    g_object_ref(joysticks);
-    gtk_grid_attach(GTK_GRID(sb), joysticks, 2, 1, 1, 1);
-    allocated_bars[i].joysticks = joysticks;
+    if ((machine_class != VICE_MACHINE_C64DTV)
+            && (machine_class != VICE_MACHINE_VSID)) {
+        tape = ui_tape_widget_create();
+        g_object_ref_sink(G_OBJECT(tape));
+        /* Clicking the tape status is supposed to pop up a window. This
+         * requires a way to make sure events are captured by random
+         * internal widgets; the GtkEventBox manages that task for us. */
+        tape_events = gtk_event_box_new();
+        gtk_event_box_set_visible_window(GTK_EVENT_BOX(tape_events), FALSE);
+        gtk_container_add(GTK_CONTAINER(tape_events), tape);
+        gtk_grid_attach(GTK_GRID(sb), tape_events, 2, 0, 1, 1);
+        allocated_bars[i].tape = tape;
+        allocated_bars[i].tape_menu = ui_create_datasette_control_menu();
+        g_object_ref_sink(G_OBJECT(allocated_bars[i].tape_menu));
+        g_signal_connect(tape_events, "button-press-event",
+                G_CALLBACK(ui_do_datasette_popup), GINT_TO_POINTER(i));
+        g_signal_connect(tape_events, "enter-notify-event",
+                G_CALLBACK(ui_statusbar_cross_cb), &allocated_bars[i]);
+        g_signal_connect(tape_events, "leave-notify-event",
+                G_CALLBACK(ui_statusbar_cross_cb), &allocated_bars[i]);
+    }
+
+    if (machine_class != VICE_MACHINE_VSID) {
+        joysticks = ui_joystick_widget_create();
+        g_object_ref(joysticks);
+        gtk_widget_set_halign(joysticks, GTK_ALIGN_END);
+        gtk_grid_attach(GTK_GRID(sb), joysticks, 2, 1, 1, 1);
+        allocated_bars[i].joysticks = joysticks;
+    }
+
     /* Third column on: Drives. */
     for (j = 0; j < DRIVE_NUM; ++j) {
         GtkWidget *drive = ui_drive_widget_create(j);
@@ -761,6 +776,10 @@ GtkWidget *ui_statusbar_create(void)
      * statusbar display. If more widgets are added past this point,
      * that function will need to change as well. */
     layout_statusbar_drives(i);
+
+    /* Set an impossible number of joyports to enabled so that the status
+     * is guarenteed to be updated. */
+    sb_state.joyports_enabled = ~0;
     vice_gtk3_update_joyport_layout();
     return sb;
 }

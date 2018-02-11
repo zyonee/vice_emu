@@ -1,12 +1,14 @@
-/**
+/** \file   settings_model.c
  * \brief   Model settings dialog
  *
  * \author  Bas Wassink <b.wassink@ziggo.nl>
  *
  * Controls the following resource(s):
- *  IECReset    (c64, c64sc, scpu64)
- *  GlueLogic   (c64sc, scpu64
- *  Go64Mode    (c128)
+ *  IECReset            (x64/x64sc/xcpu64)
+ *  GlueLogic           (x64sc/xscpu64
+ *  Go64Mode            (x128)
+ *  DtvRevision         (x64dtv)
+ *  VICIINewLuminances  (x64dtv)
  *
  *  (for more, see used widgets)
  */
@@ -38,7 +40,7 @@
 #include <string.h>
 #include <gtk/gtk.h>
 
-#include "debug_gtk3.h"
+#include "vice_gtk3.h"
 #include "not_implemented.h"
 #include "machine.h"
 #include "resources.h"
@@ -65,11 +67,21 @@
 #include "settings_model.h"
 
 
+/** \brief  List of C64DTV revisions
+ */
+static const vice_gtk3_radiogroup_entry_t c64dtv_revisions[] = {
+    { "DTV2", 2 },
+    { "DTV3", 3 },
+    { NULL, -1 }
+};
+
+
 /** \brief  Machine model widget
  *
  * Used by all machines
  */
 static GtkWidget *machine_widget = NULL;
+
 
 /** \brief  CIA model widget
  *
@@ -77,12 +89,145 @@ static GtkWidget *machine_widget = NULL;
  */
 static GtkWidget *cia_widget = NULL;
 
+
 /** \brief  Video model widget
  */
 static GtkWidget *video_widget = NULL;
+
 static GtkWidget *vdc_widget = NULL;
 static GtkWidget *sid_widget = NULL;
 static GtkWidget *kernal_widget = NULL;
+
+static GtkWidget *c64dtv_rev_widget = NULL;
+
+
+/*
+ * C64DTV widget glue logic
+ */
+
+/** \brief  Callback for the DTV revision
+ *
+ * Calls model widget update
+ *
+ * \param[in]   widget      radio button triggering the callback (unused)
+ * \param[in]   revision    new DTV revision
+ */
+static void dtv_revision_callback(GtkWidget *widget, int revision)
+{
+    debug_gtk3("got revision %d\n", revision);
+    machine_model_widget_update(machine_widget);
+}
+
+
+/** \brief  Callback for the DTV VIC-II model (sync factor)
+ *
+ * Calls model widget update
+ *
+ * \param[in]   model   new VIC-II model
+ */
+static void dtv_video_callback(int model)
+{
+    debug_gtk3("got video model %d\n", model);
+    machine_model_widget_update(machine_widget);
+}
+
+
+/** \brief  Callback for DTV machine model changes
+ *
+ * Updates the DTV revision and VIC-II model widgets
+ *
+ * \param[in]   model   DTV model
+ */
+static void machine_model_handler_c64dtv(int model)
+{
+    int rev = 3;
+    int sync = MACHINE_SYNC_PAL;
+    GtkWidget *group;
+
+    switch (model) {
+        case 0: /* V2 PAL */
+            rev = 2;
+            break;
+        case 1: /* V2 NTSC */
+            rev = 2;
+            sync = MACHINE_SYNC_NTSC;
+            break;
+        case 3: /* V3 NTSC */
+            sync = MACHINE_SYNC_NTSC;
+            break;
+        case 4: /* Hummer */
+            sync = MACHINE_SYNC_NTSC;
+            break;
+        default:
+            /* 3: V3 PAL */
+            break;
+    }
+    debug_gtk3("setting revision to %d and sync to %d\n", rev, sync);
+
+    /* update revision widget */
+    group = gtk_grid_get_child_at(GTK_GRID(c64dtv_rev_widget), 0, 1);
+    if (group != NULL && GTK_IS_GRID(group)) {
+        vice_gtk3_resource_radiogroup_update(group, rev);
+    }
+
+    /* update VIC-II model widget */
+    video_model_widget_update(video_widget);
+}
+
+
+/*
+ * VIC-20 glue logic
+ */
+
+
+/** \brief  Callback for the VIC-2- VIC model (sync factor)
+ *
+ * Calls model widget update
+ *
+ * \param[in]   model   new VIC model
+ */
+static void vic20_video_callback(int model)
+{
+    debug_gtk3("got video model %d\n", model);
+    machine_model_widget_update(machine_widget);
+}
+
+
+/** \brief  Callback for VIC-20 machine model changes
+ *
+ * \param[in]   model   VIC-29 model
+ */
+static void machine_model_handler_vic20(int model)
+{
+    /* update VIC-II model widget */
+    video_model_widget_update(video_widget);
+
+}
+
+
+
+
+/** \brief  Generic callback for machine model changes
+ *
+ * \param[in]   model
+ *
+ * XXX: only C64DTV is supported at the moments
+ */
+static void machine_model_callback(int model)
+{
+    debug_gtk3("got model %d\n", model);
+
+    switch (machine_class) {
+        case VICE_MACHINE_C64DTV:
+            machine_model_handler_c64dtv(model);
+            break;
+        case VICE_MACHINE_VIC20:
+            machine_model_handler_vic20(model);
+            break;
+        default:
+            break;
+    }
+}
 
 
 /** \brief  Handler for the "toggled" event of the C64SC Glue Logic radio buttons
@@ -218,6 +363,38 @@ static GtkWidget *create_c128_misc_widget(void)
 }
 
 
+/** \brief  Create widget to select DTV revision
+ *
+ * Creates a grid with a label and a vice_gtk3_resource_radiogroup widget.
+ *
+ * \return  GtkGrid
+ */
+static GtkWidget *create_c64dtv_revision_widget(void)
+{
+    GtkWidget *grid;
+    GtkWidget *group;
+    GtkWidget *label;
+
+    grid = vice_gtk3_grid_new_spaced(8, 8);
+    g_object_set(G_OBJECT(grid), "margin-left", 8, NULL);
+
+    label = gtk_label_new(NULL);
+    gtk_label_set_markup(GTK_LABEL(label), "<b>DTV Revision</b>");
+    gtk_widget_set_halign(label, GTK_ALIGN_START);
+
+    group = vice_gtk3_resource_radiogroup_create("DtvRevision",
+            c64dtv_revisions, GTK_ORIENTATION_VERTICAL);
+    vice_gtk3_resource_radiogroup_add_callback(group, dtv_revision_callback);
+    g_object_set(group, "margin-left", 16, NULL);
+
+    gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), group, 0, 1, 1, 1);
+
+    gtk_widget_show_all(grid);
+    return grid;
+}
+
+
 /** \brief  Create widget layout for C64/C64SC
  *
  * \param[in,out]   grid    GtkGrid to use for layout
@@ -242,8 +419,10 @@ static GtkWidget *create_c64_layout(GtkWidget *grid)
     gtk_grid_attach(GTK_GRID(grid), cia_widget, 0, 2, 2, 1);
 
     /* Kernal revision widget */
-    kernal_widget = kernal_revision_widget_create();
-    gtk_grid_attach(GTK_GRID(grid), kernal_widget, 2, 0, 1, 1);
+    if (machine_class != VICE_MACHINE_SCPU64) {
+        kernal_widget = kernal_revision_widget_create();
+        gtk_grid_attach(GTK_GRID(grid), kernal_widget, 2, 0, 1, 1);
+    }
 
     /* C64 misc. model settings */
     gtk_grid_attach(GTK_GRID(grid), create_c64_misc_widget(),
@@ -297,39 +476,49 @@ static GtkWidget *create_c128_layout(GtkWidget *grid)
     /* Misc widget */
     gtk_grid_attach(GTK_GRID(grid), create_c128_misc_widget(), 0, 1, 3, 1);
     return grid;
-#if 0
-
-    if (machine_class != VICE_MACHINE_CBM6x0 &&
-            machine_class != VICE_MACHINE_PET) {
-
-        video_wrapper = gtk_grid_new();
-
-        video_widget = video_model_widget_create();
-        gtk_grid_attach(GTK_GRID(video_wrapper), video_widget, 0, 0, 1, 1);
-
-        if (machine_class == VICE_MACHINE_C128) {
-            vdc_widget = vdc_model_widget_create();
-            gtk_grid_attach(GTK_GRID(video_wrapper), vdc_widget, 0, 1, 1, 1);
-        }
-        gtk_widget_show_all(video_wrapper);
-
-        gtk_grid_attach(GTK_GRID(layout), video_wrapper, 1, 0, 1, 1);
-    }
-#endif
-
-    return grid;
 }
 
+
+
+/** \brief  Create C64DTV model settings widget layout
+ *
+ * \param[in]   grid    GtkGrid to attach widgets to
+ *
+ * \return  \a grid
+ */
 static GtkWidget *create_c64dtv_layout(GtkWidget *grid)
 {
-    INCOMPLETE_IMPLEMENTATION();
+    GtkWidget *luma_widget;
+
+    /** add machine widget */
+    gtk_grid_attach(GTK_GRID(grid), machine_widget, 0, 0, 1, 2);
+
+    /* add video widget */
+    video_widget = video_model_widget_create(machine_widget);
+    video_model_widget_set_callback(video_widget, dtv_video_callback);
+    gtk_grid_attach(GTK_GRID(grid), video_widget, 1, 0, 1, 1);
+
+    /* create revision widget */
+    c64dtv_rev_widget = create_c64dtv_revision_widget();
+    gtk_grid_attach(GTK_GRID(grid), c64dtv_rev_widget, 1, 1, 1, 1);
+
+    /* SID widget */
+    sid_widget = sid_model_widget_create(machine_widget);
+    g_object_set(G_OBJECT(sid_widget), "margin-left", 8, NULL);
+    gtk_grid_attach(GTK_GRID(grid), sid_widget, 0, 2, 1, 1);
+
+    /* Luma fix widget */
+    luma_widget = vice_gtk3_resource_check_button_create("VICIINewLuminances",
+            "Enable LumaFix (use new VICII luminances)");
+    g_object_set(G_OBJECT(luma_widget), "margin-left", 8, "margin-top", 16, NULL);
+    gtk_grid_attach(GTK_GRID(grid), luma_widget, 0, 3, 2, 1);
     return grid;
 }
 
 
 /** \brief  Create VIC20 model settings widget layout
  *
- * \param[in]   grid    GtkGrid to attach widget to
+ * \param[in]   grid    GtkGrid to attach widgets to
  *
  * \return  \a grid
  */
@@ -342,11 +531,8 @@ static GtkWidget *create_vic20_layout(GtkWidget *grid)
 
     /* VIC model widget */
     video_widget = video_model_widget_create(machine_widget);
+    video_model_widget_set_callback(video_widget, vic20_video_callback);
     gtk_grid_attach(GTK_GRID(grid), video_widget, 1, 0, 1, 1);
-#if 0
-    /* SID widget */
-    sid_widget = sid_model_widget_create(machine_widget);
-#endif
 
     ram_widget = vic20_memory_expansion_widget_create();
     gtk_grid_attach(GTK_GRID(grid), ram_widget, 0, 1, 2, 1);
@@ -355,6 +541,13 @@ static GtkWidget *create_vic20_layout(GtkWidget *grid)
     return grid;
 }
 
+
+/** \brief  Create Plus4 model settings widget layout
+ *
+ * \param[in]   grid    GtkGrid to attach widgets to
+ *
+ * \return  \a grid
+ */
 static GtkWidget *create_plus4_layout(GtkWidget *grid)
 {
     GtkWidget *ram_widget;
@@ -362,7 +555,7 @@ static GtkWidget *create_plus4_layout(GtkWidget *grid)
     /* add machine widget */
     gtk_grid_attach(GTK_GRID(grid), machine_widget, 0, 0, 1, 1);
 
-    /* VIC model widget */
+    /* PET model widget */
     video_widget = video_model_widget_create(machine_widget);
     gtk_grid_attach(GTK_GRID(grid), video_widget, 1, 0, 1, 1);
 
@@ -370,7 +563,7 @@ static GtkWidget *create_plus4_layout(GtkWidget *grid)
     ram_widget = plus4_memory_expansion_widget_create();
     gtk_grid_attach(GTK_GRID(grid), ram_widget, 2, 0, 1, 1);
 
-    INCOMPLETE_IMPLEMENTATION();
+    gtk_widget_show_all(grid);
     return grid;
 }
 
@@ -440,12 +633,17 @@ static GtkWidget *create_pet_layout(GtkWidget *grid)
     gtk_grid_attach(GTK_GRID(grid), switcher, 0, 0, 1, 1);
     gtk_grid_attach(GTK_GRID(grid), stack, 0, 1, 1, 1);
 
-
-
     gtk_widget_show_all(grid);
     return grid;
 }
 
+
+/** \brief  Create CBM-II/5x0 model settings widget layout
+ *
+ * \param[in]   grid    GtkGrid to attach widgets to
+ *
+ * \return  \a grid
+ */
 static GtkWidget *create_cbm5x0_layout(GtkWidget *grid)
 {
     GtkWidget *ram_widget;
@@ -479,10 +677,17 @@ static GtkWidget *create_cbm5x0_layout(GtkWidget *grid)
     bank15_widget = cbm2_ram_mapping_widget_create();
     gtk_grid_attach(GTK_GRID(grid), bank15_widget, 0, 2, 1, 1);
 
-    INCOMPLETE_IMPLEMENTATION();
+    gtk_widget_show_all(grid);
     return grid;
 }
 
+
+/** \brief  Create CBM-II/6x0-7x0 model settings widget layout
+ *
+ * \param[in]   grid    GtkGrid to attach widgets to
+ *
+ * \return  \a grid
+ */
 static GtkWidget *create_cbm6x0_layout(GtkWidget *grid)
 {
     GtkWidget *ram_widget;
@@ -491,11 +696,7 @@ static GtkWidget *create_cbm6x0_layout(GtkWidget *grid)
 
     /* add machine widget */
     gtk_grid_attach(GTK_GRID(grid), machine_widget, 0, 0, 1, 2);
-#if 0
-    /* add video widget */
-    video_widget = video_model_widget_create();
-    gtk_grid_attach(GTK_GRID(grid), video_widget, 1, 0, 1, 1);
-#endif
+
     /* SID widget */
     sid_widget = sid_model_widget_create(machine_widget);
     gtk_grid_attach(GTK_GRID(grid), sid_widget, 1, 0, 1, 1);
@@ -516,14 +717,22 @@ static GtkWidget *create_cbm6x0_layout(GtkWidget *grid)
     bank15_widget = cbm2_ram_mapping_widget_create();
     gtk_grid_attach(GTK_GRID(grid), bank15_widget, 1, 2, 2, 1);
 
-
-    INCOMPLETE_IMPLEMENTATION();
+    gtk_widget_show_all(grid);
     return grid;
 }
 
+
+/** \brief  Create VSID layout
+ *
+ * \param[in,out]   grid    GtkGrid to use for layout
+ *
+ * \return  \a grid
+ */
 static GtkWidget *create_vsid_layout(GtkWidget *grid)
 {
-    INCOMPLETE_IMPLEMENTATION();
+    /* VIC-II model widget */
+    video_widget = video_model_widget_create(machine_widget);
+    gtk_grid_attach(GTK_GRID(grid), video_widget, 1, 0, 1, 1);
     return grid;
 }
 
@@ -605,6 +814,9 @@ GtkWidget *settings_model_widget_create(GtkWidget *parent)
         /* CBM6x0 ony has a simple CRTC, so no video widget used */
         video_model_widget_connect_signals(video_widget);
     }
+
+    /* add callback */
+    machine_model_widget_set_callback(machine_model_callback);
 
 #if 0
 

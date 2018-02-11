@@ -1,4 +1,4 @@
-/**
+/** \file   basewidgets.h
  * \brief   Header file for the base widgets
  *
  * \author  Bas Wassink <b.wassink@ziggo.nl>
@@ -44,5 +44,6 @@
 #include "resourcescale.h"
 #include "resourcespinbutton.h"
 #include "resourcebrowser.h"
+#include "resourceswitch.h"
 
 #endif

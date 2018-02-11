@@ -1,12 +1,11 @@
+/** \file   uimachinemenu.c
+ * \brief   Native GTK3 menus for machine emulators, (not vsid.)
+ *
+ * \author  Marcus Sutton <loggedoubt@gmail.com>
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
 /*
- * uimachinemenu.c - Native GTK3 menus for machine emulators, (not vsid.)
- *
- * Written by
- *  Marcus Sutton <loggedoubt@gmail.com>
- *
- * based on code by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -64,7 +63,6 @@
 #include "uisnapshot.h"
 #include "uitapeattach.h"
 
-
 /*
  * The following are translation unit local so we can create functions that
  * modify menu contents or even functions that alter the top bar itself.
@@ -112,7 +110,7 @@ static GtkWidget *debug_submenu = NULL;
 static GtkWidget *help_submenu = NULL;
 
 
-/** \brief  File->Detach submenu
+/** \brief  File->Detach disk submenu
  */
 static ui_menu_item_t detach_submenu[] = {
     { "Drive #8", UI_MENU_TYPE_ITEM_ACTION,
@@ -130,6 +128,28 @@ static ui_menu_item_t detach_submenu[] = {
 
     UI_MENU_TERMINATOR
 };
+
+
+/** \brief  File->Attach disk submenu
+ */
+static ui_menu_item_t attach_submenu[] = {
+    { "Drive #8", UI_MENU_TYPE_ITEM_ACTION,
+        "attach-drive8", ui_disk_attach_callback, GINT_TO_POINTER(8),
+        GDK_KEY_8, VICE_MOD_MASK },
+    { "Drive #9", UI_MENU_TYPE_ITEM_ACTION,
+        "attach-drive9", ui_disk_attach_callback, GINT_TO_POINTER(9),
+        GDK_KEY_9, VICE_MOD_MASK },
+    { "Drive #10", UI_MENU_TYPE_ITEM_ACTION,
+        "attach-drive10", ui_disk_attach_callback, GINT_TO_POINTER(10),
+        GDK_KEY_0, VICE_MOD_MASK },
+    { "Drive #11", UI_MENU_TYPE_ITEM_ACTION,
+        "attach-drive11", ui_disk_attach_callback, GINT_TO_POINTER(11),
+        GDK_KEY_1, VICE_MOD_MASK },
+
+    UI_MENU_TERMINATOR
+};
+
+
 
 /** \brief  File->Flip list submenu
  */
@@ -235,8 +255,8 @@ static ui_menu_item_t file_menu_head[] = {
     UI_MENU_SEPARATOR,
 
     /* disk */
-    { "Attach disk image ...", UI_MENU_TYPE_ITEM_ACTION,
-        "attach-disk", ui_disk_attach_callback, GINT_TO_POINTER(8),
+    { "Attach disk image", UI_MENU_TYPE_SUBMENU,
+        NULL, NULL, attach_submenu,
         GDK_KEY_8, VICE_MOD_MASK },
     { "Create and attach an empty disk image ...", UI_MENU_TYPE_ITEM_ACTION,
         "create-disk", uidiskcreate_dialog_show, GINT_TO_POINTER(8),
@@ -289,7 +309,7 @@ static ui_menu_item_t file_menu_tail[] = {
     /* cart */
     { "Attach cartridge image ...", UI_MENU_TYPE_ITEM_ACTION,
         "cart-attach", uicart_show_dialog, NULL,
-        0, 0 },
+        GDK_KEY_C, VICE_MOD_MASK },
     { "Detach cartridge image(s)", UI_MENU_TYPE_ITEM_ACTION,
         "cart-detach", (void *)uicart_detach, NULL,
         0, 0 },
@@ -341,11 +361,11 @@ static ui_menu_item_t file_menu_tail[] = {
  */
 static ui_menu_item_t edit_menu[] = {
     { "Copy", UI_MENU_TYPE_ITEM_ACTION,
-        "copy", ui_copy_callback, NULL,
-        0, 0 },
+        "copy", (void *)ui_copy_callback, NULL,
+        GDK_KEY_Delete, VICE_MOD_MASK },
     { "Paste", UI_MENU_TYPE_ITEM_ACTION,
-        "paste", ui_paste_callback, NULL,
-        0, 0 },
+        "paste", (void *)ui_paste_callback, NULL,
+        GDK_KEY_Insert, VICE_MOD_MASK },
 
     UI_MENU_TERMINATOR
 };
@@ -444,6 +464,9 @@ static ui_menu_item_t settings_menu_head[] = {
     { "Pause emulation", UI_MENU_TYPE_ITEM_CHECK,
         "Pause emulation", (void *)(ui_toggle_pause), NULL,
         GDK_KEY_P, VICE_MOD_MASK },
+    { "Advance frame", UI_MENU_TYPE_ITEM_ACTION,
+        "Advance frame", (void *)(ui_advance_frame), NULL,
+        GDK_KEY_P, VICE_MOD_MASK | GDK_SHIFT_MASK },
 
     UI_MENU_SEPARATOR,
 
@@ -531,9 +554,10 @@ static ui_menu_item_t settings_menu_tail[] = {
 };
 
 
-/** \brief  'Debug' menu items
- */
 #ifdef DEBUG
+
+/** \brief  'Debug' menu items for emu's except x64dtv
+ */
 static ui_menu_item_t debug_menu[] = {
     { "Trace mode ...", UI_MENU_TYPE_ITEM_ACTION,
         "tracemode", uidebug_trace_mode_callback, NULL,
@@ -571,6 +595,60 @@ static ui_menu_item_t debug_menu[] = {
 
     UI_MENU_TERMINATOR
 };
+
+
+/** \brief  'Debug' menu items for x64dtv
+ */
+static ui_menu_item_t debug_menu_c64dtv[] = {
+    { "Trace mode ...", UI_MENU_TYPE_ITEM_ACTION,
+        "tracemode", uidebug_trace_mode_callback, NULL,
+        0, 0 },
+
+    UI_MENU_SEPARATOR,
+
+    { "Main CPU trace", UI_MENU_TYPE_ITEM_CHECK,
+        "trace-maincpu", (void *)(ui_toggle_resource), (void *)"MainCPU_TRACE",
+        0, 0 },
+
+    UI_MENU_SEPARATOR,
+
+    { "Drive #8 CPU trace", UI_MENU_TYPE_ITEM_CHECK,
+        "trace-drive8", (void *)(ui_toggle_resource), (void *)"Drive0CPU_TRACE",
+        0, 0 },
+    { "Drive #9 CPU trace", UI_MENU_TYPE_ITEM_CHECK,
+        "trace-drive9", (void *)(ui_toggle_resource), (void *)"Drive1CPU_TRACE",
+        0, 0 },
+    { "Drive #10 CPU trace", UI_MENU_TYPE_ITEM_CHECK,
+        "trace-drive10", (void *)(ui_toggle_resource), (void *)"Drive2CPU_TRACE",
+        0, 0 },
+    { "Drive #11 CPU trace", UI_MENU_TYPE_ITEM_CHECK,
+        "trace-drive11", (void *)(ui_toggle_resource), (void *)"Drive3CPU_TRACE",
+        0, 0 },
+
+    UI_MENU_SEPARATOR,
+
+    { "Blitter log", UI_MENU_TYPE_ITEM_CHECK,
+      "blitter-log", (void *)ui_toggle_resource, (void *)"DtvBlitterLog",
+      0, 0 },
+    { "DMA log", UI_MENU_TYPE_ITEM_CHECK,
+      "dma-log", (void *)ui_toggle_resource, (void *)"DtvDMALog",
+      0, 0 },
+    { "Flash log", UI_MENU_TYPE_ITEM_CHECK,
+      "flash-log", (void *)ui_toggle_resource, (void*)"DtvFlashLog",
+      0, 0 },
+
+    UI_MENU_SEPARATOR,
+
+    { "Autoplay playback frames ...", UI_MENU_TYPE_ITEM_ACTION,
+        "playframes", uidebug_playback_frames_callback, NULL,
+        0, 0 },
+    { "Save core dump", UI_MENU_TYPE_ITEM_CHECK,
+        "coredump", (void *)(ui_toggle_resource), (void *)"DoCoreDump",
+        0, 0 },
+
+    UI_MENU_TERMINATOR
+};
+
 #endif
 
 
@@ -682,7 +760,11 @@ GtkWidget *ui_machine_menu_bar_create(void)
 
 #ifdef DEBUG
     /* add items to the Debug menu */
-    ui_menu_add(debug_submenu, debug_menu);
+    if (machine_class == VICE_MACHINE_C64DTV) {
+        ui_menu_add(debug_submenu, debug_menu_c64dtv);
+    } else {
+        ui_menu_add(debug_submenu, debug_menu);
+    }
 #endif
 
     /* add items to the Help menu */

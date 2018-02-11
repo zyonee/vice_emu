@@ -1,11 +1,12 @@
-/**
+/** \file   ui.c
  * \brief   Native GTK3 UI stuff.
  *
- * Written by
- *  Marco van den Heuvel <blackystardust68@yahoo.com>
- *  Bas Wassink <b.wassink@ziggo.nl>
- *  Marcus Sutton <loggedoubt@gmail.com>
- *
+ * \author  Marco van den Heuvel <blackystardust68@yahoo.com>
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ * \author  Marcus Sutton <loggedoubt@gmail.com>
+ */
+
+/*
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -47,6 +48,7 @@
 #include "util.h"
 #include "videoarch.h"
 #include "vsync.h"
+#include "vsyncapi.h"
 
 #include "basedialogs.h"
 #include "uiapi.h"
@@ -896,10 +898,16 @@ void ui_display_speed(float percent, float framerate, int warp_flag)
         if (ui_resources.canvas[i] && GTK_WINDOW(ui_resources.window_widget[i])) {
             warp = (warp_flag ? _("(warp)") : "");
             str[0] = 0;
-            snprintf(str, 128, "%s%s - %3d%%, %2d fps %s%s",
-                     ui_resources.canvas[i]->viewport->title, mode[i],
-                     percent_int, framerate_int, warp,
-                     is_paused ? " (Paused)" : "");
+            if (machine_class != VICE_MACHINE_VSID) {
+                snprintf(str, 128, "%s%s - %3d%%, %2d fps %s%s",
+                         ui_resources.canvas[i]->viewport->title, mode[i],
+                         percent_int, framerate_int, warp,
+                         is_paused ? " (Paused)" : "");
+            } else {
+                snprintf(str, 128, "VSID - %3d%% %s%s",
+                         percent_int, warp,
+                         is_paused ? " (Paused)" : "");
+            }
             str[127] = 0;
             gtk_window_set_title(GTK_WINDOW(ui_resources.window_widget[i]), str);
         }
@@ -934,7 +942,7 @@ void ui_display_paused(int flag)
 
 /** \brief  Pause emulation
  *
- * \param[in]   flag    pause state
+ * \param[in]   flag    toggle pause state if true
  */
 void ui_pause_emulation(int flag)
 {
@@ -973,9 +981,27 @@ gboolean ui_toggle_pause(void)
     /* TODO: somehow update the checkmark in the menu without reverting to
      *       weird code like Gtk
      */
-    return TRUE;    /* has to be TRUE to avoid passing Alt+H into the emu */
+    return TRUE;    /* has to be TRUE to avoid passing Alt+P into the emu */
 }
 
+/** \brief  Advance frame handler
+ *
+ * \return  TRUE (indicates the Alt+SHIFT+P got consumed by Gtk, so it won't be
+ *          passed to the emu)
+ *
+ * FIXME:   Using the UI the pause tickmark is properly set/unset, but when using
+ *          this from a keyboard shortcut, the tickmark isn't updated at all.
+ */
+gboolean ui_advance_frame(void)
+{
+    if (ui_emulation_is_paused()) {
+        vsyncarch_advance_frame();
+    } else {
+        ui_pause_emulation(1);
+    }
+
+    return TRUE;    /* has to be TRUE to avoid passing Alt+SHIFT+P into the emu */
+}
 
 /** \brief  Shutdown the UI, clean up resources
  */

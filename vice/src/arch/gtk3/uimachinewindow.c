@@ -38,6 +38,8 @@
 
 #include "cairo_renderer.h"
 #include "opengl_renderer.h"
+#include "quartz_renderer.h"
+#include "lightpen.h"
 #include "videoarch.h"
 
 #include "ui.h"
@@ -59,22 +61,28 @@ static gboolean event_box_motion_cb(GtkWidget *widget, GdkEvent *event, gpointer
     return FALSE;
 }
 
+static GdkCursor *make_cursor(GtkWidget *widget, const char *name)
+{
+    GdkDisplay *display = gtk_widget_get_display(widget);
+    GdkCursor *result = NULL;
+
+    if (display) {
+        result = gdk_cursor_new_from_name(display, name);
+        if (result != NULL) {
+            g_object_ref_sink(G_OBJECT(result));
+        }
+    }
+    return result;
+}
+
 static gboolean event_box_stillness_tick_cb(GtkWidget *widget, GdkFrameClock *clock, gpointer user_data)
 {
     video_canvas_t *canvas = (video_canvas_t *)user_data;
 
     ++canvas->still_frames;
-    if (canvas->still_frames > 60) {
-        GdkDisplay *display = gtk_widget_get_display(widget);
-
-        if (display != NULL && canvas->blank_ptr == NULL) {
-            canvas->blank_ptr = gdk_cursor_new_from_name(display, "none");
-            if (canvas->blank_ptr != NULL) {
-                g_object_ref_sink(G_OBJECT(canvas->blank_ptr));
-            } else {
-                /* FIXME: This can fill a terminal with repeated text */
-                fprintf(stderr, "GTK3 CURSOR: Could not allocate blank pointer for canvas\n");
-            }
+    if (!lightpen_enabled && canvas->still_frames > 60) {
+        if (canvas->blank_ptr == NULL) {
+            canvas->blank_ptr = make_cursor(widget, "none");
         }
         if (canvas->blank_ptr != NULL) {
             GdkWindow *window = gtk_widget_get_window(widget);
@@ -85,8 +93,15 @@ static gboolean event_box_stillness_tick_cb(GtkWidget *widget, GdkFrameClock *cl
         }
     } else {
         GdkWindow *window = gtk_widget_get_window(widget);
+        if (canvas->pen_ptr == NULL) {
+            canvas->pen_ptr = make_cursor(widget, "crosshair");
+        }
         if (window) {
-            gdk_window_set_cursor(window, NULL);
+            if (lightpen_enabled && canvas->pen_ptr) {
+                gdk_window_set_cursor(window, canvas->pen_ptr);
+            } else {
+                gdk_window_set_cursor(window, NULL);
+            }
         }
     }
     return G_SOURCE_CONTINUE;
@@ -95,8 +110,16 @@ static gboolean event_box_stillness_tick_cb(GtkWidget *widget, GdkFrameClock *cl
 static gboolean event_box_cross_cb(GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
     video_canvas_t *canvas = (video_canvas_t *)user_data;
+    GdkEventCrossing *crossing = (GdkEventCrossing *)event;
 
-    if (event && event->type == GDK_ENTER_NOTIFY) {
+    if (!canvas || !event ||
+        (event->type != GDK_ENTER_NOTIFY && event->type != GDK_LEAVE_NOTIFY) ||
+        crossing->mode != GDK_CROSSING_NORMAL) {
+        /* Spurious event */
+        return FALSE;
+    }
+    
+    if (crossing->type == GDK_ENTER_NOTIFY) {
         canvas->still_frames = 0;
         if (canvas->still_frame_callback_id == 0) {
             canvas->still_frame_callback_id = gtk_widget_add_tick_callback(canvas->drawing_area,

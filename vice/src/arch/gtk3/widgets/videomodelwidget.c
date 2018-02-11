@@ -1,9 +1,10 @@
-/**
+/** \file   videomodelwidget.c
  * \brief   Video chip model selection widget
  *
- * Written by
- *  Bas Wassink <b.wassink@ziggo.nl>
- *
+ * \author  Bas Wassink <b.wassink@ziggo.nl>
+ */
+
+/*
  * Controls the following resource(s):
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -34,6 +35,7 @@
 #include "debug_gtk3.h"
 #include "resources.h"
 #include "machine.h"
+#include "log.h"
 
 #include "videomodelwidget.h"
 
@@ -65,7 +67,22 @@ static void on_model_toggled(GtkWidget *widget, gpointer user_data)
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))) {
         debug_gtk3("setting %s to %d\n", resource_name, model_id);
-        resources_set_int(resource_name, model_id);
+        if (resources_set_int(resource_name, model_id) < 0) {
+            log_error(LOG_ERR, "failed to set %s to %d\n",
+                    resource_name, model_id);
+        } else {
+            GtkWidget *parent;
+            void (*callback)(int);
+
+            parent = gtk_widget_get_parent(widget);
+            if (parent != NULL) {
+                callback = g_object_get_data(G_OBJECT(parent), "ExtraCallback");
+                if (callback != NULL) {
+                    debug_gtk3("triggering extra callback with %d\n", model_id);
+                    callback(model_id);
+                }
+            }
+        }
     }
 }
 
@@ -132,6 +149,9 @@ GtkWidget *video_model_widget_create(GtkWidget *machine)
         video_model_widget_update(grid);
     }
 
+    g_object_set_data(G_OBJECT(grid), "ExtraCallback", NULL);
+
+
     gtk_widget_show_all(grid);
     return grid;
 }
@@ -154,7 +174,11 @@ void video_model_widget_update(GtkWidget *widget)
 
     while ((radio = gtk_grid_get_child_at(GTK_GRID(widget), 0, i + 1)) != NULL) {
         if (GTK_IS_RADIO_BUTTON(radio) && (index == i)) {
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio), TRUE);
+            /* don't update radio button when it's already active, inhibiting
+             * the event handler */
+            if (!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(radio))) {
+                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio), TRUE);
+            }
             break;
         }
         i++;
@@ -181,3 +205,15 @@ void video_model_widget_connect_signals(GtkWidget *widget)
         i++;
     }
 }
+
+
+/** \brief  Set extra callback to trigger when the model changes
+ *
+ * \param[in]   widget      the video model widget
+ * \param[in]   callback    function to call on model change
+ */
+void video_model_widget_set_callback(GtkWidget *widget, void (*callback)(int))
+{
+    g_object_set_data(G_OBJECT(widget), "ExtraCallback", (gpointer)callback);
+}
+
